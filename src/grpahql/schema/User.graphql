@@ -1,0 +1,46 @@
+type User {
+  id: ID
+  username: String!
+  displayName: String
+  bio: String
+  singleUserMode: Boolean!
+  emailHash: String
+}
+
+type Session {
+  id: ID!
+  user: ID!
+  expiresAt: DateTime!
+}
+
+type SessionResponse {
+  token: ID!
+  expiresAt: DateTime!
+}
+
+type UserSettings {
+  id: ID
+  useGravatar: Boolean
+}
+
+extend type Query {
+  users: [User]!
+  self: User!
+  user(id: ID!): User
+}
+
+input CreateUserInput {
+  username: String!
+  password: String!
+  email: String!
+}
+
+input SignInInput {
+  username: String!
+  password: String!
+}
+
+extend type Mutation {
+  signUp(input: CreateUserInput!): User!
+  signIn(input: SignInInput): SessionResponse
+}

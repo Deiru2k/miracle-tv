@@ -1,0 +1,22 @@
+{
+   "compilerOptions": {
+       "target": "es6",
+       "module": "commonjs",
+       "lib": ["es2015", "es2016", "dom", "es2017", "es6", "es5"],
+       "esModuleInterop": true,
+       "noImplicitAny": true,
+       "moduleResolution": "node",
+       "resolveJsonModule": true,
+       "sourceMap": false,
+       "outDir": "./dist/server",
+       "baseUrl": "./",
+       "types": [],
+       "typeRoots" : ["./node_modules", "./node_modules/@types"],
+       "paths": {
+           "miracle-tv/*": [ "src/*" ]
+       }
+   },
+   "include": [
+       "./src/**/*"
+   ]
+}

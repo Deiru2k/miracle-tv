@@ -1,0 +1,17 @@
+type InfoResponse {
+  version: String!
+  packageName: String!
+}
+
+type TestResponse {
+  secret: String!
+}
+
+type Query {
+  info: InfoResponse!
+  test: TestResponse!
+}
+
+type Mutation {
+  ping: String!
+}
