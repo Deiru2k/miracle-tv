@@ -3,6 +3,7 @@ dist/
 yarn-error.log
 src/**/*.js
 dev.sqlite3
+result/
 
 miracle-tv.*.zip
 result/
