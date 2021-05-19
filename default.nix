@@ -1,34 +1,37 @@
 with import <nixpkgs> {};
 
 let
-  executableName = "miracle-tv";
-  version = "0.1.0";
+  version = "0.1.1";
   src = ./.;
   nodePkg = pkgs.nodejs-14_x;
   yarnPkg = pkgs.yarn.override { nodejs = nodePkg; };
-in mkYarnPackage rec {
-  name = "miarcle-tv";
+  packages = (import ./packages.nix);
+in pkgs.stdenv.mkDerivation rec {
+  name = "miracle-tv";
   inherit version src nodePkg yarnPkg;
 
   doDist = false;
 
-  packageJSON = "${src}/package.json";
-  yarnLock = "${src}/yarn.lock";
-  yarnNix = "${src}/yarn.nix";
-
   configurePhase = ''
     rm -rf ./node_modules || true
-    ln -s $node_modules ./node_modules
+    mkdir -p ./node_modules/.bin
+    cp -r ${packages}/modules/* ./node_modules
+    cp -r ${packages}/modules/.bin/* ./node_modules/.bin
   '';
 
   buildPhase = ''
-    sh ./bin/build.sh
+    ./node_modules/.bin/tsc
   '';
 
   installPhase = ''
     mkdir $out
-    cp -R ./dist/* $out
-    cp -R ./migrations $out/migrations
+    cp -r ./dist/* $out
+
+    makeWrapper ${nodePkg}/bin/node $out/bin/${name} \
+      --add-flags '-r ts-node/register/transpile-only' \
+      --add-flags '-r tsconfig-paths/register' \
+      --add-flags $out/server.js \
+      --set NODE_PATH $NODE_PATH:$out:${packages}/modules
   '';
 
   distPhase = ''
@@ -38,6 +41,6 @@ in mkYarnPackage rec {
   nativeBuildInputs = with pkgs; [
     nodePkg yarnPkg makeWrapper
     automake autoconf m4 git bash
-    libpng libGL gcc
+    libpng libGL gcc yarn2nix packages
   ];
 }

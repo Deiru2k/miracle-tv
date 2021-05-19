@@ -1,5 +1,5 @@
 import Express from 'express';
-import { graphqlEndpoint } from 'miracle-tv/grpahql';
+import { graphqlEndpoint } from 'miracle-tv/graphql';
 import 'miracle-tv/db/setup-db';
 
 const app = Express();

@@ -4,7 +4,7 @@ import { Model } from 'miracle-tv/db/models';
 import { Session, SessionResponse } from 'miracle-tv/types/graphql';
 import { DateTime } from 'luxon';
 import { head } from 'ramda'
-import { ServerError } from 'miracle-tv/grpahql/errors/general';
+import { ServerError } from 'miracle-tv/graphql/errors/general';
 
 export class SessionsModel extends Model {
   table = db.table('sessions')

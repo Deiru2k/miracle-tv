@@ -1,15 +1,16 @@
 {
    "compilerOptions": {
-       "target": "es6",
+       "target": "es5",
        "module": "commonjs",
-       "lib": ["es2015", "es2016", "dom", "es2017", "es6", "es5"],
+       "skipLibCheck": true,
+       "lib": ["es2020"],
        "esModuleInterop": true,
        "noImplicitAny": true,
        "moduleResolution": "node",
        "resolveJsonModule": true,
        "sourceMap": false,
-       "outDir": "./dist/server",
-       "baseUrl": "./",
+       "outDir": "./dist",
+       "baseUrl": ".",
        "types": [],
        "typeRoots" : ["./node_modules", "./node_modules/@types"],
        "paths": {

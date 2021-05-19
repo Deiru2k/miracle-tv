@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import { AuthenticationError } from 'miracle-tv/grpahql/errors/auth';
+import { AuthenticationError } from 'miracle-tv/graphql/errors/auth';
 import { QueryResolvers, User, UserResolvers } from 'miracle-tv/types/graphql';
 import { ResolverContext } from 'miracle-tv/types/resolver';
 
