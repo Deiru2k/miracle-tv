@@ -26,8 +26,10 @@ in pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     mkdir $out
     cp -r ./dist/* $out
+    cp tsconfig.json $out/tsconfig.json
 
     makeWrapper ${nodePkg}/bin/node $out/bin/${name} \
+      --set TS_NODE_PROJECT $out/tsconfig.json \
       --add-flags '-r ts-node/register/transpile-only' \
       --add-flags '-r tsconfig-paths/register' \
       --add-flags $out/server.js \

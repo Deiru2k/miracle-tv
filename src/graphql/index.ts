@@ -4,7 +4,7 @@ import { ResolverContext } from "miracle-tv/types/resolver";
 import {
   userQueryResolver,
   userResolver,
-  userListQueryResolver,
+  usersQueryResolver,
   userSelfQueryResolver,
   userTestQueryResolver,
 } from "./resolvers/users";
@@ -19,6 +19,29 @@ import { UsersModel } from "miracle-tv/db/models/Users";
 import glob from "glob";
 import path from "path";
 import { readFileSync } from "fs";
+import { ChanelsModel } from "miracle-tv/db/models/Channels";
+import {
+  channelQueryResolver,
+  channelResolver,
+  channelsQueryResolver,
+} from "./resolvers/channels";
+import {
+  createChannelMutation,
+  updateChannelMutation,
+} from "./mutations/channels";
+import { ActivitiesModel } from "miracle-tv/db/models/Activities";
+import {
+  createActivityMutaiton,
+  updateActivityMutation,
+} from "./mutations/activities";
+import {
+  activitiesQueryResolver,
+  activityQueryResolver,
+  activityResolver,
+} from "./resolvers/activities";
+import { RolesModel } from "miracle-tv/db/models/Roles";
+import { getCompleteRights } from "miracle-tv/db/acl/roles";
+import { roleResolvers } from "./resolvers/roles";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -38,8 +61,12 @@ const resolvers: Resolvers<ResolverContext> = {
       version: process.env.npm_package_version || "none",
       packageName: process.env.npm_package_name || "none",
     }),
-    users: userListQueryResolver,
     user: userQueryResolver,
+    users: usersQueryResolver,
+    channel: channelQueryResolver,
+    channels: channelsQueryResolver,
+    activity: activityQueryResolver,
+    activities: activitiesQueryResolver,
     self: userSelfQueryResolver,
     test: userTestQueryResolver,
   },
@@ -50,8 +77,15 @@ const resolvers: Resolvers<ResolverContext> = {
     },
     signUp: signUpMutation,
     signIn: signInMutation,
+    createChannel: createChannelMutation,
+    updateChannel: updateChannelMutation,
+    createActivity: createActivityMutaiton,
+    updateActivity: updateActivityMutation,
   },
   User: userResolver,
+  Channel: channelResolver,
+  Activity: activityResolver,
+  Role: roleResolvers,
 };
 
 export const graphqlEndpoint = new ApolloServer({
@@ -62,7 +96,10 @@ export const graphqlEndpoint = new ApolloServer({
     const db = {
       sessions: new SessionsModel(con),
       users: new UsersModel(con),
-    };
+      channels: new ChanelsModel(con),
+      activities: new ActivitiesModel(con),
+      roles: new RolesModel(con),
+    } as ResolverContext["db"];
     const session = (await db.sessions.getSessionById(
       req.headers.authorization || ""
     )) as DbSession | null;
@@ -72,10 +109,17 @@ export const graphqlEndpoint = new ApolloServer({
     const user = sessionIsValid
       ? ((await db.users.getUserById(session?.user)) as DbUser | null)
       : null;
+
+    const allRoles = await db.roles.list();
+    const userRoles =
+      user?.roles?.map((role) =>
+        getCompleteRights(allRoles, role as unknown as string)
+      ) || [];
     return {
       db,
       session,
       user,
-    };
+      userRoles,
+    } as ResolverContext;
   },
 });

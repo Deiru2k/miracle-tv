@@ -1,17 +1,24 @@
-import { ApolloError } from 'apollo-server-errors';
+import { ApolloError } from "apollo-server-errors";
 
 export class InputErrorLogin extends ApolloError {
   constructor() {
-    super('User was not found or wrong password provided', 'E_LOGIN');
+    super("User was not found or wrong password provided");
 
-    Object.defineProperty(this, 'name', { value: 'InputErrorLogin' });
+    Object.defineProperty(this, "code", { value: "E_LOGIN" });
   }
 }
 
 export class AuthenticationError extends ApolloError {
   constructor() {
-    super('User is not authenticated', 'E_AUTHENTICATION');
+    super("Unauthenticated", "E_AUTHNETICATED");
 
-    Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
+    Object.defineProperty(this, "name", { value: "E_AUTHNETICATED" });
+  }
+}
+export class AuthorizationError extends ApolloError {
+  constructor() {
+    super("Unauthorized", "E_AUTHORIZATION");
+
+    Object.defineProperty(this, "name", { value: "E_AUTHORIZATION" });
   }
 }

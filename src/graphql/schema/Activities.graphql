@@ -1,0 +1,40 @@
+type Activity {
+  id: ID!
+  icon: String
+  image: String
+  name: String!
+  verb: String
+}
+
+input CreateActivityInput {
+  icon: String
+  image: String
+  name: String!
+  verb: String
+}
+
+input UpdateActivityInput {
+  id: ID!
+  icon: String
+  image: String
+  name: String!
+  verb: String
+}
+
+input ActivityFilter {
+  id: ID
+  icon: String
+  image: String
+  name: String
+  verb: String
+}
+
+extend type Query {
+  activity(id: ID!): Activity
+  activities(filter: ActivityFilter): [Activity]!
+}
+
+extend type Mutation {
+  createActivity(input: CreateActivityInput): Activity!
+  updateActivity(input: UpdateActivityInput): Activity!
+}

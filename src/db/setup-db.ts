@@ -1,7 +1,13 @@
 import * as rdb from "rethinkdb";
 import config from "miracle-tv/config/local.json";
 
-const tables: string[] = ["users", "sessions"];
+const tables: string[] = [
+  "users",
+  "sessions",
+  "activities",
+  "channels",
+  "roles",
+];
 
 export const connection = rdb
   .connect({ host: "localhost", port: 28015 })

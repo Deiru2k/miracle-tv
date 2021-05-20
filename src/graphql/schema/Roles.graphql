@@ -1,0 +1,77 @@
+enum AccessUnit {
+  DENY,
+  READ,
+  WRITE,
+  SELF,
+  INHERIT,
+}
+
+type UserActions {
+  silence: Boolean
+  ban: Boolean
+  warn: Boolean
+}
+
+type Actions {
+  user: UserActions
+}
+
+type AccessTargets {
+  channels: AccessUnit
+  users: AccessUnit
+  activities: AccessUnit
+  actions: Actions!
+}
+
+type Role {
+  id: ID!
+  name: String!
+  access: AccessTargets!
+  parentId: ID
+}
+
+extend type Query {
+  role(id: ID!): Role
+  roles(filter: UpdateRoleInput): [Role]!
+}
+
+extend type Mutation {
+  createRole(input: CreateRoleInput): Role!
+  updateRole(input: UpdateRoleInput): Role!
+  deleteRole(id: ID!): Boolean!
+}
+
+########################
+# INPUT ZONE BRRRRRRRR #
+########################
+
+input UserActionsInput {
+  silence: Boolean
+  ban: Boolean
+  warn: Boolean
+}
+
+input ActionsInput {
+  user: UserActionsInput
+}
+
+input AccessTargetsInput {
+  channels: AccessUnit
+  users: AccessUnit
+  activities: AccessUnit
+  actions: ActionsInput!
+}
+
+input CreateRoleInput {
+  id: ID!
+  name: String!
+  access: AccessTargetsInput!
+  parentId: ID!
+}
+
+input UpdateRoleInput {
+  id: ID
+  name: String
+  access: AccessTargetsInput
+  parentId: ID
+}

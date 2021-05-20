@@ -1,0 +1,43 @@
+type Channel {
+  id: ID!
+  user: User
+  activity: Activity
+  slug: String
+  name: String!
+  description: String
+}
+
+input ChannelsQueryFilter {
+  id: ID
+  user: ID
+  activity: ID
+  slug: String
+  name: String
+  description: String
+}
+
+extend type Query {
+  channel(id: ID!): Channel
+  channels(filter: ChannelsQueryFilter): [Channel]!
+}
+
+input CreateChannelInput {
+  userId: ID
+  activityId: ID
+  name: String!
+  slug: String
+  description: String
+}
+
+input UpdateChannelInput {
+  id: ID!
+  activityId: ID
+  name: String
+  slug: String
+  description: String
+}
+
+extend type Mutation {
+  createChannel(input: CreateChannelInput): Channel!
+  updateChannel(input: UpdateChannelInput): Channel!
+}

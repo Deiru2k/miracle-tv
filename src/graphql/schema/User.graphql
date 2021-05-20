@@ -5,6 +5,7 @@ type User {
   bio: String
   singleUserMode: Boolean!
   emailHash: String
+  roles: [Role]!
 }
 
 type Session {
