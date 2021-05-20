@@ -298,6 +298,7 @@ export type User = {
   singleUserMode: Scalars['Boolean'];
   emailHash?: Maybe<Scalars['String']>;
   roles: Array<Maybe<Role>>;
+  channels: Array<Maybe<Channel>>;
 };
 
 export type UserActions = {
@@ -583,6 +584,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   singleUserMode?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   emailHash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType>;
+  channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

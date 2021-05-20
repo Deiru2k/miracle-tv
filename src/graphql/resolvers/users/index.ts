@@ -48,6 +48,9 @@ export const userResolver: UserResolvers = {
   id: (user) => user.id,
   username: (user) => user.username,
   emailHash: (user) => md5((user as any).email || ""),
+  channels: async (user, _, { db: { channels } }) => {
+    return await channels.getChannels({ userId: user.id! });
+  },
   roles: async (user, _, { db: { roles } }) => {
     const rolesList = await roles.getAll(user.roles || []);
     return rolesList as Role[];
