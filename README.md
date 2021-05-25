@@ -72,5 +72,4 @@ sudo wget https://code.gensokyo.social/Gensokyo.social/miracle-tv/raw/branch/dev
 ```
 
 
-`nixos-rebuild switch` Should download and compile everything
-Look for full list of options inside the module file
+`nixos-rebuild switch` should download and compile everything. Look for full list of options inside the module file.
