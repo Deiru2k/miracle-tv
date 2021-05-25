@@ -43,7 +43,7 @@ If you don't use nix, please reach out to somebody who can do that for you.
 
 # Deploying in Production with nix
 ## ! Software is definetely not production ready, deploy at your own risk !
-Download one of our [module-releases](module_releases/) files and import it in your configuration.nix, and then configure it like so
+Download one of our [module-releases](./module-releases/) files and import it in your configuration.nix, and then configure it like so
 
 ``` sh
 sudo wget https://code.gensokyo.social/Gensokyo.social/miracle-tv/raw/branch/develop/module-releases/0-1-0.nix -P /etc/nixos/miracle-module.nix
