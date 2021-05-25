@@ -11,6 +11,7 @@ const defaultAdminRole: Role = {
   access: {
     rights: {
       channels: AccessUnit.Write,
+      streamKeys: AccessUnit.Write,
       users: AccessUnit.Write,
     },
     actions: {
@@ -60,6 +61,7 @@ const defaultUserRole: Role = {
   name: "user",
   access: {
     rights: {
+      streamKeys: AccessUnit.Self,
       channels: AccessUnit.Self,
       users: AccessUnit.Read,
       activities: AccessUnit.Read,

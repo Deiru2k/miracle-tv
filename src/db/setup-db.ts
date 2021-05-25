@@ -6,6 +6,7 @@ const tables: string[] = [
   "users",
   "sessions",
   "activities",
+  "stream-keys",
   "channels",
   "roles",
 ];

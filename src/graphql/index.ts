@@ -43,6 +43,13 @@ import { RolesModel } from "miracle-tv/db/models/Roles";
 import { getCompleteRights } from "miracle-tv/db/acl/roles";
 import { roleResolvers } from "./resolvers/roles";
 import config from "miracle-tv/config";
+import { StreamKeysModel } from "miracle-tv/db/models/StreamKeys";
+import {
+  selfStreamKeysQueryResolver,
+  streamKeysQueryResolver,
+  streamKeysResolver,
+} from "./resolvers/stream-keys";
+import { createStreamKeyMutation } from "./mutations/stream-keys";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -69,7 +76,9 @@ const resolvers: Resolvers<ResolverContext> = {
     channels: channelsQueryResolver,
     activity: activityQueryResolver,
     activities: activitiesQueryResolver,
+    streamKeys: streamKeysQueryResolver,
     self: userSelfQueryResolver,
+    selfStreamKeys: selfStreamKeysQueryResolver,
     test: userTestQueryResolver,
   },
   Mutation: {
@@ -83,11 +92,13 @@ const resolvers: Resolvers<ResolverContext> = {
     updateChannel: updateChannelMutation,
     createActivity: createActivityMutaiton,
     updateActivity: updateActivityMutation,
+    createStreamKey: createStreamKeyMutation,
   },
   User: userResolver,
   Channel: channelResolver,
   Activity: activityResolver,
   Role: roleResolvers,
+  StreamKey: streamKeysResolver,
 };
 
 export const graphqlEndpoint = new ApolloServer({
@@ -102,6 +113,7 @@ export const graphqlEndpoint = new ApolloServer({
       users: new UsersModel(con),
       channels: new ChanelsModel(con),
       activities: new ActivitiesModel(con),
+      streamKeys: new StreamKeysModel(con),
       roles: new RolesModel(con),
     } as ResolverContext["db"];
     const session = (await db.sessions.getSessionById(

@@ -18,6 +18,7 @@ type Actions {
 
 type AccessRights {
   channels: AccessUnit
+  streamKeys: AccessUnit
   users: AccessUnit
   activities: AccessUnit
 }

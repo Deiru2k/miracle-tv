@@ -20,6 +20,7 @@ export type Scalars = {
 export type AccessRights = {
   __typename?: 'AccessRights';
   channels?: Maybe<AccessUnit>;
+  streamKeys?: Maybe<AccessUnit>;
   users?: Maybe<AccessUnit>;
   activities?: Maybe<AccessUnit>;
 };
@@ -117,6 +118,11 @@ export type CreateRoleInput = {
   parentId: Scalars['ID'];
 };
 
+export type CreateStreamKeyInput = {
+  userId: Scalars['ID'];
+  channelId: Scalars['ID'];
+};
+
 export type CreateUserInput = {
   username: Scalars['String'];
   password: Scalars['String'];
@@ -141,6 +147,7 @@ export type Mutation = {
   createRole: Role;
   updateRole: Role;
   deleteRole: Scalars['Boolean'];
+  createStreamKey: StreamKey;
   signUp: User;
   signIn?: Maybe<SessionResponse>;
 };
@@ -181,6 +188,11 @@ export type MutationDeleteRoleArgs = {
 };
 
 
+export type MutationCreateStreamKeyArgs = {
+  input?: Maybe<CreateStreamKeyInput>;
+};
+
+
 export type MutationSignUpArgs = {
   input: CreateUserInput;
 };
@@ -200,6 +212,8 @@ export type Query = {
   channels: Array<Maybe<Channel>>;
   role?: Maybe<Role>;
   roles: Array<Maybe<Role>>;
+  streamKeys: Array<Maybe<StreamKey>>;
+  selfStreamKeys: Array<Maybe<StreamKey>>;
   users: Array<Maybe<User>>;
   self: User;
   user?: Maybe<User>;
@@ -264,6 +278,13 @@ export type SessionResponse = {
 export type SignInInput = {
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type StreamKey = {
+  __typename?: 'StreamKey';
+  id: Scalars['ID'];
+  user: User;
+  channel: Channel;
 };
 
 export type TestResponse = {
@@ -420,6 +441,7 @@ export type ResolversTypes = {
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
+  CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
@@ -430,6 +452,7 @@ export type ResolversTypes = {
   Session: ResolverTypeWrapper<Session>;
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
   SignInInput: SignInInput;
+  StreamKey: ResolverTypeWrapper<StreamKey>;
   TestResponse: ResolverTypeWrapper<TestResponse>;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -458,6 +481,7 @@ export type ResolversParentTypes = {
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
+  CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
   DateTime: Scalars['DateTime'];
   InfoResponse: InfoResponse;
@@ -468,6 +492,7 @@ export type ResolversParentTypes = {
   Session: Session;
   SessionResponse: SessionResponse;
   SignInInput: SignInInput;
+  StreamKey: StreamKey;
   TestResponse: TestResponse;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -487,6 +512,7 @@ export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Arg
 
 export type AccessRightsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessRights'] = ResolversParentTypes['AccessRights']> = {
   channels?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
+  streamKeys?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   users?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   activities?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -542,6 +568,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationCreateRoleArgs, never>>;
   updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, never>>;
   deleteRole?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoleArgs, 'id'>>;
+  createStreamKey?: Resolver<ResolversTypes['StreamKey'], ParentType, ContextType, RequireFields<MutationCreateStreamKeyArgs, never>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, never>>;
 };
@@ -555,6 +582,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType, RequireFields<QueryChannelsArgs, never>>;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<QueryRoleArgs, 'id'>>;
   roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType, RequireFields<QueryRolesArgs, never>>;
+  streamKeys?: Resolver<Array<Maybe<ResolversTypes['StreamKey']>>, ParentType, ContextType>;
+  selfStreamKeys?: Resolver<Array<Maybe<ResolversTypes['StreamKey']>>, ParentType, ContextType>;
   users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   self?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -578,6 +607,13 @@ export type SessionResolvers<ContextType = any, ParentType extends ResolversPare
 export type SessionResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SessionResponse'] = ResolversParentTypes['SessionResponse']> = {
   token?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   expiresAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StreamKeyResolvers<ContextType = any, ParentType extends ResolversParentTypes['StreamKey'] = ResolversParentTypes['StreamKey']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  channel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -628,6 +664,7 @@ export type Resolvers<ContextType = any> = {
   Role?: RoleResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
   SessionResponse?: SessionResponseResolvers<ContextType>;
+  StreamKey?: StreamKeyResolvers<ContextType>;
   TestResponse?: TestResponseResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;

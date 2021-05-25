@@ -8,7 +8,7 @@ import {
 import { head } from "ramda";
 import { NotFoundError, ServerError } from "miracle-tv/graphql/errors/general";
 
-type ChanelsFilter = Partial<Record<keyof Channel, any>>;
+type ChanelsFilter = object;
 
 export class ChanelsModel extends Model {
   table = db.table("channels");

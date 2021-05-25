@@ -1,0 +1,19 @@
+type StreamKey {
+  id: ID!
+  user: User!
+  channel: Channel!
+}
+
+extend type Query {
+  streamKeys: [StreamKey]!
+  selfStreamKeys: [StreamKey]!
+}
+
+input CreateStreamKeyInput {
+  userId: ID!
+  channelId: ID!
+}
+
+extend type Mutation {
+  createStreamKey(input: CreateStreamKeyInput): StreamKey!
+}

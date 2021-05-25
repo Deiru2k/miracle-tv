@@ -19,7 +19,8 @@ export const updateChannelMutation: MutationResolvers<ResolverContext>["updateCh
   async (_, { input }, { user, userRoles, db: { channels } }) => {
     const channel = await channels.getChannelById(input.id);
     const channelRights =
-      user?.id === ((channel as any).userId as string) ||
+      (user?.id === ((channel as any).userId as string) &&
+        checkRight(userRoles, AccessUnit.Self, "channels")) ||
       checkRight(userRoles, AccessUnit.Write, "channels");
     if (!user) {
       throw new AuthenticationError();
