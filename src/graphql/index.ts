@@ -49,7 +49,10 @@ import {
   streamKeysQueryResolver,
   streamKeysResolver,
 } from "./resolvers/stream-keys";
-import { createStreamKeyMutation } from "./mutations/stream-keys";
+import {
+  createStreamKeyMutation,
+  revokeStreamKeyMutation,
+} from "./mutations/stream-keys";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -93,6 +96,7 @@ const resolvers: Resolvers<ResolverContext> = {
     createActivity: createActivityMutaiton,
     updateActivity: updateActivityMutation,
     createStreamKey: createStreamKeyMutation,
+    revokeStreamKey: revokeStreamKeyMutation,
   },
   User: userResolver,
   Channel: channelResolver,

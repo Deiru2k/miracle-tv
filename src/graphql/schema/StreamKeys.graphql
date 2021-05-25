@@ -16,4 +16,5 @@ input CreateStreamKeyInput {
 
 extend type Mutation {
   createStreamKey(input: CreateStreamKeyInput): StreamKey!
+  revokeStreamKey(input: CreateStreamKeyInput): Boolean!
 }

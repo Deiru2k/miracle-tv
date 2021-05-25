@@ -148,6 +148,7 @@ export type Mutation = {
   updateRole: Role;
   deleteRole: Scalars['Boolean'];
   createStreamKey: StreamKey;
+  revokeStreamKey: Scalars['Boolean'];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
 };
@@ -189,6 +190,11 @@ export type MutationDeleteRoleArgs = {
 
 
 export type MutationCreateStreamKeyArgs = {
+  input?: Maybe<CreateStreamKeyInput>;
+};
+
+
+export type MutationRevokeStreamKeyArgs = {
   input?: Maybe<CreateStreamKeyInput>;
 };
 
@@ -569,6 +575,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, never>>;
   deleteRole?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoleArgs, 'id'>>;
   createStreamKey?: Resolver<ResolversTypes['StreamKey'], ParentType, ContextType, RequireFields<MutationCreateStreamKeyArgs, never>>;
+  revokeStreamKey?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeStreamKeyArgs, never>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, never>>;
 };

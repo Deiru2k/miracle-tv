@@ -27,3 +27,19 @@ export const createStreamKeyMutation: MutationResolvers<ResolverContext>["create
     }
     throw new AuthorizationError();
   };
+
+export const revokeStreamKeyMutation: MutationResolvers<ResolverContext>["revokeStreamKey"] =
+  async (
+    _,
+    { input: { userId, channelId } },
+    { user, userRoles, db: { streamKeys } }
+  ) => {
+    const isWrite = checkRight(userRoles, AccessUnit.Write, "streamKeys");
+    const isSelf = checkRight(userRoles, AccessUnit.Self, "streamKeys");
+    if (isWrite || isSelf) {
+      if (!isWrite && userId !== user.id) {
+        throw new AuthorizationError();
+      }
+      return await streamKeys.deleteStreamKeysByPair(userId, channelId);
+    }
+  };
