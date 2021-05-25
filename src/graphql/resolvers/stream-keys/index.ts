@@ -20,7 +20,11 @@ export const streamKeysQueryResolver: QueryResolvers<ResolverContext>["streamKey
 
 export const selfStreamKeysQueryResolver: QueryResolvers<ResolverContext>["selfStreamKeys"] =
   async (_, _args, { user, userRoles, db: { streamKeys } }) => {
-    if (checkRight(userRoles, AccessUnit.Self, "streamKeys")) {
+    if (
+      checkRight(userRoles, AccessUnit.Self, "streamKeys") ||
+      checkRight(userRoles, AccessUnit.Write, "streamKeys") ||
+      checkRight(userRoles, AccessUnit.Read, "streamKeys")
+    ) {
       return streamKeys.getStreamKeys({ userId: user.id });
     }
     throw new AuthorizationError();

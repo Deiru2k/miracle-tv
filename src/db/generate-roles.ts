@@ -63,7 +63,7 @@ const defaultUserRole: Role = {
     rights: {
       streamKeys: AccessUnit.Self,
       channels: AccessUnit.Self,
-      users: AccessUnit.Read,
+      users: AccessUnit.Self,
       activities: AccessUnit.Read,
     },
     actions: {
