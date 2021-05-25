@@ -72,4 +72,7 @@ sudo wget https://code.gensokyo.social/Gensokyo.social/miracle-tv/raw/branch/dev
 ```
 
 
+* (Optionally) proxy pass `http://localhost:4000` via web server of your choice. GraphQL Playground will be available at `${yourdomain}/graphql`.
+
+
 `nixos-rebuild switch` should download and compile everything. Look for full list of options inside the module file.
