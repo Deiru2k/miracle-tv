@@ -5,8 +5,8 @@ let
   cfg = config.services.miracle-tv;
   miracleSrc = pkgs.fetchgit {
     url = "https://code.gensokyo.social/Gensokyo.social/miracle-tv.git";
-    rev = "f343cf9c777eeb4a0b6f7d8d0e61c02ea03dfa8d";
-    sha256 = "033jyh206xaml3yfb3p3wlr9wwvmxlna3xl6mia019l539zn8i6i";
+    rev = "6377e85225ae8e9c9b4e3fcfb808b3244f83f144";
+    sha256 = "0cx36likn6kh3bclm76wz6c0kxihxq8afm8hphrfnq2nacr0vsvf";
   };
   miracle-tv = (import "${miracleSrc}/default.nix");
 in {

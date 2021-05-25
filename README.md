@@ -41,8 +41,36 @@ Before commiting, if you have altered packages installed for the project, please
 If you don't use nix, please reach out to somebody who can do that for you.
 
 
-# Deploying with nix
-## I like to live safely
-``` nix
+# Deploying in Production with nix
+## ! Software is definetely not production ready, deploy at your own risk !
+Download one of our [module-releases](module_releases/) files and import it in your configuration.nix, and then configure it like so
+
+``` sh
+sudo wget https://code.gensokyo.social/Gensokyo.social/miracle-tv/raw/branch/develop/module-releases/0-1-0.nix -P /etc/nixos/miracle-module.nix
 ```
 
+``` nix
+# configuration.nix
+{
+    imports = [
+        # ... your other imports
+        ./miracle-module.nix
+    ];
+    
+    # ... your configration.nix
+    
+    services.miracle-tv = {
+        enable = true;
+        settings = {
+            name = "My MiracleTV instance";
+            server = { 
+                port = "8080";
+            };
+        };
+    };
+}
+```
+
+
+`nixos-rebuild switch` Should download and compile everything
+Look for full list of options inside the module file
