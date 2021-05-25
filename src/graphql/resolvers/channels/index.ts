@@ -17,7 +17,11 @@ export const channelQueryResolver: QueryResolvers<ResolverContext>["channel"] =
 
 export const channelResolver: ChannelResolvers<ResolverContext> = {
   activity: async (channel, _, { db: { activities } }) => {
-    return await activities.getActivityById((channel as any).activityId);
+    const activityId: string | null = (channel as any).activityId;
+    if (activityId) {
+      return await activities.getActivityById(activityId);
+    }
+    return null;
   },
   user: async (channel, _, { db: { users } }) => {
     return await users.getUserByIdSafe((channel as any).userId);

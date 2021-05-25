@@ -2,7 +2,7 @@ import { ApolloError } from "apollo-server-errors";
 
 export class InputErrorLogin extends ApolloError {
   constructor() {
-    super("User was not found or wrong password provided");
+    super("User was not found or wrong password provided", "E_LOGIN");
 
     Object.defineProperty(this, "code", { value: "E_LOGIN" });
   }

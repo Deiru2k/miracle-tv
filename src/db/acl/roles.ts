@@ -1,14 +1,15 @@
 import { AccessUnit, Role } from "miracle-tv/types/graphql";
-import { pathOr, pick } from "ramda";
+import { curry, pathOr, pick } from "ramda";
+import { any, lensPath, view } from "ramda";
 
 type RowMap = Record<string, Role>;
 
 const fetchAccess = (
   roles: RowMap,
   targetRole: keyof RowMap,
-  target: keyof Role["access"]
+  target: keyof Role["access"]["rights"]
 ): AccessUnit => {
-  const currentAccessPath = [targetRole, "access", target];
+  const currentAccessPath = [targetRole, "access", "rights", target];
   const currentParentPath = [targetRole, "parentId"];
   const access: AccessUnit = pathOr(
     AccessUnit.Inherit,
@@ -51,9 +52,11 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
     id: target,
     name: rolesById[target].name,
     access: {
-      channels: fetchAccess(rolesById, target, "channels"),
-      users: fetchAccess(rolesById, target, "users"),
-      activities: fetchAccess(rolesById, target, "activities"),
+      rights: {
+        channels: fetchAccess(rolesById, target, "channels"),
+        users: fetchAccess(rolesById, target, "users"),
+        activities: fetchAccess(rolesById, target, "activities"),
+      },
       actions: {
         user: {
           ban: fetchActions(rolesById, target, ["user", "ban"]),
@@ -65,4 +68,16 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
   };
 
   return endRole;
+};
+
+export const checkRight = (
+  roles: Role[],
+  unit: AccessUnit,
+  subject: string
+) => {
+  const channelEditRightsLens = lensPath(["access", "rights", subject]);
+  return any(
+    (right: AccessUnit) => right === unit,
+    roles.map(view(channelEditRightsLens))
+  );
 };

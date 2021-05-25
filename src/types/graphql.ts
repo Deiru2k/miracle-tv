@@ -17,11 +17,16 @@ export type Scalars = {
 };
 
 
-export type AccessTargets = {
-  __typename?: 'AccessTargets';
+export type AccessRights = {
+  __typename?: 'AccessRights';
   channels?: Maybe<AccessUnit>;
   users?: Maybe<AccessUnit>;
   activities?: Maybe<AccessUnit>;
+};
+
+export type AccessTargets = {
+  __typename?: 'AccessTargets';
+  rights: AccessRights;
   actions: Actions;
 };
 
@@ -121,6 +126,7 @@ export type CreateUserInput = {
 
 export type InfoResponse = {
   __typename?: 'InfoResponse';
+  name: Scalars['String'];
   version: Scalars['String'];
   packageName: Scalars['String'];
 };
@@ -398,6 +404,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AccessRights: ResolverTypeWrapper<AccessRights>;
   AccessTargets: ResolverTypeWrapper<AccessTargets>;
   AccessTargetsInput: AccessTargetsInput;
   AccessUnit: AccessUnit;
@@ -437,6 +444,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AccessRights: AccessRights;
   AccessTargets: AccessTargets;
   AccessTargetsInput: AccessTargetsInput;
   Actions: Actions;
@@ -477,10 +485,15 @@ export type CacheControlDirectiveArgs = {   maxAge?: Maybe<Scalars['Int']>;
 
 export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AccessTargetsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessTargets'] = ResolversParentTypes['AccessTargets']> = {
+export type AccessRightsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessRights'] = ResolversParentTypes['AccessRights']> = {
   channels?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   users?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   activities?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AccessTargetsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessTargets'] = ResolversParentTypes['AccessTargets']> = {
+  rights?: Resolver<ResolversTypes['AccessRights'], ParentType, ContextType>;
   actions?: Resolver<ResolversTypes['Actions'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -514,6 +527,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 }
 
 export type InfoResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['InfoResponse'] = ResolversParentTypes['InfoResponse']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   packageName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -602,6 +616,7 @@ export type UserSettingsResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type Resolvers<ContextType = any> = {
+  AccessRights?: AccessRightsResolvers<ContextType>;
   AccessTargets?: AccessTargetsResolvers<ContextType>;
   Actions?: ActionsResolvers<ContextType>;
   Activity?: ActivityResolvers<ContextType>;

@@ -12,7 +12,10 @@ export const createActivityMutaiton: MutationResolvers<ResolverContext>["createA
       throw new AuthenticationError();
     }
     if (
-      !any((role) => role.access.activities === AccessUnit.Write, userRoles)
+      !any(
+        (role) => role.access.rights.activities === AccessUnit.Write,
+        userRoles
+      )
     ) {
       throw new AuthorizationError();
     }
@@ -25,7 +28,10 @@ export const updateActivityMutation: MutationResolvers<ResolverContext>["updateA
       throw new AuthenticationError();
     }
     if (
-      !any((role) => role.access.activities === AccessUnit.Write, userRoles)
+      !any(
+        (role) => role.access.rights.activities === AccessUnit.Write,
+        userRoles
+      )
     ) {
       throw new AuthorizationError();
     }

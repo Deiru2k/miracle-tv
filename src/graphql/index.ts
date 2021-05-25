@@ -42,6 +42,7 @@ import {
 import { RolesModel } from "miracle-tv/db/models/Roles";
 import { getCompleteRights } from "miracle-tv/db/acl/roles";
 import { roleResolvers } from "./resolvers/roles";
+import config from "miracle-tv/config";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -58,6 +59,7 @@ export const schema = gql`
 const resolvers: Resolvers<ResolverContext> = {
   Query: {
     info: () => ({
+      name: config.name || "MiracleTV",
       version: process.env.npm_package_version || "none",
       packageName: process.env.npm_package_name || "none",
     }),
@@ -91,6 +93,8 @@ const resolvers: Resolvers<ResolverContext> = {
 export const graphqlEndpoint = new ApolloServer({
   typeDefs: schema,
   resolvers,
+  introspection: true,
+  playground: true,
   context: async ({ req }) => {
     const con = await connection;
     const db = {

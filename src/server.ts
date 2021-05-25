@@ -1,13 +1,35 @@
-import Express from 'express';
-import { graphqlEndpoint } from 'miracle-tv/graphql';
-import 'miracle-tv/db/setup-db';
+import Express from "express";
+import { graphqlEndpoint } from "miracle-tv/graphql";
+import { setupDB } from "miracle-tv/db/setup-db";
+import config from "./config";
 
 const app = Express();
 
-app.get('/', (_, res) => res.send('FUCK!'));
+app.get("/", (_, res) => res.send("FUCK!"));
 
-graphqlEndpoint.applyMiddleware({ app })
+graphqlEndpoint.applyMiddleware({ app });
 
-app.listen(4000, () => {
-  console.info('Server started on localhost:4000');
-})
+const main = async () => {
+  await setupDB();
+  app.listen(
+    config.server?.port || 4000,
+    config.server?.hostname || "0.0.0.0",
+    () => {
+      console.info(
+        "\x1b[32m",
+        `Server started on ${config.server?.hostname || "0.0.0.0"}:${
+          config.server?.port || 4000
+        }`,
+        "\x1b[0m"
+      );
+      console.info(
+        "",
+        `Playground: http://${config.domain || "localhost"}:${
+          config.server?.port || 4000
+        }/graphql`
+      );
+    }
+  );
+};
+
+main();

@@ -4,6 +4,8 @@ yarn-error.log
 src/**/*.js
 dev.sqlite3
 result/
+.log/
+.vscode/
 
 miracle-tv.*.zip
 result/

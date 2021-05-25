@@ -16,10 +16,14 @@ type Actions {
   user: UserActions
 }
 
-type AccessTargets {
+type AccessRights {
   channels: AccessUnit
   users: AccessUnit
   activities: AccessUnit
+}
+
+type AccessTargets {
+  rights: AccessRights!
   actions: Actions!
 }
 

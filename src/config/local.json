@@ -1,4 +1,5 @@
 {
+    "name": "Miracle TV Test",
     "database": {
         "host": "localhost",
         "port": 28015,

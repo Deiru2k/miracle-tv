@@ -1,16 +1,18 @@
 import * as rdb from "rethinkdb";
 
-import config from "miracle-tv/config/local.json";
+import config from "miracle-tv/config";
 
-import { AccessUnit, CreateRoleInput, Role } from "miracle-tv/types/graphql";
+import { AccessUnit, Role } from "miracle-tv/types/graphql";
 
 const defaultAdminRole: Role = {
   id: "admin",
   name: "Admin",
-  parentId: "user",
+  parentId: "moderator",
   access: {
-    channels: AccessUnit.Write,
-    users: AccessUnit.Write,
+    rights: {
+      channels: AccessUnit.Write,
+      users: AccessUnit.Write,
+    },
     actions: {
       user: {
         silence: true,
@@ -26,7 +28,9 @@ const defaultModeratorRole: Role = {
   name: "Moderator",
   parentId: "user",
   access: {
-    activities: AccessUnit.Write,
+    rights: {
+      activities: AccessUnit.Write,
+    },
     actions: {
       user: {
         silence: true,
@@ -42,6 +46,7 @@ const defaultVolounteerRole: Role = {
   name: "Volounteer",
   parentId: "user",
   access: {
+    rights: {},
     actions: {
       user: {
         warn: true,
@@ -54,9 +59,11 @@ const defaultUserRole: Role = {
   id: "user",
   name: "user",
   access: {
-    channels: AccessUnit.Self,
-    users: AccessUnit.Read,
-    activities: AccessUnit.Read,
+    rights: {
+      channels: AccessUnit.Self,
+      users: AccessUnit.Read,
+      activities: AccessUnit.Read,
+    },
     actions: {
       user: {
         silence: false,
@@ -67,19 +74,29 @@ const defaultUserRole: Role = {
   },
 };
 
-export const connection = rdb
-  .connect({ host: "localhost", port: 28015 })
-  .then(async (conn) => {
-    const table = rdb.db(config.database.db).table("roles");
-    const roles = await table.getAll().coerceTo("array").run(conn);
-    if (roles.length === 0) {
-      const result = await table
-        .insert([
-          defaultUserRole,
-          defaultVolounteerRole,
-          defaultModeratorRole,
-          defaultAdminRole,
-        ])
-        .run(conn);
-    }
-  });
+const defaultRoles = [
+  defaultUserRole,
+  defaultVolounteerRole,
+  defaultModeratorRole,
+  defaultAdminRole,
+];
+
+export const generateRoles = async () => {
+  const conn = await rdb.connect({ host: "localhost", port: 28015 });
+  const table = rdb.db(config.database?.db || "miracle-tv").table("roles");
+  const roles = await table.filter({}).coerceTo("array").run(conn);
+  const roleIds = roles.map((role) => role.id);
+  return await Promise.all(
+    defaultRoles.map(async (dr) => {
+      if (!roleIds.includes(dr.id)) {
+        const res = await table.insert(dr).run(conn);
+        if (res.errors > 0) {
+          console.info(`Error with ${dr.id}`, res.first_error);
+        } else {
+          console.info(`${dr.id} Ok!`);
+        }
+        return res;
+      }
+    })
+  );
+};

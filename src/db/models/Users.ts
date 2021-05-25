@@ -7,6 +7,7 @@ import {
   EmailExistsError,
   UserExistsError,
 } from "miracle-tv/graphql/errors/users";
+import { NotFoundError } from "miracle-tv/graphql/errors/general";
 
 type UsersFilter = Partial<Record<keyof DbUser, any>>;
 
@@ -41,7 +42,11 @@ export class UsersModel extends Model {
   }
 
   async getUserByIdSafe(id: string): Promise<User> {
-    return await this.getUserById(id).then(this.sanitizeUser);
+    const user = await this.getUserById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    return this.sanitizeUser(user);
   }
 
   async getUsers(filter: UsersFilter = {}): Promise<DbUser[]> {

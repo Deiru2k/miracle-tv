@@ -5,7 +5,10 @@
   "repository": "https://code.gensokyo.social/Gensokyo.social/miracle-tv",
   "license": "MIT",
   "scripts": {
-    "server": "ts-node -r $node_modules/tsconfig-paths/register src/server.ts",
+    "daemon:start": "NODE_ENV=production name=miracle-tv pm2 start yarn --name miracle-tv -- server",
+    "daemon:stop": "pm2 delete miracle-tv",
+    "daemon:restart": "name=miracle-tv pm2 restart miracle-tv --update-env",
+    "server": "NODE_ENV=production ts-node -r tsconfig-paths/register src/server.ts",
     "codegen": "graphql-codegen --config codegen.yml",
     "dev": "nodemon -e ts,tsx,graphql --exec \"yarn run server\""
   },
@@ -19,8 +22,11 @@
     "graphql": "^15.5.0",
     "luxon": "^1.27.0",
     "md5": "^2.3.0",
+    "module-alias": "^2.2.2",
+    "pm2": "^4.5.6",
     "ramda": "^0.27.1",
-    "rethinkdb": "^2.4.2"
+    "rethinkdb": "^2.4.2",
+    "tsconfig-paths": "^3.9.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.21.4",
@@ -33,6 +39,7 @@
     "@types/glob": "^7.1.3",
     "@types/luxon": "^1.26.5",
     "@types/md5": "^2.3.0",
+    "@types/module-alias": "^2.0.0",
     "@types/ramda": "^0.27.40",
     "@types/rethinkdb": "^2.3.16",
     "file-loader": "^6.2.0",
@@ -41,7 +48,6 @@
     "prettier": "^2.3.0",
     "ts-loader": "^9.2.1",
     "ts-node": "^9.1.1",
-    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.4",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0"
