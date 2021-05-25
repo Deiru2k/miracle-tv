@@ -3,6 +3,10 @@
 
 Server part of MiracleTV Suite
 
+
+[![Discord](https://img.shields.io/discord/836657856325353492?style=for-the-badge)](https://discord.gg/vpEv3HJ)
+
+
 ## Running requirements
 - NodeJS 14>
 - Yarn
