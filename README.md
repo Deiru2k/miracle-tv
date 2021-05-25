@@ -39,3 +39,10 @@ GraphiQL for testing is available over at `http://localhost:4000/graphql` for te
 ### Before commit
 Before commiting, if you have altered packages installed for the project, please regenerate `nix/yarn.nix` using `yarn2nix` and copy `package.json` and `yarn.lock` to `/nix` folder as well. This is to make sure changes to the code and not the dependecies do not trigger extra rebuilds.
 If you don't use nix, please reach out to somebody who can do that for you.
+
+
+# Deploying with nix
+## I like to live safely
+``` nix
+```
+

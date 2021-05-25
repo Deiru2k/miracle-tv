@@ -15,7 +15,7 @@ in mkYarnPackage rec {
   yarnNix = "${src}/yarn.nix";
 
   configurePhase = ''
-    true
+    ln -s $node_modules node_modules/
   '';
 
   buildPhase = ''
