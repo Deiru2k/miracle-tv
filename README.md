@@ -4,7 +4,7 @@
 Server part of MiracleTV Suite
 
 
-[![Discord](https://img.shields.io/discord/836657856325353492?style=for-the-badge)](https://discord.gg/vpEv3HJ)
+[![Discord](https://img.shields.io/discord/836657856325353492.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://gensokyo.social/discord)
 
 
 ## Running requirements
