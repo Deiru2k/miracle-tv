@@ -15,7 +15,7 @@ in mkYarnPackage rec {
   yarnNix = "${src}/yarn.nix";
 
   configurePhase = ''
-    ln -s $node_modules node_modules/
+    ln -s $node_modules ./node_modules
   '';
 
   buildPhase = ''
@@ -25,21 +25,32 @@ in mkYarnPackage rec {
   installPhase = ''
     mkdir $out
     mkdir -p $out/node_modules
-    cp -r ./* $out
-    cp tsconfig.json $out/tsconfig.json
     cp -r $node_modules/* $out/node_modules
+    cp -r src $out/src
+    mkdir -p $out/graphql/schema
+    cp -r src/graphql/schema/* $out/graphql/schema
+    cp tsconfig.json $out/tsconfig.json
+    cp package.json $out/package.json
     makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name} \
       --add-flags "--cwd $out" \
-      --add-flags server
+      --add-flags server \
+      --set node_modules $node_modules \
+      --set NODE_PATH $NODE_PATH:$node_modules
     makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-start \
       --add-flags "--cwd $out" \
-      --add-flags daemon:start
+      --add-flags daemon:start \
+      --set node_modules $node_modules \
+      --set NODE_PATH $NODE_PATH:$node_modules
     makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-stop \
       --add-flags "--cwd $out" \
-      --add-flags daemon:stop
+      --add-flags daemon:stop \
+      --set node_modules $node_modules \
+      --set NODE_PATH $NODE_PATH:$node_modules
     makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-restart \
       --add-flags "--cwd $out" \
-      --add-flags daemon:restart
+      --add-flags daemon:restart \
+      --set node_modules $node_modules \
+      --set NODE_PATH $NODE_PATH:$node_modules
   '';
 
   distPhase = ''

@@ -11,8 +11,6 @@
        "sourceMap": false,
        "outDir": "./dist",
        "baseUrl": ".",
-       "types": [],
-       "typeRoots" : ["./node_modules", "./node_modules/@types"],
        "paths": {
            "miracle-tv/*": [ "src/*" ]
        }
