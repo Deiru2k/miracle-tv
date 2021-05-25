@@ -4,8 +4,7 @@
 Server part of MiracleTV Suite
 
 
-[![Discord](https://img.shields.io/discord/836657856325353492.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://gensokyo.social/discord)
-
+[![Support Server](https://img.shields.io/discord/836657856325353492.svg?logo=Discord&label=Gensokyo.social&colorB=7289da&style=for-the-badge)](https://gensokyo.social/discord)
 
 ## Running requirements
 - NodeJS 14>
