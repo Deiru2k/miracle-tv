@@ -1,6 +1,6 @@
 {
   "name": "miracle-tv",
-  "version": "0.1.0",
+  "version": "0.1.0.3",
   "main": "server.js",
   "repository": "https://code.gensokyo.social/Gensokyo.social/miracle-tv",
   "license": "MIT",
