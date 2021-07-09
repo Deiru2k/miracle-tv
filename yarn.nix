@@ -1282,6 +1282,14 @@
       };
     }
     {
+      name = "_vercel_ncc___ncc_0.28.6.tgz";
+      path = fetchurl {
+        name = "_vercel_ncc___ncc_0.28.6.tgz";
+        url  = "https://registry.yarnpkg.com/@vercel/ncc/-/ncc-0.28.6.tgz";
+        sha1 = "073c0ce8e0269210c0a9f180fb0bf949eecc20e0";
+      };
+    }
+    {
       name = "_webassemblyjs_ast___ast_1.11.0.tgz";
       path = fetchurl {
         name = "_webassemblyjs_ast___ast_1.11.0.tgz";

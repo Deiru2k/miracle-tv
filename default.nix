@@ -12,43 +12,21 @@ in mkYarnPackage rec {
   doDist = false;
   packageJSON = "${src}/package.json";
   yarnLock = "${src}/yarn.lock";
-  yarnNix = "${src}/yarn.nix";
 
   configurePhase = ''
     ln -s $node_modules ./node_modules
   '';
 
   buildPhase = ''
-    $node_modules/.bin/tsc -p .
+    NODE_ENV=production $node_modules/.bin/ncc build src/server.ts -o ./dist/server
   '';
 
   installPhase = ''
-    mkdir $out
-    mkdir -p $out/node_modules
-    cp -r $node_modules/* $out/node_modules
-    cp -r src $out/src
-    mkdir -p $out/graphql/schema
-    cp -r src/graphql/schema/* $out/graphql/schema
-    cp tsconfig.json $out/tsconfig.json
-    cp package.json $out/package.json
-    makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name} \
-      --add-flags "--cwd $out" \
-      --add-flags server \
-      --set node_modules $node_modules \
-      --set NODE_PATH $NODE_PATH:$node_modules
-    makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-start \
-      --add-flags "--cwd $out" \
-      --add-flags daemon:start \
-      --set node_modules $node_modules \
-      --set NODE_PATH $NODE_PATH:$node_modules
-    makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-stop \
-      --add-flags "--cwd $out" \
-      --add-flags daemon:stop \
-      --set node_modules $node_modules \
-      --set NODE_PATH $NODE_PATH:$node_modules
-    makeWrapper ${yarnPkg}/bin/yarn $out/bin/${name}-restart \
-      --add-flags "--cwd $out" \
-      --add-flags daemon:restart \
+    mkdir -p $out/server/graphql
+    cp -R ./dist/server/* $out/server/
+    cp -R src/graphql/schema/* $out/server/graphql/
+    makeWrapper ${nodePkg}/bin/node $out/bin/${name} \
+      --add-flags "$out/server/index.js" \
       --set node_modules $node_modules \
       --set NODE_PATH $NODE_PATH:$node_modules
   '';

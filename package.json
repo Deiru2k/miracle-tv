@@ -42,6 +42,7 @@
     "@types/module-alias": "^2.0.0",
     "@types/ramda": "^0.27.40",
     "@types/rethinkdb": "^2.3.16",
+    "@vercel/ncc": "^0.28.6",
     "file-loader": "^6.2.0",
     "json-loader": "^0.5.7",
     "nodemon": "^2.0.7",
