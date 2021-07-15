@@ -1,11 +1,19 @@
 overwrite: true
-schema: "http://localhost:4000/graphql"
-documents: null
+schema: "${API_URL}/graphql"
+documents:
+  - 'src/**/*.{ts,tsx,graphql}'
 generates:
-  src/types/graphql.ts:
+  src/shared/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-resolvers"
+      - "typescript-operations"
   ./graphql.schema.json:
     plugins:
       - "introspection"
+  src/shared/hooks.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: 'shared/graphql'
+    plugins:
+      - typescript-react-apollo

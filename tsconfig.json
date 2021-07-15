@@ -1,21 +1,43 @@
 {
-   "compilerOptions": {
-       "target": "es2019",
-       "module": "commonjs",
-       "skipLibCheck": true,
-       "lib": ["es5", "es6", "es2020"],
-       "esModuleInterop": true,
-       "noImplicitAny": true,
-       "moduleResolution": "node",
-       "resolveJsonModule": true,
-       "sourceMap": false,
-       "outDir": "./dist",
-       "baseUrl": ".",
-       "paths": {
-           "miracle-tv/*": [ "src/*" ]
-       }
-   },
-   "include": [
-       "./src/**/*"
-   ]
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "lib": [
+      "es5",
+      "es6",
+      "es2020",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "paths": {
+      "miracle-tv-server/*": [
+        "src/server/*"
+      ],
+      "miracle-tv-shared/*": [
+        "src/shared/*"
+      ],
+      "miracle-tv-client/*": [
+        "src/client/*"
+      ]
+    },
+    "allowJs": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
