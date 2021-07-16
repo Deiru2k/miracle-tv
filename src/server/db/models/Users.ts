@@ -1,13 +1,20 @@
 import db from "miracle-tv-server/db";
 import { DbUser } from "miracle-tv-server/db/types";
 import { Model } from "miracle-tv-server/db/models";
-import { CreateUserInput, User } from "miracle-tv-server/types/graphql";
+import {
+  CreateUserInput,
+  UpdateUserInput,
+  User,
+} from "miracle-tv-shared/graphql";
 import { head, map, omit } from "ramda";
 import {
   EmailExistsError,
   UserExistsError,
 } from "miracle-tv-server/graphql/errors/users";
-import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
+import {
+  NotFoundError,
+  ServerError,
+} from "miracle-tv-server/graphql/errors/general";
 
 type UsersFilter = Partial<Record<keyof DbUser, any>>;
 
@@ -31,9 +38,9 @@ export class UsersModel extends Model {
     return (await this.table
       .insert({ password: saltedPassword, ...input, singleUserMode: false })
       .run(this.conn)
-      .then((result) => {
+      .then(async (result) => {
         const key = head(result.generated_keys);
-        return this.table.get(key).run(this.conn).then(this.sanitizeUser);
+        return await this.table.get(key).run(this.conn).then(this.sanitizeUser);
       })) as User;
   }
 
@@ -58,5 +65,17 @@ export class UsersModel extends Model {
 
   async getUsersSafe(filter: UsersFilter = {}): Promise<User[]> {
     return (await this.getUsers(filter).then(map(this.sanitizeUser))) as User[];
+  }
+
+  async updateUser({ id, ...input }: UpdateUserInput): Promise<User> {
+    const user = await this.getUserById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    const { errors } = await this.table.get(id).update(input).run(this.conn);
+    if (errors) {
+      throw new ServerError("Error updating user");
+    }
+    return { id, ...user, ...input };
   }
 }

@@ -34,6 +34,9 @@
     "noEmit": true,
     "isolatedModules": true
   },
+  "types": [
+    "node"
+  ],
   "include": [
     "./src/**/*"
   ],

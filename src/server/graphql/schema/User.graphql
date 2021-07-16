@@ -42,7 +42,22 @@ input SignInInput {
   password: String!
 }
 
+input UpdateSelfInput {
+  displayName: String
+  bio: String
+  singleUserMode: Boolean
+}
+
+input UpdateUserInput {
+  id: ID
+  displayName: String
+  bio: String
+  singleUserMode: Boolean
+}
+
 extend type Mutation {
   signUp(input: CreateUserInput!): User!
-  signIn(input: SignInInput): SessionResponse
+  signIn(input: SignInInput!): SessionResponse
+  updateUser(input: UpdateUserInput!): User!
+  updateSelf(input: UpdateSelfInput!): User!
 }

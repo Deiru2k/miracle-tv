@@ -9,6 +9,7 @@ const tables: string[] = [
   "stream-keys",
   "channels",
   "roles",
+  "files",
 ];
 
 export const connection = rdb.connect({

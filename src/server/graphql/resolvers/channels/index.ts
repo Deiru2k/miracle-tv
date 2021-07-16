@@ -1,7 +1,4 @@
-import {
-  ChannelResolvers,
-  QueryResolvers,
-} from "miracle-tv-server/types/graphql";
+import { ChannelResolvers, QueryResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
 export const channelsQueryResolver: QueryResolvers<ResolverContext>["channels"] =

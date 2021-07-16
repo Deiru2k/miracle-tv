@@ -4,7 +4,7 @@ import {
   AccessUnit,
   QueryResolvers,
   StreamKeyResolvers,
-} from "miracle-tv-server/types/graphql";
+} from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
 export const streamKeysQueryResolver: QueryResolvers<ResolverContext>["streamKeys"] =

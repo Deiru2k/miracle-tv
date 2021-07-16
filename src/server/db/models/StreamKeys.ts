@@ -1,6 +1,6 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
-import { StreamKey } from "miracle-tv-server/types/graphql";
+import { StreamKey } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";
 

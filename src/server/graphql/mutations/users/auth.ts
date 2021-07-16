@@ -1,4 +1,4 @@
-import { MutationResolvers } from "miracle-tv-server/types/graphql";
+import { MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { head } from "ramda";
 import { InputErrorLogin } from "miracle-tv-server/graphql/errors/auth";

@@ -1,7 +1,4 @@
-import {
-  ActivityResolvers,
-  QueryResolvers,
-} from "miracle-tv-server/types/graphql";
+import { ActivityResolvers, QueryResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { propOr } from "ramda";
 

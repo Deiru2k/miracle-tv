@@ -5,7 +5,7 @@ import {
   Role,
   User,
   UserResolvers,
-} from "miracle-tv-server/types/graphql";
+} from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { pick } from "ramda";
 

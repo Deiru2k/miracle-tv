@@ -2,7 +2,7 @@ import {
   AuthenticationError,
   AuthorizationError,
 } from "miracle-tv-server/graphql/errors/auth";
-import { AccessUnit, MutationResolvers } from "miracle-tv-server/types/graphql";
+import { AccessUnit, MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { any } from "ramda";
 

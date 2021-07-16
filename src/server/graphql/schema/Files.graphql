@@ -1,0 +1,14 @@
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  id: ID
+}
+
+extend type Query {
+  fileInfo(id: String): File
+}
+
+extend type Mutation {
+  uploadFile(file: Upload!): File!
+}

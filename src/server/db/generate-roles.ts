@@ -2,7 +2,7 @@ import * as rdb from "rethinkdb";
 
 import config from "miracle-tv-server/config";
 
-import { AccessUnit, Role } from "miracle-tv-server/types/graphql";
+import { AccessUnit, Role } from "miracle-tv-shared/graphql";
 
 const defaultAdminRole: Role = {
   id: "admin",

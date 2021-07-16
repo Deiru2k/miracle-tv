@@ -1,0 +1,77 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Box } from "@chakra-ui/layout";
+import { css, Global } from "@emotion/react";
+import "vimond-replay/index.css";
+import ReactPlayer from "react-player";
+import { Flex } from "@chakra-ui/react";
+
+type PlayerKind = "preview" | "vod" | "live";
+
+export type PlaybackActions = {
+  play: () => void;
+  pause: () => void;
+  stop: (pos: number) => void;
+};
+
+type Props = {
+  src: string;
+  w?: string;
+  h?: string;
+  kind?: PlayerKind;
+  autoplay?: boolean;
+  mute?: boolean;
+  onPlaybackActionsReady?: (actions: PlaybackActions) => void;
+};
+
+export const Player = ({
+  src,
+  w = "100%",
+  h = "100%",
+  autoplay = false,
+  onPlaybackActionsReady,
+}: Props) => {
+  const playerRef = useRef<ReactPlayer>(null);
+
+  useEffect(() => {
+    if (playerRef.current !== null) {
+      const actions: PlaybackActions = {
+        play: () => playerRef.current?.getInternalPlayer()?.play(),
+        pause: () => playerRef.current?.getInternalPlayer()?.play(),
+        stop: () => {
+          playerRef.current?.getInternalPlayer()?.pause();
+          if (playerRef.current?.getInternalPlayer()) {
+            playerRef.current.getInternalPlayer().currentTime = 0;
+          }
+        },
+      };
+      onPlaybackActionsReady?.(actions);
+    }
+  }, [playerRef.current, onPlaybackActionsReady]);
+
+  return (
+    <>
+      <Global
+        styles={css`
+          .player-preview .replay-controls-bar {
+            display: none;
+          }
+        `}
+      />
+      <Flex w={w} h={h}>
+        <ReactPlayer
+          url={src}
+          width="100%"
+          height="100%"
+          ref={playerRef}
+          playing={autoplay}
+          volume={0}
+          config={{
+            file: {
+              attributes: { preload: "metadata" },
+            },
+          }}
+        />
+      </Flex>
+    </>
+  );
+};

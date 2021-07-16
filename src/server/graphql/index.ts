@@ -1,5 +1,12 @@
-import { Resolvers } from "miracle-tv-server/types/graphql";
+import { ApolloServer } from "apollo-server-express";
+import { gql } from "apollo-server";
+import { GraphQLUpload } from "graphql-upload";
+import glob from "glob";
+import path from "path";
+import { DateTime } from "luxon";
+import { Resolvers } from "miracle-tv-shared/graphql";
 import { connection } from "miracle-tv-server/db/setup-db";
+import { readFileSync } from "fs";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
   userQueryResolver,
@@ -8,32 +15,26 @@ import {
   userSelfQueryResolver,
   userTestQueryResolver,
 } from "miracle-tv-server/graphql/resolvers/users";
-import { signUpMutation } from "miracle-tv-server/graphql/mutations/users";
-import { ApolloServer } from "apollo-server-express";
-import { gql } from "apollo-server";
+import { userMutations } from "miracle-tv-server/graphql/mutations/users";
 import { signInMutation } from "miracle-tv-server/graphql/mutations/users/auth";
 import { DbSession, DbUser } from "miracle-tv-server/db/types";
-import { DateTime } from "luxon";
 import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
-import glob from "glob";
-import path from "path";
-import { readFileSync } from "fs";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
 import {
   channelQueryResolver,
   channelResolver,
   channelsQueryResolver,
-} from "./resolvers/channels";
+} from "miracle-tv-server/graphql/resolvers/channels";
 import {
   createChannelMutation,
   updateChannelMutation,
-} from "./mutations/channels";
+} from "miracle-tv-server/graphql/mutations/channels";
 import { ActivitiesModel } from "miracle-tv-server/db/models/Activities";
 import {
   createActivityMutaiton,
   updateActivityMutation,
-} from "./mutations/activities";
+} from "miracle-tv-server/graphql/mutations/activities";
 import {
   activitiesQueryResolver,
   activityQueryResolver,
@@ -53,6 +54,8 @@ import {
   createStreamKeyMutation,
   revokeStreamKeyMutation,
 } from "miracle-tv-server/graphql/mutations/stream-keys";
+import { fileMutations } from "./mutations/file";
+import { FilesModel } from "miracle-tv-server/db/models/Files";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -67,9 +70,10 @@ export const schema = gql`
 `;
 
 const resolvers: Resolvers<ResolverContext> = {
+  Upload: GraphQLUpload,
   Query: {
     info: () => ({
-      name: config.name || "MiracleTV",
+      name: `${config.name || "MiracleTV"}, ShmiracleTV`,
       version: process.env.npm_package_version || "none",
       packageName: process.env.npm_package_name || "none",
     }),
@@ -89,7 +93,8 @@ const resolvers: Resolvers<ResolverContext> = {
       args;
       return "pong";
     },
-    signUp: signUpMutation,
+    ...userMutations,
+    ...fileMutations,
     signIn: signInMutation,
     createChannel: createChannelMutation,
     updateChannel: updateChannelMutation,
@@ -106,10 +111,11 @@ const resolvers: Resolvers<ResolverContext> = {
 };
 
 export const graphqlEndpoint = new ApolloServer({
+  uploads: false,
   typeDefs: schema,
   resolvers,
-  introspection: true,
-  playground: true,
+  introspection: false,
+  playground: false,
   context: async ({ req }) => {
     const con = await connection;
     const db = {
@@ -119,6 +125,7 @@ export const graphqlEndpoint = new ApolloServer({
       activities: new ActivitiesModel(con),
       streamKeys: new StreamKeysModel(con),
       roles: new RolesModel(con),
+      files: new FilesModel(con),
     } as ResolverContext["db"];
     const session = (await db.sessions.getSessionById(
       req.headers.authorization || ""

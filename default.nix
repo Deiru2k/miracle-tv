@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
 
 let
-  version = "0.1.0.3";
+  version = "0.1.4";
   src = ./.;
   nodePkg = pkgs.nodejs-14_x;
   yarnPkg = pkgs.yarn.override { nodejs = nodePkg; };
@@ -13,7 +13,7 @@ in mkYarnPackage rec {
   packageJSON = "${src}/package.json";
   yarnLock = "${src}/yarn.lock";
 
-configurePhase = ''
+  configurePhase = ''
     rm -rf ./node_modules
     mkdir ./node_modules
     cp -R $node_modules/* ./node_modules

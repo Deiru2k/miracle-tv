@@ -14,6 +14,6 @@ generates:
   src/shared/hooks.ts:
     preset: import-types
     presetConfig:
-      typesPath: 'shared/graphql'
+      typesPath: 'miracle-tv-shared/graphql'
     plugins:
       - typescript-react-apollo

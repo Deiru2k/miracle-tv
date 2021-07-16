@@ -15,6 +15,7 @@ export type ServerConfig = {
 export type Config = {
   name?: string;
   domain?: string;
+  dataDir?: string;
   server?: ServerConfig;
   database?: DBConfig;
 };

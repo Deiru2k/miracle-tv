@@ -1,16 +1,20 @@
 import Express from "express";
 import { graphqlEndpoint } from "miracle-tv-server/graphql";
 import { setupDB } from "miracle-tv-server/db/setup-db";
-import config from "./config";
+import { graphqlUploadExpress } from "graphql-upload";
+import config from "miracle-tv-server/config";
 
-const app = Express();
+// app.get("/", (_, res) => res.send("FUCK!"));
+// app.use(graphqlUploadExpress());
 
-app.get("/", (_, res) => res.send("FUCK!"));
-
-graphqlEndpoint.applyMiddleware({ app });
+// graphqlEndpoint.applyMiddleware({ app });
 
 const main = async () => {
   await setupDB();
+  await graphqlEndpoint.start();
+  const app = Express();
+  app.use(graphqlUploadExpress());
+  graphqlEndpoint.applyMiddleware({ app });
   app.listen(
     config.server?.port || 4000,
     config.server?.hostname || "0.0.0.0",

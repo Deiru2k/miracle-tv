@@ -1,18 +1,28 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
+import { propOr } from "ramda";
 
-const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_API_URL
-    ? process.env.NEXT_PUBLIC_API_URL
-    : "http://localhost:4000/graphql",
+import theme from "miracle-tv-client/theme";
+import { Navbar } from "miracle-tv-client/components/system/Navbar";
+import React from "react";
+import { useRouter } from "next/dist/client/router";
+import { createUploadLink } from "apollo-upload-client";
+
+const env = process.env.NEXT_PUBLIC_ENV;
+
+const apiUrls: Record<string, string> = {
+  development: "https://dev.miracle-tv.live/api/graphql",
+  local: "http://localhost:4000/graphql",
+  production: "https://miracle-tv.live/api/graphql",
+} as const;
+
+const defaultURI: string = propOr(apiUrls.local, env, apiUrls);
+
+const uploadLink = createUploadLink({
+  uri: process.env.NEXT_PUBLIC_API_URL || defaultURI,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -29,10 +39,14 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
 });
 
+const noNavbarRoutes = ["/auth/login"];
+
 function MyApp({ Component, pageProps }: any) {
+  const router = useRouter();
+  const showNavbar = !noNavbarRoutes.includes(router.asPath);
   return (
     <>
       <Head>
@@ -52,8 +66,22 @@ function MyApp({ Component, pageProps }: any) {
         `}
       />
       <ApolloProvider client={client}>
-        <ChakraProvider>
-          <Component {...pageProps} />
+        <ChakraProvider theme={theme}>
+          <Flex h="100%" w="100%" direction="column">
+            {showNavbar && <Navbar />}
+            <Box
+              width="100%"
+              height="100%"
+              px={15}
+              py={5}
+              position="relative"
+              overflowY="auto"
+              color="white"
+              bgColor="secondary.600"
+            >
+              <Component {...pageProps} />
+            </Box>
+          </Flex>
         </ChakraProvider>
       </ApolloProvider>
     </>

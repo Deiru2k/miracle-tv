@@ -6,6 +6,7 @@ dev.sqlite3
 result/
 .log/
 .vscode/
+.media/
 
 miracle-tv.*.zip
 result/

@@ -1,7 +1,7 @@
 import db from "miracle-tv-server/db";
 import { DbUser } from "miracle-tv-server/db/types";
 import { Model } from "miracle-tv-server/db/models";
-import { Session, SessionResponse } from "miracle-tv-server/types/graphql";
+import { Session, SessionResponse } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { head } from "ramda";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";

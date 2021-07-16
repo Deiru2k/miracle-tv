@@ -130,6 +130,14 @@ export type CreateUserInput = {
 };
 
 
+export type File = {
+  __typename?: 'File';
+  filename: Scalars['String'];
+  mimetype: Scalars['String'];
+  encoding: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+};
+
 export type InfoResponse = {
   __typename?: 'InfoResponse';
   name: Scalars['String'];
@@ -144,6 +152,7 @@ export type Mutation = {
   updateActivity: Activity;
   createChannel: Channel;
   updateChannel: Channel;
+  uploadFile: File;
   createRole: Role;
   updateRole: Role;
   deleteRole: Scalars['Boolean'];
@@ -151,6 +160,8 @@ export type Mutation = {
   revokeStreamKey: Scalars['Boolean'];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
+  updateUser: User;
+  updateSelf: User;
 };
 
 
@@ -171,6 +182,11 @@ export type MutationCreateChannelArgs = {
 
 export type MutationUpdateChannelArgs = {
   input?: Maybe<UpdateChannelInput>;
+};
+
+
+export type MutationUploadFileArgs = {
+  file: Scalars['Upload'];
 };
 
 
@@ -205,7 +221,17 @@ export type MutationSignUpArgs = {
 
 
 export type MutationSignInArgs = {
-  input?: Maybe<SignInInput>;
+  input: SignInInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
+};
+
+
+export type MutationUpdateSelfArgs = {
+  input: UpdateSelfInput;
 };
 
 export type Query = {
@@ -216,6 +242,7 @@ export type Query = {
   activities: Array<Maybe<Activity>>;
   channel?: Maybe<Channel>;
   channels: Array<Maybe<Channel>>;
+  fileInfo?: Maybe<File>;
   role?: Maybe<Role>;
   roles: Array<Maybe<Role>>;
   streamKeys: Array<Maybe<StreamKey>>;
@@ -243,6 +270,11 @@ export type QueryChannelArgs = {
 
 export type QueryChannelsArgs = {
   filter?: Maybe<ChannelsQueryFilter>;
+};
+
+
+export type QueryFileInfoArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -319,6 +351,19 @@ export type UpdateRoleInput = {
   name?: Maybe<Scalars['String']>;
   access?: Maybe<AccessTargetsInput>;
   parentId?: Maybe<Scalars['ID']>;
+};
+
+export type UpdateSelfInput = {
+  displayName?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  singleUserMode?: Maybe<Scalars['Boolean']>;
+};
+
+export type UpdateUserInput = {
+  id?: Maybe<Scalars['ID']>;
+  displayName?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  singleUserMode?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -450,6 +495,7 @@ export type ResolversTypes = {
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  File: ResolverTypeWrapper<File>;
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -463,6 +509,8 @@ export type ResolversTypes = {
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
   UpdateRoleInput: UpdateRoleInput;
+  UpdateSelfInput: UpdateSelfInput;
+  UpdateUserInput: UpdateUserInput;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<User>;
   UserActions: ResolverTypeWrapper<UserActions>;
@@ -490,6 +538,7 @@ export type ResolversParentTypes = {
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
   DateTime: Scalars['DateTime'];
+  File: File;
   InfoResponse: InfoResponse;
   Mutation: {};
   Boolean: Scalars['Boolean'];
@@ -503,6 +552,8 @@ export type ResolversParentTypes = {
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
   UpdateRoleInput: UpdateRoleInput;
+  UpdateSelfInput: UpdateSelfInput;
+  UpdateUserInput: UpdateUserInput;
   Upload: Scalars['Upload'];
   User: User;
   UserActions: UserActions;
@@ -558,6 +609,14 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
+export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
+  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mimetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  encoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type InfoResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['InfoResponse'] = ResolversParentTypes['InfoResponse']> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -571,13 +630,16 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateActivity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType, RequireFields<MutationUpdateActivityArgs, never>>;
   createChannel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType, RequireFields<MutationCreateChannelArgs, never>>;
   updateChannel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType, RequireFields<MutationUpdateChannelArgs, never>>;
+  uploadFile?: Resolver<ResolversTypes['File'], ParentType, ContextType, RequireFields<MutationUploadFileArgs, 'file'>>;
   createRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationCreateRoleArgs, never>>;
   updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, never>>;
   deleteRole?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoleArgs, 'id'>>;
   createStreamKey?: Resolver<ResolversTypes['StreamKey'], ParentType, ContextType, RequireFields<MutationCreateStreamKeyArgs, never>>;
   revokeStreamKey?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeStreamKeyArgs, never>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
-  signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, never>>;
+  signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
+  updateSelf?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateSelfArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -587,6 +649,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   activities?: Resolver<Array<Maybe<ResolversTypes['Activity']>>, ParentType, ContextType, RequireFields<QueryActivitiesArgs, never>>;
   channel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, RequireFields<QueryChannelArgs, 'id'>>;
   channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType, RequireFields<QueryChannelsArgs, never>>;
+  fileInfo?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType, RequireFields<QueryFileInfoArgs, never>>;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<QueryRoleArgs, 'id'>>;
   roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType, RequireFields<QueryRolesArgs, never>>;
   streamKeys?: Resolver<Array<Maybe<ResolversTypes['StreamKey']>>, ParentType, ContextType>;
@@ -665,6 +728,7 @@ export type Resolvers<ContextType = any> = {
   Activity?: ActivityResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
+  File?: FileResolvers<ContextType>;
   InfoResponse?: InfoResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
@@ -695,6 +759,99 @@ export type DirectiveResolvers<ContextType = any> = {
  * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
  */
 export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
+export type CurrentUserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio' | 'singleUserMode'>
+  & { roles: Array<Maybe<(
+    { __typename?: 'Role' }
+    & Pick<Role, 'id' | 'parentId' | 'name'>
+    & { access: (
+      { __typename?: 'AccessTargets' }
+      & { rights: (
+        { __typename?: 'AccessRights' }
+        & Pick<AccessRights, 'channels' | 'streamKeys' | 'users' | 'activities'>
+      ), actions: (
+        { __typename?: 'Actions' }
+        & { user?: Maybe<(
+          { __typename?: 'UserActions' }
+          & Pick<UserActions, 'silence' | 'ban' | 'warn'>
+        )> }
+      ) }
+    ) }
+  )>>, channels: Array<Maybe<(
+    { __typename?: 'Channel' }
+    & Pick<Channel, 'id' | 'name' | 'slug' | 'description'>
+    & { activity?: Maybe<(
+      { __typename?: 'Activity' }
+      & Pick<Activity, 'id' | 'icon' | 'image' | 'name' | 'verb'>
+    )> }
+  )>> }
+);
+
+export type CurrentUserFullQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserFullQuery = (
+  { __typename?: 'Query' }
+  & { self: (
+    { __typename?: 'User' }
+    & CurrentUserFragment
+  ) }
+);
+
+export type SignInMutationVariables = Exact<{
+  input: SignInInput;
+}>;
+
+
+export type SignInMutation = (
+  { __typename?: 'Mutation' }
+  & { signIn?: Maybe<(
+    { __typename?: 'SessionResponse' }
+    & Pick<SessionResponse, 'token' | 'expiresAt'>
+  )> }
+);
+
+export type LoginSelfInfoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LoginSelfInfoQuery = (
+  { __typename?: 'Query' }
+  & { self: (
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'displayName' | 'emailHash' | 'singleUserMode'>
+    & { roles: Array<Maybe<(
+      { __typename?: 'Role' }
+      & Pick<Role, 'name'>
+    )>>, channels: Array<Maybe<(
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id' | 'slug' | 'name'>
+      & { activity?: Maybe<(
+        { __typename?: 'Activity' }
+        & Pick<Activity, 'name'>
+      )> }
+    )>> }
+  ) }
+);
+
+export type DashboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DashboardQuery = (
+  { __typename?: 'Query' }
+  & { self: (
+    { __typename?: 'User' }
+    & { channels: Array<Maybe<(
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id' | 'name' | 'slug' | 'description'>
+      & { activity?: Maybe<(
+        { __typename?: 'Activity' }
+        & Pick<Activity, 'id' | 'name' | 'icon' | 'image' | 'verb'>
+      )> }
+    )>> }
+  ) }
+);
+
 export type HomeChannelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -708,4 +865,41 @@ export type HomeChannelsQuery = (
       & Pick<Activity, 'name'>
     )> }
   )>> }
+);
+
+export type UserSettingsFormDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserSettingsFormDataQuery = (
+  { __typename?: 'Query' }
+  & { self: (
+    { __typename?: 'User' }
+    & Pick<User, 'displayName' | 'bio' | 'singleUserMode'>
+  ) }
+);
+
+export type SettingsUpdateUserMutationVariables = Exact<{
+  input: UpdateSelfInput;
+}>;
+
+
+export type SettingsUpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateSelf: (
+    { __typename?: 'User' }
+    & CurrentUserFragment
+  ) }
+);
+
+export type UploadSettingsMediaMutationVariables = Exact<{
+  input: Scalars['Upload'];
+}>;
+
+
+export type UploadSettingsMediaMutation = (
+  { __typename?: 'Mutation' }
+  & { uploadFile: (
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
+  ) }
 );

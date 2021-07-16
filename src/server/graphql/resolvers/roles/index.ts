@@ -1,5 +1,5 @@
 import { getCompleteRights } from "miracle-tv-server/db/acl/roles";
-import { QueryResolvers, RoleResolvers } from "miracle-tv-server/types/graphql";
+import { QueryResolvers, RoleResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
 export const rolesQueryResolver: QueryResolvers<ResolverContext>["roles"] =

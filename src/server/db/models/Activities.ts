@@ -5,7 +5,7 @@ import {
   ActivityFilter,
   CreateActivityInput,
   UpdateActivityInput,
-} from "miracle-tv-server/types/graphql";
+} from "miracle-tv-shared/graphql";
 import { head } from "ramda";
 import {
   NotFoundError,

@@ -4,7 +4,7 @@ import {
   AuthorizationError,
 } from "miracle-tv-server/graphql/errors/auth";
 import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
-import { AccessUnit, MutationResolvers } from "miracle-tv-server/types/graphql";
+import { AccessUnit, MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
 export const createChannelMutation: MutationResolvers<ResolverContext>["createChannel"] =

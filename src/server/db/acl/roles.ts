@@ -1,5 +1,5 @@
-import { AccessUnit, Role } from "miracle-tv-server/types/graphql";
-import { curry, pathOr, pick } from "ramda";
+import { AccessUnit, Role } from "miracle-tv-shared/graphql";
+import { pathOr } from "ramda";
 import { any, lensPath, view } from "ramda";
 
 type RowMap = Record<string, Role>;
