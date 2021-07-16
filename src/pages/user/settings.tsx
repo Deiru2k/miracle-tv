@@ -138,56 +138,59 @@ const UserSettingsPage = (): JSX.Element => {
                 <Flex
                   flex={1}
                   direction="column"
-                  justify="space-between"
                   align={["center", "unset"]}
-                  mb={4}
+                  mr={16}
                 >
                   <FormLabel size="sm" mb={4}>
                     Profile Picture
                   </FormLabel>
-                  <AspectRatio h="150px" w="150px" ratio={1} mr={4} mb={4}>
-                    <Image
-                      borderRadius={8}
-                      boxSizing="border-box"
-                      borderWidth="3px"
-                      borderStyle="dashed"
-                      borderColor="primary.200"
-                      src="/yuuka-avatar.jpg"
+                  <Box w="100%">
+                    <AspectRatio h="100%" w="100%" ratio={1} mr={4} mb={4}>
+                      <Image
+                        borderRadius={8}
+                        boxSizing="border-box"
+                        borderWidth="3px"
+                        borderStyle="dashed"
+                        borderColor="primary.200"
+                        src="/yuuka-avatar.jpg"
+                      />
+                    </AspectRatio>
+                  </Box>
+                  <Box flex="auto" />
+                  <Box>
+                    <input
+                      type="file"
+                      onChange={({ target }) => {
+                        const input = target?.files?.item(0);
+                        uploadFile({ variables: { input } });
+                      }}
+                      style={{ color: "white", width: "250px" }}
                     />
-                  </AspectRatio>
-                  <input
-                    type="file"
-                    onChange={({ target }) => {
-                      const input = target?.files?.item(0);
-                      uploadFile({ variables: { input } });
-                    }}
-                    style={{ color: "white", width: "250px" }}
-                  />
+                  </Box>
                 </Flex>
-                <Flex
-                  flex={1}
-                  direction="column"
-                  h="100%"
-                  justify="space-between"
-                  align={["center", "unset"]}
-                >
+                <Flex flex={4} direction="column" align={["center", "unset"]}>
                   <FormLabel size="sm" mb={4}>
                     Stream Thumbnail
                   </FormLabel>
-                  <AspectRatio h="100%" w="100%" ratio={16 / 9} mr={4} mb={8}>
-                    <Image
-                      borderRadius={8}
-                      boxSizing="border-box"
-                      borderWidth="3px"
-                      borderStyle="dashed"
-                      borderColor="primary.200"
-                      src="/yuuka-thumbnail.jpg"
+                  <Box w="100%">
+                    <AspectRatio h="100%" w="100%" ratio={16 / 9} mr={4} mb={8}>
+                      <Image
+                        borderRadius={8}
+                        boxSizing="border-box"
+                        borderWidth="3px"
+                        borderStyle="dashed"
+                        borderColor="primary.200"
+                        src="/yuuka-thumbnail.jpg"
+                      />
+                    </AspectRatio>
+                  </Box>
+                  <Box flex="auto" />
+                  <Box>
+                    <input
+                      type="file"
+                      style={{ color: "white", width: "250px" }}
                     />
-                  </AspectRatio>
-                  <input
-                    type="file"
-                    style={{ color: "white", width: "250px" }}
-                  />
+                  </Box>
                 </Flex>
               </Flex>
               <FormLabel size="sm" mb={4}>
