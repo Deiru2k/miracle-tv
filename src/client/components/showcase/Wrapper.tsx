@@ -12,6 +12,7 @@ const components: ComponentConfig[] = [
   { url: "/docs/showcase", title: "Home" },
   { url: "/docs/showcase/button", title: "Button" },
   { url: "/docs/showcase/panel", title: "Panel" },
+  { url: "/docs/showcase/user-info", title: "User Info" },
 ];
 
 const docs: ComponentConfig[] = [{ url: "/docs", title: "Home" }];

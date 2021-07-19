@@ -51,35 +51,37 @@ export const UserInfo = ({
   const user = propsUser || remoteUser;
 
   useEffect(() => {
-    if (id && props.user) {
+    if (id && propsUser) {
       console.log("ERROR! Cannot user both ID and User in UserInfo!");
-    } else if (id && !props.user) {
+    } else if (id && !propsUser) {
       loadUser({ variables: { id } });
     }
-  }, [loadUser, props.user, id]);
+  }, [loadUser, propsUser, id]);
 
   return (
     <Flex align="center" {...props}>
       {loading && <Skeleton width="120px" height="14px" />}
       {!!user && (
         <>
-          <AspectRatio ratio={1} h={imageHeight} w={imageHeight}>
-            <Box
-              w="100%"
-              h="100%"
-              borderRadius="6px"
-              bgColor="secondary.600"
-              borderStyle="solid"
-              borderWidth="1px"
-              borderColor="secondary.400"
-            >
-              <Image
+          {!!user.avatar && (
+            <AspectRatio ratio={1} h={imageHeight} w={imageHeight}>
+              <Box
                 w="100%"
                 h="100%"
-                src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${user.avatar.filename}`}
-              />
-            </Box>
-          </AspectRatio>
+                borderRadius="6px"
+                bgColor="secondary.600"
+                borderStyle="solid"
+                borderWidth="1px"
+                borderColor="secondary.400"
+              >
+                <Image
+                  w="100%"
+                  h="100%"
+                  src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${user.avatar.filename}`}
+                />
+              </Box>
+            </AspectRatio>
+          )}
           <Text as="span" ml={2}>
             {user.displayName || user.username}
           </Text>
