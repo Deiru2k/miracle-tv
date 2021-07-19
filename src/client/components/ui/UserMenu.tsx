@@ -4,6 +4,7 @@ import { ChevronDownIcon, LockIcon, SettingsIcon } from "@chakra-ui/icons";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { UserInfo } from "./UserInfo";
 
 type LinkProps = {
   url: string;
@@ -37,7 +38,7 @@ export const UserMenu = () => {
           rightIcon={<ChevronDownIcon />}
           textTransform="none"
         >
-          {user?.displayName || user?.username}
+          <UserInfo id={user?.id} />
         </MenuButton>
         <MenuList>
           <MenuLink

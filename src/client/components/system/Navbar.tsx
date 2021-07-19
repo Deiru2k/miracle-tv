@@ -1,21 +1,10 @@
 import React, { useCallback, useState } from "react";
-import {
-  Button,
-  Text,
-  Flex,
-  Heading,
-  IconButton,
-  MenuButton,
-  Menu,
-  MenuItem,
-  MenuList,
-} from "@chakra-ui/react";
+import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import { BurgerMenuIcon } from "../icons/BurgerMenu";
 import { Sidebar } from "./Sidebar";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
-import { ChevronDownIcon, LockIcon, SettingsIcon } from "@chakra-ui/icons";
 import { UserMenu } from "../ui/UserMenu";
 
 export const Navbar = () => {

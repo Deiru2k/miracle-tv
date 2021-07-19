@@ -91,7 +91,13 @@ const Home = () => {
             <StreamPreview
               alwaysShowInfo
               w="100%"
-              name={"Dale's amazing stream"}
+              user={{
+                displayName: "Dale",
+                username: "Dale",
+                avatar: {
+                  filename: "58ed5aec-b6a5-4fa0-b890-6fd4b84ecdfe.png",
+                },
+              }}
               boxSizing="border-box"
             />
           </GridItem>

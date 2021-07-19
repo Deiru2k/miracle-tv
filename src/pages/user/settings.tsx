@@ -1,31 +1,29 @@
 import { gql } from "@apollo/client";
 import {
-  AspectRatio,
   Box,
   Button,
   Flex,
   Heading,
+  Skeleton,
+  SkeletonText,
+  Stack,
   useToast,
   VStack,
-  Image,
-  FormLabel,
 } from "@chakra-ui/react";
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
-import { FormToggle } from "miracle-tv-client/components/form/FormToggle";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
-import {
-  CurrentUserFullFragment,
-  useCurrentUser,
-} from "miracle-tv-client/hooks/auth";
+import { CurrentUserFullFragment } from "miracle-tv-client/hooks/auth";
+import { UserCustomization } from "miracle-tv-client/UserSettings/UserCustomization";
 import { UserEditForm } from "miracle-tv-client/UserSettings/UserEditForm";
-import { UpdateSelfInput } from "miracle-tv-shared/graphql";
+import { UserPreferences } from "miracle-tv-client/UserSettings/UserPreferences";
+import { UpdateSelfInput, UpdateUserInput } from "miracle-tv-shared/graphql";
 import {
+  UserSettingsFormDataQueryResult,
   useSettingsUpdateUserMutation,
-  useUploadSettingsMediaMutation,
   useUserSettingsFormDataQuery,
 } from "miracle-tv-shared/hooks";
 import { omit } from "ramda";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Form } from "react-final-form";
 
 gql`
@@ -34,6 +32,15 @@ gql`
       displayName
       bio
       singleUserMode
+      avatar {
+        id
+      }
+      header {
+        id
+      }
+      streamThumbnail {
+        id
+      }
     }
   }
 `;
@@ -44,16 +51,46 @@ gql`
       ...CurrentUser
     }
   }
-  mutation UploadSettingsMedia($input: Upload!) {
-    uploadFile(file: $input) {
-      id
-      filename
-      mimetype
-      encoding
-    }
-  }
   ${CurrentUserFullFragment}
 `;
+
+const convertUserToForm = ({
+  avatar,
+  streamThumbnail,
+  header,
+  ...user
+}: UserSettingsFormDataQueryResult["data"]["self"]): UpdateUserInput => {
+  return {
+    header: header?.id,
+    avatar: avatar?.id,
+    streamThumbnail: streamThumbnail?.id,
+    ...(user as UpdateUserInput),
+  };
+};
+
+type LoaderProps = {
+  isActive?: boolean;
+  rows?: number;
+  rowHeight?: string;
+  children: React.ReactNode | React.ReactNode[];
+};
+
+const Loader = ({
+  children,
+  isActive = false,
+  rows = 3,
+  rowHeight = "20px",
+}: LoaderProps) => {
+  const rowEls = useMemo(() => [...Array(rows).keys()], [rows]);
+  return isActive ? (
+    <Stack>
+      <Skeleton height={rowHeight} />
+      <SkeletonText mt="4" noOfLines={rows} spacing="4" />
+    </Stack>
+  ) : (
+    <>{children}</>
+  );
+};
 
 const UserSettingsPage = (): JSX.Element => {
   const toast = useToast();
@@ -68,7 +105,11 @@ const UserSettingsPage = (): JSX.Element => {
       },
     });
 
-  const [uploadFile] = useUploadSettingsMediaMutation();
+  const updateUserData = useMemo(
+    () =>
+      data?.self ? convertUserToForm(omit(["__typename"], data?.self)) : {},
+    [data]
+  );
 
   const onSubmit = useCallback((input: UpdateSelfInput) => {
     updateSelf({ variables: { input } });
@@ -80,139 +121,69 @@ const UserSettingsPage = (): JSX.Element => {
       <Box bgColor="secondary.400" p={4} mb={4}>
         <Heading>My Settings</Heading>
       </Box>
-      <Flex direction={["column", "row"]} px={4}>
-        <VStack flex={1} mr={[0, 6]} mb={[4, 0]}>
-          <Box w="100%">
-            <Heading mb={4}>My Profile</Heading>
-            <Panel>
-              <Form<UpdateSelfInput>
-                onSubmit={onSubmit}
-                initialValues={omit(["__typename"], data?.self)}
+      <Form<UpdateSelfInput> onSubmit={onSubmit} initialValues={updateUserData}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Flex direction={["column", "column", "row"]} px={4}>
+              <VStack w="100%" mr={[0, 0, 6]} mb={[4, 0]}>
+                <Box w="100%">
+                  <Heading mb={4}>My Profile</Heading>
+                  <Panel>
+                    <Loader isActive={userLoading} rows={6} rowHeight="30px">
+                      <UserEditForm />
+                    </Loader>
+                    <Button
+                      mt={4}
+                      type="submit"
+                      isLoading={mutationLoading}
+                      isDisabled={userLoading}
+                    >
+                      Save
+                    </Button>
+                  </Panel>
+                </Box>
+                <Box w="100%">
+                  <Heading mb={4}>My preferences</Heading>
+                  <Panel>
+                    <Loader isActive={userLoading} rows={3} rowHeight="30px">
+                      <UserPreferences />
+                      <Button
+                        mt={4}
+                        type="submit"
+                        isLoading={mutationLoading}
+                        isDisabled={userLoading}
+                      >
+                        Save
+                      </Button>
+                    </Loader>
+                  </Panel>
+                </Box>
+              </VStack>
+              <VStack
+                w={["100%", "100%", "50vh", "unset"]}
+                flex={[1, 1, "unset", 1]}
               >
-                {({ handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
-                    <UserEditForm />
-                    <Button
-                      mt={4}
-                      type="submit"
-                      isLoading={mutationLoading}
-                      isDisabled={userLoading}
-                    >
-                      Save
-                    </Button>
-                  </form>
-                )}
-              </Form>
-            </Panel>
-          </Box>
-          <Box w="100%">
-            <Heading mb={4}>My preferences</Heading>
-            <Panel>
-              <Form<any> onSubmit={() => {}}>
-                {({ handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
-                    <FormToggle
-                      name="singleUserMode"
-                      label="Single User Mode"
-                    />
-                    <FormToggle name="useGravatar" label="Use Gravatar" />
-                    <Button
-                      mt={4}
-                      type="submit"
-                      isLoading={mutationLoading}
-                      isDisabled={userLoading}
-                    >
-                      Save
-                    </Button>
-                  </form>
-                )}
-              </Form>
-            </Panel>
-          </Box>
-        </VStack>
-        <VStack flex={1}>
-          <Box w="100%">
-            <Heading mb={4}>Customization</Heading>
-            <Panel>
-              <Flex mb={4} direction={["column", "row"]}>
-                <Flex
-                  flex={1}
-                  direction="column"
-                  align={["center", "unset"]}
-                  mr={16}
-                >
-                  <FormLabel size="sm" mb={4}>
-                    Profile Picture
-                  </FormLabel>
-                  <Box w="100%">
-                    <AspectRatio h="100%" w="100%" ratio={1} mr={4} mb={4}>
-                      <Image
-                        borderRadius={8}
-                        boxSizing="border-box"
-                        borderWidth="3px"
-                        borderStyle="dashed"
-                        borderColor="primary.200"
-                        src="/yuuka-avatar.jpg"
-                      />
-                    </AspectRatio>
-                  </Box>
-                  <Box flex="auto" />
-                  <Box>
-                    <input
-                      type="file"
-                      onChange={({ target }) => {
-                        const input = target?.files?.item(0);
-                        uploadFile({ variables: { input } });
-                      }}
-                      style={{ color: "white", width: "250px" }}
-                    />
-                  </Box>
-                </Flex>
-                <Flex flex={4} direction="column" align={["center", "unset"]}>
-                  <FormLabel size="sm" mb={4}>
-                    Stream Thumbnail
-                  </FormLabel>
-                  <Box w="100%">
-                    <AspectRatio h="100%" w="100%" ratio={16 / 9} mr={4} mb={8}>
-                      <Image
-                        borderRadius={8}
-                        boxSizing="border-box"
-                        borderWidth="3px"
-                        borderStyle="dashed"
-                        borderColor="primary.200"
-                        src="/yuuka-thumbnail.jpg"
-                      />
-                    </AspectRatio>
-                  </Box>
-                  <Box flex="auto" />
-                  <Box>
-                    <input
-                      type="file"
-                      style={{ color: "white", width: "250px" }}
-                    />
-                  </Box>
-                </Flex>
-              </Flex>
-              <FormLabel size="sm" mb={4}>
-                Header
-              </FormLabel>
-              <Flex direction="column" align={["center", "unset"]}>
-                <AspectRatio w="100%" ratio={16 / 5} mb={4}>
-                  <Image
-                    src="/yuuka-header.jpg"
-                    borderRadius={8}
-                    boxSizing="border-box"
-                    borderWidth="3px"
-                    borderStyle="dashed"
-                    borderColor="primary.200"
-                  />
-                </AspectRatio>
-                <input type="file" style={{ color: "white", width: "250px" }} />
-              </Flex>
-            </Panel>
-          </Box>
-        </VStack>
-      </Flex>
+                <Box w="545px">
+                  <Heading mb={4}>Customization</Heading>
+                  <Panel>
+                    <Loader isActive={userLoading} rows={12} rowHeight="30px">
+                      <UserCustomization />
+                      <Button
+                        mt={4}
+                        type="submit"
+                        isLoading={mutationLoading}
+                        isDisabled={userLoading}
+                      >
+                        Save
+                      </Button>
+                    </Loader>
+                  </Panel>
+                </Box>
+              </VStack>
+            </Flex>
+          </form>
+        )}
+      </Form>
     </>
   );
 };

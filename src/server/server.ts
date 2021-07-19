@@ -14,6 +14,7 @@ const main = async () => {
   await graphqlEndpoint.start();
   const app = Express();
   app.use(graphqlUploadExpress());
+  app.use("/media/", Express.static(`${config.dataDir}/media`));
   graphqlEndpoint.applyMiddleware({ app });
   app.listen(
     config.server?.port || 4000,

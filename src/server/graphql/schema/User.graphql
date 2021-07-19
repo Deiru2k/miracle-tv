@@ -7,6 +7,9 @@ type User {
   emailHash: String
   roles: [Role]!
   channels: [Channel]!
+  avatar: File
+  header: File
+  streamThumbnail: File
 }
 
 type Session {
@@ -46,6 +49,9 @@ input UpdateSelfInput {
   displayName: String
   bio: String
   singleUserMode: Boolean
+  avatar: ID
+  header: ID
+  streamThumbnail: ID
 }
 
 input UpdateUserInput {
@@ -53,6 +59,9 @@ input UpdateUserInput {
   displayName: String
   bio: String
   singleUserMode: Boolean
+  avatar: ID
+  header: ID
+  streamThumbnail: ID
 }
 
 extend type Mutation {

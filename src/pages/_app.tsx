@@ -3,13 +3,15 @@ import { Global, css } from "@emotion/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
-import { propOr } from "ramda";
+import { any, propOr } from "ramda";
 
-import theme from "miracle-tv-client/theme";
+import theme from "miracle-tv-shared/theme";
 import { Navbar } from "miracle-tv-client/components/system/Navbar";
 import React from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
+import Link from "next/link";
+import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
@@ -42,15 +44,19 @@ const client = new ApolloClient({
   link: authLink.concat(uploadLink),
 });
 
-const noNavbarRoutes = ["/auth/login"];
+const noNavbarRoutes = ["/auth/login", "/docs"];
 
-function MyApp({ Component, pageProps }: any) {
+function MyApp({ Component, pageProps }: any): JSX.Element {
   const router = useRouter();
-  const showNavbar = !noNavbarRoutes.includes(router.asPath);
+  const showNavbar = !any(
+    (path) => router.asPath.startsWith(path),
+    noNavbarRoutes
+  );
+  const isShowcase = router.asPath.startsWith("/docs");
   return (
     <>
       <Head>
-        <title>Кофейня - Учёт</title>
+        <title>Miracle TV</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Global
@@ -67,21 +73,28 @@ function MyApp({ Component, pageProps }: any) {
       />
       <ApolloProvider client={client}>
         <ChakraProvider theme={theme}>
-          <Flex h="100%" w="100%" direction="column">
-            {showNavbar && <Navbar />}
-            <Box
-              width="100%"
-              height="100%"
-              px={15}
-              py={5}
-              position="relative"
-              overflowY="auto"
-              color="white"
-              bgColor="secondary.600"
-            >
+          {!isShowcase && (
+            <Flex h="100%" w="100%" direction="column">
+              {showNavbar && <Navbar />}
+              <Box
+                width="100%"
+                height="100%"
+                px={15}
+                py={5}
+                position="relative"
+                overflowY="auto"
+                color="white"
+                bgColor="secondary.600"
+              >
+                <Component {...pageProps} />
+              </Box>
+            </Flex>
+          )}
+          {isShowcase && (
+            <ShowcaseWrapper>
               <Component {...pageProps} />
-            </Box>
-          </Flex>
+            </ShowcaseWrapper>
+          )}
         </ChakraProvider>
       </ApolloProvider>
     </>

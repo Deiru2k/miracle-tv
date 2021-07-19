@@ -44,6 +44,15 @@ export const userTestQueryResolver: QueryResolvers<ResolverContext>["test"] = (
   throw new AuthenticationError();
 };
 
+type FileResolver = (field: string) => UserResolvers["avatar"];
+const fileResolver: FileResolver =
+  (field) =>
+  async (user, _, { db: { files } }) => {
+    return user[field as keyof typeof user]
+      ? await files.getFileById(user[field as keyof typeof user])
+      : null;
+  };
+
 export const userResolver: UserResolvers = {
   id: (user) => user.id,
   username: (user) => user.username,
@@ -55,4 +64,7 @@ export const userResolver: UserResolvers = {
     const rolesList = await roles.getAll(user.roles || []);
     return rolesList as Role[];
   },
+  avatar: fileResolver("avatar"),
+  header: fileResolver("header"),
+  streamThumbnail: fileResolver("streamThumbnail"),
 };

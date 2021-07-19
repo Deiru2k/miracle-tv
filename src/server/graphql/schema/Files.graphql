@@ -6,7 +6,7 @@ type File {
 }
 
 extend type Query {
-  fileInfo(id: String): File
+  fileInfo(id: ID): File
 }
 
 extend type Mutation {

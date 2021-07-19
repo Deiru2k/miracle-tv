@@ -56,6 +56,7 @@ import {
 } from "miracle-tv-server/graphql/mutations/stream-keys";
 import { fileMutations } from "./mutations/file";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
+import { fileResolvers } from "./resolvers/file";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -87,6 +88,7 @@ const resolvers: Resolvers<ResolverContext> = {
     self: userSelfQueryResolver,
     selfStreamKeys: selfStreamKeysQueryResolver,
     test: userTestQueryResolver,
+    ...fileResolvers,
   },
   Mutation: {
     ping: (...args) => {
@@ -114,7 +116,7 @@ export const graphqlEndpoint = new ApolloServer({
   uploads: false,
   typeDefs: schema,
   resolvers,
-  introspection: false,
+  introspection: true,
   playground: false,
   context: async ({ req }) => {
     const con = await connection;

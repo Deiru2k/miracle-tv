@@ -76,6 +76,6 @@ export class UsersModel extends Model {
     if (errors) {
       throw new ServerError("Error updating user");
     }
-    return { id, ...user, ...input };
+    return { id, ...user, ...input } as User;
   }
 }

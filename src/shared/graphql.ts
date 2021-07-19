@@ -274,7 +274,7 @@ export type QueryChannelsArgs = {
 
 
 export type QueryFileInfoArgs = {
-  id?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -357,6 +357,9 @@ export type UpdateSelfInput = {
   displayName?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   singleUserMode?: Maybe<Scalars['Boolean']>;
+  avatar?: Maybe<Scalars['ID']>;
+  header?: Maybe<Scalars['ID']>;
+  streamThumbnail?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateUserInput = {
@@ -364,6 +367,9 @@ export type UpdateUserInput = {
   displayName?: Maybe<Scalars['String']>;
   bio?: Maybe<Scalars['String']>;
   singleUserMode?: Maybe<Scalars['Boolean']>;
+  avatar?: Maybe<Scalars['ID']>;
+  header?: Maybe<Scalars['ID']>;
+  streamThumbnail?: Maybe<Scalars['ID']>;
 };
 
 
@@ -377,6 +383,9 @@ export type User = {
   emailHash?: Maybe<Scalars['String']>;
   roles: Array<Maybe<Role>>;
   channels: Array<Maybe<Channel>>;
+  avatar?: Maybe<File>;
+  header?: Maybe<File>;
+  streamThumbnail?: Maybe<File>;
 };
 
 export type UserActions = {
@@ -705,6 +714,9 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   emailHash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType>;
   channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType>;
+  avatar?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
+  header?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
+  streamThumbnail?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -759,10 +771,62 @@ export type DirectiveResolvers<ContextType = any> = {
  * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
  */
 export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
+export type GetFileForUploaderQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetFileForUploaderQuery = (
+  { __typename?: 'Query' }
+  & { fileInfo?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
+  )> }
+);
+
+export type UploadFileWithUploaderMutationVariables = Exact<{
+  input: Scalars['Upload'];
+}>;
+
+
+export type UploadFileWithUploaderMutation = (
+  { __typename?: 'Mutation' }
+  & { uploadFile: (
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
+  ) }
+);
+
+export type UserInfoQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type UserInfoQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'displayName'>
+    & { avatar?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'filename'>
+    )> }
+  )> }
+);
+
 export type CurrentUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio' | 'singleUserMode'>
-  & { roles: Array<Maybe<(
+  & { avatar?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename'>
+  )>, header?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename'>
+  )>, streamThumbnail?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename'>
+  )>, roles: Array<Maybe<(
     { __typename?: 'Role' }
     & Pick<Role, 'id' | 'parentId' | 'name'>
     & { access: (
@@ -875,6 +939,16 @@ export type UserSettingsFormDataQuery = (
   & { self: (
     { __typename?: 'User' }
     & Pick<User, 'displayName' | 'bio' | 'singleUserMode'>
+    & { avatar?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id'>
+    )>, header?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id'>
+    )>, streamThumbnail?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id'>
+    )> }
   ) }
 );
 
@@ -888,18 +962,5 @@ export type SettingsUpdateUserMutation = (
   & { updateSelf: (
     { __typename?: 'User' }
     & CurrentUserFragment
-  ) }
-);
-
-export type UploadSettingsMediaMutationVariables = Exact<{
-  input: Scalars['Upload'];
-}>;
-
-
-export type UploadSettingsMediaMutation = (
-  { __typename?: 'Mutation' }
-  & { uploadFile: (
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
   ) }
 );

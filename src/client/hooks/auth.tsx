@@ -99,6 +99,18 @@ export const CurrentUserFullFragment = gql`
     bio
     singleUserMode
     emailHash
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    streamThumbnail {
+      id
+      filename
+    }
     roles {
       id
       parentId

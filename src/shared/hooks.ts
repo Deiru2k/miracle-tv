@@ -12,6 +12,18 @@ export const CurrentUserFragmentDoc = gql`
   bio
   singleUserMode
   emailHash
+  avatar {
+    id
+    filename
+  }
+  header {
+    id
+    filename
+  }
+  streamThumbnail {
+    id
+    filename
+  }
   roles {
     id
     parentId
@@ -47,6 +59,119 @@ export const CurrentUserFragmentDoc = gql`
   }
 }
     `;
+export const GetFileForUploaderDocument = gql`
+    query GetFileForUploader($id: ID!) {
+  fileInfo(id: $id) {
+    id
+    filename
+    mimetype
+    encoding
+  }
+}
+    `;
+
+/**
+ * __useGetFileForUploaderQuery__
+ *
+ * To run a query within a React component, call `useGetFileForUploaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFileForUploaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFileForUploaderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetFileForUploaderQuery(baseOptions: Apollo.QueryHookOptions<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>(GetFileForUploaderDocument, options);
+      }
+export function useGetFileForUploaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>(GetFileForUploaderDocument, options);
+        }
+export type GetFileForUploaderQueryHookResult = ReturnType<typeof useGetFileForUploaderQuery>;
+export type GetFileForUploaderLazyQueryHookResult = ReturnType<typeof useGetFileForUploaderLazyQuery>;
+export type GetFileForUploaderQueryResult = Apollo.QueryResult<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>;
+export const UploadFileWithUploaderDocument = gql`
+    mutation UploadFileWithUploader($input: Upload!) {
+  uploadFile(file: $input) {
+    id
+    filename
+    mimetype
+    encoding
+  }
+}
+    `;
+export type UploadFileWithUploaderMutationFn = Apollo.MutationFunction<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>;
+
+/**
+ * __useUploadFileWithUploaderMutation__
+ *
+ * To run a mutation, you first call `useUploadFileWithUploaderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadFileWithUploaderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadFileWithUploaderMutation, { data, loading, error }] = useUploadFileWithUploaderMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUploadFileWithUploaderMutation(baseOptions?: Apollo.MutationHookOptions<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>(UploadFileWithUploaderDocument, options);
+      }
+export type UploadFileWithUploaderMutationHookResult = ReturnType<typeof useUploadFileWithUploaderMutation>;
+export type UploadFileWithUploaderMutationResult = Apollo.MutationResult<Types.UploadFileWithUploaderMutation>;
+export type UploadFileWithUploaderMutationOptions = Apollo.BaseMutationOptions<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>;
+export const UserInfoDocument = gql`
+    query UserInfo($id: ID!) {
+  user(id: $id) {
+    avatar {
+      filename
+    }
+    username
+    displayName
+  }
+}
+    `;
+
+/**
+ * __useUserInfoQuery__
+ *
+ * To run a query within a React component, call `useUserInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserInfoQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserInfoQuery(baseOptions: Apollo.QueryHookOptions<Types.UserInfoQuery, Types.UserInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(UserInfoDocument, options);
+      }
+export function useUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserInfoQuery, Types.UserInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(UserInfoDocument, options);
+        }
+export type UserInfoQueryHookResult = ReturnType<typeof useUserInfoQuery>;
+export type UserInfoLazyQueryHookResult = ReturnType<typeof useUserInfoLazyQuery>;
+export type UserInfoQueryResult = Apollo.QueryResult<Types.UserInfoQuery, Types.UserInfoQueryVariables>;
 export const CurrentUserFullDocument = gql`
     query CurrentUserFull {
   self {
@@ -253,6 +378,15 @@ export const UserSettingsFormDataDocument = gql`
     displayName
     bio
     singleUserMode
+    avatar {
+      id
+    }
+    header {
+      id
+    }
+    streamThumbnail {
+      id
+    }
   }
 }
     `;
@@ -316,39 +450,3 @@ export function useSettingsUpdateUserMutation(baseOptions?: Apollo.MutationHookO
 export type SettingsUpdateUserMutationHookResult = ReturnType<typeof useSettingsUpdateUserMutation>;
 export type SettingsUpdateUserMutationResult = Apollo.MutationResult<Types.SettingsUpdateUserMutation>;
 export type SettingsUpdateUserMutationOptions = Apollo.BaseMutationOptions<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>;
-export const UploadSettingsMediaDocument = gql`
-    mutation UploadSettingsMedia($input: Upload!) {
-  uploadFile(file: $input) {
-    id
-    filename
-    mimetype
-    encoding
-  }
-}
-    `;
-export type UploadSettingsMediaMutationFn = Apollo.MutationFunction<Types.UploadSettingsMediaMutation, Types.UploadSettingsMediaMutationVariables>;
-
-/**
- * __useUploadSettingsMediaMutation__
- *
- * To run a mutation, you first call `useUploadSettingsMediaMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadSettingsMediaMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [uploadSettingsMediaMutation, { data, loading, error }] = useUploadSettingsMediaMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUploadSettingsMediaMutation(baseOptions?: Apollo.MutationHookOptions<Types.UploadSettingsMediaMutation, Types.UploadSettingsMediaMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UploadSettingsMediaMutation, Types.UploadSettingsMediaMutationVariables>(UploadSettingsMediaDocument, options);
-      }
-export type UploadSettingsMediaMutationHookResult = ReturnType<typeof useUploadSettingsMediaMutation>;
-export type UploadSettingsMediaMutationResult = Apollo.MutationResult<Types.UploadSettingsMediaMutation>;
-export type UploadSettingsMediaMutationOptions = Apollo.BaseMutationOptions<Types.UploadSettingsMediaMutation, Types.UploadSettingsMediaMutationVariables>;

@@ -5,6 +5,7 @@ import {
   PlaybackActions,
   Player as PlayerType,
 } from "miracle-tv-client/components/player/Player";
+import { UserInfo } from "./UserInfo";
 
 const Player = dynamic(
   () =>
@@ -15,7 +16,8 @@ const Player = dynamic(
 );
 
 type Props = {
-  name: string;
+  name?: string;
+  user: any;
   w?: string;
   h?: string;
   alwaysShowInfo?: boolean;
@@ -31,7 +33,7 @@ type Controls = {
 };
 
 export const StreamPreview = ({
-  name,
+  user,
   h = "100%",
   w = "100%",
   alwaysShowInfo = false,
@@ -117,7 +119,7 @@ export const StreamPreview = ({
             </Flex>
             <Flex zIndex={3} justify="flex-end">
               <Box bgColor="secondary.400" px={2} py={1}>
-                {name}
+                <UserInfo user={user} />
               </Box>
             </Flex>
           </Flex>
