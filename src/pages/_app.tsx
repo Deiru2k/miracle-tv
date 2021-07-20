@@ -14,7 +14,6 @@ import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { Provider } from "react-redux";
 import configureStore from "miracle-tv-client/store";
-import { PersistGate } from "redux-persist/integration/react";
 
 const { store, persistor } = configureStore();
 
