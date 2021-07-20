@@ -29,9 +29,7 @@
     "apollo-server": "^2.24.0",
     "apollo-server-express": "^2.24.0",
     "apollo-upload-client": "^16.0.0",
-    "async": "^3.2.0",
     "classnames": "^2.3.1",
-    "dash": "^3.20.0",
     "dashjs": "^4.0.0-npm",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
@@ -44,7 +42,6 @@
     "md5": "^2.3.0",
     "module-alias": "^2.2.2",
     "next": "^11.0.1",
-    "pm2": "^4.5.6",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -56,8 +53,7 @@
     "redux-persist": "^6.0.0",
     "rethinkdb": "^2.4.2",
     "tsconfig-paths": "^3.9.0",
-    "uuid": "^8.3.2",
-    "vimond-replay": "^3.2.1"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.21.4",
@@ -84,14 +80,10 @@
     "@types/redux-persist": "^4.3.1",
     "@types/rethinkdb": "^2.3.16",
     "@vercel/ncc": "^0.28.6",
-    "file-loader": "^6.2.0",
-    "json-loader": "^0.5.7",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
     "ts-loader": "^9.2.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4",
-    "webpack": "^5.37.1",
-    "webpack-cli": "^4.7.0"
+    "typescript": "^4.2.4"
   }
 }

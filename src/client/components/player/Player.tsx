@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box } from "@chakra-ui/layout";
-import { css, Global } from "@emotion/react";
-import "vimond-replay/index.css";
-import ReactPlayer from "react-player";
+import React, { useEffect, useRef } from "react";
 import { Flex } from "@chakra-ui/react";
+import { css, Global } from "@emotion/react";
+import ReactPlayer from "react-player";
 
 type PlayerKind = "preview" | "vod" | "live";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { FormControlProps } from "@chakra-ui/form-control";
 import { useField } from "react-final-form";
 import { FormGroup, FormGroupChakraProps } from "./FormGroup";
@@ -14,7 +13,6 @@ type Props = {
 
 export const FormTextarea = ({
   name,
-  type: inputType,
   inputProps,
   ...formGroupProps
 }: Props) => {

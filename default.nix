@@ -13,6 +13,7 @@ in mkYarnPackage rec {
   packageJSON = "${src}/package.json";
   yarnLock = "${src}/yarn.lock";
 
+
   configurePhase = ''
     rm -rf ./node_modules
     mkdir ./node_modules
