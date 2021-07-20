@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, Spinner } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -10,8 +10,13 @@ import { Navbar } from "miracle-tv-client/components/system/Navbar";
 import React from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
-import Link from "next/link";
 import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
+import { PageWrapper } from "miracle-tv-client/components/system/Page";
+import { Provider } from "react-redux";
+import configureStore from "miracle-tv-client/store";
+import { PersistGate } from "redux-persist/integration/react";
+
+const { store, persistor } = configureStore();
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
@@ -71,32 +76,25 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           }
         `}
       />
-      <ApolloProvider client={client}>
-        <ChakraProvider theme={theme}>
-          {!isShowcase && (
-            <Flex h="100%" w="100%" direction="column">
-              {showNavbar && <Navbar />}
-              <Box
-                width="100%"
-                height="100%"
-                px={15}
-                py={5}
-                position="relative"
-                overflowY="auto"
-                color="white"
-                bgColor="secondary.600"
-              >
+      <ChakraProvider theme={theme}>
+        <Provider store={store}>
+          <ApolloProvider client={client}>
+            {!isShowcase && (
+              <Flex h="100%" w="100%" direction="column">
+                {showNavbar && <Navbar />}
+                <PageWrapper>
+                  <Component {...pageProps} />
+                </PageWrapper>
+              </Flex>
+            )}
+            {isShowcase && (
+              <ShowcaseWrapper>
                 <Component {...pageProps} />
-              </Box>
-            </Flex>
-          )}
-          {isShowcase && (
-            <ShowcaseWrapper>
-              <Component {...pageProps} />
-            </ShowcaseWrapper>
-          )}
-        </ChakraProvider>
-      </ApolloProvider>
+              </ShowcaseWrapper>
+            )}
+          </ApolloProvider>
+        </Provider>
+      </ChakraProvider>
     </>
   );
 }

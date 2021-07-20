@@ -964,3 +964,26 @@ export type SettingsUpdateUserMutation = (
     & CurrentUserFragment
   ) }
 );
+
+export type UserPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type UserPageQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio' | 'singleUserMode'>
+    & { avatar?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id' | 'filename'>
+    )>, header?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id' | 'filename'>
+    )>, streamThumbnail?: Maybe<(
+      { __typename?: 'File' }
+      & Pick<File, 'id' | 'filename'>
+    )> }
+  )> }
+);

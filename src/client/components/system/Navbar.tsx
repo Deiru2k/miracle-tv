@@ -1,5 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import { BurgerMenuIcon } from "../icons/BurgerMenu";
 import { Sidebar } from "./Sidebar";
 import Link from "next/link";
@@ -26,6 +33,9 @@ export const Navbar = () => {
 
   const { user, logout } = useCurrentUser();
 
+  const bgColor = useColorModeValue("primary.400", "primary.500");
+  const color = useColorModeValue("text.light", "text.dark");
+
   return (
     <>
       <Flex
@@ -40,8 +50,8 @@ export const Navbar = () => {
           width="100%"
           align="center"
           position="sticky"
-          bgColor="primary.500"
-          color="white"
+          bgColor={bgColor}
+          color={color}
           p={5}
           height={16}
           boxShadow="0px 2px 26px -9px rgba(0,0,0,0.75)"
@@ -53,7 +63,7 @@ export const Navbar = () => {
               <IconButton
                 aria-label="Side Menu"
                 variant="link"
-                color="white"
+                color={color}
                 fontSize={35}
                 icon={<BurgerMenuIcon />}
                 onClick={toggleSidebar}
@@ -61,12 +71,13 @@ export const Navbar = () => {
               />
             )}
             <Heading
-              as={(props) => <Button {...props} kind="ghost" />}
+              as={(props) => <Button {...props} variant="ghost" />}
               textTransform="none"
               p={0}
               m={0}
               cursor="pointer"
               onClick={goToDefault}
+              color={color}
             >
               Miracle TV
             </Heading>

@@ -4,6 +4,7 @@ import { Box, Grid, Flex, GridItem, Heading, Text } from "@chakra-ui/layout";
 import { Button, ButtonGroup, Divider } from "@chakra-ui/react";
 import { StreamPreview } from "miracle-tv-client/components/ui/StreamPreview";
 import { useHomeChannelsQuery } from "miracle-tv-shared/hooks";
+import { Panel } from "miracle-tv-client/components/ui/Panel";
 
 gql`
   query HomeChannels {
@@ -22,7 +23,7 @@ const activeToday = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Home = () => {
   return (
-    <>
+    <Panel>
       {/*<Heading mb={4} width="100%" size="xl">
         Community Spotlight
       </Heading>
@@ -128,7 +129,7 @@ const Home = () => {
           </GridItem>
         ))}
       </Grid>
-    </>
+    </Panel>
   );
 };
 

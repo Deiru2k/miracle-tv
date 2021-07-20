@@ -1,13 +1,17 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { gql } from "@apollo/client";
 import { useCurrentUserFullLazyQuery } from "miracle-tv-shared/hooks";
-import { CurrentUserFullQuery } from "miracle-tv-shared/graphql";
+import { CurrentUserFullQuery, User } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { useRouter } from "next/dist/client/router";
+import { useDispatch, useSelector } from "react-redux";
+import { identity, path, prop, props } from "ramda";
+import { actions } from "miracle-tv-client/store/reducers";
 
 type CurrentUserInfo = CurrentUserFullQuery["self"];
 
 type LocalUserStorage = {
+  loading: boolean;
   expiresAt: Date;
   user: CurrentUserInfo;
 };
@@ -21,73 +25,63 @@ type CurrentUserHookReturn = {
 
 export const useCurrentUser = (): CurrentUserHookReturn => {
   const { push } = useRouter();
-  const [fakeLoading, setFakeLoading] = useState<boolean>(true);
-  const [currentUser, setCurrentUser] = useState<CurrentUserInfo | null>(null);
+
+  const state = useSelector((state: any) => {
+    return state.currentUser;
+  }) as LocalUserStorage | null;
+
+  const dispatch = useDispatch();
 
   const updateUser = useCallback(
     (user: CurrentUserInfo) => {
-      sessionStorage.setItem(
-        "user",
-        JSON.stringify({
-          expiresAt: DateTime.now().plus({ minutes: 30 }).toJSDate(),
-          user,
-        } as LocalUserStorage)
-      );
-      setCurrentUser(user);
-      setFakeLoading(false);
+      const newInfo = {
+        user,
+        expiresAt: DateTime.now().plus({ minutes: 15 }).toJSDate(),
+        loading: false,
+      };
+      localStorage.setItem("user", JSON.stringify(newInfo));
+      dispatch(actions.setUser(newInfo));
     },
-    [setCurrentUser]
+    [dispatch]
   );
 
-  const [loadUser, { loading }] = useCurrentUserFullLazyQuery({
+  const [loadUser, { loading: isUserLoading }] = useCurrentUserFullLazyQuery({
     onCompleted: ({ self }) => {
       updateUser(self);
     },
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token && !currentUser) {
-      let localUser: LocalUserStorage;
-      try {
-        localUser = JSON.parse(
-          sessionStorage.getItem("user")
-        ) as LocalUserStorage;
-      } catch {
-        console.error("Couldn't get local user from storage");
-      }
-      if (!localUser || !localUser?.expiresAt) {
-        loadUser();
-      } else if (localUser) {
-        const isExpired =
-          DateTime.fromJSDate(localUser.expiresAt).diffNow("seconds").seconds >
-          0;
-        if (isExpired) {
-          loadUser();
-        } else {
-          setCurrentUser(localUser.user);
-          setFakeLoading(false);
-        }
-      }
+    let user: CurrentUserInfo | null = null;
+    try {
+      user = JSON.parse(localStorage.getItem("user")) as CurrentUserInfo;
+      dispatch(actions.setUser(user));
+    } catch {
+      console.error("Error Restoring user");
     }
-  }, [currentUser, loadUser, setFakeLoading]);
+    if (!user) {
+      loadUser();
+    }
+  }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    setCurrentUser(null);
-    push("/");
-  }, [setCurrentUser]);
+  useEffect(() => {
+    if (state) {
+      const isExpired =
+        DateTime.fromJSDate(state?.expiresAt).diffNow("seconds").seconds > 0;
+      if (isExpired) loadUser();
+    }
+  }, [state]);
 
-  return useMemo(
-    () => ({
-      isUserLoading: loading || fakeLoading,
-      user: currentUser,
-      logout: logout,
-      updateUser,
-    }),
-    [currentUser, loading]
-  );
+  useEffect(() => {
+    dispatch(actions.setLoading(isUserLoading));
+  }, [isUserLoading, dispatch]);
+
+  return {
+    user: state?.user || null,
+    updateUser,
+    isUserLoading: state?.loading || false,
+    logout: () => {},
+  } as CurrentUserHookReturn;
 };
 
 export const CurrentUserFullFragment = gql`

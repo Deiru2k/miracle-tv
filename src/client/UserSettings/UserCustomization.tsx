@@ -15,6 +15,7 @@ export const UserCustomization = () => {
             name="avatar"
             aspectMaxH="100px"
             aspectMaxW="100px"
+            ratio={1}
           />
         </Box>
         <Flex flex={4} direction="column" align={["center", "unset"]}>

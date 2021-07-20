@@ -450,3 +450,55 @@ export function useSettingsUpdateUserMutation(baseOptions?: Apollo.MutationHookO
 export type SettingsUpdateUserMutationHookResult = ReturnType<typeof useSettingsUpdateUserMutation>;
 export type SettingsUpdateUserMutationResult = Apollo.MutationResult<Types.SettingsUpdateUserMutation>;
 export type SettingsUpdateUserMutationOptions = Apollo.BaseMutationOptions<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>;
+export const UserPageDocument = gql`
+    query UserPage($id: ID!) {
+  user(id: $id) {
+    id
+    username
+    displayName
+    emailHash
+    bio
+    singleUserMode
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    streamThumbnail {
+      id
+      filename
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserPageQuery__
+ *
+ * To run a query within a React component, call `useUserPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserPageQuery(baseOptions: Apollo.QueryHookOptions<Types.UserPageQuery, Types.UserPageQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(UserPageDocument, options);
+      }
+export function useUserPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserPageQuery, Types.UserPageQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(UserPageDocument, options);
+        }
+export type UserPageQueryHookResult = ReturnType<typeof useUserPageQuery>;
+export type UserPageLazyQueryHookResult = ReturnType<typeof useUserPageLazyQuery>;
+export type UserPageQueryResult = Apollo.QueryResult<Types.UserPageQuery, Types.UserPageQueryVariables>;

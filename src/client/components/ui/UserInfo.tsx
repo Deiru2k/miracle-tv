@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { gql } from "@apollo/client";
 import { useUserInfoLazyQuery } from "miracle-tv-shared/hooks";
+import { getMediaURL } from "miracle-tv-shared/media";
 
 type UserInfo = {
-  avatar: {
+  avatar?: {
     filename: string;
   };
   username: string;
-  displayName: string;
+  displayName?: string;
 };
 
 type Props = {
@@ -64,23 +65,25 @@ export const UserInfo = ({
       {!!user && (
         <>
           {!!user.avatar && (
-            <AspectRatio ratio={1} h={imageHeight} w={imageHeight}>
-              <Box
-                w="100%"
-                h="100%"
-                borderRadius="6px"
-                bgColor="secondary.600"
-                borderStyle="solid"
-                borderWidth="1px"
-                borderColor="secondary.400"
-              >
+            <Box
+              w="100%"
+              h="100%"
+              borderRadius="6px"
+              bgColor="secondary.600"
+              borderStyle="solid"
+              borderWidth="1px"
+              borderColor="secondary.400"
+            >
+              <AspectRatio ratio={1} h={imageHeight} w={imageHeight}>
                 <Image
+                  boxSizing="border-box"
+                  borderRadius="6px"
                   w="100%"
                   h="100%"
-                  src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${user.avatar.filename}`}
+                  src={`${getMediaURL(user.avatar.filename)}`}
                 />
-              </Box>
-            </AspectRatio>
+              </AspectRatio>
+            </Box>
           )}
           <Text as="span" ml={2}>
             {user.displayName || user.username}

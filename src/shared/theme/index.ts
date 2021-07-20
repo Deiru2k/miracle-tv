@@ -15,6 +15,10 @@ const theme = extendTheme({
   colors,
   components,
   breakpoints,
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  },
 });
 
 export default theme;

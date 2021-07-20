@@ -7,10 +7,12 @@ import {
   Skeleton,
   SkeletonText,
   Stack,
+  useColorModeValue,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
+import { Page } from "miracle-tv-client/components/system/Page";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { CurrentUserFullFragment } from "miracle-tv-client/hooks/auth";
 import { UserCustomization } from "miracle-tv-client/UserSettings/UserCustomization";
@@ -115,59 +117,33 @@ const UserSettingsPage = (): JSX.Element => {
     updateSelf({ variables: { input } });
   }, []);
 
+  const color = useColorModeValue("secondaryText.light", "secondaryText.dark");
+
   return (
     <>
       <AuthRedirect />
-      <Box bgColor="secondary.400" p={4} mb={4}>
+      <Panel w="100%" mb={4} px={7}>
         <Heading>My Settings</Heading>
-      </Box>
-      <Form<UpdateSelfInput> onSubmit={onSubmit} initialValues={updateUserData}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Flex direction={["column", "column", "row"]} px={4}>
-              <VStack w="100%" mr={[0, 0, 6]} mb={[4, 0]}>
-                <Box w="100%">
-                  <Heading mb={4}>My Profile</Heading>
-                  <Panel>
-                    <Loader isActive={userLoading} rows={6} rowHeight="30px">
-                      <UserEditForm />
-                    </Loader>
-                    <Button
-                      mt={4}
-                      type="submit"
-                      isLoading={mutationLoading}
-                      isDisabled={userLoading}
-                    >
-                      Save
-                    </Button>
-                  </Panel>
-                </Box>
-                <Box w="100%">
-                  <Heading mb={4}>My preferences</Heading>
-                  <Panel>
-                    <Loader isActive={userLoading} rows={3} rowHeight="30px">
-                      <UserPreferences />
-                      <Button
-                        mt={4}
-                        type="submit"
-                        isLoading={mutationLoading}
-                        isDisabled={userLoading}
-                      >
-                        Save
-                      </Button>
-                    </Loader>
-                  </Panel>
-                </Box>
-              </VStack>
-              <VStack
-                w={["100%", "100%", "50vh", "unset"]}
-                flex={[1, 1, "unset", 1]}
+      </Panel>
+      <Page>
+        <Form<UpdateSelfInput>
+          onSubmit={onSubmit}
+          initialValues={updateUserData}
+        >
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <Flex
+                direction={["column", "column", "row"]}
+                px={4}
+                color={color}
               >
-                <Box w="545px">
-                  <Heading mb={4}>Customization</Heading>
-                  <Panel>
-                    <Loader isActive={userLoading} rows={12} rowHeight="30px">
-                      <UserCustomization />
+                <VStack w="100%" mr={[0, 0, 6]} mb={[4, 0]}>
+                  <Box w="100%">
+                    <Heading mb={4}>My Profile</Heading>
+                    <Panel>
+                      <Loader isActive={userLoading} rows={6} rowHeight="30px">
+                        <UserEditForm />
+                      </Loader>
                       <Button
                         mt={4}
                         type="submit"
@@ -176,14 +152,51 @@ const UserSettingsPage = (): JSX.Element => {
                       >
                         Save
                       </Button>
-                    </Loader>
-                  </Panel>
-                </Box>
-              </VStack>
-            </Flex>
-          </form>
-        )}
-      </Form>
+                    </Panel>
+                  </Box>
+                  <Box w="100%">
+                    <Heading mb={4}>My preferences</Heading>
+                    <Panel>
+                      <Loader isActive={userLoading} rows={3} rowHeight="30px">
+                        <UserPreferences />
+                        <Button
+                          mt={4}
+                          type="submit"
+                          isLoading={mutationLoading}
+                          isDisabled={userLoading}
+                        >
+                          Save
+                        </Button>
+                      </Loader>
+                    </Panel>
+                  </Box>
+                </VStack>
+                <VStack
+                  w={["100%", "100%", "50vh", "unset"]}
+                  flex={[1, 1, "unset", 1]}
+                >
+                  <Box w="545px">
+                    <Heading mb={4}>Customization</Heading>
+                    <Panel>
+                      <Loader isActive={userLoading} rows={12} rowHeight="30px">
+                        <UserCustomization />
+                        <Button
+                          mt={4}
+                          type="submit"
+                          isLoading={mutationLoading}
+                          isDisabled={userLoading}
+                        >
+                          Save
+                        </Button>
+                      </Loader>
+                    </Panel>
+                  </Box>
+                </VStack>
+              </Flex>
+            </form>
+          )}
+        </Form>
+      </Page>
     </>
   );
 };

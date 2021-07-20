@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 import {
   AspectRatio,
   Box,
+  Button,
   Flex,
   FlexProps,
   Heading,
@@ -10,6 +11,7 @@ import {
   Image,
   ResponsiveValue,
   Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   useGetFileForUploaderQuery,
@@ -17,6 +19,7 @@ import {
 } from "miracle-tv-shared/hooks";
 import { useField } from "react-final-form";
 import { AttachmentIcon, CloseIcon } from "@chakra-ui/icons";
+import { getMediaURL } from "miracle-tv-shared/media";
 
 gql`
   query GetFileForUploader($id: ID!) {
@@ -80,6 +83,9 @@ export const ImageUploader = ({
     inputRef.current?.click();
   }, [inputRef.current]);
 
+  const bgColor = useColorModeValue("transparent", "secondary.600");
+  const color = useColorModeValue("primary.300", "primary.400");
+
   return (
     <Flex
       direction="column"
@@ -89,31 +95,48 @@ export const ImageUploader = ({
       {...flexProps}
     >
       {!fileInfo && !(loading || fileUploading) && (
-        <AspectRatio
-          w="100%"
-          ratio={ratio}
-          mb={4}
-          maxW={aspectMaxW}
-          maxH={aspectMaxH}
-        >
-          <Flex
-            w={aspectMaxW || "100%"}
-            h={aspectMaxW || "100%"}
-            cursor="pointer"
-            aria-label="Choose file to upload"
-            onClick={openUpload}
-            justify="center"
-            align="center"
-            direction="column"
-            backgroundColor="secondary.600"
-            borderRadius="4px"
+        <>
+          <AspectRatio
+            w="100%"
+            ratio={ratio}
+            mb={2}
+            maxW={aspectMaxW}
+            maxH={aspectMaxH}
           >
-            <Heading size="sm" mb={2}>
-              Upload
-            </Heading>
-            <AttachmentIcon size="lg" w="45%" h="45%" color="primary.200" />
-          </Flex>
-        </AspectRatio>
+            <Flex
+              w={aspectMaxW || "100%"}
+              h={aspectMaxW || "100%"}
+              cursor="pointer"
+              aria-label="Choose file to upload"
+              onClick={openUpload}
+              justify="center"
+              align="center"
+              direction="column"
+              borderRadius={8}
+              borderWidth="3px"
+              borderStyle="dashed"
+              borderColor={color}
+              bgColor={bgColor}
+            >
+              <Heading size="sm" mb={2} color={color}>
+                Upload
+              </Heading>
+              <AttachmentIcon size="lg" w="45%" h="45%" color={color} />
+            </Flex>
+          </AspectRatio>
+          <Box mb={4}>
+            <Button
+              size="xs"
+              mt={0}
+              variant="link"
+              color={color}
+              onClick={openUpload}
+            >
+              <AttachmentIcon size="lg" color={color} mr={1} />
+              Select File
+            </Button>
+          </Box>
+        </>
       )}
       {!fileInfo && (loading || fileUploading) && (
         <AspectRatio
@@ -123,12 +146,7 @@ export const ImageUploader = ({
           maxW={aspectMaxW}
           maxH={aspectMaxH}
         >
-          <Box
-            w="100%"
-            h="100%"
-            backgroundColor="secondary.600"
-            borderRadius="4px"
-          >
+          <Box w="100%" h="100%" bgColor={bgColor} borderRadius="4px">
             <Spinner color="primary.200" size="xl" />
           </Box>
         </AspectRatio>
@@ -143,12 +161,13 @@ export const ImageUploader = ({
             maxH={aspectMaxH}
           >
             <Image
-              src={`${process.env.NEXT_PUBLIC_MEDIA_URL}/${fileInfo.filename}`}
+              src={`${getMediaURL(fileInfo.filename)}`}
               borderRadius={8}
               boxSizing="border-box"
               borderWidth="3px"
               borderStyle="dashed"
-              borderColor="primary.200"
+              borderColor={color}
+              backgroundColor={bgColor}
             />
           </AspectRatio>
           <Box>
@@ -161,7 +180,7 @@ export const ImageUploader = ({
             />
             <IconButton
               variant="link"
-              color="primary.200"
+              color={color}
               aria-label="Upload New"
               onClick={openUpload}
               icon={<AttachmentIcon />}

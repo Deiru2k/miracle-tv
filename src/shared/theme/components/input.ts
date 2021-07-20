@@ -1,24 +1,26 @@
-import cn from "classnames";
+import { mode, transparentize } from "@chakra-ui/theme-tools";
 
 export const inputStyles = {
   variants: {
-    solid: ({ colorScheme }: any) => {
+    solid: (props: any) => {
+      const bgColor = mode("white", "secondary.600")(props);
+      const borderColor = mode("primary.400", "primary.500")(props);
+      const shadowColor = transparentize(
+        mode("primary.100", "primary.200")(props),
+        mode(0.9, 0.4)(props)
+      )(props.theme);
+      const color = mode("secondaryText.light", "secondaryText.dark")(props);
       return {
         field: {
-          bgColor: cn({
-            "secondary.400": colorScheme === "secondary",
-            "secondary.600": colorScheme === "primary",
-          }),
+          bgColor,
+          borderColor,
+          color,
           borderRadius: "4px",
           borderWidth: "2px",
           borderStyle: "solid",
-          borderColor: cn({
-            "primary.500": colorScheme === "primary",
-            "secondary.400": colorScheme === "secondary",
-          }),
-          color: cn({
-            white: colorScheme === "primary" || colorScheme === "secondary",
-          }),
+          _focus: {
+            boxShadow: `1px 1px 10px 1px ${shadowColor} inset`,
+          },
         },
       };
     },

@@ -1,6 +1,13 @@
 import React, { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { AspectRatio, Box, Flex, FlexProps, Text } from "@chakra-ui/react";
+import {
+  AspectRatio,
+  Box,
+  Flex,
+  FlexProps,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import {
   PlaybackActions,
   Player as PlayerType,
@@ -44,6 +51,8 @@ export const StreamPreview = ({
 }: Props) => {
   const [showThumbnail, setShowThumbnail] = useState<boolean>(true);
   const [playerControls, setPlayerControls] = useState<Controls | null>(null);
+
+  const bgColor = useColorModeValue("primary.400", "secondary.400");
 
   const enablePlayback = useCallback(() => {
     if (!autoplay) {
@@ -110,7 +119,7 @@ export const StreamPreview = ({
             }}
           >
             <Flex zIndex={3}>
-              <Box bgColor="secondary.400" px={2} py={1}>
+              <Box bgColor={bgColor} px={2} py={1}>
                 <Text as="span" color="red">
                   ●
                 </Text>
@@ -118,7 +127,7 @@ export const StreamPreview = ({
               </Box>
             </Flex>
             <Flex zIndex={3} justify="flex-end">
-              <Box bgColor="secondary.400" px={2} py={1}>
+              <Box bgColor={bgColor} px={2} py={1}>
                 <UserInfo user={user} />
               </Box>
             </Flex>

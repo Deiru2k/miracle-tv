@@ -20,6 +20,7 @@ type Props = {
   kind?: PlayerKind;
   autoplay?: boolean;
   mute?: boolean;
+  zIndex?: number;
   onPlaybackActionsReady?: (actions: PlaybackActions) => void;
 };
 
@@ -27,6 +28,7 @@ export const Player = ({
   src,
   w = "100%",
   h = "100%",
+  zIndex,
   autoplay = false,
   onPlaybackActionsReady,
 }: Props) => {
@@ -57,7 +59,7 @@ export const Player = ({
           }
         `}
       />
-      <Flex w={w} h={h}>
+      <Flex w={w} h={h} zIndex={zIndex}>
         <ReactPlayer
           url={src}
           width="100%"
