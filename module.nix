@@ -13,6 +13,10 @@ in {
         type = types.str;
         default = "MiracleTV";
       };
+      dataDir = mkOption {
+        type = types.str;
+        default = "/var/miracle-tv";
+      };
       enableNginx = mkEnableOption "Enable Nginx Management";
       url = mkOption {
         type = types.str;
@@ -67,6 +71,9 @@ in {
           extraConfig = ''
             proxy_pass_request_headers on;
           '';
+        };
+        locations."/media" = {
+          root = "${dataDir}";
         };
         locations."/api/" = {
           proxyPass = "http://localhost:${toString cfg.settings.server.port}/";
