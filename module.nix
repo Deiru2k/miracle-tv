@@ -62,7 +62,6 @@ in {
       "${cfg.settings.url}" = {
         enableACME = true;
         forceSSL = true;
-        root = "${coffeeServer}/client";
         locations."/" = {
           proxyPass = "http://localhost:${toString cfg.settings.client.port}/";
           extraConfig = ''
