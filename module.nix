@@ -73,7 +73,7 @@ in {
           '';
         };
         locations."/media" = {
-          root = "${dataDir}";
+          root = "${cfg.settings.dataDir}";
         };
         locations."/api/" = {
           proxyPass = "http://localhost:${toString cfg.settings.server.port}/";
