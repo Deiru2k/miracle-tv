@@ -9,6 +9,10 @@ in {
   options.services.miracle-tv = {
     enable = mkEnableOption "Miracle TV server";
     settings = {
+      nodeEnv = mkOption {
+        type = types.str;
+        default = "production";
+      };
       name = mkOption {
         type = types.str;
         default = "MiracleTV";
@@ -85,11 +89,11 @@ in {
     };
     systemd.services.miracle-tv = {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.ExecStart = "${miracle-tv}/bin/server ${configFile}";
+      serviceConfig.ExecStart = "NODE_ENV=${config.settings.nodeEnv} ${miracle-tv}/bin/server ${configFile}";
     };
     systemd.services.miracle-tv-frontend = {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
+      serviceConfig.ExecStart = "NODE_ENV=${config.settings.nodeEnv} ${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
     };
   };
 }
