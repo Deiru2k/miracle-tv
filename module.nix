@@ -89,7 +89,7 @@ in {
     };
     systemd.services.miracle-tv-frontend = {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -h ${cfg.settings.client.hostname}";
+      serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
     };
   };
 }
