@@ -90,14 +90,14 @@ in {
     systemd.services.miracle-tv = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig.ExecStart = "${miracle-tv}/bin/server ${configFile}";
-      environment = mkOption {
+      environment = {
         NODE_ENV = cfg.settings.nodeEnv;
       };
     };
     systemd.services.miracle-tv-frontend = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
-      environment = mkOption {
+      environment = {
         NODE_ENV = cfg.settings.nodeEnv;
       };
     };
