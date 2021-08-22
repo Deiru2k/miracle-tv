@@ -117,7 +117,7 @@ export const graphqlEndpoint = new ApolloServer({
   typeDefs: schema,
   resolvers,
   introspection: true,
-  playground: false,
+  playground: true,
   context: async ({ req }) => {
     const con = await connection;
     const db = {
