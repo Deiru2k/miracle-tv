@@ -19,11 +19,11 @@ export const userMutations: UserMutationResolvers = {
     const id = user?.id;
     return users.updateUser({ id, ...input });
   },
-  async updateUser(_, { input }, { db: { users }, user }) {
+  async updateUser(_, { input }, { db: { users }, user, userRoles }) {
     if (!user) {
       throw new AuthenticationError();
     }
-    const hasRight = checkRight(user.roles, AccessUnit.Write, "users");
+    const hasRight = checkRight(userRoles, AccessUnit.Write, "users");
     if (!hasRight && input.id !== user.id) {
       throw new AuthorizationError();
     }
