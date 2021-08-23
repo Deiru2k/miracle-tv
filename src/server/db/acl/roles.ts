@@ -76,9 +76,6 @@ export const checkRight = (
   unit: AccessUnit,
   subject: string
 ) => {
-  if(!roles) {
-    return false
-  }
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
   return any(
     (right: AccessUnit) => right === unit,
