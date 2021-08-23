@@ -57,6 +57,7 @@ import {
 import { fileMutations } from "./mutations/file";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { fileResolvers } from "./resolvers/file";
+import { red } from "chalk";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -118,6 +119,13 @@ export const graphqlEndpoint = new ApolloServer({
   resolvers,
   introspection: true,
   playground: true,
+  formatError: (err) => {
+    if(err.extensions.code === 'INTERNAL_SERVER_ERROR') {
+      console.error(red`There was an internal server error while handling a request:`)
+      console.log(err.originalError)
+    }
+    return err
+  },
   context: async ({ req }) => {
     const con = await connection;
     const db = {

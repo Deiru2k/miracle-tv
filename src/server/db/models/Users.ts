@@ -15,6 +15,7 @@ import {
   NotFoundError,
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
+import { hash } from "bcrypt";
 
 type UsersFilter = Partial<Record<keyof DbUser, any>>;
 
@@ -26,7 +27,7 @@ export class UsersModel extends Model {
   }
 
   async createUserSafe({ password, ...input }: CreateUserInput): Promise<User> {
-    const saltedPassword = `salted+${password}`;
+    const hashed = await hash(password, 11);
     const dbUsers = await this.getUsers({ username: input.username });
     const dbEmails = await this.getUsers({ email: input.email });
     if (dbUsers.length > 0) {
@@ -36,7 +37,7 @@ export class UsersModel extends Model {
       throw new EmailExistsError();
     }
     return (await this.table
-      .insert({ password: saltedPassword, ...input, singleUserMode: false })
+      .insert({ password: hashed, ...input, singleUserMode: false })
       .run(this.conn)
       .then(async (result) => {
         const key = head(result.generated_keys);
