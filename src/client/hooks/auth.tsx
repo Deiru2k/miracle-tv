@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { gql } from "@apollo/client";
-import { useCurrentUserFullLazyQuery } from "miracle-tv-shared/hooks";
+import { useCurrentUserFullLazyQuery, useCurrentUserFullQuery } from "miracle-tv-shared/hooks";
 import { CurrentUserFullQuery, User } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { useRouter } from "next/dist/client/router";
@@ -18,6 +18,7 @@ type LocalUserStorage = {
 
 type CurrentUserHookReturn = {
   isUserLoading: boolean;
+  isUserCalled: boolean;
   user: CurrentUserInfo;
   logout: () => void;
   updateUser: (user: CurrentUserInfo) => void;
@@ -26,63 +27,24 @@ type CurrentUserHookReturn = {
 export const useCurrentUser = (): CurrentUserHookReturn => {
   const { push } = useRouter();
 
-  const state = useSelector((state: any) => {
-    return state.currentUser;
-  }) as LocalUserStorage | null;
-
-  const dispatch = useDispatch();
-
-  const updateUser = useCallback(
-    (user: CurrentUserInfo) => {
-      const newInfo = {
-        user,
-        expiresAt: DateTime.now().plus({ minutes: 15 }).toJSDate(),
-        loading: false,
-      };
-      localStorage.setItem("user", JSON.stringify(newInfo));
-      dispatch(actions.setUser(newInfo));
-    },
-    [dispatch]
-  );
-
-  const [loadUser, { loading: isUserLoading }] = useCurrentUserFullLazyQuery({
-    onCompleted: ({ self }) => {
-      updateUser(self);
-    },
-  });
-
-  useEffect(() => {
-    let user: CurrentUserInfo | null = null;
-    try {
-      user = JSON.parse(localStorage.getItem("user")) as CurrentUserInfo;
-      dispatch(actions.setUser(user));
-    } catch {
-      console.error("Error Restoring user");
-    }
-    if (!user) {
-      loadUser();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (state) {
-      const isExpired =
-        DateTime.fromJSDate(state?.expiresAt).diffNow("seconds").seconds > 0;
-      if (isExpired) loadUser();
-    }
-  }, [state]);
-
-  useEffect(() => {
-    dispatch(actions.setLoading(isUserLoading));
-  }, [isUserLoading, dispatch]);
+  const { data: { self } = {}, loading: isUserLoading, called: isUserCalled, refetch: loadUser } =
+    useCurrentUserFullQuery({
+    });
 
   return {
-    user: state?.user || null,
-    updateUser,
-    isUserLoading: state?.loading || false,
+    user: self || null,
+    isUserLoading: isUserLoading,
+    isUserCalled,
     logout: () => {},
   } as CurrentUserHookReturn;
 };
+
+export const signOut = () => {
+  localStorage.removeItem("token");
+  if (global.window) {
+    window.location.replace("/auth/login");
+  }
+}
 
 export const CurrentUserFullFragment = gql`
   fragment CurrentUser on User {
@@ -91,7 +53,6 @@ export const CurrentUserFullFragment = gql`
     displayName
     emailHash
     bio
-    singleUserMode
     emailHash
     avatar {
       id

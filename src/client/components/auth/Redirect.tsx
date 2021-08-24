@@ -3,10 +3,10 @@ import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 
 type Props = {
-  roles?: string[];
+  children: React.ReactNode | React.ReactNode[]
 };
 
-export const AuthRedirect = (_props: Props): null => {
+export const AuthRedirect = ({ children }: Props) => {
   const { push } = useRouter();
   const { user, isUserLoading } = useCurrentUser();
 
@@ -16,5 +16,9 @@ export const AuthRedirect = (_props: Props): null => {
     }
   }, [isUserLoading, user, push]);
 
-  return null;
+  return !isUserLoading && !!user && (
+    <>
+      {children}
+    </>
+  );
 };

@@ -7,9 +7,11 @@ import { InputProps } from "@chakra-ui/react";
 
 type Props = {
   name: string;
+  placeholder?: string;
   label?: string;
   error?: string;
   type?: string;
+  hideLabel?: boolean;
   inputProps?: InputProps;
 } & FormControlProps &
   FormGroupChakraProps;
@@ -18,13 +20,15 @@ export const FormInput = ({
   name,
   type: inputType,
   inputProps,
+  placeholder,
   ...formGroupProps
 }: Props) => {
   const { input } = useField(name);
+  const inputPlaceholder = formGroupProps.hideLabel && formGroupProps.label ? formGroupProps.label : placeholder;
 
   return (
     <FormGroup name={name} {...formGroupProps}>
-      <Input {...input} type={inputType} {...inputProps} />
+      <Input {...input} aria-label={formGroupProps.label} placeholder={inputPlaceholder} type={inputType} {...inputProps} />
     </FormGroup>
   );
 };

@@ -6,7 +6,6 @@ import Head from "next/head";
 import { any, propOr } from "ramda";
 
 import theme from "miracle-tv-shared/theme";
-import { Navbar } from "miracle-tv-client/components/system/Navbar";
 import React from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
@@ -14,6 +13,7 @@ import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { Provider } from "react-redux";
 import configureStore from "miracle-tv-client/store";
+import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
 
 const { store, persistor } = configureStore();
 
@@ -27,6 +27,7 @@ const apiUrls: Record<string, string> = {
 
 const defaultURI: string =
   process.env.NEXT_PUBLIC_API_URL || propOr(apiUrls.local, env, apiUrls);
+
 
 const uploadLink = createUploadLink({
   uri: defaultURI,
@@ -49,7 +50,7 @@ const client = new ApolloClient({
   link: authLink.concat(uploadLink),
 });
 
-const noNavbarRoutes = ["/auth/login", "/docs"];
+const noNavbarRoutes = ["/auth/login", "/docs", "/"];
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
   const router = useRouter();
@@ -81,7 +82,6 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           <ApolloProvider client={client}>
             {!isShowcase && (
               <Flex h="100%" w="100%" direction="column">
-                {showNavbar && <Navbar />}
                 <PageWrapper>
                   <Component {...pageProps} />
                 </PageWrapper>
@@ -92,6 +92,9 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
                 <Component {...pageProps} />
               </ShowcaseWrapper>
             )}
+            <Box position="fixed" right={0} bottom={0} pb={4} pr={4}>
+              <ThemeSwitcher />
+            </Box>
           </ApolloProvider>
         </Provider>
       </ChakraProvider>

@@ -1,27 +1,17 @@
 const colors = {
   white: "#FFFFFF",
   black: "#000000",
-  text: {
-    dark: "white",
-    light: "white",
-  },
-  secondaryText: {
-    dark: "white",
-    light: "#275431",
+  background: {
+    dark: "#1a202c",
+    light: "#FFFFFF",
   },
   primary: {
-    100: "#b8ffc8",
-    200: "#51DB70",
-    300: "#62C177",
-    400: "#3D854D",
+    200: "#62BC7F",
     500: "#2E633A",
-    600: "#275431",
   },
   secondary: {
-    200: "#FDFEFE",
-    300: "#E1F5F5",
-    400: "#455A75",
-    600: "#2D3B4C",
+    200: "#8296C0",
+    500: "#1a202c",
   },
 } as const;
 

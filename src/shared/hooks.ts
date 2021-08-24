@@ -10,7 +10,6 @@ export const CurrentUserFragmentDoc = gql`
   displayName
   emailHash
   bio
-  singleUserMode
   emailHash
   avatar {
     id
@@ -207,8 +206,8 @@ export type CurrentUserFullQueryHookResult = ReturnType<typeof useCurrentUserFul
 export type CurrentUserFullLazyQueryHookResult = ReturnType<typeof useCurrentUserFullLazyQuery>;
 export type CurrentUserFullQueryResult = Apollo.QueryResult<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>;
 export const SignInDocument = gql`
-    mutation SignIn($input: SignInInput!) {
-  signIn(input: $input) {
+    mutation SignIn($username: String!, $password: String!) {
+  signIn(input: {username: $username, password: $password}) {
     token
     expiresAt
   }
@@ -229,7 +228,8 @@ export type SignInMutationFn = Apollo.MutationFunction<Types.SignInMutation, Typ
  * @example
  * const [signInMutation, { data, loading, error }] = useSignInMutation({
  *   variables: {
- *      input: // value for 'input'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
  *   },
  * });
  */
@@ -240,265 +240,39 @@ export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<Types
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<Types.SignInMutation>;
 export type SignInMutationOptions = Apollo.BaseMutationOptions<Types.SignInMutation, Types.SignInMutationVariables>;
-export const LoginSelfInfoDocument = gql`
-    query LoginSelfInfo {
-  self {
+export const SignUpDocument = gql`
+    mutation SignUp($username: String!, $password: String!, $email: String!) {
+  signUp(input: {username: $username, password: $password, email: $email}) {
+    id
     username
-    displayName
-    emailHash
-    singleUserMode
-    roles {
-      name
-    }
-    channels {
-      id
-      activity {
-        name
-      }
-      slug
-      name
-    }
   }
 }
     `;
+export type SignUpMutationFn = Apollo.MutationFunction<Types.SignUpMutation, Types.SignUpMutationVariables>;
 
 /**
- * __useLoginSelfInfoQuery__
+ * __useSignUpMutation__
  *
- * To run a query within a React component, call `useLoginSelfInfoQuery` and pass it any options that fit your needs.
- * When your component renders, `useLoginSelfInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLoginSelfInfoQuery({
- *   variables: {
- *   },
- * });
- */
-export function useLoginSelfInfoQuery(baseOptions?: Apollo.QueryHookOptions<Types.LoginSelfInfoQuery, Types.LoginSelfInfoQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.LoginSelfInfoQuery, Types.LoginSelfInfoQueryVariables>(LoginSelfInfoDocument, options);
-      }
-export function useLoginSelfInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.LoginSelfInfoQuery, Types.LoginSelfInfoQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.LoginSelfInfoQuery, Types.LoginSelfInfoQueryVariables>(LoginSelfInfoDocument, options);
-        }
-export type LoginSelfInfoQueryHookResult = ReturnType<typeof useLoginSelfInfoQuery>;
-export type LoginSelfInfoLazyQueryHookResult = ReturnType<typeof useLoginSelfInfoLazyQuery>;
-export type LoginSelfInfoQueryResult = Apollo.QueryResult<Types.LoginSelfInfoQuery, Types.LoginSelfInfoQueryVariables>;
-export const DashboardDocument = gql`
-    query Dashboard {
-  self {
-    channels {
-      id
-      name
-      slug
-      description
-      activity {
-        id
-        name
-        icon
-        image
-        verb
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useDashboardQuery__
- *
- * To run a query within a React component, call `useDashboardQuery` and pass it any options that fit your needs.
- * When your component renders, `useDashboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useDashboardQuery({
- *   variables: {
- *   },
- * });
- */
-export function useDashboardQuery(baseOptions?: Apollo.QueryHookOptions<Types.DashboardQuery, Types.DashboardQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.DashboardQuery, Types.DashboardQueryVariables>(DashboardDocument, options);
-      }
-export function useDashboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.DashboardQuery, Types.DashboardQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.DashboardQuery, Types.DashboardQueryVariables>(DashboardDocument, options);
-        }
-export type DashboardQueryHookResult = ReturnType<typeof useDashboardQuery>;
-export type DashboardLazyQueryHookResult = ReturnType<typeof useDashboardLazyQuery>;
-export type DashboardQueryResult = Apollo.QueryResult<Types.DashboardQuery, Types.DashboardQueryVariables>;
-export const HomeChannelsDocument = gql`
-    query HomeChannels {
-  channels {
-    name
-    activity {
-      name
-    }
-    description
-  }
-}
-    `;
-
-/**
- * __useHomeChannelsQuery__
- *
- * To run a query within a React component, call `useHomeChannelsQuery` and pass it any options that fit your needs.
- * When your component renders, `useHomeChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useHomeChannelsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useHomeChannelsQuery(baseOptions?: Apollo.QueryHookOptions<Types.HomeChannelsQuery, Types.HomeChannelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.HomeChannelsQuery, Types.HomeChannelsQueryVariables>(HomeChannelsDocument, options);
-      }
-export function useHomeChannelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.HomeChannelsQuery, Types.HomeChannelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.HomeChannelsQuery, Types.HomeChannelsQueryVariables>(HomeChannelsDocument, options);
-        }
-export type HomeChannelsQueryHookResult = ReturnType<typeof useHomeChannelsQuery>;
-export type HomeChannelsLazyQueryHookResult = ReturnType<typeof useHomeChannelsLazyQuery>;
-export type HomeChannelsQueryResult = Apollo.QueryResult<Types.HomeChannelsQuery, Types.HomeChannelsQueryVariables>;
-export const UserSettingsFormDataDocument = gql`
-    query UserSettingsFormData {
-  self {
-    displayName
-    bio
-    singleUserMode
-    avatar {
-      id
-    }
-    header {
-      id
-    }
-    streamThumbnail {
-      id
-    }
-  }
-}
-    `;
-
-/**
- * __useUserSettingsFormDataQuery__
- *
- * To run a query within a React component, call `useUserSettingsFormDataQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserSettingsFormDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserSettingsFormDataQuery({
- *   variables: {
- *   },
- * });
- */
-export function useUserSettingsFormDataQuery(baseOptions?: Apollo.QueryHookOptions<Types.UserSettingsFormDataQuery, Types.UserSettingsFormDataQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsFormDataQuery, Types.UserSettingsFormDataQueryVariables>(UserSettingsFormDataDocument, options);
-      }
-export function useUserSettingsFormDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsFormDataQuery, Types.UserSettingsFormDataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsFormDataQuery, Types.UserSettingsFormDataQueryVariables>(UserSettingsFormDataDocument, options);
-        }
-export type UserSettingsFormDataQueryHookResult = ReturnType<typeof useUserSettingsFormDataQuery>;
-export type UserSettingsFormDataLazyQueryHookResult = ReturnType<typeof useUserSettingsFormDataLazyQuery>;
-export type UserSettingsFormDataQueryResult = Apollo.QueryResult<Types.UserSettingsFormDataQuery, Types.UserSettingsFormDataQueryVariables>;
-export const SettingsUpdateUserDocument = gql`
-    mutation SettingsUpdateUser($input: UpdateSelfInput!) {
-  updateSelf(input: $input) {
-    ...CurrentUser
-  }
-}
-    ${CurrentUserFragmentDoc}`;
-export type SettingsUpdateUserMutationFn = Apollo.MutationFunction<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>;
-
-/**
- * __useSettingsUpdateUserMutation__
- *
- * To run a mutation, you first call `useSettingsUpdateUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSettingsUpdateUserMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [settingsUpdateUserMutation, { data, loading, error }] = useSettingsUpdateUserMutation({
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
  *   variables: {
- *      input: // value for 'input'
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *      email: // value for 'email'
  *   },
  * });
  */
-export function useSettingsUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>) {
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<Types.SignUpMutation, Types.SignUpMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>(SettingsUpdateUserDocument, options);
+        return Apollo.useMutation<Types.SignUpMutation, Types.SignUpMutationVariables>(SignUpDocument, options);
       }
-export type SettingsUpdateUserMutationHookResult = ReturnType<typeof useSettingsUpdateUserMutation>;
-export type SettingsUpdateUserMutationResult = Apollo.MutationResult<Types.SettingsUpdateUserMutation>;
-export type SettingsUpdateUserMutationOptions = Apollo.BaseMutationOptions<Types.SettingsUpdateUserMutation, Types.SettingsUpdateUserMutationVariables>;
-export const UserPageDocument = gql`
-    query UserPage($id: ID!) {
-  user(id: $id) {
-    id
-    username
-    displayName
-    emailHash
-    bio
-    singleUserMode
-    avatar {
-      id
-      filename
-    }
-    header {
-      id
-      filename
-    }
-    streamThumbnail {
-      id
-      filename
-    }
-  }
-}
-    `;
-
-/**
- * __useUserPageQuery__
- *
- * To run a query within a React component, call `useUserPageQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserPageQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUserPageQuery(baseOptions: Apollo.QueryHookOptions<Types.UserPageQuery, Types.UserPageQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(UserPageDocument, options);
-      }
-export function useUserPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserPageQuery, Types.UserPageQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(UserPageDocument, options);
-        }
-export type UserPageQueryHookResult = ReturnType<typeof useUserPageQuery>;
-export type UserPageLazyQueryHookResult = ReturnType<typeof useUserPageLazyQuery>;
-export type UserPageQueryResult = Apollo.QueryResult<Types.UserPageQuery, Types.UserPageQueryVariables>;
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<Types.SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<Types.SignUpMutation, Types.SignUpMutationVariables>;

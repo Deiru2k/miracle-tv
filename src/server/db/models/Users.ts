@@ -37,7 +37,7 @@ export class UsersModel extends Model {
       throw new EmailExistsError();
     }
     return (await this.table
-      .insert({ password: hashed, ...input, singleUserMode: false })
+      .insert({ ...input, password: hashed, roles: ["user"], singleUserMode: false })
       .run(this.conn)
       .then(async (result) => {
         const key = head(result.generated_keys);

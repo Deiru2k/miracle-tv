@@ -816,7 +816,7 @@ export type UserInfoQuery = (
 
 export type CurrentUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio' | 'singleUserMode'>
+  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio'>
   & { avatar?: Maybe<(
     { __typename?: 'File' }
     & Pick<File, 'id' | 'filename'>
@@ -864,7 +864,8 @@ export type CurrentUserFullQuery = (
 );
 
 export type SignInMutationVariables = Exact<{
-  input: SignInInput;
+  username: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -876,114 +877,17 @@ export type SignInMutation = (
   )> }
 );
 
-export type LoginSelfInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LoginSelfInfoQuery = (
-  { __typename?: 'Query' }
-  & { self: (
-    { __typename?: 'User' }
-    & Pick<User, 'username' | 'displayName' | 'emailHash' | 'singleUserMode'>
-    & { roles: Array<Maybe<(
-      { __typename?: 'Role' }
-      & Pick<Role, 'name'>
-    )>>, channels: Array<Maybe<(
-      { __typename?: 'Channel' }
-      & Pick<Channel, 'id' | 'slug' | 'name'>
-      & { activity?: Maybe<(
-        { __typename?: 'Activity' }
-        & Pick<Activity, 'name'>
-      )> }
-    )>> }
-  ) }
-);
-
-export type DashboardQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DashboardQuery = (
-  { __typename?: 'Query' }
-  & { self: (
-    { __typename?: 'User' }
-    & { channels: Array<Maybe<(
-      { __typename?: 'Channel' }
-      & Pick<Channel, 'id' | 'name' | 'slug' | 'description'>
-      & { activity?: Maybe<(
-        { __typename?: 'Activity' }
-        & Pick<Activity, 'id' | 'name' | 'icon' | 'image' | 'verb'>
-      )> }
-    )>> }
-  ) }
-);
-
-export type HomeChannelsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type HomeChannelsQuery = (
-  { __typename?: 'Query' }
-  & { channels: Array<Maybe<(
-    { __typename?: 'Channel' }
-    & Pick<Channel, 'name' | 'description'>
-    & { activity?: Maybe<(
-      { __typename?: 'Activity' }
-      & Pick<Activity, 'name'>
-    )> }
-  )>> }
-);
-
-export type UserSettingsFormDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UserSettingsFormDataQuery = (
-  { __typename?: 'Query' }
-  & { self: (
-    { __typename?: 'User' }
-    & Pick<User, 'displayName' | 'bio' | 'singleUserMode'>
-    & { avatar?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id'>
-    )>, header?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id'>
-    )>, streamThumbnail?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id'>
-    )> }
-  ) }
-);
-
-export type SettingsUpdateUserMutationVariables = Exact<{
-  input: UpdateSelfInput;
+export type SignUpMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
-export type SettingsUpdateUserMutation = (
+export type SignUpMutation = (
   { __typename?: 'Mutation' }
-  & { updateSelf: (
+  & { signUp: (
     { __typename?: 'User' }
-    & CurrentUserFragment
+    & Pick<User, 'id' | 'username'>
   ) }
-);
-
-export type UserPageQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type UserPageQuery = (
-  { __typename?: 'Query' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio' | 'singleUserMode'>
-    & { avatar?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id' | 'filename'>
-    )>, header?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id' | 'filename'>
-    )>, streamThumbnail?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'id' | 'filename'>
-    )> }
-  )> }
 );
