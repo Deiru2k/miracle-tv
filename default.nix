@@ -31,7 +31,6 @@ in mkYarnPackage rec {
     cp -R ./dist/server/* $out/server/
     mkdir -p $out/server/graphql
     cp -R src/server/graphql/schema/* $out/server/graphql/
-    cp package.json $out/server/package.json
     makeWrapper ${nodePkg}/bin/node $out/bin/server \
       --add-flags "$out/server/index.js" \
       --set node_modules $node_modules \
