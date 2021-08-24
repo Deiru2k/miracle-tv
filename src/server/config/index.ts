@@ -16,6 +16,7 @@ export type Config = {
   name?: string;
   domain?: string;
   dataDir?: string;
+  pathPrefix?: string;
   server?: ServerConfig;
   database?: DBConfig;
 };
@@ -24,7 +25,8 @@ export const getConfig = (): Config => {
   const args = process.argv.slice(2);
   const configPath = args[0];
   if (configPath) {
-    return JSON.parse(readFileSync(configPath).toString()) as Config;
+    const config = JSON.parse(readFileSync(configPath).toString()) as Config;
+    return { ...(defaultConfig as Config), ...config };
   }
   return defaultConfig as Config;
 };

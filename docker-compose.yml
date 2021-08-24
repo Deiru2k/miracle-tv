@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  nginx:
+    image: "alqutami/rtmp-hls"
+    ports:
+      - "1935:1935"
+      - "1337:1337"
+    volumes:
+      - ./nginx.conf.template:/etc/nginx/nginx.conf
+    depends_on: 
+      - miracle-backend
+      - miracle-frontend
+  rethinkdb:
+    image: "rethinkdb"
+  miracle-backend:
+    build:
+      context: "."
+      dockerfile: "backend.Dockerfile"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - rethinkdb
+    volumes:
+      - ./docker.miracle-tv.json:/conf/config.json
+  miracle-frontend:
+    build:
+      context: "."
+      dockerfile: "frontend.Dockerfile"
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - miracle-backend
+    environment:
+      - NEXT_PUBLIC_ENV=local
+      - NEXT_PUBLIC_API_URL=localhost:1337/api

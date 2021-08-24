@@ -9,9 +9,10 @@
     "daemon:stop": "pm2 delete miracle-tv",
     "daemon:restart": "name=miracle-tv pm2 restart miracle-tv --update-env",
     "dev:server": "nodemon -e ts,tsx,graphql --ignore src/shared/theme --ignore src/client --ignore src/pages --exec \"yarn run run:server\"",
-    "run:server": "NODE_ENV=production $node_modules/.bin/ts-node -r tsconfig-paths/register src/server/server.ts",
+    "run:server": "NODE_ENV=production ts-node -r tsconfig-paths/register src/server/server.ts",
     "build:server": "ncc build src/server/server.ts -o ./dist/server",
     "build:client": "NODE_ENV=local next build",
+    "build:client:docker": "NODE_ENV=docker next build",
     "run:client": "next start",
     "dev:client": "next dev",
     "codegen": "graphql-codegen --config codegen.yml"

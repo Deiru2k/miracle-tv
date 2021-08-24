@@ -1,9 +1,9 @@
 {
-  "name": "Miracle TV Test",
+  "name": "Miracle TV",
   "dataDir": "/data/miracle-tv",
-  "path": "",
+  "pathPrefix": "api",
   "database": {
-    "host": "localhost",
+    "host": "rethinkdb",
     "port": 28015,
     "db": "miracle-tv"
   }

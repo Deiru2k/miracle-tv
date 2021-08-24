@@ -1,0 +1,186 @@
+# vim: set filetype=nginx.conf
+# Major portions stolen from the following link:
+# https://github.com/TareqAlqutami/rtmp-hls-server/blob/master/conf/nginx.conf
+# which is licensed under MIT.
+
+# This config does the following:
+# 1. Requires streams to go to /miracle, where the stream key is checked.
+# 2. Broadcasts back through /live, where...
+# 3. HLS and DASH fragments are served, with caching disabled.
+# 4. All other requests are forwarded to Miracle.
+# This config should be used with Docker, in order to replace the environment
+# variables for MIRACLE_PORT, RTMP_PORT, et al.
+# It also assumes that HLS fragments can be kept in /mnt/hls/, and DASH in /mnt/dash/.
+# TODO: Certain settings could certainly be optimized for speed. I'm not an nginx master,
+# so I'm not sure where to start, especially given a setup like this.
+
+
+events {}
+
+# RTMP config.
+rtmp {
+  server {
+
+    # Port for the RTMP stream.
+    listen 1935;
+
+    chunk_size 4096;
+
+    # This accepts the external connections, and redirects them to `live`
+    # if a valid stream key is provided.
+    application miracle {
+      # Allow streaming to this endpoint, and disable recording.
+      live on;
+      record off;
+
+      # Deny listening to this endpoint for non-localhost.
+      allow play 127.0.0.1;
+      deny play all;
+
+      exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/$app/$name -async 1 -vsync -1
+
+      # Callback for when a stream begins.
+      # On 2xx: Allows streaming.
+      # On 3xx: Redirects? Not sure what that would be, honestly.
+      # On 4xx: Denies streaming.
+      on_publish http://miracle-backend:4000/hook/on_publish;
+
+      # Callback for when a stream stops.
+      on_publish_done http://miracle-backend:4000/hook/on_publish_done;
+    }
+
+    # Application for receiving.
+    application live {
+      live on;       # Allow streaming from localhost.
+      deny play all; # Deny receiving as RTMP.
+
+      # Only allow publishing from localhost - `miracle` handles publishing here.
+      allow publish 127.0.0.1;
+      deny publish all;
+
+      # HLS config.
+      hls on; # Enable HLS.
+      hls_fragment 3;
+      hls_playlist_length 10;
+      hls_path /mnt/hls/;
+      hls_variant _src BANDWIDTH=4096000;   # Source bitrate, source resolution
+      hls_variant _hd720 BANDWIDTH=2048000; # High bitrate, HD 720p resolution
+      hls_variant _high BANDWIDTH=1152000;  # High bitrate, higher-than-SD resolution
+      hls_variant _mid BANDWIDTH=448000;    # Medium bitrate, SD resolution
+      hls_variant _low BANDWIDTH=288000;    # Low bitrate, sub-SD resolution
+
+      # DASH config.
+      dash on;
+      dash_path /mnt/dash/;
+      dash_fragment 3;
+      dash_playlist_length 10;
+    }
+  }
+}
+
+# HTTP config; also serves Miracle itself.
+http {
+  # Stops nginx from spamming the console with constant requests.
+  access_log off;
+
+  # Honestly, not sure what these do.
+  # ??? https://nginx.org/en/docs/http/ngx_http_core_module.html#sendfile
+  sendfile off;
+  # Try to send all headers in one packet.
+  # ... this is disabled by the sendfile off; above, though, isn't it?
+  # Keeping it here since it's in rtmp-hls-server, why not.
+  tcp_nopush on;
+  # Disable fs cache for files over 512 in size. Probably a speed thing?
+  directio 512;
+
+  server {
+    # Port for the HTTP nginx server.
+    listen 1337;
+
+    # RTMP stats.
+    # Probably not needed in production; TODO: any way to dynamically set this up?
+    # We also need to serve the stylesheet. Not sure where that's kept.
+    # location /stat {
+    #   rtmp_stat all;
+    # }
+
+    # HLS fragments.
+    location /hls {
+      types {
+        application/vnd.apple.mpegurl m3u8;
+        video/mp2t ts;
+      }
+      root /mnt;
+
+      # Don't cache.
+      add_header Cache-Control no-cache;
+
+      # CORS.
+      add_header 'Access-Control-Allow-Origin' '*' always;
+      add_header 'Access-Control-Expose-Headers' 'Content-Length';
+      # Allow CORS preflight requests.
+      if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain charset=UTF-8';
+        add_header 'Content-Length' 0;
+        return 204;
+      }
+    }
+
+    # DASH fragments; largely similar to HLS config.
+    # TODO: refactor so these cache bits can be more DRY?
+    location /dash {
+      types {
+        application/dash+xml mpd;
+        video/mp4 mp4;
+      }
+      root /mnt;
+    }
+
+    # Proxy all /api requests to Miracle backend.
+    location /api {
+      rewrite ^/a/(.*) /$1  break;
+      proxy_pass http://miracle-backend:4000;
+      #proxy_http_version 1.1;
+      #proxy_set_header Upgrade $http_upgrade;
+      #proxy_set_header Connection 'upgrade';
+      #proxy_set_header Host $host;
+      #proxy_cache_bypass $http_upgrade;
+
+      # CORS.
+      add_header 'Access-Control-Allow-Origin' '*' always;
+      add_header 'Access-Control-Expose-Headers' 'Content-Length';
+      # Allow CORS preflight requests.
+      if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain charset=UTF-8';
+        add_header 'Content-Length' 0;
+        return 204;
+      }
+    }
+
+    # Finally, proxy requests to Miracle frontend.
+    location / {
+      proxy_pass http://miracle-frontend:3000;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+      # CORS.
+      add_header 'Access-Control-Allow-Origin' '*' always;
+      add_header 'Access-Control-Expose-Headers' 'Content-Length';
+      # Allow CORS preflight requests.
+      if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain charset=UTF-8';
+        add_header 'Content-Length' 0;
+        return 204;
+      }
+    }
+  }
+
+}
