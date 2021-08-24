@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
 
 let
-  version = "0.1.4";
+  version = "0.1.5";
   src = ./.;
   nodePkg = pkgs.nodejs-14_x;
   yarnPkg = pkgs.yarn.override { nodejs = nodePkg; };

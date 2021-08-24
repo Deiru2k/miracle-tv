@@ -98,6 +98,7 @@ in {
       wantedBy = [ "multi-user.target" ];
       serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
       environment = {
+        NEXT_PUBLIC_API_URL = "https://${cfg.settings.url}/api/graphql";
         NODE_ENV = cfg.settings.nodeEnv;
       };
     };
