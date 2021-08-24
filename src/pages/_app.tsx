@@ -21,14 +21,15 @@ const env = process.env.NEXT_PUBLIC_ENV;
 
 const apiUrls: Record<string, string> = {
   development: "https://dev.miracle-tv.live/api/graphql",
-  local: "http://localhost:4000/graphql",
+  local: `http://localhost:4000/graphql`,
   production: "https://miracle-tv.live/api/graphql",
 } as const;
 
-const defaultURI: string = propOr(apiUrls.local, env, apiUrls);
+const defaultURI: string =
+  process.env.NEXT_PUBLIC_API_URL || propOr(apiUrls.local, env, apiUrls);
 
 const uploadLink = createUploadLink({
-  uri: process.env.NEXT_PUBLIC_API_URL || defaultURI,
+  uri: defaultURI,
 });
 
 const authLink = setContext((_, { headers }) => {
