@@ -1,8 +1,10 @@
+import App from 'next/app';
 import { Box, ChakraProvider, Flex, Spinner } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
+import getConfig from 'next/config'
 import { any, propOr } from "ramda";
 
 import theme from "miracle-tv-shared/theme";
@@ -19,6 +21,8 @@ const { store, persistor } = configureStore();
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
+const { publicRuntimeConfig } = getConfig();
+
 const apiUrls: Record<string, string> = {
   development: "https://dev.miracle-tv.live/api/graphql",
   local: `http://localhost:4000/graphql`,
@@ -26,8 +30,7 @@ const apiUrls: Record<string, string> = {
 } as const;
 
 const defaultURI: string =
-  process.env.NEXT_PUBLIC_API_URL || propOr(apiUrls.local, env, apiUrls);
-
+  publicRuntimeConfig?.apiUrl || propOr(apiUrls.local, env, apiUrls);
 
 const uploadLink = createUploadLink({
   uri: defaultURI,
@@ -53,6 +56,7 @@ const client = new ApolloClient({
 const noNavbarRoutes = ["/auth/login", "/docs", "/"];
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
+
   const router = useRouter();
   const showNavbar = !any(
     (path) => router.asPath.startsWith(path),
@@ -100,6 +104,13 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
       </ChakraProvider>
     </>
   );
+}
+
+MyApp.getInitialProps = async (appContext: any) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps,  }
 }
 
 export default MyApp;
