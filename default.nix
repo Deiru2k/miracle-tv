@@ -5,6 +5,7 @@ let
   src = ./.;
   nodePkg = pkgs.nodejs-14_x;
   yarnPkg = pkgs.yarn.override { nodejs = nodePkg; };
+  nodeBcrypt = (builtins.fetchTarball "https://github.com/kelektiv/node.bcrypt.js/releases/download/v5.0.1/bcrypt_lib-v5.0.1-napi-v3-linux-x64-glibc.tar.gz");
 in mkYarnPackage rec {
   name = "miracle-tv";
   inherit version src nodePkg yarnPkg;
@@ -12,7 +13,6 @@ in mkYarnPackage rec {
   doDist = false;
   packageJSON = "${src}/package.json";
   yarnLock = "${src}/yarn.lock";
-
 
   configurePhase = ''
     rm -rf ./node_modules
@@ -22,26 +22,31 @@ in mkYarnPackage rec {
   '';
 
   buildPhase = ''
-    yarn build:client
+    runHook preBuild
+    yarn --offline build:server
+    yarn --offline build:client
+    runHook postBuild
   '';
 
   installPhase = ''
-    mkdir -p $out/server
+    runHook preInstall
     mkdir -p $out/bin
-    cp -R ./* $out/
-    makeWrapper $out/node_modules/.bin/ts-node $out/bin/server \
-      --add-flags "-r tsconfig-paths/register" \
-      --add-flags "$out/src/server/server.ts" \
+    mkdir -p $out/node_modules/bcrypt/lib/binding/napi-v3/
+    ls ./
+    cp -R ./* $out
+    cp -r ${nodeBcrypt}/bcrypt_lib.node $out/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node
+    makeWrapper $yarnPkg/bin/yarn $out/bin/miracle-server \
+      --add-flags "--cwd $out" \
+      --add-flags "run:server" \
       --set NODE_ENV production \
       --set NODE_PATH $NODE_PATH:$node_modules
 
-    mkdir -p $out/client/dist
-    cp -R ./next-production.config.js $out/client/next.config.js
-    cp -R ./dist/client/* $out/client/dist
-    makeWrapper $out/node_modules/.bin/next $out/bin/client \
-      --add-flags "start" \
-      --add-flags "$out/client" \
-      --set NODE_PATH $out/node_modules:$NODE_PATH
+    makeWrapper $yarnPkg/bin/yarn $out/bin/miracle-client \
+      --add-flags "--cwd $out" \
+      --add-flags "run:client" \
+      --set NODE_ENV production \
+      --set NODE_PATH $NODE_PATH:$node_modules
+    runHook preInstall
   '';
 
   distPhase = ''
