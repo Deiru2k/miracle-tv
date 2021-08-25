@@ -89,14 +89,14 @@ in {
     };
     systemd.services.miracle-tv = {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.ExecStart = "${miracle-tv}/bin/server ${configFile}";
+      serviceConfig.ExecStart = "${miracle-tv}/bin/miracle-server ${configFile}";
       environment = {
         NODE_ENV = cfg.settings.nodeEnv;
       };
     };
     systemd.services.miracle-tv-frontend = {
       wantedBy = [ "multi-user.target" ];
-      serviceConfig.ExecStart = "${miracle-tv}/bin/client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
+      serviceConfig.ExecStart = "${miracle-tv}/bin/miracle-client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
       environment = {
         NEXT_PUBLIC_API_URL = "https://${cfg.settings.url}/api/graphql";
         NODE_ENV = cfg.settings.nodeEnv;
