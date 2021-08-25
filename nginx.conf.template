@@ -33,20 +33,21 @@ rtmp {
       live on;
       record off;
 
-      # Deny listening to this endpoint for non-localhost.
-      allow play 127.0.0.1;
-      deny play all;
-
-      exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/$app/$name -async 1 -vsync -1
-
       # Callback for when a stream begins.
       # On 2xx: Allows streaming.
       # On 3xx: Redirects? Not sure what that would be, honestly.
       # On 4xx: Denies streaming.
-      on_publish http://miracle-backend:4000/hook/on_publish;
+      on_publish "http://miracle-backend:4000/api/hook/on_publish?name=$uri";
 
       # Callback for when a stream stops.
-      on_publish_done http://miracle-backend:4000/hook/on_publish_done;
+      on_publish_done http://miracle-backend:4000/api/hook/on_publish_done;
+
+      # Deny listening to this endpoint for non-localhost.
+      allow play 127.0.0.1;
+      deny play all;
+
+      exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/$app/$name -async 1 -vsync -1;
+
     }
 
     # Application for receiving.
