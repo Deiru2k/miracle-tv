@@ -7,7 +7,6 @@ import config from "miracle-tv-server/config";
 import { v4 as uuidv4 } from "uuid";
 import { last } from "ramda";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
-import { ServerError } from "../errors/general";
 
 const currentDir = process.cwd();
 
@@ -36,12 +35,11 @@ export const fileMutations: FileMutations = {
         .on("error", (error) => reject(error))
         .on("finish", () => resolve())
     );
-    const response = await files.createFile({
+    return await files.createFile({
       id,
       encoding,
       mimetype,
       filename: newFilename,
     });
-    return response;
   },
 };

@@ -1,7 +1,6 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
-  Channel,
   CreateChannelInput,
   UpdateChannelInput,
 } from "miracle-tv-shared/graphql";
@@ -10,6 +9,7 @@ import {
   NotFoundError,
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
+import { DbChannel } from "miracle-tv-server/db/models/types";
 
 type ChanelsFilter = object;
 
@@ -19,7 +19,7 @@ export class ChanelsModel extends Model {
   async createChannel(
     input: CreateChannelInput,
     userId: String
-  ): Promise<Channel> {
+  ): Promise<DbChannel> {
     return await this.table
       .insert({
         ...input,
@@ -36,23 +36,23 @@ export class ChanelsModel extends Model {
       });
   }
 
-  async getChannelById(id: string): Promise<Channel> {
-    const channel = (await this.table.get(id).run(this.conn)) as Channel | null;
+  async getChannelById(id: string): Promise<DbChannel> {
+    const channel = (await this.table.get(id).run(this.conn)) as DbChannel | null;
     if (!channel) {
       throw new NotFoundError("Channel not found");
     }
     return channel;
   }
 
-  async getChannels(filter: ChanelsFilter = {}): Promise<Channel[]> {
+  async getChannels(filter: ChanelsFilter = {}): Promise<DbChannel[]> {
     return (await this.table
       .filter(filter)
       .coerceTo("array")
-      .run(this.conn)) as Channel[];
+      .run(this.conn)) as DbChannel[];
   }
 
-  async updateChannel({ id, ...input }: UpdateChannelInput): Promise<Channel> {
-    const channel = (await this.table.get(id).run(this.conn)) as Channel;
+  async updateChannel({ id, ...input }: UpdateChannelInput): Promise<DbChannel> {
+    const channel = (await this.table.get(id).run(this.conn)) as DbChannel;
     if (!channel) {
       throw new NotFoundError("Chanel not found");
     }

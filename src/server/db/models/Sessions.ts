@@ -1,10 +1,10 @@
 import db from "miracle-tv-server/db";
-import { DbUser } from "miracle-tv-server/db/types";
 import { Model } from "miracle-tv-server/db/models";
-import { Session, SessionResponse } from "miracle-tv-shared/graphql";
+import { SessionResponse } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { head } from "ramda";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";
+import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 
 export class SessionsModel extends Model {
   table = db.table("sessions");
@@ -26,14 +26,14 @@ export class SessionsModel extends Model {
       });
   }
 
-  async getSessionById(id: string): Promise<Session> {
-    return (await this.table.get(id).run(this.conn)) as Session;
+  async getSessionById(id: string): Promise<DbSession> {
+    return (await this.table.get(id).run(this.conn)) as DbSession;
   }
 
-  async getUsers(filter?: Record<keyof DbUser, any>): Promise<Session[]> {
+  async getUsers(filter?: Record<keyof DbUser, any>): Promise<DbSession[]> {
     return (await this.table
       .filter(filter)
       .coerceTo("array")
-      .run(this.conn)) as Session[];
+      .run(this.conn)) as DbSession[];
   }
 }

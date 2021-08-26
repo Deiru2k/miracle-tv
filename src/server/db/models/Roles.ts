@@ -6,11 +6,11 @@ import {
 } from "miracle-tv-server/graphql/errors/general";
 import {
   CreateRoleInput,
-  Role,
   UpdateRoleInput,
 } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
 import { Connection } from "rethinkdb";
+import { DbRole } from "miracle-tv-server/db/models/types";
 
 export class RolesModel extends Model {
   table = db.table("roles");
@@ -20,7 +20,7 @@ export class RolesModel extends Model {
     super(conn);
   }
 
-  async create(input: CreateRoleInput): Promise<Role> {
+  async create(input: CreateRoleInput): Promise<DbRole> {
     const result = await this.table.insert(input).run(this.conn);
     if (result.errors > 0) {
       throw new ServerError(`There was an error creating ${this.name}`);
@@ -28,10 +28,10 @@ export class RolesModel extends Model {
     const newItem = await this.table
       .get(head(result.generated_keys))
       .run(this.conn);
-    return newItem as Role;
+    return newItem as DbRole;
   }
 
-  async update({ id, ...input }: UpdateRoleInput): Promise<Role> {
+  async update({ id, ...input }: UpdateRoleInput): Promise<DbRole> {
     const item = await this.table.get(id).run(this.conn);
     if (!item) {
       throw new NotFoundError(`${this.name} not found | ID: ${id}`);
@@ -42,7 +42,7 @@ export class RolesModel extends Model {
         `There was an error updating ${this.name} | ID: ${id}`
       );
     }
-    return { ...item, ...input, id } as Role;
+    return { ...item, ...input, id } as DbRole;
   }
 
   async deleteItem(id: string): Promise<boolean> {
@@ -59,11 +59,11 @@ export class RolesModel extends Model {
     return true;
   }
 
-  async list(filter: Partial<UpdateRoleInput> = {}): Promise<Role[]> {
+  async list(filter: Partial<UpdateRoleInput> = {}): Promise<DbRole[]> {
     return this.table.filter(filter).coerceTo("array").run(this.conn);
   }
 
-  async getAll(ids: string[]): Promise<Role[]> {
+  async getAll(ids: string[]): Promise<DbRole[]> {
     return this.table
       .getAll(...ids)
       .coerceTo("array")

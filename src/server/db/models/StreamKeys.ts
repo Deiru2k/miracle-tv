@@ -1,8 +1,8 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
-import { StreamKey } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";
+import { DbStreamKey } from "miracle-tv-server/db/models/types";
 
 type StreamKeyFilter = {
   userId?: string;
@@ -12,7 +12,7 @@ type StreamKeyFilter = {
 export class StreamKeysModel extends Model {
   table = db.table("stream-keys");
 
-  async createStreamKey(userId: string, channelId: string): Promise<StreamKey> {
+  async createStreamKey(userId: string, channelId: string): Promise<DbStreamKey> {
     return await this.table
       .insert({
         userId,
@@ -29,15 +29,15 @@ export class StreamKeysModel extends Model {
       });
   }
 
-  async getStreamKeyById(id: string): Promise<StreamKey> {
-    return (await this.table.get(id).run(this.conn)) as StreamKey;
+  async getStreamKeyById(id: string): Promise<DbStreamKey> {
+    return (await this.table.get(id).run(this.conn)) as DbStreamKey;
   }
 
-  async getStreamKeys(filter: StreamKeyFilter = {}): Promise<StreamKey[]> {
+  async getStreamKeys(filter: StreamKeyFilter = {}): Promise<DbStreamKey[]> {
     return (await this.table
       .filter(filter)
       .coerceTo("array")
-      .run(this.conn)) as StreamKey[];
+      .run(this.conn)) as DbStreamKey[];
   }
 
   async deleteStreamKeysByPair(
@@ -48,9 +48,7 @@ export class StreamKeysModel extends Model {
       .filter({ userId, channelId })
       .delete()
       .run(this.conn);
-    if (res.errors > 0) {
-      return false;
-    }
-    return true;
+    return res.errors <= 0;
+
   }
 }

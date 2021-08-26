@@ -7,7 +7,6 @@ import {
   UserResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
-import { pick } from "ramda";
 
 export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
   _,
@@ -22,13 +21,13 @@ export const userQueryResolver: QueryResolvers<ResolverContext>["user"] = (
   args,
   { db: { users } }
 ) => {
-  return users.getUserByIdSafe(args.id);
+  return users.getUserByIdSafe(args.id) as any;
 };
 
 export const userSelfQueryResolver: QueryResolvers<ResolverContext>["self"] =
   async (_, _args, { user }) => {
     if (user) {
-      return user;
+      return user as any;
     }
     throw new AuthenticationError();
   };

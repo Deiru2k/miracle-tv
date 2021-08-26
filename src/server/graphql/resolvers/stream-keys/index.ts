@@ -8,12 +8,12 @@ import {
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
 export const streamKeysQueryResolver: QueryResolvers<ResolverContext>["streamKeys"] =
-  async (_, _args, { user, userRoles, db: { streamKeys } }) => {
+  async (_, _args, { userRoles, db: { streamKeys } }) => {
     if (
       checkRight(userRoles, AccessUnit.Write, "streamKeys") ||
       checkRight(userRoles, AccessUnit.Read, "streamKeys")
     ) {
-      return streamKeys.getStreamKeys();
+      return streamKeys.getStreamKeys() as any;
     }
     throw new AuthorizationError();
   };
@@ -25,14 +25,14 @@ export const selfStreamKeysQueryResolver: QueryResolvers<ResolverContext>["selfS
       checkRight(userRoles, AccessUnit.Write, "streamKeys") ||
       checkRight(userRoles, AccessUnit.Read, "streamKeys")
     ) {
-      return streamKeys.getStreamKeys({ userId: user.id });
+      return streamKeys.getStreamKeys({ userId: user.id }) as any;
     }
     throw new AuthorizationError();
   };
 
 export const streamKeysResolver: StreamKeyResolvers<ResolverContext> = {
   user: async (streamKey, _, { db: { users } }) => {
-    return await users.getUserByIdSafe((streamKey as any).userId);
+    return await users.getUserByIdSafe((streamKey as any).userId) as any;
   },
   channel: async (streamKey, _, { db: { channels } }) => {
     return await channels.getChannelById((streamKey as any).channelId);

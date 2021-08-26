@@ -1,5 +1,4 @@
 import db from "miracle-tv-server/db";
-import { DbUser } from "miracle-tv-server/db/types";
 import { Model } from "miracle-tv-server/db/models";
 import {
   CreateUserInput,
@@ -16,13 +15,14 @@ import {
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
 import { hash } from "bcrypt";
+import { DbUser, DbUserSafe } from "miracle-tv-server/db/models/types";
 
 type UsersFilter = Partial<Record<keyof DbUser, any>>;
 
 export class UsersModel extends Model {
   table = db.table("users");
 
-  sanitizeUser(dbUser: DbUser): User {
+  sanitizeUser(dbUser: DbUser): DbUserSafe {
     return omit(["password"], dbUser);
   }
 
@@ -49,7 +49,7 @@ export class UsersModel extends Model {
     return (await this.table.get(id).run(this.conn)) as DbUser | null;
   }
 
-  async getUserByIdSafe(id: string): Promise<User> {
+  async getUserByIdSafe(id: string): Promise<DbUserSafe> {
     const user = await this.getUserById(id);
     if (!user) {
       throw new NotFoundError("User not found");
@@ -68,7 +68,7 @@ export class UsersModel extends Model {
     return (await this.getUsers(filter).then(map(this.sanitizeUser))) as User[];
   }
 
-  async updateUser({ id, ...input }: UpdateUserInput): Promise<User> {
+  async updateUser({ id, ...input }: UpdateUserInput): Promise<DbUser> {
     const user = await this.getUserById(id);
     if (!user) {
       throw new NotFoundError("User not found");
@@ -77,6 +77,6 @@ export class UsersModel extends Model {
     if (errors) {
       throw new ServerError("Error updating user");
     }
-    return { id, ...user, ...input } as User;
+    return { id, ...user, ...input } as DbUser;
   }
 }

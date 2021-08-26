@@ -11,34 +11,27 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
   userQueryResolver,
   userResolver,
-  usersQueryResolver,
   userSelfQueryResolver,
-  userTestQueryResolver,
+  usersQueryResolver,
+  userTestQueryResolver
 } from "miracle-tv-server/graphql/resolvers/users";
 import { userMutations } from "miracle-tv-server/graphql/mutations/users";
 import { signInMutation } from "miracle-tv-server/graphql/mutations/users/auth";
-import { DbSession, DbUser } from "miracle-tv-server/db/types";
 import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
 import {
   channelQueryResolver,
   channelResolver,
-  channelsQueryResolver,
+  channelsQueryResolver
 } from "miracle-tv-server/graphql/resolvers/channels";
-import {
-  createChannelMutation,
-  updateChannelMutation,
-} from "miracle-tv-server/graphql/mutations/channels";
+import { createChannelMutation, updateChannelMutation } from "miracle-tv-server/graphql/mutations/channels";
 import { ActivitiesModel } from "miracle-tv-server/db/models/Activities";
-import {
-  createActivityMutaiton,
-  updateActivityMutation,
-} from "miracle-tv-server/graphql/mutations/activities";
+import { createActivityMutaiton, updateActivityMutation } from "miracle-tv-server/graphql/mutations/activities";
 import {
   activitiesQueryResolver,
   activityQueryResolver,
-  activityResolver,
+  activityResolver
 } from "miracle-tv-server/graphql/resolvers/activities";
 import { RolesModel } from "miracle-tv-server/db/models/Roles";
 import { getCompleteRights } from "miracle-tv-server/db/acl/roles";
@@ -48,22 +41,19 @@ import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import {
   selfStreamKeysQueryResolver,
   streamKeysQueryResolver,
-  streamKeysResolver,
+  streamKeysResolver
 } from "miracle-tv-server/graphql/resolvers/stream-keys";
-import {
-  createStreamKeyMutation,
-  revokeStreamKeyMutation,
-} from "miracle-tv-server/graphql/mutations/stream-keys";
+import { createStreamKeyMutation, revokeStreamKeyMutation } from "miracle-tv-server/graphql/mutations/stream-keys";
 import { fileMutations } from "./mutations/file";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { fileResolvers } from "./resolvers/file";
 import { red } from "chalk";
+import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
   .map((filename) => {
-    const contents = readFileSync(filename).toString();
-    return contents;
+    return readFileSync(filename).toString();
   })
   .join("\n");
 

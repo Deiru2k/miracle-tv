@@ -1,7 +1,6 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
-  Activity,
   ActivityFilter,
   CreateActivityInput,
   UpdateActivityInput,
@@ -11,23 +10,24 @@ import {
   NotFoundError,
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
+import { DbActivity } from "miracle-tv-server/db/models/types";
 
 export class ActivitiesModel extends Model {
   table = db.table("activities");
 
-  async createActivity(input: CreateActivityInput): Promise<Activity> {
+  async createActivity(input: CreateActivityInput): Promise<DbActivity> {
     const result = await this.table.insert(input).run(this.conn);
     if (result.errors > 0) {
       throw new ServerError("Coulnd't create an activity");
     }
     const key = head(result.generated_keys);
-    return (await this.table.get(key).run(this.conn)) as Activity;
+    return (await this.table.get(key).run(this.conn)) as DbActivity;
   }
 
   async updateActivity({
     id,
     ...input
-  }: UpdateActivityInput): Promise<Activity> {
+  }: UpdateActivityInput): Promise<DbActivity> {
     const activity = await this.getActivityById(id);
     if (!activity) {
       throw new NotFoundError("Activity not found");
@@ -39,14 +39,14 @@ export class ActivitiesModel extends Model {
     return { id, ...input };
   }
 
-  async getActivityById(id: string): Promise<Activity | null> {
-    return (await this.table.get(id).run(this.conn)) as Activity;
+  async getActivityById(id: string): Promise<DbActivity | null> {
+    return (await this.table.get(id).run(this.conn)) as DbActivity;
   }
 
-  async getActivities(filter: ActivityFilter = {}): Promise<Activity[]> {
+  async getActivities(filter: ActivityFilter = {}): Promise<DbActivity[]> {
     return (await this.table
       .filter(filter)
       .coerceTo("array")
-      .run(this.conn)) as Activity[];
+      .run(this.conn)) as DbActivity[];
   }
 }

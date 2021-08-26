@@ -17,7 +17,7 @@ export const userMutations: UserMutationResolvers = {
       throw new AuthenticationError();
     }
     const id = user?.id;
-    return users.updateUser({ id, ...input });
+    return users.updateUser({ id, ...input }) as any;
   },
   async updateUser(_, { input }, { db: { users }, user, userRoles }) {
     if (!user) {
@@ -27,6 +27,6 @@ export const userMutations: UserMutationResolvers = {
     if (!hasRight && input.id !== user.id) {
       throw new AuthorizationError();
     }
-    return users.updateUser(input);
+    return users.updateUser(input) as any;
   },
 };

@@ -3,11 +3,11 @@ import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
 import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 import { RolesModel } from "miracle-tv-server/db/models/Roles";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
-import { DbSession, DbUser } from "miracle-tv-server/db/types";
 import { Role } from "miracle-tv-shared/graphql";
 import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import { Operation } from "rethinkdb";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
+import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
