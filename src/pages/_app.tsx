@@ -1,10 +1,10 @@
-import App from 'next/app';
+import App from "next/app";
 import { Box, ChakraProvider, Flex, Spinner } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
-import getConfig from 'next/config'
+import getConfig from "next/config";
 import { any, propOr } from "ramda";
 
 import theme from "miracle-tv-shared/theme";
@@ -56,7 +56,6 @@ const client = new ApolloClient({
 const noNavbarRoutes = ["/auth/login", "/docs", "/"];
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
-
   const router = useRouter();
   const showNavbar = !any(
     (path) => router.asPath.startsWith(path),
@@ -110,7 +109,7 @@ MyApp.getInitialProps = async (appContext: any) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
 
-  return { ...appProps,  }
-}
+  return { ...appProps };
+};
 
 export default MyApp;

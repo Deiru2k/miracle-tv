@@ -9,7 +9,7 @@ export const signInMutation: MutationResolvers<ResolverContext>["signIn"] =
   async (_, { input: { username, password } }, { db: { users, sessions } }) => {
     const userList = await users.getUsers({ username });
     const user: DbUser = head<DbUser>(userList);
-    if (await compare(password, user?.password || '')) {
+    if (await compare(password, user?.password || "")) {
       return await sessions.createSession(user?.id!);
     }
     throw new InputErrorLogin();

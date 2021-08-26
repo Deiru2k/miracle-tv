@@ -16,13 +16,13 @@ const main = async () => {
   await setupDB();
   await graphqlEndpoint.start();
   const app = Express();
-  app.use(Express.urlencoded())
+  app.use(Express.urlencoded());
 
-  const prefix = pathPrefix ? `/${pathPrefix}/` : '/';
+  const prefix = pathPrefix ? `/${pathPrefix}/` : "/";
   app.use(graphqlUploadExpress());
   app.use(`${prefix}media/`, Express.static(`${dataDir}/media`));
-  app.use(`${prefix}hook/`, webhooks)
-  const graphqlPath = prefix + 'graphql'
+  app.use(`${prefix}hook/`, webhooks);
+  const graphqlPath = prefix + "graphql";
   graphqlEndpoint.applyMiddleware({ app, path: graphqlPath });
   app.listen(
     config.server?.port || 4000,

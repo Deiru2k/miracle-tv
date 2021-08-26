@@ -12,7 +12,10 @@ type StreamKeyFilter = {
 export class StreamKeysModel extends Model {
   table = db.table("stream-keys");
 
-  async createStreamKey(userId: string, channelId: string): Promise<DbStreamKey> {
+  async createStreamKey(
+    userId: string,
+    channelId: string
+  ): Promise<DbStreamKey> {
     return await this.table
       .insert({
         userId,
@@ -49,6 +52,5 @@ export class StreamKeysModel extends Model {
       .delete()
       .run(this.conn);
     return res.errors <= 0;
-
   }
 }

@@ -32,7 +32,7 @@ export const selfStreamKeysQueryResolver: QueryResolvers<ResolverContext>["selfS
 
 export const streamKeysResolver: StreamKeyResolvers<ResolverContext> = {
   user: async (streamKey, _, { db: { users } }) => {
-    return await users.getUserByIdSafe((streamKey as any).userId) as any;
+    return (await users.getUserByIdSafe((streamKey as any).userId)) as any;
   },
   channel: async (streamKey, _, { db: { channels } }) => {
     return await channels.getChannelById((streamKey as any).channelId);

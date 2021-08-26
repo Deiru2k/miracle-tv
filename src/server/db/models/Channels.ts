@@ -37,7 +37,9 @@ export class ChanelsModel extends Model {
   }
 
   async getChannelById(id: string): Promise<DbChannel> {
-    const channel = (await this.table.get(id).run(this.conn)) as DbChannel | null;
+    const channel = (await this.table
+      .get(id)
+      .run(this.conn)) as DbChannel | null;
     if (!channel) {
       throw new NotFoundError("Channel not found");
     }
@@ -51,7 +53,10 @@ export class ChanelsModel extends Model {
       .run(this.conn)) as DbChannel[];
   }
 
-  async updateChannel({ id, ...input }: UpdateChannelInput): Promise<DbChannel> {
+  async updateChannel({
+    id,
+    ...input
+  }: UpdateChannelInput): Promise<DbChannel> {
     const channel = (await this.table.get(id).run(this.conn)) as DbChannel;
     if (!channel) {
       throw new NotFoundError("Chanel not found");

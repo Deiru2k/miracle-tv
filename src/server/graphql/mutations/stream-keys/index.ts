@@ -23,7 +23,7 @@ export const createStreamKeyMutation: MutationResolvers<ResolverContext>["create
         throw new IncorrectUserError();
       }
       await streamKeys.deleteStreamKeysByPair(userId, channelId);
-      return await streamKeys.createStreamKey(userId, channelId) as any;
+      return (await streamKeys.createStreamKey(userId, channelId)) as any;
     }
     throw new AuthorizationError();
   };

@@ -20,6 +20,6 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
     return null;
   },
   user: async (channel, _, { db: { users } }) => {
-    return await users.getUserByIdSafe((channel as any).userId) as any;
+    return (await users.getUserByIdSafe((channel as any).userId)) as any;
   },
 };

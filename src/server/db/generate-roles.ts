@@ -84,7 +84,10 @@ const defaultRoles = [
 ];
 
 export const generateRoles = async () => {
-  const conn = await rdb.connect({ host: config.database?.host, port: config.database?.port });
+  const conn = await rdb.connect({
+    host: config.database?.host,
+    port: config.database?.port,
+  });
   const table = rdb.db(config.database?.db || "miracle-tv").table("roles");
   const roles = await table.filter({}).coerceTo("array").run(conn);
   const roleIds = roles.map((role) => role.id);

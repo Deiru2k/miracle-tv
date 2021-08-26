@@ -4,10 +4,7 @@ import {
   NotFoundError,
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
-import {
-  CreateRoleInput,
-  UpdateRoleInput,
-} from "miracle-tv-shared/graphql";
+import { CreateRoleInput, UpdateRoleInput } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
 import { Connection } from "rethinkdb";
 import { DbRole } from "miracle-tv-server/db/models/types";

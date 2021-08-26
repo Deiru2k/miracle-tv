@@ -24,11 +24,20 @@ export const FormInput = ({
   ...formGroupProps
 }: Props) => {
   const { input } = useField(name);
-  const inputPlaceholder = formGroupProps.hideLabel && formGroupProps.label ? formGroupProps.label : placeholder;
+  const inputPlaceholder =
+    formGroupProps.hideLabel && formGroupProps.label
+      ? formGroupProps.label
+      : placeholder;
 
   return (
     <FormGroup name={name} {...formGroupProps}>
-      <Input {...input} aria-label={formGroupProps.label} placeholder={inputPlaceholder} type={inputType} {...inputProps} />
+      <Input
+        {...input}
+        aria-label={formGroupProps.label}
+        placeholder={inputPlaceholder}
+        type={inputType}
+        {...inputProps}
+      />
     </FormGroup>
   );
 };

@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { gql } from "@apollo/client";
-import { useCurrentUserFullLazyQuery, useCurrentUserFullQuery } from "miracle-tv-shared/hooks";
+import {
+  useCurrentUserFullLazyQuery,
+  useCurrentUserFullQuery,
+} from "miracle-tv-shared/hooks";
 import { CurrentUserFullQuery, User } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { useRouter } from "next/dist/client/router";
@@ -27,9 +30,12 @@ type CurrentUserHookReturn = {
 export const useCurrentUser = (): CurrentUserHookReturn => {
   const { push } = useRouter();
 
-  const { data: { self } = {}, loading: isUserLoading, called: isUserCalled, refetch: loadUser } =
-    useCurrentUserFullQuery({
-    });
+  const {
+    data: { self } = {},
+    loading: isUserLoading,
+    called: isUserCalled,
+    refetch: loadUser,
+  } = useCurrentUserFullQuery({});
 
   return {
     user: self || null,
@@ -44,7 +50,7 @@ export const signOut = () => {
   if (global.window) {
     window.location.replace("/auth/login");
   }
-}
+};
 
 export const CurrentUserFullFragment = gql`
   fragment CurrentUser on User {

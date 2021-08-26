@@ -16,5 +16,5 @@ export const ThemeSwitcher = () => {
       />
       {colorMode === "dark" ? "Dark Mode" : "Light Mode"}
     </Box>
-  )
-}
+  );
+};

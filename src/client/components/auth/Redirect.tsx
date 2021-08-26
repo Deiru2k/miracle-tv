@@ -3,7 +3,7 @@ import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 
 type Props = {
-  children: React.ReactNode | React.ReactNode[]
+  children: React.ReactNode | React.ReactNode[];
 };
 
 export const AuthRedirect = ({ children }: Props) => {
@@ -16,9 +16,5 @@ export const AuthRedirect = ({ children }: Props) => {
     }
   }, [isUserLoading, user, push]);
 
-  return !isUserLoading && !!user && (
-    <>
-      {children}
-    </>
-  );
+  return !isUserLoading && !!user && <>{children}</>;
 };

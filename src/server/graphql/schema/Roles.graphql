@@ -1,9 +1,9 @@
 enum AccessUnit {
-  DENY,
-  READ,
-  WRITE,
-  SELF,
-  INHERIT,
+  DENY
+  READ
+  WRITE
+  SELF
+  INHERIT
 }
 
 type UserActions {
