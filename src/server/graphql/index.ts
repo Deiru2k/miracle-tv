@@ -65,7 +65,7 @@ const resolvers: Resolvers<ResolverContext> = {
   Upload: GraphQLUpload,
   Query: {
     info: () => ({
-      name: `${config.name || "MiracleTV"}, ShmiracleTV`,
+      name: `${config.name || "Miracle TV"}`,
       version: process.env.npm_package_version || "none",
       packageName: process.env.npm_package_name || "none",
     }),
