@@ -35,6 +35,6 @@ extend type Query {
 }
 
 extend type Mutation {
-  createActivity(input: CreateActivityInput): Activity!
-  updateActivity(input: UpdateActivityInput): Activity!
+  createActivity(input: CreateActivityInput): Activity! @auth(rights: [{ unit: WRITE, subject: "activities" }])
+  updateActivity(input: UpdateActivityInput): Activity! @auth(rights: [{ unit: WRITE, subject: "activities" }])
 }

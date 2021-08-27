@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server-express";
-import { gql } from "apollo-server";
+import { gql, makeExecutableSchema } from "apollo-server";
 import { GraphQLUpload } from "graphql-upload";
 import glob from "glob";
 import path from "path";
@@ -58,6 +58,7 @@ import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { fileResolvers } from "./resolvers/file";
 import { red } from "chalk";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
+import { authDirective } from "miracle-tv-server/graphql/directives/auth";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -70,52 +71,55 @@ export const schema = gql`
   ${schemaString}
 `;
 
-const resolvers: Resolvers<ResolverContext> = {
-  Upload: GraphQLUpload,
-  Query: {
-    info: () => ({
-      name: `${config.name || "Miracle TV"}`,
-      version: process.env.npm_package_version || "none",
-      packageName: process.env.npm_package_name || "none",
-    }),
-    user: userQueryResolver,
-    users: usersQueryResolver,
-    channel: channelQueryResolver,
-    channels: channelsQueryResolver,
-    activity: activityQueryResolver,
-    activities: activitiesQueryResolver,
-    streamKeys: streamKeysQueryResolver,
-    self: userSelfQueryResolver,
-    selfStreamKeys: selfStreamKeysQueryResolver,
-    test: userTestQueryResolver,
-    ...fileResolvers,
-  },
-  Mutation: {
-    ping: (...args) => {
-      args;
-      return "pong";
+let executableSchema = makeExecutableSchema({
+  typeDefs: schema,
+  resolvers: {
+    Upload: GraphQLUpload,
+    Query: {
+      info: () => ({
+        name: `${config.name || "Miracle TV"}`,
+        version: process.env.npm_package_version || "none",
+        packageName: process.env.npm_package_name || "none",
+      }),
+      user: userQueryResolver,
+      users: usersQueryResolver,
+      channel: channelQueryResolver,
+      channels: channelsQueryResolver,
+      activity: activityQueryResolver,
+      activities: activitiesQueryResolver,
+      streamKeys: streamKeysQueryResolver,
+      self: userSelfQueryResolver,
+      selfStreamKeys: selfStreamKeysQueryResolver,
+      test: userTestQueryResolver,
+      ...fileResolvers,
     },
-    ...userMutations,
-    ...fileMutations,
-    signIn: signInMutation,
-    createChannel: createChannelMutation,
-    updateChannel: updateChannelMutation,
-    createActivity: createActivityMutaiton,
-    updateActivity: updateActivityMutation,
-    createStreamKey: createStreamKeyMutation,
-    revokeStreamKey: revokeStreamKeyMutation,
+    Mutation: {
+      ping: () => {
+        return "pong";
+      },
+      ...userMutations,
+      ...fileMutations,
+      signIn: signInMutation,
+      createChannel: createChannelMutation,
+      updateChannel: updateChannelMutation,
+      createActivity: createActivityMutaiton,
+      updateActivity: updateActivityMutation,
+      createStreamKey: createStreamKeyMutation,
+      revokeStreamKey: revokeStreamKeyMutation,
+    },
+    User: userResolver,
+    Channel: channelResolver,
+    Activity: activityResolver,
+    Role: roleResolvers,
+    StreamKey: streamKeysResolver,
   },
-  User: userResolver,
-  Channel: channelResolver,
-  Activity: activityResolver,
-  Role: roleResolvers,
-  StreamKey: streamKeysResolver,
-};
+});
+
+executableSchema = authDirective(executableSchema, "auth");
 
 export const graphqlEndpoint = new ApolloServer({
   uploads: false,
-  typeDefs: schema,
-  resolvers,
+  schema: executableSchema,
   introspection: true,
   playground: true,
   formatError: (err) => {

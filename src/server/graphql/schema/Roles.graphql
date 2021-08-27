@@ -19,6 +19,7 @@ type Actions {
 type AccessRights {
   channels: AccessUnit
   streamKeys: AccessUnit
+  roles: AccessUnit
   users: AccessUnit
   activities: AccessUnit
 }
@@ -41,9 +42,9 @@ extend type Query {
 }
 
 extend type Mutation {
-  createRole(input: CreateRoleInput): Role!
-  updateRole(input: UpdateRoleInput): Role!
-  deleteRole(id: ID!): Boolean!
+  createRole(input: CreateRoleInput): Role! @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  updateRole(input: UpdateRoleInput): Role! @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  deleteRole(id: ID!): Boolean! @auth(rights: [{ unit: WRITE, subject: "roles" }])
 }
 
 ########################

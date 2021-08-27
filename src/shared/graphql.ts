@@ -21,6 +21,7 @@ export type AccessRights = {
   __typename?: 'AccessRights';
   channels?: Maybe<AccessUnit>;
   streamKeys?: Maybe<AccessUnit>;
+  roles?: Maybe<AccessUnit>;
   users?: Maybe<AccessUnit>;
   activities?: Maybe<AccessUnit>;
 };
@@ -72,10 +73,10 @@ export type ActivityFilter = {
   verb?: Maybe<Scalars['String']>;
 };
 
-export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
+export type AuthRightConfig = {
+  unit: AccessUnit;
+  subject: Scalars['String'];
+};
 
 export type Channel = {
   __typename?: 'Channel';
@@ -160,8 +161,8 @@ export type Mutation = {
   revokeStreamKey: Scalars['Boolean'];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
-  updateUser: User;
-  updateSelf: User;
+  updateUser?: Maybe<User>;
+  updateSelf?: Maybe<User>;
 };
 
 
@@ -495,7 +496,7 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   ActivityFilter: ActivityFilter;
-  CacheControlScope: CacheControlScope;
+  AuthRightConfig: AuthRightConfig;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
@@ -525,7 +526,6 @@ export type ResolversTypes = {
   UserActions: ResolverTypeWrapper<UserActions>;
   UserActionsInput: UserActionsInput;
   UserSettings: ResolverTypeWrapper<UserSettings>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -539,6 +539,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   String: Scalars['String'];
   ActivityFilter: ActivityFilter;
+  AuthRightConfig: AuthRightConfig;
   Channel: Channel;
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
@@ -568,17 +569,17 @@ export type ResolversParentTypes = {
   UserActions: UserActions;
   UserActionsInput: UserActionsInput;
   UserSettings: UserSettings;
-  Int: Scalars['Int'];
 };
 
-export type CacheControlDirectiveArgs = {   maxAge?: Maybe<Scalars['Int']>;
-  scope?: Maybe<CacheControlScope>; };
+export type AuthDirectiveArgs = {   roles?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  rights?: Maybe<Array<Maybe<AuthRightConfig>>>; };
 
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type AuthDirectiveResolver<Result, Parent, ContextType = any, Args = AuthDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AccessRightsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessRights'] = ResolversParentTypes['AccessRights']> = {
   channels?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   streamKeys?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
+  roles?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   users?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   activities?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -647,8 +648,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   revokeStreamKey?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeStreamKeyArgs, never>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
-  updateSelf?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateSelfArgs, 'input'>>;
+  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
+  updateSelf?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateSelfArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -762,7 +763,7 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
+  auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
 

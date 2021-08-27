@@ -30,8 +30,8 @@ type UserSettings {
 
 extend type Query {
   users: [User]!
-  self: User!
-  user(id: ID!): User
+  self: User! @auth(rights: [{ unit: SELF, subject: "users" }])
+  user(id: ID!): User @auth(rights: [{ unit: READ, subject: "users" }])
 }
 
 input CreateUserInput {
@@ -67,6 +67,6 @@ input UpdateUserInput {
 extend type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: SignInInput!): SessionResponse
-  updateUser(input: UpdateUserInput!): User!
-  updateSelf(input: UpdateSelfInput!): User!
+  updateUser(input: UpdateUserInput!): User @auth(rights: [{ unit: WRITE, subject: "users" }])
+  updateSelf(input: UpdateSelfInput!): User @auth(rights: [{ unit: SELF, subject: "users" }])
 }

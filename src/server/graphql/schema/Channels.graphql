@@ -38,6 +38,6 @@ input UpdateChannelInput {
 }
 
 extend type Mutation {
-  createChannel(input: CreateChannelInput): Channel!
-  updateChannel(input: UpdateChannelInput): Channel!
+  createChannel(input: CreateChannelInput): Channel! @auth(rights: [{ unit: WRITE, subject: "channels" }, { unit: SELF, subject: "channels" }])
+  updateChannel(input: UpdateChannelInput): Channel! @auth(rights: [{ unit: WRITE, subject: "channels" }, { unit: SELF, subject: "channels" }])
 }

@@ -5,8 +5,8 @@ type StreamKey {
 }
 
 extend type Query {
-  streamKeys: [StreamKey]!
-  selfStreamKeys: [StreamKey]!
+  streamKeys: [StreamKey]! @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
+  selfStreamKeys: [StreamKey]! @auth(rights: [{ unit: SELF, subject: "streamKeys" }])
 }
 
 input CreateStreamKeyInput {
@@ -15,6 +15,6 @@ input CreateStreamKeyInput {
 }
 
 extend type Mutation {
-  createStreamKey(input: CreateStreamKeyInput): StreamKey!
-  revokeStreamKey(input: CreateStreamKeyInput): Boolean!
+  createStreamKey(input: CreateStreamKeyInput): StreamKey! @auth(rights: [{ unit: SELF, subject: "streamKeys" }, { unit: WRITE, subject: "streamKeys" }])
+  revokeStreamKey(input: CreateStreamKeyInput): Boolean! @auth(rights: [{ unit: SELF, subject: "streamKeys" }, { unit: WRITE, subject: "streamKeys" }])
 }

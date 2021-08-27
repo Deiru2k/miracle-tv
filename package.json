@@ -23,6 +23,8 @@
     "@chakra-ui/react": "^1.6.5",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@graphql-tools/schema": "^8.1.2",
+    "@graphql-tools/utils": "^8.1.2",
     "@types/apollo-upload-client": "^14.1.0",
     "@types/graphql-upload": "^8.0.6",
     "@types/node": "^16.3.3",

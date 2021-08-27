@@ -1,0 +1,6 @@
+input AuthRightConfig {
+    unit: AccessUnit!
+    subject: String!
+}
+
+directive @auth(roles: [ID], rights: [AuthRightConfig]) on OBJECT | FIELD_DEFINITION
