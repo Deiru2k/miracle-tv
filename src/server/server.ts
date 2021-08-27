@@ -7,10 +7,6 @@ import { green } from "chalk";
 import webhooks from "miracle-tv-server/webhooks";
 
 const { pathPrefix, dataDir } = config;
-// app.get("/", (_, res) => res.send("FUCK!"));
-// app.use(graphqlUploadExpress());
-
-// graphqlEndpoint.applyMiddleware({ app });
 
 const main = async () => {
   await setupDB();

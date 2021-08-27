@@ -3,6 +3,7 @@ import * as rdb from "rethinkdb";
 import config from "miracle-tv-server/config";
 
 import { AccessUnit, Role } from "miracle-tv-shared/graphql";
+import { green, red, yellow } from "chalk";
 
 const defaultAdminRole: Role = {
   id: "admin",
@@ -13,6 +14,7 @@ const defaultAdminRole: Role = {
       channels: AccessUnit.Write,
       streamKeys: AccessUnit.Write,
       users: AccessUnit.Write,
+      roles: AccessUnit.Write,
     },
     actions: {
       user: {
@@ -42,9 +44,9 @@ const defaultModeratorRole: Role = {
   },
 };
 
-const defaultVolounteerRole: Role = {
-  id: "volounteer",
-  name: "Volounteer",
+const defaultVolunteerRole: Role = {
+  id: "volunteer",
+  name: "Volunteer",
   parentId: "user",
   access: {
     rights: {},
@@ -65,6 +67,7 @@ const defaultUserRole: Role = {
       channels: AccessUnit.Self,
       users: AccessUnit.Self,
       activities: AccessUnit.Read,
+      roles: AccessUnit.Read,
     },
     actions: {
       user: {
@@ -78,7 +81,7 @@ const defaultUserRole: Role = {
 
 const defaultRoles = [
   defaultUserRole,
-  defaultVolounteerRole,
+  defaultVolunteerRole,
   defaultModeratorRole,
   defaultAdminRole,
 ];
@@ -91,17 +94,24 @@ export const generateRoles = async () => {
   const table = rdb.db(config.database?.db || "miracle-tv").table("roles");
   const roles = await table.filter({}).coerceTo("array").run(conn);
   const roleIds = roles.map((role) => role.id);
+  console.info("");
+  console.info(green`[Checking role setup]`);
   return await Promise.all(
     defaultRoles.map(async (dr) => {
+      console.info(yellow`- Checking role [${dr.id}] ${dr.name}`);
       if (!roleIds.includes(dr.id)) {
         const res = await table.insert(dr).run(conn);
         if (res.errors > 0) {
-          console.info(`Error with ${dr.id}`, res.first_error);
+          console.info(
+            red`-- Error with [${dr.id}] ${dr.name}`,
+            res.first_error
+          );
         } else {
-          console.info(`${dr.id} Ok!`);
+          console.info(green`-- Created role [${dr.id}] ${dr.name}`);
         }
         return res;
       }
+      console.info(green`-- Role [${dr.id}] ${dr.name} Ok!`);
     })
   );
 };

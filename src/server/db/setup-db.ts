@@ -1,6 +1,7 @@
 import * as rdb from "rethinkdb";
 import config from "miracle-tv-server/config";
 import { generateRoles } from "./generate-roles";
+import { green, yellow } from "chalk";
 
 const tables: string[] = [
   "users",
@@ -19,44 +20,36 @@ export const connection = rdb.connect({
 
 export const setupDB = async () => {
   const con = await connection;
-  console.info("\x1b[33m", "[Checking Database Setup]", "\x1b[0m");
+  console.info("");
+  console.info(green`[Checking Database Setup]`);
   console.info(
-    "\x1b[33m",
-    `- Checking database \`${config.database?.db || "miracle-tv"}\`...`,
-    "\x1b[0m"
+    yellow`- Checking database \`${config.database?.db || "miracle-tv"}\`...`
   );
   const dbList = await rdb.dbList().run(con);
   if (!dbList.includes(config.database?.db || "miracle-tv")) {
     console.info(
-      "\x1b[33m",
-      `-- Creating database \`${config.database?.db || "miracle-tv"}\`...`,
-      "\x1b[0m"
+      yellow`-- Creating database \`${config.database?.db || "miracle-tv"}\`...`
     );
     await rdb.dbCreate(config.database?.db || "miracle-tv").run(con);
   }
   console.info(
-    "\x1b[32m",
-    `-- ✔ Database \`${config.database?.db || "miracle-tv"}\` ok!`,
-    "\x1b[0m"
+    green`-- ✔ Database \`${config.database?.db || "miracle-tv"}\` ok!`
   );
   const tableList = await rdb.db(config.database.db).tableList().run(con);
   await Promise.all(
     tables.map((table) => {
-      console.info("\x1b[33m", `- Checking \`${table}\` Table`, "\x1b[0m");
+      console.info(yellow`- Checking \`${table}\` Table`);
       if (!tableList.includes(table)) {
-        console.info(
-          "\x1b[33m",
-          `-- Creating \`${table}\` table...`,
-          "\x1b[0m"
-        );
+        console.info(yellow`-- Creating \`${table}\` table...`);
         return rdb.db(config.database.db).tableCreate(table).run(con);
       } else {
-        console.info("\x1b[32m", `-- Table \`${table}\` ok!`, "\x1b[0m");
+        console.info(green`-- Table \`${table}\` ok!`);
       }
     })
   );
-  console.info("\x1b[32m", "- ✔ Table Check Complete!", "\x1b[0m");
-  console.info("\x1b[32m", "✔ Database Check Complete!", "\x1b[0m");
+  console.info(green`- ✔ Table Check Complete!`);
+  console.info(green`✔ Database Check Complete!`);
   const res = await generateRoles();
+  console.info("");
   return res;
 };
