@@ -1,10 +1,9 @@
 import { ApolloServer } from "apollo-server-express";
-import { gql, makeExecutableSchema } from "apollo-server";
+import { gql } from "apollo-server";
 import { GraphQLUpload } from "graphql-upload";
 import glob from "glob";
 import path from "path";
 import { DateTime } from "luxon";
-import { Resolvers } from "miracle-tv-shared/graphql";
 import { connection } from "miracle-tv-server/db/setup-db";
 import { readFileSync } from "fs";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
@@ -59,6 +58,7 @@ import { fileResolvers } from "./resolvers/file";
 import { red } from "chalk";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { authDirective } from "miracle-tv-server/graphql/directives/auth";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -118,10 +118,8 @@ let executableSchema = makeExecutableSchema({
 executableSchema = authDirective(executableSchema, "auth");
 
 export const graphqlEndpoint = new ApolloServer({
-  uploads: false,
   schema: executableSchema,
   introspection: true,
-  playground: true,
   formatError: (err) => {
     if (err.extensions.code === "INTERNAL_SERVER_ERROR") {
       console.error(

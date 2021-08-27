@@ -1,4 +1,4 @@
-import * as gqlUtils from "@graphql-tools/utils";
+import { getDirective, MapperKind, mapSchema } from "@graphql-tools/utils";
 import { defaultFieldResolver, GraphQLFieldConfig } from "graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { any, identity, prop } from "ramda";
@@ -8,9 +8,6 @@ import {
   AuthenticationError,
   AuthorizationError,
 } from "miracle-tv-server/graphql/errors/auth";
-
-const { MapperKind, mapSchema } = gqlUtils;
-const { getDirective } = gqlUtils as any;
 
 const roleGuard =
   (schema: any, directiveName: string) =>
