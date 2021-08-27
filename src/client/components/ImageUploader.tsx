@@ -20,6 +20,8 @@ import {
 import { useField } from "react-final-form";
 import { AttachmentIcon, CloseIcon } from "@chakra-ui/icons";
 import { getMediaURL } from "miracle-tv-shared/media";
+import { transparentize } from "@chakra-ui/theme-tools";
+import { useTheme } from "@emotion/react";
 
 gql`
   query GetFileForUploader($id: ID!) {
@@ -54,6 +56,7 @@ export const ImageUploader = ({
   aspectMaxH,
   ...flexProps
 }: Props): JSX.Element => {
+  const theme = useTheme();
   const { input } = useField(name);
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: { fileInfo } = {}, loading } = useGetFileForUploaderQuery({
@@ -84,7 +87,12 @@ export const ImageUploader = ({
   }, [inputRef.current]);
 
   const bgColor = useColorModeValue("transparent", "secondary.600");
-  const color = useColorModeValue("primary.300", "primary.400");
+  const borderColor = transparentize(
+    "primary.500",
+    useColorModeValue(0.3, 0.5)
+  )(theme);
+
+  const color = "primary.500";
 
   return (
     <Flex
@@ -115,7 +123,7 @@ export const ImageUploader = ({
               borderRadius={8}
               borderWidth="3px"
               borderStyle="dashed"
-              borderColor={color}
+              borderColor={borderColor}
               bgColor={bgColor}
               mb={4}
             >
@@ -167,7 +175,7 @@ export const ImageUploader = ({
               boxSizing="border-box"
               borderWidth="3px"
               borderStyle="dashed"
-              borderColor={color}
+              borderColor={borderColor}
               backgroundColor={bgColor}
             />
           </AspectRatio>
@@ -181,7 +189,7 @@ export const ImageUploader = ({
             />
             <IconButton
               variant="link"
-              color={color}
+              color={borderColor}
               aria-label="Upload New"
               onClick={openUpload}
               icon={<AttachmentIcon />}

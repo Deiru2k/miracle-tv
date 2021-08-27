@@ -13,7 +13,7 @@ export const Panel = ({ ...boxProps }: Props) => {
   const color = useColorModeValue("secondary.500", "white");
   const theme = useTheme();
   const borderColor = transparentize(
-    useColorModeValue("primary.400", "primary.600"),
+    "primary.500",
     useColorModeValue(0.3, 0.5)
   )(theme);
 

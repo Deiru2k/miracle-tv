@@ -9,7 +9,7 @@ export const textareaStyles = {
         mode(0.3, 0.5)(props)
       )(props.theme);
       const borderColor = transparentize(
-        mode("primary.400", "secondary.200")(props),
+        "primary.500",
         mode(0.3, 0.5)(props)
       )(props.theme);
       return {

@@ -117,7 +117,7 @@ const ProfilePage = () => {
             onSubmit={updateProfile}
             initialValues={formData}
           >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, dirty }) => (
               <form onSubmit={handleSubmit}>
                 <Flex>
                   <Box flex={2} mr={4}>
@@ -143,7 +143,8 @@ const ProfilePage = () => {
                         <FormGroup
                           name="avatar"
                           label="Profile Picture"
-                          flex={2}
+                          mr={4}
+                          w="auto"
                         >
                           <ImageUploader
                             id="avatar"
@@ -156,7 +157,6 @@ const ProfilePage = () => {
                         <FormGroup
                           name="streamThumbnail"
                           label="Stream Thumbnail"
-                          flex={4}
                         >
                           <ImageUploader
                             id="streamThumbnail"
@@ -184,7 +184,12 @@ const ProfilePage = () => {
                   </Box>
                 </Flex>
                 <Flex justify="flex-end">
-                  <Button type="submit" mt={6} isLoading={isUpdating}>
+                  <Button
+                    type="submit"
+                    mt={6}
+                    isLoading={isUpdating}
+                    isDisabled={!dirty}
+                  >
                     Update profile
                   </Button>
                 </Flex>
