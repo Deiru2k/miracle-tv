@@ -1,14 +1,14 @@
-node_modules/
-dist/
-yarn-error.log
-src/**/*.js
-dev.sqlite3
-result/
 .log/
 .vscode/
 .media/
 
-miracle-tv.*.zip
+node_modules/
+dist/
 result
 result/
-.types
+src/**/*.js
+
+dev.sqlite3
+
+yarn-error.log
+miracle-tv.*.zip
