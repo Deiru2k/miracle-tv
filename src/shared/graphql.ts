@@ -892,3 +892,42 @@ export type SignUpMutation = (
     & Pick<User, 'id' | 'username'>
   ) }
 );
+
+export type UserSettingsProfileFragmentFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio'>
+  & { avatar?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
+  )>, streamThumbnail?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
+  )>, header?: Maybe<(
+    { __typename?: 'File' }
+    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
+  )> }
+);
+
+export type UserSettingsProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserSettingsProfileQuery = (
+  { __typename?: 'Query' }
+  & { self: (
+    { __typename?: 'User' }
+    & UserSettingsProfileFragmentFragment
+  ) }
+);
+
+export type UpdateUserSettingsProfileMutationVariables = Exact<{
+  input: UpdateSelfInput;
+}>;
+
+
+export type UpdateUserSettingsProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { updateSelf?: Maybe<(
+    { __typename?: 'User' }
+    & UserSettingsProfileFragmentFragment
+  )> }
+);

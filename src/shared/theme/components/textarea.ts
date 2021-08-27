@@ -1,23 +1,33 @@
-import cn from "classnames";
+import { mode, transparentize } from "@chakra-ui/theme-tools";
 
 export const textareaStyles = {
   variants: {
-    solid: ({ colorScheme }: any) => {
+    solid: (props: any) => {
+      const bgColor = mode("white", "secondary.500")(props);
+      const borderColorFocus = transparentize(
+        mode("primary.500", "primary.200")(props),
+        mode(0.3, 0.5)(props)
+      )(props.theme);
+      const borderColor = transparentize(
+        mode("primary.400", "secondary.200")(props),
+        mode(0.3, 0.5)(props)
+      )(props.theme);
       return {
-        bgColor: cn({
-          "secondary.400": colorScheme === "secondary",
-          "secondary.600": colorScheme === "primary",
-        }),
-        borderRadius: "0px",
-        borderWidth: "2px",
+        background: "none",
+        backgroundColor: bgColor,
+        borderColor,
+        borderRadius: "6px",
+        borderWidth: "1px",
         borderStyle: "solid",
-        borderColor: cn({
-          "primary.500": colorScheme === "primary",
-          "secondary.400": colorScheme === "secondary",
-        }),
-        color: cn({
-          white: colorScheme === "primary" || colorScheme === "secondary",
-        }),
+        transition: "all 0.5s ease-in",
+        py: 4,
+        _placeholder: {
+          color: mode("secondary.500", "secondary.200")(props),
+        },
+        _focus: {
+          borderColor: borderColorFocus,
+          transition: "all 0.5s ease-out",
+        },
       };
     },
   },

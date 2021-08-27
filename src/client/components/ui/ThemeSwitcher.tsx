@@ -5,7 +5,7 @@ import React from "react";
 export const ThemeSwitcher = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <Box onClick={toggleColorMode}>
+    <Box onClick={toggleColorMode} cursor="pointer">
       {colorMode === "dark" && <MoonIcon mr={2} />}
       {colorMode !== "dark" && <SunIcon mr={2} />}
       <Switch

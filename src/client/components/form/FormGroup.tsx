@@ -32,9 +32,9 @@ export const FormGroup = ({
   ...controlProps
 }: Props) => {
   return (
-    <FormControl id={name} {...controlProps} pt={0} mt={0}>
+    <FormControl id={name} pt={0} mt={0} {...controlProps}>
       {!!label && !hideLabel && (
-        <FormLabel {...labelProps} pt={0} mt={0}>
+        <FormLabel pt={0} mt={0} mb={3.5} {...labelProps}>
           {label}
         </FormLabel>
       )}

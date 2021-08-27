@@ -1,14 +1,22 @@
 import { mode, transparentize } from "@chakra-ui/theme-tools";
 
+export const formLabelStyles = {
+  baseStyles: (props: any) => ({
+    color: mode("secondary.500", "white")(props),
+  }),
+};
+
 export const inputStyles = {
   variants: {
     solid: (props: any) => {
       const bgColor = mode("white", "secondary.500")(props);
-      const borderColor = mode("primary.500", "primary.200")(props);
-      const borderColorFocus = mode("secondary.500", "secondary.200")(props);
-      const shadowColor = transparentize(
+      const borderColorFocus = transparentize(
         mode("primary.500", "primary.200")(props),
-        mode(0.9, 0.4)(props)
+        mode(0.3, 0.5)(props)
+      )(props.theme);
+      const borderColor = transparentize(
+        mode("primary.400", "secondary.200")(props),
+        mode(0.3, 0.5)(props)
       )(props.theme);
       return {
         field: {

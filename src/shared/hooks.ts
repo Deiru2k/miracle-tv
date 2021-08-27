@@ -58,6 +58,33 @@ export const CurrentUserFragmentDoc = gql`
   }
 }
     `;
+export const UserSettingsProfileFragmentFragmentDoc = gql`
+    fragment UserSettingsProfileFragment on User {
+  id
+  username
+  displayName
+  emailHash
+  bio
+  avatar {
+    id
+    filename
+    encoding
+    mimetype
+  }
+  streamThumbnail {
+    id
+    filename
+    encoding
+    mimetype
+  }
+  header {
+    id
+    filename
+    encoding
+    mimetype
+  }
+}
+    `;
 export const GetFileForUploaderDocument = gql`
     query GetFileForUploader($id: ID!) {
   fileInfo(id: $id) {
@@ -276,3 +303,70 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<Types
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<Types.SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<Types.SignUpMutation, Types.SignUpMutationVariables>;
+export const UserSettingsProfileDocument = gql`
+    query UserSettingsProfile {
+  self {
+    ...UserSettingsProfileFragment
+  }
+}
+    ${UserSettingsProfileFragmentFragmentDoc}`;
+
+/**
+ * __useUserSettingsProfileQuery__
+ *
+ * To run a query within a React component, call `useUserSettingsProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserSettingsProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserSettingsProfileQuery(baseOptions?: Apollo.QueryHookOptions<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>(UserSettingsProfileDocument, options);
+      }
+export function useUserSettingsProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>(UserSettingsProfileDocument, options);
+        }
+export type UserSettingsProfileQueryHookResult = ReturnType<typeof useUserSettingsProfileQuery>;
+export type UserSettingsProfileLazyQueryHookResult = ReturnType<typeof useUserSettingsProfileLazyQuery>;
+export type UserSettingsProfileQueryResult = Apollo.QueryResult<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>;
+export const UpdateUserSettingsProfileDocument = gql`
+    mutation UpdateUserSettingsProfile($input: UpdateSelfInput!) {
+  updateSelf(input: $input) {
+    ...UserSettingsProfileFragment
+  }
+}
+    ${UserSettingsProfileFragmentFragmentDoc}`;
+export type UpdateUserSettingsProfileMutationFn = Apollo.MutationFunction<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>;
+
+/**
+ * __useUpdateUserSettingsProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserSettingsProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserSettingsProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserSettingsProfileMutation, { data, loading, error }] = useUpdateUserSettingsProfileMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserSettingsProfileMutation(baseOptions?: Apollo.MutationHookOptions<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>(UpdateUserSettingsProfileDocument, options);
+      }
+export type UpdateUserSettingsProfileMutationHookResult = ReturnType<typeof useUpdateUserSettingsProfileMutation>;
+export type UpdateUserSettingsProfileMutationResult = Apollo.MutationResult<Types.UpdateUserSettingsProfileMutation>;
+export type UpdateUserSettingsProfileMutationOptions = Apollo.BaseMutationOptions<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>;

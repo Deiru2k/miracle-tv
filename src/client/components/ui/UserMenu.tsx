@@ -2,7 +2,6 @@ import React from "react";
 import {
   Button,
   Flex,
-  Text,
   Menu,
   MenuButton,
   MenuItem,
@@ -51,7 +50,7 @@ const MenuLink = ({ url, label, icon }: LinkProps) => {
 //
 
 export const UserMenu = () => {
-  const { user, logout } = useCurrentUser();
+  const { currentUser, logout } = useCurrentUser();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const activeButtonColor = useColorModeValue("primary.300", "primary.400");
@@ -70,11 +69,11 @@ export const UserMenu = () => {
             bg: activeButtonColor,
           }}
         >
-          <UserInfo user={user} />
+          <UserInfo user={currentUser} />
         </MenuButton>
         <MenuList>
           <MenuLink
-            url={`/users/${user?.id}`}
+            url={`/users/${currentUser?.id}`}
             label="Profile"
             icon={<SettingsIcon aria-label="Settings" variant="ghost" mr={2} />}
           />

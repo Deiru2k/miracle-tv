@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { gql } from "@apollo/client";
 import {
   AspectRatio,
@@ -117,6 +117,7 @@ export const ImageUploader = ({
               borderStyle="dashed"
               borderColor={color}
               bgColor={bgColor}
+              mb={4}
             >
               <Heading size="sm" mb={2} color={color}>
                 Upload

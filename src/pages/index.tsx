@@ -1,9 +1,9 @@
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex, Button, Link } from "@chakra-ui/react";
 import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 const Home = () => {
-  const { user } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   return (
     <AuthRedirect>
       <Flex
@@ -13,7 +13,10 @@ const Home = () => {
         align="center"
         direction="column"
       >
-        <Box>Lmao, {user?.username}</Box>
+        <Box>Lmao, {currentUser?.username}</Box>
+        <Flex justify="space-between">
+          <Link href="/settings/profile">Settings</Link>
+        </Flex>
         <Button mt={6} onClick={signOut}>
           Sign Out
         </Button>

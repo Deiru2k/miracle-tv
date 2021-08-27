@@ -1,44 +1,26 @@
-import { useCallback, useEffect, useMemo } from "react";
 import { gql } from "@apollo/client";
-import {
-  useCurrentUserFullLazyQuery,
-  useCurrentUserFullQuery,
-} from "miracle-tv-shared/hooks";
-import { CurrentUserFullQuery, User } from "miracle-tv-shared/graphql";
-import { DateTime } from "luxon";
-import { useRouter } from "next/dist/client/router";
-import { useDispatch, useSelector } from "react-redux";
-import { identity, path, prop, props } from "ramda";
-import { actions } from "miracle-tv-client/store/reducers";
+import { useCurrentUserFullQuery } from "miracle-tv-shared/hooks";
+import { CurrentUserFullQuery } from "miracle-tv-shared/graphql";
 
 type CurrentUserInfo = CurrentUserFullQuery["self"];
-
-type LocalUserStorage = {
-  loading: boolean;
-  expiresAt: Date;
-  user: CurrentUserInfo;
-};
 
 type CurrentUserHookReturn = {
   isUserLoading: boolean;
   isUserCalled: boolean;
-  user: CurrentUserInfo;
+  currentUser: CurrentUserInfo;
   logout: () => void;
   updateUser: (user: CurrentUserInfo) => void;
 };
 
 export const useCurrentUser = (): CurrentUserHookReturn => {
-  const { push } = useRouter();
-
   const {
     data: { self } = {},
     loading: isUserLoading,
     called: isUserCalled,
-    refetch: loadUser,
   } = useCurrentUserFullQuery({});
 
   return {
-    user: self || null,
+    currentUser: self || null,
     isUserLoading: isUserLoading,
     isUserCalled,
     logout: () => {},

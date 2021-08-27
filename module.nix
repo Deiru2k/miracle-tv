@@ -99,6 +99,7 @@ in {
       serviceConfig.ExecStart = "${miracle-tv}/bin/miracle-client -p ${toString cfg.settings.client.port} -H ${cfg.settings.client.hostname}";
       environment = {
         NEXT_PUBLIC_API_URL = "https://${cfg.settings.url}/api/graphql";
+        NEXT_PUBLIC_MEDIA_URL = "https://${cfg.settings.url}/media";
         NODE_ENV = cfg.settings.nodeEnv;
       };
     };

@@ -8,25 +8,13 @@ type Props = {
   colorScheme?: "primary" | "secondary";
 } & BoxProps;
 
-type Colors = Record<
-  Props["colorScheme"],
-  {
-    bgColor: string;
-    color: string;
-  }
->;
-
 export const Panel = ({ ...boxProps }: Props) => {
-  const bgColor = useColorModeValue("secondary.200", "secondary.400");
-  const color = useColorModeValue("secondaryText.light", "secondaryText.dark");
-  const boxShadow = useColorModeValue(
-    "1px 0px 63px -23px rgba(0,0,0,0.3)",
-    "0px 0px 15px 10px rgba(0,0,0,0.3)"
-  );
+  const bgColor = useColorModeValue("white", "secondary.400");
+  const color = useColorModeValue("secondary.500", "white");
   const theme = useTheme();
   const borderColor = transparentize(
     useColorModeValue("primary.400", "primary.600"),
-    0.5
+    useColorModeValue(0.3, 0.5)
   )(theme);
 
   return (
@@ -38,7 +26,6 @@ export const Panel = ({ ...boxProps }: Props) => {
       borderWidth="1px"
       borderStyle="solid"
       transition="all 0.2s ease"
-      boxShadow={boxShadow}
       borderColor={borderColor}
       {...boxProps}
     />

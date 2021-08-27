@@ -1,3 +1,8 @@
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
+const mediaUrl = publicRuntimeConfig.mediaUrl || "http://localhost:4000/media";
+
 export const getMediaURL = (filename: string): string => {
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL}/${filename}`;
+  return `${mediaUrl}/${filename}`;
 };
