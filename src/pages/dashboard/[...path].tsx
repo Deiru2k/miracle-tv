@@ -1,5 +1,4 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
-import { Page } from "miracle-tv-client/components/system/Page";
 import { Feeds } from "miracle-tv-client/Dashboard/Feeds";
 import { NavConfig, Navigation } from "miracle-tv-client/Dashboard/Navigation";
 import { Streams } from "miracle-tv-client/Dashboard/Streams";
@@ -64,7 +63,6 @@ const Dashboard = () => {
   };
 
   const component = pathOr(components.default, path as string[], components);
-  console.log(component);
   return (
     <Navigation title="Dashboard" nav={nav}>
       {component}

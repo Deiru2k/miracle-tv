@@ -34,22 +34,26 @@ export const Navbar = () => {
       <Box>
         <Heading>Miracle TV</Heading>
       </Box>
-      <Menu>
-        <MenuButton variant="ghost" px={0}>
-          {currentUser?.displayName || currentUser?.username}
-          <ChevronDownIcon ml={2} />
-        </MenuButton>
-        <Portal>
-          <MenuList>
-            <MenuItem closeOnSelect={false}>
-              <ThemeSwitcher />
-            </MenuItem>
-            <MenuItem>
-              <LogoutIcon mr={2} /> Logout
-            </MenuItem>
-          </MenuList>
-        </Portal>
-      </Menu>
+      <Box>
+        <Menu>
+          <MenuButton variant="ghost" px={0}>
+            {currentUser?.displayName || currentUser?.username}{" "}
+            <ChevronDownIcon ml={2} />
+          </MenuButton>
+          <Portal>
+            <MenuList>
+              <MenuItem closeOnSelect={false}>
+                <ThemeSwitcher />
+              </MenuItem>
+              <MenuItem>
+                <LogoutIcon mr={2} /> Logout
+              </MenuItem>
+            </MenuList>
+          </Portal>
+        </Menu>
+      </Box>
     </Flex>
   );
 };
+
+export default Navbar;

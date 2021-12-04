@@ -1,5 +1,3 @@
-import { useColorModeValue } from "@chakra-ui/react";
-
 export const navigationStyles = {
   parts: ["menu", "header", "divider", "link", "content"],
   baseStyle: ({ colorMode }: any) => {

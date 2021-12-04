@@ -11,6 +11,7 @@ import { tabsStyles as Tabs } from "miracle-tv-shared/theme/components/tabs";
 
 import { navLinkStyles as NavLink } from "miracle-tv-shared/theme/components/app/nav-link";
 import { navigationStyles as Navigation } from "./app/navigation";
+import { navbarStyles as Navbar } from "./app/navbar";
 
 const components = {
   // Chakra
@@ -26,6 +27,7 @@ const components = {
   // App
   NavLink,
   Navigation,
+  Navbar,
 };
 
 export default components;

@@ -13,7 +13,6 @@ import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
 import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
-import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
 import { Navbar } from "miracle-tv-client/components/ui/Navbar";
 
 const env = process.env.NEXT_PUBLIC_ENV;
