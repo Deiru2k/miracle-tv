@@ -1,7 +1,8 @@
 export const navigationStyles = {
   parts: ["menu", "header", "divider", "link", "content"],
   baseStyle: ({ colorMode }: any) => {
-    const bgColor = colorMode === "dark" ? "secondary.400" : "white";
+    const bgColor =
+      colorMode === "dark" ? "var(--chakra-colors-secondary-400)" : "white";
 
     return {
       container: {

@@ -80,7 +80,7 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
         <ApolloProvider client={client}>
           {!isShowcase && (
             <Flex h="100%" w="100%" direction="column">
-              <PageWrapper paddingTop="50px" suppressHydrationWarning>
+              <PageWrapper paddingTop="50px">
                 <Navbar />
                 <Component {...pageProps} />
               </PageWrapper>

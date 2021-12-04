@@ -11,7 +11,10 @@ type Props = BoxProps;
 
 export const PageWrapper = (props: Props) => {
   const bgColor = useColorModeValue("white", "secondary.500");
-  const color = useColorModeValue("text.light", "text.dark");
+  const color = useColorModeValue(
+    "var(--chakra-colors-text-light)",
+    "var(--chakra-colors-text-dark)"
+  );
   return (
     <Box
       width="100%"
