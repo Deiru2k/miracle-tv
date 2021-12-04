@@ -14,6 +14,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
+import { Navbar } from "miracle-tv-client/components/ui/Navbar";
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
@@ -80,7 +81,8 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
         <ApolloProvider client={client}>
           {!isShowcase && (
             <Flex h="100%" w="100%" direction="column">
-              <PageWrapper>
+              <PageWrapper paddingTop="50px">
+                <Navbar />
                 <Component {...pageProps} />
               </PageWrapper>
             </Flex>
@@ -90,9 +92,6 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
               <Component {...pageProps} />
             </ShowcaseWrapper>
           )}
-          <Box position="fixed" right={0} bottom={0} pb={4} pr={4}>
-            <ThemeSwitcher />
-          </Box>
         </ApolloProvider>
       </ChakraProvider>
     </>

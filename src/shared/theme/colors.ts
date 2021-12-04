@@ -11,6 +11,7 @@ const colors = {
   },
   secondary: {
     200: "#8296C0",
+    400: "#2c3547",
     500: "#1a202c",
   },
 } as const;

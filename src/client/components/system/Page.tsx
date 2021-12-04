@@ -20,7 +20,6 @@ export const PageWrapper = (props: Props) => {
       overflowY="auto"
       color={color}
       bgColor={bgColor}
-      paddingBottom="50px"
       {...props}
     />
   );

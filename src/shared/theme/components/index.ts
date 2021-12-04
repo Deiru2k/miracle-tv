@@ -9,7 +9,11 @@ import { switchStyles as Switch } from "miracle-tv-shared/theme/components/switc
 import { headingStyles as Heading } from "miracle-tv-shared/theme/components/heading";
 import { tabsStyles as Tabs } from "miracle-tv-shared/theme/components/tabs";
 
+import { navLinkStyles as NavLink } from "miracle-tv-shared/theme/components/app/nav-link";
+import { navigationStyles as Navigation } from "./app/navigation";
+
 const components = {
+  // Chakra
   Button,
   Input,
   FormLabel,
@@ -18,6 +22,10 @@ const components = {
   Textarea,
   Heading,
   Tabs,
+
+  // App
+  NavLink,
+  Navigation,
 };
 
 export default components;

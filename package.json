@@ -15,7 +15,8 @@
     "build:client:docker": "NODE_ENV=docker next build",
     "run:client": "next start",
     "dev:client": "next dev",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "dev:both": "concurrently --kill-others \"yarn dev:server\" \"yarn dev:client\""
   },
   "simple-git-hooks": {
     "pre-commit": "lint-staged"
@@ -93,6 +94,7 @@
     "@types/rethinkdb": "^2.3.16",
     "@types/uuid": "^8.3.1",
     "@vercel/ncc": "^0.28.6",
+    "concurrently": "^6.4.0",
     "lint-staged": "^11.1.2",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",

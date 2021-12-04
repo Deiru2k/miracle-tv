@@ -140,9 +140,12 @@ export const graphqlEndpoint = new ApolloServer({
       roles: new RolesModel(con),
       files: new FilesModel(con),
     } as ResolverContext["db"];
-    const session = (await db.sessions.getSessionById(
-      req.headers.authorization || ""
-    )) as DbSession | null;
+    const isSessionTooLong = req.headers?.authorization?.length > 127;
+    const session = isSessionTooLong
+      ? null
+      : ((await db.sessions.getSessionById(
+          req.headers.authorization || ""
+        )) as DbSession | null);
     const sessionIsValid =
       DateTime.fromISO(session?.expiresAt).diffNow("seconds").seconds > 0 ||
       false;

@@ -17,6 +17,7 @@ export class SessionsModel extends Model {
       })
       .run(this.conn)
       .then(async (res) => {
+        console.log("RES", res);
         const key = head(res.generated_keys);
         const session = await this.getSessionById(key);
         if (session) {
