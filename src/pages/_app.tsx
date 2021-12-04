@@ -7,13 +7,13 @@ import Head from "next/head";
 import getConfig from "next/config";
 import { propOr } from "ramda";
 
-import theme from "miracle-tv-shared/theme";
 import React from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
 import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { Navbar } from "miracle-tv-client/components/ui/Navbar";
+import { Chakra } from "miracle-tv-client/Chakra";
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
@@ -76,11 +76,11 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           }
         `}
       />
-      <ChakraProvider theme={theme}>
+      <Chakra cookies={pageProps.cookies}>
         <ApolloProvider client={client}>
           {!isShowcase && (
             <Flex h="100%" w="100%" direction="column">
-              <PageWrapper paddingTop="50px">
+              <PageWrapper paddingTop="50px" suppressHydrationWarning>
                 <Navbar />
                 <Component {...pageProps} />
               </PageWrapper>
@@ -92,7 +92,7 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
             </ShowcaseWrapper>
           )}
         </ApolloProvider>
-      </ChakraProvider>
+      </Chakra>
     </>
   );
 }
@@ -105,3 +105,6 @@ MyApp.getInitialProps = async (appContext: any) => {
 };
 
 export default MyApp;
+
+// re-export the reusable `getServerSideProps` function
+export { getServerSideProps } from "miracle-tv-client/Chakra";
