@@ -2,19 +2,28 @@ import { Box, Switch, useColorMode } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import React from "react";
 
-export const ThemeSwitcher = () => {
+type Props = {
+  isShort?: boolean;
+};
+
+export const ThemeSwitcher = ({ isShort }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const modeMargin = isShort ? 0 : 2;
   return (
     <Box onClick={toggleColorMode} cursor="pointer">
-      {colorMode === "dark" && <MoonIcon mr={2} />}
-      {colorMode !== "dark" && <SunIcon mr={2} />}
-      <Switch
-        mr={2}
-        pointerEvents="none"
-        isChecked={colorMode === "dark"}
-        onChange={toggleColorMode}
-      />
-      {colorMode === "dark" ? "Dark Mode" : "Light Mode"}
+      {colorMode === "dark" && <MoonIcon mr={modeMargin} />}
+      {colorMode !== "dark" && <SunIcon mr={modeMargin} />}
+      {!isShort && (
+        <>
+          <Switch
+            mr={2}
+            pointerEvents="none"
+            isChecked={colorMode === "dark"}
+            onChange={toggleColorMode}
+          />
+          {colorMode === "dark" ? "Dark Mode" : "Light Mode"}
+        </>
+      )}
     </Box>
   );
 };

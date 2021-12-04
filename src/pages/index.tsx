@@ -1,28 +1,22 @@
-import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
-import { Box, Flex, Button, Link } from "@chakra-ui/react";
-import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useEffect } from "react";
+import { useRouter } from "next/dist/client/router";
 
-const Home = () => {
-  const { currentUser } = useCurrentUser();
-  return (
-    <AuthRedirect>
-      <Flex
-        w="100%"
-        h="100%"
-        justify="center"
-        align="center"
-        direction="column"
-      >
-        <Box>Lmao, {currentUser?.username}</Box>
-        <Flex justify="space-between">
-          <Link href="/settings/profile">Settings</Link>
-        </Flex>
-        <Button mt={6} onClick={signOut}>
-          Sign Out
-        </Button>
-      </Flex>
-    </AuthRedirect>
-  );
+const Home = (): null => {
+  const { push } = useRouter();
+  const { currentUser, isUserLoading, isUserCalled } = useCurrentUser();
+
+  useEffect(() => {
+    if (!isUserLoading && isUserCalled) {
+      if (currentUser) {
+        push("/dashboard", null, { shallow: true });
+      } else {
+        push("/about", null, { shallow: true });
+      }
+    }
+  }, [push, isUserLoading, isUserCalled]);
+
+  return null;
 };
 
 export default Home;

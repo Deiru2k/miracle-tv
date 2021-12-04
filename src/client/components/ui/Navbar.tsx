@@ -1,23 +1,25 @@
+import React from "react";
+
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   Heading,
+  HStack,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Portal,
-  Text,
 } from "@chakra-ui/react";
-import { useCurrentUser } from "miracle-tv-client/hooks/auth";
-import React from "react";
+import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const Navbar = () => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
   return (
     <Flex
       w="100%"
@@ -34,24 +36,37 @@ export const Navbar = () => {
       <Box>
         <Heading>Miracle TV</Heading>
       </Box>
-      <Box>
-        <Menu>
-          <MenuButton variant="ghost" px={0}>
-            {currentUser?.displayName || currentUser?.username}{" "}
-            <ChevronDownIcon ml={2} />
-          </MenuButton>
-          <Portal>
-            <MenuList>
-              <MenuItem closeOnSelect={false}>
-                <ThemeSwitcher />
-              </MenuItem>
-              <MenuItem>
-                <LogoutIcon mr={2} /> Logout
-              </MenuItem>
-            </MenuList>
-          </Portal>
-        </Menu>
-      </Box>
+      <HStack>
+        {isUserCalled && !isUserLoading && !currentUser && (
+          <>
+            <Link as={Button} href="/auth/login">
+              Login
+            </Link>
+            <Link as={Button} href="/auth/sign-up">
+              Sign Up
+            </Link>
+            <ThemeSwitcher isShort />
+          </>
+        )}
+        {isUserCalled && !isUserLoading && !!currentUser && (
+          <Menu>
+            <MenuButton variant="ghost" px={0}>
+              {currentUser?.displayName || currentUser?.username}{" "}
+              <ChevronDownIcon ml={2} />
+            </MenuButton>
+            <Portal>
+              <MenuList>
+                <MenuItem closeOnSelect={false}>
+                  <ThemeSwitcher />
+                </MenuItem>
+                <MenuItem onClick={signOut}>
+                  <LogoutIcon mr={2} /> Logout
+                </MenuItem>
+              </MenuList>
+            </Portal>
+          </Menu>
+        )}
+      </HStack>
     </Flex>
   );
 };

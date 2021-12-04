@@ -14,7 +14,7 @@ type CurrentUserHookReturn = {
 
 export const useCurrentUser = (): CurrentUserHookReturn => {
   const {
-    data: { self } = {},
+    data: { self } = { self: null },
     loading: isUserLoading,
     called: isUserCalled,
   } = useCurrentUserFullQuery({});
@@ -30,7 +30,7 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
 export const signOut = () => {
   localStorage.removeItem("token");
   if (global.window) {
-    window.location.replace("/auth/login");
+    window.location.replace("/");
   }
 };
 
