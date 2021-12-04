@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -15,8 +14,9 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
-import { LogoutIcon } from "../icons/LogoutIcon";
-import { ThemeSwitcher } from "./ThemeSwitcher";
+import { LogoutIcon } from "miracle-tv-client/components/icons/LogoutIcon";
+import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
@@ -34,7 +34,9 @@ export const Navbar = () => {
       px={4}
     >
       <Box>
-        <Heading>Miracle TV</Heading>
+        <Link as={Heading} href="/">
+          Miracle TV
+        </Link>
       </Box>
       <HStack>
         {isUserCalled && !isUserLoading && !currentUser && (
