@@ -15,7 +15,7 @@ import { useCallback, useMemo } from "react";
 import { omit } from "ramda";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
-import { Gravatar } from "miracle-tv-client/components/ui/Gravatar";
+import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -150,7 +150,8 @@ export const ProfileSettings = () => {
                           />
                         )}
                         {currentSettings?.useGravatar && (
-                          <Gravatar
+                          <Avatar
+                            useGravatar
                             emailHash={data?.self?.emailHash}
                             username={data?.self?.username}
                             aspectMaxH="200px"

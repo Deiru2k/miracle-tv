@@ -12,16 +12,23 @@ import {
   MenuItem,
   MenuList,
   Portal,
+  Text,
   useMultiStyleConfig,
 } from "@chakra-ui/react";
-import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
+import {
+  signOut,
+  useCurrentUser,
+  useCurrentUserSettings,
+} from "miracle-tv-client/hooks/auth";
 import { LogoutIcon } from "miracle-tv-client/components/icons/LogoutIcon";
 import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { HomeIcon } from "../icons/HomeIcon";
+import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
+  const { currentSettings } = useCurrentUserSettings();
 
   const styles = useMultiStyleConfig("Navbar", {});
 
@@ -47,8 +54,22 @@ export const Navbar = () => {
         {isUserCalled && !isUserLoading && !!currentUser && (
           <Menu>
             <MenuButton variant="ghost" px={0}>
-              {currentUser?.displayName || currentUser?.username}{" "}
-              <ChevronDownIcon ml={2} />
+              <HStack>
+                <Avatar
+                  borderRadius="50%"
+                  username={currentUser?.username}
+                  emailHash={currentUser?.emailHash}
+                  useGravatar={currentSettings?.useGravatar}
+                  aspectMaxH="25px"
+                  aspectMaxW="25px"
+                  imageId={currentUser.avatar.filename}
+                  bgColor="white"
+                />
+                <Text>
+                  {currentUser?.displayName || currentUser?.username}{" "}
+                </Text>
+                <ChevronDownIcon ml={2} />
+              </HStack>
             </MenuButton>
             <Portal>
               <MenuList>
