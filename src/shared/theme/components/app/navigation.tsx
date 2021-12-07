@@ -15,7 +15,6 @@ export const navigationStyles = {
     return {
       container: {
         h: "100%",
-        padding: 2,
       },
       header: {
         fontSize: "lg",

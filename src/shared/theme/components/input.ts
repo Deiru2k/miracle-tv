@@ -26,13 +26,13 @@ export const inputStyles = {
           borderRadius: "6px",
           borderWidth: "1px",
           borderStyle: "solid",
-          transition: "all 0.5s ease-in",
+          transition: "all 0.1s ease-in",
           _placeholder: {
             color: mode("secondary.500", "secondary.200")(props),
           },
           _focus: {
             borderColor: borderColorFocus,
-            transition: "all 0.5s ease-out",
+            transition: "all 0.1s ease-out",
           },
         },
       };
