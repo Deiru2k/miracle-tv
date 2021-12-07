@@ -23,15 +23,19 @@ type SessionResponse {
   expiresAt: DateTime!
 }
 
+# TODO: Implement UserSettings query & mutation to update non-profile settings
 type UserSettings {
   id: ID
   useGravatar: Boolean
+  singleUserMode: Boolean
 }
 
 extend type Query {
   users: [User]!
   self: User! @auth(rights: [{ unit: SELF, subject: "users" }])
   user(id: ID!): User @auth(rights: [{ unit: READ, subject: "users" }])
+  userSettings: UserSettings!
+    @auth(rights: [{ unit: SELF, subject: "userSettings" }])
 }
 
 input CreateUserInput {
@@ -64,9 +68,18 @@ input UpdateUserInput {
   streamThumbnail: ID
 }
 
+input UpdateUserSettingsInput {
+  singleUserMode: Boolean
+  useGravatar: Boolean
+}
+
 extend type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: SignInInput!): SessionResponse
-  updateUser(input: UpdateUserInput!): User @auth(rights: [{ unit: WRITE, subject: "users" }])
-  updateSelf(input: UpdateSelfInput!): User @auth(rights: [{ unit: SELF, subject: "users" }])
+  updateUser(input: UpdateUserInput!): User
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  updateSelf(input: UpdateSelfInput!): User
+    @auth(rights: [{ unit: SELF, subject: "users" }])
+  updateUserSettings(input: UpdateUserSettingsInput!): UserSettings
+    @auth(rights: [{ unit: SELF, subject: "userSettings" }])
 }

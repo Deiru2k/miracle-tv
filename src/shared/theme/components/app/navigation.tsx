@@ -1,8 +1,16 @@
+import { transparentize } from "@chakra-ui/theme-tools";
+
 export const navigationStyles = {
   parts: ["menu", "header", "divider", "link", "content"],
   baseStyle: ({ colorMode }: any) => {
-    const bgColor =
-      colorMode === "dark" ? "var(--chakra-colors-secondary-400)" : "white";
+    const lightBg = transparentize("text.primary", 0.04);
+    const bgColorMenu =
+      colorMode === "dark" ? "var(--chakra-colors-secondary-400)" : lightBg;
+    const bgColorContent = "transparent";
+    const boxShadow =
+      colorMode === "dark"
+        ? "0px 0px 10px 0px rgba(34, 60, 80, 0.5) inset"
+        : undefined;
 
     return {
       container: {
@@ -16,8 +24,9 @@ export const navigationStyles = {
         flex: 2,
         alignItems: "flex-start",
         marginRight: 4,
-        backgroundColor: bgColor,
+        backgroundColor: bgColorMenu,
         padding: 2,
+        boxShadow,
       },
       content: {
         flex: 10,
@@ -25,7 +34,7 @@ export const navigationStyles = {
         maxHeight: "100%",
         overflowY: "auto",
         padding: 2,
-        backgroundColor: bgColor,
+        backgroundColor: bgColorContent,
       },
     };
   },

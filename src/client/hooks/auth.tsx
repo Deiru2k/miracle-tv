@@ -1,15 +1,27 @@
 import { gql } from "@apollo/client";
-import { useCurrentUserFullQuery } from "miracle-tv-shared/hooks";
-import { CurrentUserFullQuery } from "miracle-tv-shared/graphql";
+import {
+  useCurrentUserFullQuery,
+  useCurrentUserSettingsQuery,
+} from "miracle-tv-shared/hooks";
+import {
+  CurrentUserFullQuery,
+  CurrentUserSettingsQuery,
+} from "miracle-tv-shared/graphql";
 
 type CurrentUserInfo = CurrentUserFullQuery["self"];
+type CurrentUserSettings = CurrentUserSettingsQuery["userSettings"];
 
 type CurrentUserHookReturn = {
   isUserLoading: boolean;
   isUserCalled: boolean;
   currentUser: CurrentUserInfo;
   logout: () => void;
-  updateUser: (user: CurrentUserInfo) => void;
+};
+
+type CurrentUserSettingsHookReturn = {
+  isUserLoading: boolean;
+  isUserCalled: boolean;
+  currentSettings: CurrentUserSettings;
 };
 
 export const useCurrentUser = (): CurrentUserHookReturn => {
@@ -23,8 +35,21 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
     currentUser: self || null,
     isUserLoading: isUserLoading,
     isUserCalled,
-    logout: () => {},
   } as CurrentUserHookReturn;
+};
+
+export const useCurrentUserSettings = (): CurrentUserSettingsHookReturn => {
+  const {
+    data: { userSettings } = { userSettings: null },
+    loading: isSettingsLoading,
+    called: isSettingsCalled,
+  } = useCurrentUserSettingsQuery({});
+
+  return {
+    currentSettings: userSettings || null,
+    isSettingsLoading,
+    isSettingsCalled,
+  } as CurrentUserSettingsHookReturn;
 };
 
 export const signOut = () => {
@@ -42,6 +67,7 @@ export const CurrentUserFullFragment = gql`
     emailHash
     bio
     emailHash
+    singleUserMode
     avatar {
       id
       filename
@@ -97,4 +123,14 @@ gql`
     }
   }
   ${CurrentUserFullFragment}
+`;
+
+gql`
+  query CurrentUserSettings {
+    userSettings {
+      id
+      useGravatar
+      singleUserMode
+    }
+  }
 `;

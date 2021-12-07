@@ -8,8 +8,10 @@ import {
   useMultiStyleConfig,
   VStack,
 } from "@chakra-ui/react";
+import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { NavLink } from "miracle-tv-client/components/ui/NavLink";
 import { useRouter } from "next/dist/client/router";
+import { path } from "ramda";
 import React from "react";
 
 export type NavConfigRecord = {
@@ -24,22 +26,45 @@ export type NavConfig = {
   urls: NavConfigRecord[];
 }[];
 
+export type NavComponentMap = Record<
+  string,
+  { [key: string]: React.ReactNode } | React.ReactNode
+>;
+
+export type NavTabSizes = [number, number];
+
 type Props = {
-  children: React.ReactNode;
   nav: NavConfig;
+  components: NavComponentMap;
   title?: string;
+  size?: NavTabSizes;
 };
 
-export const Navigation = ({ title, children, nav }: Props) => {
-  const { asPath } = useRouter();
+export const Navigation = ({ title, components, nav, size }: Props) => {
+  const {
+    asPath,
+    query: { path: routePath = [] },
+  } = useRouter();
   const styles = useMultiStyleConfig("Navigation", {});
+
+  const menuStyles = {
+    ...styles.menu,
+    flex: size?.[0] || styles.menu?.flex || 2,
+  };
+
+  const contentStyles = {
+    ...styles.content,
+    flex: size?.[1] || styles.content.flex || 10,
+  };
+
+  const component = path(routePath as string[], components);
 
   return (
     <Flex sx={styles.container}>
-      <VStack sx={styles.menu}>
+      <VStack sx={menuStyles}>
         {!!title && (
           <>
-            <Heading>{title}</Heading>
+            <Heading fontSize="1.5rem">{title}</Heading>
             <Divider />
           </>
         )}
@@ -58,7 +83,10 @@ export const Navigation = ({ title, children, nav }: Props) => {
           </React.Fragment>
         ))}
       </VStack>
-      <Box sx={styles.content}>{children}</Box>
+      <Box sx={contentStyles}>
+        {!component && <NotFound isBacklinkHidden />}
+        {!!component && component}
+      </Box>
     </Flex>
   );
 };

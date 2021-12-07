@@ -17,6 +17,12 @@ export type DbUser = {
   password: string;
 } & Omit<User, "channels" | "roles" | "avatar" | "header" | "streamThumbnail">;
 
+export type DbUserSettings = {
+  id: string;
+  useGravatar?: boolean;
+  singleUserMode?: boolean;
+};
+
 export type DbUserSafe = Omit<DbUser, "password">;
 
 export type DbRole = Role;

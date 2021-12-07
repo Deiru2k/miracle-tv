@@ -5,6 +5,7 @@ import { green, yellow } from "chalk";
 
 const tables: string[] = [
   "users",
+  "user-settings",
   "sessions",
   "activities",
   "stream-keys",

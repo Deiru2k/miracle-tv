@@ -1,9 +1,20 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
+  { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = {
+  [X in Exclude<keyof T, K>]?: T[X];
+} &
+  { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -16,18 +27,18 @@ export type Scalars = {
   Upload: any;
 };
 
-
 export type AccessRights = {
-  __typename?: 'AccessRights';
+  __typename?: "AccessRights";
   channels?: Maybe<AccessUnit>;
   streamKeys?: Maybe<AccessUnit>;
   roles?: Maybe<AccessUnit>;
   users?: Maybe<AccessUnit>;
   activities?: Maybe<AccessUnit>;
+  userSettings?: Maybe<AccessUnit>;
 };
 
 export type AccessTargets = {
-  __typename?: 'AccessTargets';
+  __typename?: "AccessTargets";
   rights: AccessRights;
   actions: Actions;
 };
@@ -40,15 +51,15 @@ export type AccessTargetsInput = {
 };
 
 export enum AccessUnit {
-  Deny = 'DENY',
-  Read = 'READ',
-  Write = 'WRITE',
-  Self = 'SELF',
-  Inherit = 'INHERIT'
+  Deny = "DENY",
+  Read = "READ",
+  Write = "WRITE",
+  Self = "SELF",
+  Inherit = "INHERIT",
 }
 
 export type Actions = {
-  __typename?: 'Actions';
+  __typename?: "Actions";
   user?: Maybe<UserActions>;
 };
 
@@ -57,98 +68,96 @@ export type ActionsInput = {
 };
 
 export type Activity = {
-  __typename?: 'Activity';
-  id: Scalars['ID'];
-  icon?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  verb?: Maybe<Scalars['String']>;
+  __typename?: "Activity";
+  id: Scalars["ID"];
+  icon?: Maybe<Scalars["String"]>;
+  image?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  verb?: Maybe<Scalars["String"]>;
 };
 
 export type ActivityFilter = {
-  id?: Maybe<Scalars['ID']>;
-  icon?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  verb?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars["ID"]>;
+  icon?: Maybe<Scalars["String"]>;
+  image?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  verb?: Maybe<Scalars["String"]>;
 };
 
 export type AuthRightConfig = {
   unit: AccessUnit;
-  subject: Scalars['String'];
+  subject: Scalars["String"];
 };
 
 export type Channel = {
-  __typename?: 'Channel';
-  id: Scalars['ID'];
+  __typename?: "Channel";
+  id: Scalars["ID"];
   user?: Maybe<User>;
   activity?: Maybe<Activity>;
-  slug?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
 };
 
 export type ChannelsQueryFilter = {
-  id?: Maybe<Scalars['ID']>;
-  user?: Maybe<Scalars['ID']>;
-  activity?: Maybe<Scalars['ID']>;
-  slug?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars["ID"]>;
+  user?: Maybe<Scalars["ID"]>;
+  activity?: Maybe<Scalars["ID"]>;
+  slug?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
 };
 
 export type CreateActivityInput = {
-  icon?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  verb?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars["String"]>;
+  image?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  verb?: Maybe<Scalars["String"]>;
 };
 
 export type CreateChannelInput = {
-  userId?: Maybe<Scalars['ID']>;
-  activityId?: Maybe<Scalars['ID']>;
-  name: Scalars['String'];
-  slug?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars["ID"]>;
+  activityId?: Maybe<Scalars["ID"]>;
+  name: Scalars["String"];
+  slug?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
 };
 
 export type CreateRoleInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  id: Scalars["ID"];
+  name: Scalars["String"];
   access: AccessTargetsInput;
-  parentId: Scalars['ID'];
+  parentId: Scalars["ID"];
 };
 
 export type CreateStreamKeyInput = {
-  userId: Scalars['ID'];
-  channelId: Scalars['ID'];
+  userId: Scalars["ID"];
+  channelId: Scalars["ID"];
 };
 
 export type CreateUserInput = {
-  username: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
+  username: Scalars["String"];
+  password: Scalars["String"];
+  email: Scalars["String"];
 };
 
-
 export type File = {
-  __typename?: 'File';
-  filename: Scalars['String'];
-  mimetype: Scalars['String'];
-  encoding: Scalars['String'];
-  id?: Maybe<Scalars['ID']>;
+  __typename?: "File";
+  filename: Scalars["String"];
+  mimetype: Scalars["String"];
+  encoding: Scalars["String"];
+  id?: Maybe<Scalars["ID"]>;
 };
 
 export type InfoResponse = {
-  __typename?: 'InfoResponse';
-  name: Scalars['String'];
-  version: Scalars['String'];
-  packageName: Scalars['String'];
+  __typename?: "InfoResponse";
+  name: Scalars["String"];
+  version: Scalars["String"];
+  packageName: Scalars["String"];
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
-  ping: Scalars['String'];
+  __typename?: "Mutation";
   createActivity: Activity;
   updateActivity: Activity;
   createChannel: Channel;
@@ -156,89 +165,79 @@ export type Mutation = {
   uploadFile: File;
   createRole: Role;
   updateRole: Role;
-  deleteRole: Scalars['Boolean'];
+  deleteRole: Scalars["Boolean"];
+  ping: Scalars["String"];
   createStreamKey: StreamKey;
-  revokeStreamKey: Scalars['Boolean'];
+  revokeStreamKey: Scalars["Boolean"];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
   updateUser?: Maybe<User>;
   updateSelf?: Maybe<User>;
+  updateUserSettings?: Maybe<UserSettings>;
 };
-
 
 export type MutationCreateActivityArgs = {
   input?: Maybe<CreateActivityInput>;
 };
 
-
 export type MutationUpdateActivityArgs = {
   input?: Maybe<UpdateActivityInput>;
 };
-
 
 export type MutationCreateChannelArgs = {
   input?: Maybe<CreateChannelInput>;
 };
 
-
 export type MutationUpdateChannelArgs = {
   input?: Maybe<UpdateChannelInput>;
 };
 
-
 export type MutationUploadFileArgs = {
-  file: Scalars['Upload'];
+  file: Scalars["Upload"];
 };
-
 
 export type MutationCreateRoleArgs = {
   input?: Maybe<CreateRoleInput>;
 };
 
-
 export type MutationUpdateRoleArgs = {
   input?: Maybe<UpdateRoleInput>;
 };
 
-
 export type MutationDeleteRoleArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
-
 
 export type MutationCreateStreamKeyArgs = {
   input?: Maybe<CreateStreamKeyInput>;
 };
 
-
 export type MutationRevokeStreamKeyArgs = {
   input?: Maybe<CreateStreamKeyInput>;
 };
-
 
 export type MutationSignUpArgs = {
   input: CreateUserInput;
 };
 
-
 export type MutationSignInArgs = {
   input: SignInInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
-
 export type MutationUpdateSelfArgs = {
   input: UpdateSelfInput;
 };
 
+export type MutationUpdateUserSettingsArgs = {
+  input: UpdateUserSettingsInput;
+};
+
 export type Query = {
-  __typename?: 'Query';
-  info: InfoResponse;
-  test: TestResponse;
+  __typename?: "Query";
   activity?: Maybe<Activity>;
   activities: Array<Maybe<Activity>>;
   channel?: Maybe<Channel>;
@@ -246,142 +245,141 @@ export type Query = {
   fileInfo?: Maybe<File>;
   role?: Maybe<Role>;
   roles: Array<Maybe<Role>>;
+  info: InfoResponse;
+  test: TestResponse;
   streamKeys: Array<Maybe<StreamKey>>;
   selfStreamKeys: Array<Maybe<StreamKey>>;
   users: Array<Maybe<User>>;
   self: User;
   user?: Maybe<User>;
+  userSettings: UserSettings;
 };
-
 
 export type QueryActivityArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
-
 
 export type QueryActivitiesArgs = {
   filter?: Maybe<ActivityFilter>;
 };
 
-
 export type QueryChannelArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
-
 
 export type QueryChannelsArgs = {
   filter?: Maybe<ChannelsQueryFilter>;
 };
 
-
 export type QueryFileInfoArgs = {
-  id?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars["ID"]>;
 };
-
 
 export type QueryRoleArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
-
 
 export type QueryRolesArgs = {
   filter?: Maybe<UpdateRoleInput>;
 };
 
-
 export type QueryUserArgs = {
-  id: Scalars['ID'];
+  id: Scalars["ID"];
 };
 
 export type Role = {
-  __typename?: 'Role';
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  __typename?: "Role";
+  id: Scalars["ID"];
+  name: Scalars["String"];
   access: AccessTargets;
-  parentId?: Maybe<Scalars['ID']>;
+  parentId?: Maybe<Scalars["ID"]>;
 };
 
 export type Session = {
-  __typename?: 'Session';
-  id: Scalars['ID'];
-  user: Scalars['ID'];
-  expiresAt: Scalars['DateTime'];
+  __typename?: "Session";
+  id: Scalars["ID"];
+  user: Scalars["ID"];
+  expiresAt: Scalars["DateTime"];
 };
 
 export type SessionResponse = {
-  __typename?: 'SessionResponse';
-  token: Scalars['ID'];
-  expiresAt: Scalars['DateTime'];
+  __typename?: "SessionResponse";
+  token: Scalars["ID"];
+  expiresAt: Scalars["DateTime"];
 };
 
 export type SignInInput = {
-  username: Scalars['String'];
-  password: Scalars['String'];
+  username: Scalars["String"];
+  password: Scalars["String"];
 };
 
 export type StreamKey = {
-  __typename?: 'StreamKey';
-  id: Scalars['ID'];
+  __typename?: "StreamKey";
+  id: Scalars["ID"];
   user: User;
   channel: Channel;
 };
 
 export type TestResponse = {
-  __typename?: 'TestResponse';
-  secret: Scalars['String'];
+  __typename?: "TestResponse";
+  secret: Scalars["String"];
 };
 
 export type UpdateActivityInput = {
-  id: Scalars['ID'];
-  icon?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  verb?: Maybe<Scalars['String']>;
+  id: Scalars["ID"];
+  icon?: Maybe<Scalars["String"]>;
+  image?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  verb?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateChannelInput = {
-  id: Scalars['ID'];
-  activityId?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  slug?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  id: Scalars["ID"];
+  activityId?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
+  slug?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateRoleInput = {
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
   access?: Maybe<AccessTargetsInput>;
-  parentId?: Maybe<Scalars['ID']>;
+  parentId?: Maybe<Scalars["ID"]>;
 };
 
 export type UpdateSelfInput = {
-  displayName?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  singleUserMode?: Maybe<Scalars['Boolean']>;
-  avatar?: Maybe<Scalars['ID']>;
-  header?: Maybe<Scalars['ID']>;
-  streamThumbnail?: Maybe<Scalars['ID']>;
+  displayName?: Maybe<Scalars["String"]>;
+  bio?: Maybe<Scalars["String"]>;
+  singleUserMode?: Maybe<Scalars["Boolean"]>;
+  avatar?: Maybe<Scalars["ID"]>;
+  header?: Maybe<Scalars["ID"]>;
+  streamThumbnail?: Maybe<Scalars["ID"]>;
 };
 
 export type UpdateUserInput = {
-  id?: Maybe<Scalars['ID']>;
-  displayName?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  singleUserMode?: Maybe<Scalars['Boolean']>;
-  avatar?: Maybe<Scalars['ID']>;
-  header?: Maybe<Scalars['ID']>;
-  streamThumbnail?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars["ID"]>;
+  displayName?: Maybe<Scalars["String"]>;
+  bio?: Maybe<Scalars["String"]>;
+  singleUserMode?: Maybe<Scalars["Boolean"]>;
+  avatar?: Maybe<Scalars["ID"]>;
+  header?: Maybe<Scalars["ID"]>;
+  streamThumbnail?: Maybe<Scalars["ID"]>;
 };
 
+export type UpdateUserSettingsInput = {
+  singleUserMode?: Maybe<Scalars["Boolean"]>;
+  useGravatar?: Maybe<Scalars["Boolean"]>;
+};
 
 export type User = {
-  __typename?: 'User';
-  id?: Maybe<Scalars['ID']>;
-  username: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  singleUserMode: Scalars['Boolean'];
-  emailHash?: Maybe<Scalars['String']>;
+  __typename?: "User";
+  id?: Maybe<Scalars["ID"]>;
+  username: Scalars["String"];
+  displayName?: Maybe<Scalars["String"]>;
+  bio?: Maybe<Scalars["String"]>;
+  singleUserMode: Scalars["Boolean"];
+  emailHash?: Maybe<Scalars["String"]>;
   roles: Array<Maybe<Role>>;
   channels: Array<Maybe<Channel>>;
   avatar?: Maybe<File>;
@@ -390,42 +388,33 @@ export type User = {
 };
 
 export type UserActions = {
-  __typename?: 'UserActions';
-  silence?: Maybe<Scalars['Boolean']>;
-  ban?: Maybe<Scalars['Boolean']>;
-  warn?: Maybe<Scalars['Boolean']>;
+  __typename?: "UserActions";
+  silence?: Maybe<Scalars["Boolean"]>;
+  ban?: Maybe<Scalars["Boolean"]>;
+  warn?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UserActionsInput = {
-  silence?: Maybe<Scalars['Boolean']>;
-  ban?: Maybe<Scalars['Boolean']>;
-  warn?: Maybe<Scalars['Boolean']>;
+  silence?: Maybe<Scalars["Boolean"]>;
+  ban?: Maybe<Scalars["Boolean"]>;
+  warn?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UserSettings = {
-  __typename?: 'UserSettings';
-  id?: Maybe<Scalars['ID']>;
-  useGravatar?: Maybe<Scalars['Boolean']>;
+  __typename?: "UserSettings";
+  id?: Maybe<Scalars["ID"]>;
+  useGravatar?: Maybe<Scalars["Boolean"]>;
+  singleUserMode?: Maybe<Scalars["Boolean"]>;
 };
-
-
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-
-export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  fragment: string;
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-
-export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  selectionSet: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type StitchingResolver<TResult, TParent, TContext, TArgs> = LegacyStitchingResolver<TResult, TParent, TContext, TArgs> | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
-  | StitchingResolver<TResult, TParent, TContext, TArgs>;
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -448,9 +437,25 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -458,12 +463,26 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
@@ -472,11 +491,20 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
@@ -493,8 +521,8 @@ export type ResolversTypes = {
   Actions: ResolverTypeWrapper<Actions>;
   ActionsInput: ActionsInput;
   Activity: ResolverTypeWrapper<Activity>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  ID: ResolverTypeWrapper<Scalars["ID"]>;
+  String: ResolverTypeWrapper<Scalars["String"]>;
   ActivityFilter: ActivityFilter;
   AuthRightConfig: AuthRightConfig;
   Channel: ResolverTypeWrapper<Channel>;
@@ -504,11 +532,11 @@ export type ResolversTypes = {
   CreateRoleInput: CreateRoleInput;
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   File: ResolverTypeWrapper<File>;
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
   Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
   Session: ResolverTypeWrapper<Session>;
@@ -521,7 +549,8 @@ export type ResolversTypes = {
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserInput: UpdateUserInput;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
+  UpdateUserSettingsInput: UpdateUserSettingsInput;
+  Upload: ResolverTypeWrapper<Scalars["Upload"]>;
   User: ResolverTypeWrapper<User>;
   UserActions: ResolverTypeWrapper<UserActions>;
   UserActionsInput: UserActionsInput;
@@ -536,8 +565,8 @@ export type ResolversParentTypes = {
   Actions: Actions;
   ActionsInput: ActionsInput;
   Activity: Activity;
-  ID: Scalars['ID'];
-  String: Scalars['String'];
+  ID: Scalars["ID"];
+  String: Scalars["String"];
   ActivityFilter: ActivityFilter;
   AuthRightConfig: AuthRightConfig;
   Channel: Channel;
@@ -547,11 +576,11 @@ export type ResolversParentTypes = {
   CreateRoleInput: CreateRoleInput;
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
-  DateTime: Scalars['DateTime'];
+  DateTime: Scalars["DateTime"];
   File: File;
   InfoResponse: InfoResponse;
   Mutation: {};
-  Boolean: Scalars['Boolean'];
+  Boolean: Scalars["Boolean"];
   Query: {};
   Role: Role;
   Session: Session;
@@ -564,173 +593,433 @@ export type ResolversParentTypes = {
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserInput: UpdateUserInput;
-  Upload: Scalars['Upload'];
+  UpdateUserSettingsInput: UpdateUserSettingsInput;
+  Upload: Scalars["Upload"];
   User: User;
   UserActions: UserActions;
   UserActionsInput: UserActionsInput;
   UserSettings: UserSettings;
 };
 
-export type AuthDirectiveArgs = {   roles?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  rights?: Maybe<Array<Maybe<AuthRightConfig>>>; };
+export type AuthDirectiveArgs = {
+  roles?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+  rights?: Maybe<Array<Maybe<AuthRightConfig>>>;
+};
 
-export type AuthDirectiveResolver<Result, Parent, ContextType = any, Args = AuthDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = AuthDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AccessRightsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessRights'] = ResolversParentTypes['AccessRights']> = {
-  channels?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
-  streamKeys?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
-  roles?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
-  users?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
-  activities?: Resolver<Maybe<ResolversTypes['AccessUnit']>, ParentType, ContextType>;
+export type AccessRightsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["AccessRights"] = ResolversParentTypes["AccessRights"]
+> = {
+  channels?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
+  streamKeys?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
+  roles?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
+  users?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
+  activities?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
+  userSettings?: Resolver<
+    Maybe<ResolversTypes["AccessUnit"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AccessTargetsResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccessTargets'] = ResolversParentTypes['AccessTargets']> = {
-  rights?: Resolver<ResolversTypes['AccessRights'], ParentType, ContextType>;
-  actions?: Resolver<ResolversTypes['Actions'], ParentType, ContextType>;
+export type AccessTargetsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["AccessTargets"] = ResolversParentTypes["AccessTargets"]
+> = {
+  rights?: Resolver<ResolversTypes["AccessRights"], ParentType, ContextType>;
+  actions?: Resolver<ResolversTypes["Actions"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActionsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Actions'] = ResolversParentTypes['Actions']> = {
-  user?: Resolver<Maybe<ResolversTypes['UserActions']>, ParentType, ContextType>;
+export type ActionsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Actions"] = ResolversParentTypes["Actions"]
+> = {
+  user?: Resolver<
+    Maybe<ResolversTypes["UserActions"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  icon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  verb?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ActivityResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Activity"] = ResolversParentTypes["Activity"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  icon?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  verb?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ChannelResolvers<ContextType = any, ParentType extends ResolversParentTypes['Channel'] = ResolversParentTypes['Channel']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  activity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType>;
-  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ChannelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Channel"] = ResolversParentTypes["Channel"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  activity?: Resolver<
+    Maybe<ResolversTypes["Activity"]>,
+    ParentType,
+    ContextType
+  >;
+  slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  description?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime';
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DateTime"], any> {
+  name: "DateTime";
 }
 
-export type FileResolvers<ContextType = any, ParentType extends ResolversParentTypes['File'] = ResolversParentTypes['File']> = {
-  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mimetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  encoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+export type FileResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["File"] = ResolversParentTypes["File"]
+> = {
+  filename?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  mimetype?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  encoding?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InfoResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['InfoResponse'] = ResolversParentTypes['InfoResponse']> = {
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  packageName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+export type InfoResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["InfoResponse"] = ResolversParentTypes["InfoResponse"]
+> = {
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  version?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  packageName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  ping?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createActivity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType, RequireFields<MutationCreateActivityArgs, never>>;
-  updateActivity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType, RequireFields<MutationUpdateActivityArgs, never>>;
-  createChannel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType, RequireFields<MutationCreateChannelArgs, never>>;
-  updateChannel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType, RequireFields<MutationUpdateChannelArgs, never>>;
-  uploadFile?: Resolver<ResolversTypes['File'], ParentType, ContextType, RequireFields<MutationUploadFileArgs, 'file'>>;
-  createRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationCreateRoleArgs, never>>;
-  updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, never>>;
-  deleteRole?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteRoleArgs, 'id'>>;
-  createStreamKey?: Resolver<ResolversTypes['StreamKey'], ParentType, ContextType, RequireFields<MutationCreateStreamKeyArgs, never>>;
-  revokeStreamKey?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRevokeStreamKeyArgs, never>>;
-  signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
-  signIn?: Resolver<Maybe<ResolversTypes['SessionResponse']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
-  updateUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
-  updateSelf?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateSelfArgs, 'input'>>;
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
+> = {
+  createActivity?: Resolver<
+    ResolversTypes["Activity"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateActivityArgs, never>
+  >;
+  updateActivity?: Resolver<
+    ResolversTypes["Activity"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateActivityArgs, never>
+  >;
+  createChannel?: Resolver<
+    ResolversTypes["Channel"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateChannelArgs, never>
+  >;
+  updateChannel?: Resolver<
+    ResolversTypes["Channel"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateChannelArgs, never>
+  >;
+  uploadFile?: Resolver<
+    ResolversTypes["File"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUploadFileArgs, "file">
+  >;
+  createRole?: Resolver<
+    ResolversTypes["Role"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateRoleArgs, never>
+  >;
+  updateRole?: Resolver<
+    ResolversTypes["Role"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateRoleArgs, never>
+  >;
+  deleteRole?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteRoleArgs, "id">
+  >;
+  ping?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createStreamKey?: Resolver<
+    ResolversTypes["StreamKey"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateStreamKeyArgs, never>
+  >;
+  revokeStreamKey?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeStreamKeyArgs, never>
+  >;
+  signUp?: Resolver<
+    ResolversTypes["User"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignUpArgs, "input">
+  >;
+  signIn?: Resolver<
+    Maybe<ResolversTypes["SessionResponse"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignInArgs, "input">
+  >;
+  updateUser?: Resolver<
+    Maybe<ResolversTypes["User"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, "input">
+  >;
+  updateSelf?: Resolver<
+    Maybe<ResolversTypes["User"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateSelfArgs, "input">
+  >;
+  updateUserSettings?: Resolver<
+    Maybe<ResolversTypes["UserSettings"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserSettingsArgs, "input">
+  >;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  info?: Resolver<ResolversTypes['InfoResponse'], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes['TestResponse'], ParentType, ContextType>;
-  activity?: Resolver<Maybe<ResolversTypes['Activity']>, ParentType, ContextType, RequireFields<QueryActivityArgs, 'id'>>;
-  activities?: Resolver<Array<Maybe<ResolversTypes['Activity']>>, ParentType, ContextType, RequireFields<QueryActivitiesArgs, never>>;
-  channel?: Resolver<Maybe<ResolversTypes['Channel']>, ParentType, ContextType, RequireFields<QueryChannelArgs, 'id'>>;
-  channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType, RequireFields<QueryChannelsArgs, never>>;
-  fileInfo?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType, RequireFields<QueryFileInfoArgs, never>>;
-  role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<QueryRoleArgs, 'id'>>;
-  roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType, RequireFields<QueryRolesArgs, never>>;
-  streamKeys?: Resolver<Array<Maybe<ResolversTypes['StreamKey']>>, ParentType, ContextType>;
-  selfStreamKeys?: Resolver<Array<Maybe<ResolversTypes['StreamKey']>>, ParentType, ContextType>;
-  users?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
-  self?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
+> = {
+  activity?: Resolver<
+    Maybe<ResolversTypes["Activity"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryActivityArgs, "id">
+  >;
+  activities?: Resolver<
+    Array<Maybe<ResolversTypes["Activity"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryActivitiesArgs, never>
+  >;
+  channel?: Resolver<
+    Maybe<ResolversTypes["Channel"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryChannelArgs, "id">
+  >;
+  channels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryChannelsArgs, never>
+  >;
+  fileInfo?: Resolver<
+    Maybe<ResolversTypes["File"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFileInfoArgs, never>
+  >;
+  role?: Resolver<
+    Maybe<ResolversTypes["Role"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRoleArgs, "id">
+  >;
+  roles?: Resolver<
+    Array<Maybe<ResolversTypes["Role"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRolesArgs, never>
+  >;
+  info?: Resolver<ResolversTypes["InfoResponse"], ParentType, ContextType>;
+  test?: Resolver<ResolversTypes["TestResponse"], ParentType, ContextType>;
+  streamKeys?: Resolver<
+    Array<Maybe<ResolversTypes["StreamKey"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfStreamKeys?: Resolver<
+    Array<Maybe<ResolversTypes["StreamKey"]>>,
+    ParentType,
+    ContextType
+  >;
+  users?: Resolver<
+    Array<Maybe<ResolversTypes["User"]>>,
+    ParentType,
+    ContextType
+  >;
+  self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  user?: Resolver<
+    Maybe<ResolversTypes["User"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserArgs, "id">
+  >;
+  userSettings?: Resolver<
+    ResolversTypes["UserSettings"],
+    ParentType,
+    ContextType
+  >;
 };
 
-export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  access?: Resolver<ResolversTypes['AccessTargets'], ParentType, ContextType>;
-  parentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+export type RoleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Role"] = ResolversParentTypes["Role"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  access?: Resolver<ResolversTypes["AccessTargets"], ParentType, ContextType>;
+  parentId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SessionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  expiresAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+export type SessionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Session"] = ResolversParentTypes["Session"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  expiresAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SessionResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SessionResponse'] = ResolversParentTypes['SessionResponse']> = {
-  token?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  expiresAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+export type SessionResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["SessionResponse"] = ResolversParentTypes["SessionResponse"]
+> = {
+  token?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  expiresAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StreamKeyResolvers<ContextType = any, ParentType extends ResolversParentTypes['StreamKey'] = ResolversParentTypes['StreamKey']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  channel?: Resolver<ResolversTypes['Channel'], ParentType, ContextType>;
+export type StreamKeyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["StreamKey"] = ResolversParentTypes["StreamKey"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  channel?: Resolver<ResolversTypes["Channel"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TestResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['TestResponse'] = ResolversParentTypes['TestResponse']> = {
-  secret?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+export type TestResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TestResponse"] = ResolversParentTypes["TestResponse"]
+> = {
+  secret?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Upload"], any> {
+  name: "Upload";
 }
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  bio?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  singleUserMode?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  emailHash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  roles?: Resolver<Array<Maybe<ResolversTypes['Role']>>, ParentType, ContextType>;
-  channels?: Resolver<Array<Maybe<ResolversTypes['Channel']>>, ParentType, ContextType>;
-  avatar?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
-  header?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
-  streamThumbnail?: Resolver<Maybe<ResolversTypes['File']>, ParentType, ContextType>;
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
+> = {
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  displayName?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  bio?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  singleUserMode?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  emailHash?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  roles?: Resolver<
+    Array<Maybe<ResolversTypes["Role"]>>,
+    ParentType,
+    ContextType
+  >;
+  channels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType
+  >;
+  avatar?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  header?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  streamThumbnail?: Resolver<
+    Maybe<ResolversTypes["File"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserActionsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserActions'] = ResolversParentTypes['UserActions']> = {
-  silence?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  ban?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  warn?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+export type UserActionsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["UserActions"] = ResolversParentTypes["UserActions"]
+> = {
+  silence?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  ban?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  warn?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserSettings'] = ResolversParentTypes['UserSettings']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  useGravatar?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+export type UserSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["UserSettings"] = ResolversParentTypes["UserSettings"]
+> = {
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  useGravatar?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  singleUserMode?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -756,178 +1045,352 @@ export type Resolvers<ContextType = any> = {
   UserSettings?: UserSettingsResolvers<ContextType>;
 };
 
-
-/**
- * @deprecated
- * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
- */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
+export type UserSettingsProfileFragmentFragment = {
+  __typename?: "User";
+  id?: Maybe<string>;
+  username: string;
+  displayName?: Maybe<string>;
+  emailHash?: Maybe<string>;
+  bio?: Maybe<string>;
+  avatar?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+    encoding: string;
+    mimetype: string;
+  }>;
+  streamThumbnail?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+    encoding: string;
+    mimetype: string;
+  }>;
+  header?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+    encoding: string;
+    mimetype: string;
+  }>;
+};
 
-/**
- * @deprecated
- * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
- */
-export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;
-export type GetFileForUploaderQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type UserSettingsProfileQueryVariables = Exact<{ [key: string]: never }>;
 
-
-export type GetFileForUploaderQuery = (
-  { __typename?: 'Query' }
-  & { fileInfo?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
-  )> }
-);
-
-export type UploadFileWithUploaderMutationVariables = Exact<{
-  input: Scalars['Upload'];
-}>;
-
-
-export type UploadFileWithUploaderMutation = (
-  { __typename?: 'Mutation' }
-  & { uploadFile: (
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'mimetype' | 'encoding'>
-  ) }
-);
-
-export type UserInfoQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type UserInfoQuery = (
-  { __typename?: 'Query' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'username' | 'displayName'>
-    & { avatar?: Maybe<(
-      { __typename?: 'File' }
-      & Pick<File, 'filename'>
-    )> }
-  )> }
-);
-
-export type CurrentUserFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio'>
-  & { avatar?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename'>
-  )>, header?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename'>
-  )>, streamThumbnail?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename'>
-  )>, roles: Array<Maybe<(
-    { __typename?: 'Role' }
-    & Pick<Role, 'id' | 'parentId' | 'name'>
-    & { access: (
-      { __typename?: 'AccessTargets' }
-      & { rights: (
-        { __typename?: 'AccessRights' }
-        & Pick<AccessRights, 'channels' | 'streamKeys' | 'users' | 'activities'>
-      ), actions: (
-        { __typename?: 'Actions' }
-        & { user?: Maybe<(
-          { __typename?: 'UserActions' }
-          & Pick<UserActions, 'silence' | 'ban' | 'warn'>
-        )> }
-      ) }
-    ) }
-  )>>, channels: Array<Maybe<(
-    { __typename?: 'Channel' }
-    & Pick<Channel, 'id' | 'name' | 'slug' | 'description'>
-    & { activity?: Maybe<(
-      { __typename?: 'Activity' }
-      & Pick<Activity, 'id' | 'icon' | 'image' | 'name' | 'verb'>
-    )> }
-  )>> }
-);
-
-export type CurrentUserFullQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CurrentUserFullQuery = (
-  { __typename?: 'Query' }
-  & { self: (
-    { __typename?: 'User' }
-    & CurrentUserFragment
-  ) }
-);
-
-export type SignInMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
-}>;
-
-
-export type SignInMutation = (
-  { __typename?: 'Mutation' }
-  & { signIn?: Maybe<(
-    { __typename?: 'SessionResponse' }
-    & Pick<SessionResponse, 'token' | 'expiresAt'>
-  )> }
-);
-
-export type SignUpMutationVariables = Exact<{
-  username: Scalars['String'];
-  password: Scalars['String'];
-  email: Scalars['String'];
-}>;
-
-
-export type SignUpMutation = (
-  { __typename?: 'Mutation' }
-  & { signUp: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
-  ) }
-);
-
-export type UserSettingsProfileFragmentFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username' | 'displayName' | 'emailHash' | 'bio'>
-  & { avatar?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
-  )>, streamThumbnail?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
-  )>, header?: Maybe<(
-    { __typename?: 'File' }
-    & Pick<File, 'id' | 'filename' | 'encoding' | 'mimetype'>
-  )> }
-);
-
-export type UserSettingsProfileQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UserSettingsProfileQuery = (
-  { __typename?: 'Query' }
-  & { self: (
-    { __typename?: 'User' }
-    & UserSettingsProfileFragmentFragment
-  ) }
-);
+export type UserSettingsProfileQuery = {
+  __typename?: "Query";
+  self: {
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    displayName?: Maybe<string>;
+    emailHash?: Maybe<string>;
+    bio?: Maybe<string>;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+    streamThumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+    header?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+  };
+};
 
 export type UpdateUserSettingsProfileMutationVariables = Exact<{
   input: UpdateSelfInput;
 }>;
 
+export type UpdateUserSettingsProfileMutation = {
+  __typename?: "Mutation";
+  updateSelf?: Maybe<{
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    displayName?: Maybe<string>;
+    emailHash?: Maybe<string>;
+    bio?: Maybe<string>;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+    streamThumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+    header?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+      encoding: string;
+      mimetype: string;
+    }>;
+  }>;
+};
 
-export type UpdateUserSettingsProfileMutation = (
-  { __typename?: 'Mutation' }
-  & { updateSelf?: Maybe<(
-    { __typename?: 'User' }
-    & UserSettingsProfileFragmentFragment
-  )> }
-);
+export type UserSettingsPreferencesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type UserSettingsPreferencesQuery = {
+  __typename?: "Query";
+  userSettings: {
+    __typename?: "UserSettings";
+    id?: Maybe<string>;
+    useGravatar?: Maybe<boolean>;
+    singleUserMode?: Maybe<boolean>;
+  };
+};
+
+export type UpdateUserSettingsPreferencesMutationVariables = Exact<{
+  input: UpdateUserSettingsInput;
+}>;
+
+export type UpdateUserSettingsPreferencesMutation = {
+  __typename?: "Mutation";
+  updateUserSettings?: Maybe<{
+    __typename?: "UserSettings";
+    id?: Maybe<string>;
+    useGravatar?: Maybe<boolean>;
+    singleUserMode?: Maybe<boolean>;
+  }>;
+};
+
+export type GetFileForUploaderQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type GetFileForUploaderQuery = {
+  __typename?: "Query";
+  fileInfo?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+    mimetype: string;
+    encoding: string;
+  }>;
+};
+
+export type UploadFileWithUploaderMutationVariables = Exact<{
+  input: Scalars["Upload"];
+}>;
+
+export type UploadFileWithUploaderMutation = {
+  __typename?: "Mutation";
+  uploadFile: {
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+    mimetype: string;
+    encoding: string;
+  };
+};
+
+export type UserInfoQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UserInfoQuery = {
+  __typename?: "Query";
+  user?: Maybe<{
+    __typename?: "User";
+    username: string;
+    displayName?: Maybe<string>;
+    avatar?: Maybe<{ __typename?: "File"; filename: string }>;
+  }>;
+};
+
+export type CurrentUserFragment = {
+  __typename?: "User";
+  id?: Maybe<string>;
+  username: string;
+  displayName?: Maybe<string>;
+  emailHash?: Maybe<string>;
+  bio?: Maybe<string>;
+  singleUserMode: boolean;
+  avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
+  header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
+  streamThumbnail?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+  }>;
+  roles: Array<
+    Maybe<{
+      __typename?: "Role";
+      id: string;
+      parentId?: Maybe<string>;
+      name: string;
+      access: {
+        __typename?: "AccessTargets";
+        rights: {
+          __typename?: "AccessRights";
+          channels?: Maybe<AccessUnit>;
+          streamKeys?: Maybe<AccessUnit>;
+          users?: Maybe<AccessUnit>;
+          activities?: Maybe<AccessUnit>;
+        };
+        actions: {
+          __typename?: "Actions";
+          user?: Maybe<{
+            __typename?: "UserActions";
+            silence?: Maybe<boolean>;
+            ban?: Maybe<boolean>;
+            warn?: Maybe<boolean>;
+          }>;
+        };
+      };
+    }>
+  >;
+  channels: Array<
+    Maybe<{
+      __typename?: "Channel";
+      id: string;
+      name: string;
+      slug?: Maybe<string>;
+      description?: Maybe<string>;
+      activity?: Maybe<{
+        __typename?: "Activity";
+        id: string;
+        icon?: Maybe<string>;
+        image?: Maybe<string>;
+        name: string;
+        verb?: Maybe<string>;
+      }>;
+    }>
+  >;
+};
+
+export type CurrentUserFullQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CurrentUserFullQuery = {
+  __typename?: "Query";
+  self: {
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    displayName?: Maybe<string>;
+    emailHash?: Maybe<string>;
+    bio?: Maybe<string>;
+    singleUserMode: boolean;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+    header?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+    streamThumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+    roles: Array<
+      Maybe<{
+        __typename?: "Role";
+        id: string;
+        parentId?: Maybe<string>;
+        name: string;
+        access: {
+          __typename?: "AccessTargets";
+          rights: {
+            __typename?: "AccessRights";
+            channels?: Maybe<AccessUnit>;
+            streamKeys?: Maybe<AccessUnit>;
+            users?: Maybe<AccessUnit>;
+            activities?: Maybe<AccessUnit>;
+          };
+          actions: {
+            __typename?: "Actions";
+            user?: Maybe<{
+              __typename?: "UserActions";
+              silence?: Maybe<boolean>;
+              ban?: Maybe<boolean>;
+              warn?: Maybe<boolean>;
+            }>;
+          };
+        };
+      }>
+    >;
+    channels: Array<
+      Maybe<{
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        slug?: Maybe<string>;
+        description?: Maybe<string>;
+        activity?: Maybe<{
+          __typename?: "Activity";
+          id: string;
+          icon?: Maybe<string>;
+          image?: Maybe<string>;
+          name: string;
+          verb?: Maybe<string>;
+        }>;
+      }>
+    >;
+  };
+};
+
+export type CurrentUserSettingsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CurrentUserSettingsQuery = {
+  __typename?: "Query";
+  userSettings: {
+    __typename?: "UserSettings";
+    id?: Maybe<string>;
+    useGravatar?: Maybe<boolean>;
+    singleUserMode?: Maybe<boolean>;
+  };
+};
+
+export type SignInMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type SignInMutation = {
+  __typename?: "Mutation";
+  signIn?: Maybe<{
+    __typename?: "SessionResponse";
+    token: string;
+    expiresAt: any;
+  }>;
+};
+
+export type SignUpMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+  email: Scalars["String"];
+}>;
+
+export type SignUpMutation = {
+  __typename?: "Mutation";
+  signUp: { __typename?: "User"; id?: Maybe<string>; username: string };
+};

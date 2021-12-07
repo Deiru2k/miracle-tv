@@ -22,6 +22,7 @@ type AccessRights {
   roles: AccessUnit
   users: AccessUnit
   activities: AccessUnit
+  userSettings: AccessUnit
 }
 
 type AccessTargets {
@@ -42,9 +43,12 @@ extend type Query {
 }
 
 extend type Mutation {
-  createRole(input: CreateRoleInput): Role! @auth(rights: [{ unit: WRITE, subject: "roles" }])
-  updateRole(input: UpdateRoleInput): Role! @auth(rights: [{ unit: WRITE, subject: "roles" }])
-  deleteRole(id: ID!): Boolean! @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  createRole(input: CreateRoleInput): Role!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  updateRole(input: UpdateRoleInput): Role!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  deleteRole(id: ID!): Boolean!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
 }
 
 ########################

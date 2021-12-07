@@ -11,6 +11,7 @@ import {
   userQueryResolver,
   userResolver,
   userSelfQueryResolver,
+  userSettingsQueryResolver,
   usersQueryResolver,
   userTestQueryResolver,
 } from "miracle-tv-server/graphql/resolvers/users";
@@ -59,6 +60,7 @@ import { red } from "chalk";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { authDirective } from "miracle-tv-server/graphql/directives/auth";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -89,6 +91,7 @@ let executableSchema = makeExecutableSchema({
       activities: activitiesQueryResolver,
       streamKeys: streamKeysQueryResolver,
       self: userSelfQueryResolver,
+      userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
       test: userTestQueryResolver,
       ...fileResolvers,
@@ -132,6 +135,7 @@ export const graphqlEndpoint = new ApolloServer({
   context: async ({ req }) => {
     const con = await connection;
     const db = {
+      userSettings: new UserSettingsModel(con),
       sessions: new SessionsModel(con),
       users: new UsersModel(con),
       channels: new ChanelsModel(con),

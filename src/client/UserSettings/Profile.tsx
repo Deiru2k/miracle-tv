@@ -14,7 +14,6 @@ import { UpdateSelfInput } from "miracle-tv-shared/graphql";
 import { useCallback, useMemo } from "react";
 import { omit } from "ramda";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
-import { ChevronLeftIcon } from "@chakra-ui/icons";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {

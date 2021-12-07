@@ -57,6 +57,7 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
         streamKeys: fetchAccess(rolesById, target, "streamKeys"),
         channels: fetchAccess(rolesById, target, "channels"),
         activities: fetchAccess(rolesById, target, "activities"),
+        userSettings: fetchAccess(rolesById, target, "userSettings"),
       },
       actions: {
         user: {

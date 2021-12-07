@@ -5,6 +5,7 @@ import {
   Role,
   User,
   UserResolvers,
+  UserSettingsResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
@@ -42,6 +43,11 @@ export const userTestQueryResolver: QueryResolvers<ResolverContext>["test"] = (
   }
   throw new AuthenticationError();
 };
+
+export const userSettingsQueryResolver: QueryResolvers<ResolverContext>["userSettings"] =
+  (_, _args, { db: { userSettings }, user }) => {
+    return userSettings.getUserSettingsById(user.id);
+  };
 
 type FileResolver = (field: string) => UserResolvers["avatar"];
 const fileResolver: FileResolver =

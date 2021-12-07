@@ -68,6 +68,7 @@ const defaultUserRole: Role = {
       users: AccessUnit.Self,
       activities: AccessUnit.Read,
       roles: AccessUnit.Read,
+      userSettings: AccessUnit.Self,
     },
     actions: {
       user: {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -12,27 +12,21 @@ import {
   MenuItem,
   MenuList,
   Portal,
+  useMultiStyleConfig,
 } from "@chakra-ui/react";
 import { signOut, useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { LogoutIcon } from "miracle-tv-client/components/icons/LogoutIcon";
 import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { HomeIcon } from "../icons/HomeIcon";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
+
+  const styles = useMultiStyleConfig("Navbar", {});
+
   return (
-    <Flex
-      w="100%"
-      h="50px"
-      position="fixed"
-      top={0}
-      left={0}
-      bgColor="primary.500"
-      color="white"
-      alignItems="center"
-      justifyContent="space-between"
-      px={4}
-    >
+    <Flex __css={styles.navbar}>
       <Box>
         <Link as={Heading} href="/">
           Miracle TV
@@ -63,6 +57,16 @@ export const Navbar = () => {
                 </MenuItem>
                 <MenuItem onClick={signOut}>
                   <LogoutIcon mr={2} /> Logout
+                </MenuItem>
+                <MenuItem>
+                  <Link href="/dashboard/home/streams" w="100%">
+                    <HomeIcon mr={2} /> Dashboard
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href="/settings" w="100%">
+                    <SettingsIcon mr={2} /> Settings
+                  </Link>
                 </MenuItem>
               </MenuList>
             </Portal>

@@ -9,6 +9,7 @@ type Props = {
 
 export const Link = ({ isShallow = true, href, ...props }: Props) => {
   const { push } = useRouter();
+  console.log(isShallow);
 
   const onClick = useCallback(() => {
     push(href, null, { shallow: isShallow });

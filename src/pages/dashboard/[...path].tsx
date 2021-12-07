@@ -1,73 +1,62 @@
-import { Box, Button, Heading } from "@chakra-ui/react";
 import { Feeds } from "miracle-tv-client/Dashboard/Feeds";
-import { NavConfig, Navigation } from "miracle-tv-client/Dashboard/Navigation";
+import {
+  NavComponentMap,
+  NavConfig,
+  Navigation,
+} from "miracle-tv-client/Dashboard/Navigation";
 import { Streams } from "miracle-tv-client/Dashboard/Streams";
 import { ProfileSettings } from "miracle-tv-client/UserSettings/Profile";
-import { useRouter } from "next/dist/client/router";
-import { head, pathOr } from "ramda";
 import React from "react";
 
-const Dashboard = () => {
-  const {
-    query: { path },
-  } = useRouter();
-  const nav: NavConfig = [
-    {
-      id: "streams",
-      title: "Streams",
-      urls: [
-        {
-          id: "home",
-          name: "Subscriptions",
-          url: "/dashboard/streams/home",
-        },
-        {
-          id: "local",
-          name: "Local",
-          url: "/dashboard/streams/local",
-        },
-      ],
-    },
-    // {
-    //   id: "feeds",
-    //   title: "Feeds",
-    //   urls: [
-    //     {
-    //       id: "home",
-    //       name: "Home",
-    //       url: "/dashboard/feeds/home",
-    //     },
-    //   ],
-    // },
-    {
-      id: "settings",
-      title: "Settings",
-      urls: [
-        { id: "general", name: "Profile", url: "/dashboard/settings/profile" },
-      ],
-    },
-  ];
-  const NotFound = () => <Box>{"Ooops, this page doesn't exist"}</Box>;
-  const components = {
-    feeds: {
-      home: <Feeds />,
-    },
-    streams: {
-      home: <Streams />,
-      local: <Feeds />,
-    },
-    settings: {
-      profile: <ProfileSettings />,
-    },
-    default: <NotFound />,
-  };
+const nav: NavConfig = [
+  {
+    id: "home",
+    title: "Home",
+    urls: [
+      {
+        id: "streams",
+        name: "Streams",
+        url: "/dashboard/home/streams",
+      },
+      {
+        id: "feed",
+        name: "Feed",
+        url: "/dashboard/home/feed",
+      },
+    ],
+  },
+  {
+    id: "explore",
+    title: "Explore",
+    urls: [
+      {
+        id: "local",
+        name: "Local",
+        url: "/dashboard/explore/local",
+      },
+      {
+        id: "network",
+        name: "Network",
+        url: "/dashboard/explore/network",
+      },
+    ],
+  },
+];
+const components: NavComponentMap = {
+  feeds: {
+    home: <Feeds />,
+  },
+  streams: {
+    home: <Streams />,
+    local: <Feeds />,
+  },
+  settings: {
+    profile: <ProfileSettings />,
+  },
+};
 
-  const component = pathOr(components.default, path as string[], components);
-  return (
-    <Navigation title="Dashboard" nav={nav}>
-      {component}
-    </Navigation>
-  );
+const Dashboard = () => {
+  return <Navigation nav={nav} components={components} size={[1, 10]} />;
 };
 
 export default Dashboard;

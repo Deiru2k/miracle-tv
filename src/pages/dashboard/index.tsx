@@ -1,14 +1,7 @@
-import { useRouter } from "next/dist/client/router";
-import { useEffect } from "react";
+import { Redirect } from "miracle-tv-client/components/system/Redirect";
 
-const DashboardRedirect = (): null => {
-  const { push } = useRouter();
-
-  useEffect(() => {
-    push("/dashboard/streams/home");
-  }, []);
-
-  return null;
+const DashboardRedirect = () => {
+  return <Redirect target="/dashboard/home/streams" />;
 };
 
 export default DashboardRedirect;

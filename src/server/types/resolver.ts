@@ -8,6 +8,7 @@ import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import { Operation } from "rethinkdb";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
+import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
@@ -17,6 +18,7 @@ export type ResolverContext = {
   userRoles?: Role[];
   db: {
     users: UsersModel;
+    userSettings: UserSettingsModel;
     sessions: SessionsModel;
     channels: ChanelsModel;
     streamKeys: StreamKeysModel;
