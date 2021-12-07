@@ -9,11 +9,14 @@ type Props = {
 
 export const Link = ({ isShallow = true, href, ...props }: Props) => {
   const { push } = useRouter();
-  console.log(isShallow);
 
-  const onClick = useCallback(() => {
-    push(href, null, { shallow: isShallow });
-  }, [push, href, isShallow]);
+  const onClick = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      push(href, null, { shallow: isShallow });
+    },
+    [push, href, isShallow]
+  );
 
   return <ChakraLink {...props} href={href} onClick={onClick} />;
 };
