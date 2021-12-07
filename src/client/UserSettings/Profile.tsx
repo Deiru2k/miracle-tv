@@ -14,6 +14,8 @@ import { UpdateSelfInput } from "miracle-tv-shared/graphql";
 import { useCallback, useMemo } from "react";
 import { omit } from "ramda";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
+import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
+import { Gravatar } from "miracle-tv-client/components/ui/Gravatar";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -67,6 +69,8 @@ export const ProfileSettings = () => {
       onError: () =>
         toast({ status: "error", title: "Error updating user info." }),
     });
+
+  const { currentSettings } = useCurrentUserSettings();
 
   const formData = useMemo(
     () =>
@@ -136,13 +140,23 @@ export const ProfileSettings = () => {
                         mr={4}
                         w="auto"
                       >
-                        <ImageUploader
-                          id="avatar"
-                          name="avatar"
-                          ratio={1}
-                          aspectMaxH="200px"
-                          aspectMaxW="200px"
-                        />
+                        {!currentSettings?.useGravatar && (
+                          <ImageUploader
+                            id="avatar"
+                            name="avatar"
+                            ratio={1}
+                            aspectMaxH="200px"
+                            aspectMaxW="200px"
+                          />
+                        )}
+                        {currentSettings?.useGravatar && (
+                          <Gravatar
+                            emailHash={data?.self?.emailHash}
+                            username={data?.self?.username}
+                            aspectMaxH="200px"
+                            aspectMaxW="200px"
+                          />
+                        )}
                       </FormGroup>
                       <FormGroup
                         name="streamThumbnail"

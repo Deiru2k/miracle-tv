@@ -38,6 +38,28 @@ const SettingsPage = () => {
           },
         ],
       },
+      {
+        id: "security",
+        title: "Security",
+        urls: [
+          { id: "account", name: "Account", url: "/settings/security/account" },
+          {
+            id: "streamkeys",
+            name: "Stream keys",
+            url: "/settings/security/streamkeys",
+          },
+          {
+            id: "sessions",
+            name: "Sessions",
+            url: "/settings/security/sessions",
+          },
+          {
+            id: "password",
+            name: "Password",
+            url: "/settings/security/password",
+          },
+        ],
+      },
     ],
     [currentSettings]
   );
