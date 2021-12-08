@@ -101,8 +101,8 @@ export type Channel = {
 
 export type ChannelsQueryFilter = {
   id?: Maybe<Scalars["ID"]>;
-  user?: Maybe<Scalars["ID"]>;
-  activity?: Maybe<Scalars["ID"]>;
+  userId?: Maybe<Scalars["ID"]>;
+  activityId?: Maybe<Scalars["ID"]>;
   slug?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
@@ -1053,6 +1053,99 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
+export type UserSettingsChannelQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UserSettingsChannelQuery = {
+  __typename?: "Query";
+  channel?: Maybe<{
+    __typename?: "Channel";
+    id: string;
+    name: string;
+    description?: Maybe<string>;
+    slug?: Maybe<string>;
+    activity?: Maybe<{
+      __typename?: "Activity";
+      id: string;
+      name: string;
+      icon?: Maybe<string>;
+    }>;
+  }>;
+  selfStreamKeys: Array<
+    Maybe<{
+      __typename?: "StreamKey";
+      id: string;
+      channel: { __typename?: "Channel"; id: string };
+    }>
+  >;
+};
+
+export type EditChannelMutationVariables = Exact<{
+  input?: Maybe<UpdateChannelInput>;
+}>;
+
+export type EditChannelMutation = {
+  __typename?: "Mutation";
+  updateChannel: {
+    __typename?: "Channel";
+    id: string;
+    name: string;
+    description?: Maybe<string>;
+    slug?: Maybe<string>;
+    activity?: Maybe<{
+      __typename?: "Activity";
+      id: string;
+      name: string;
+      icon?: Maybe<string>;
+    }>;
+  };
+};
+
+export type UserSettingsChannelsQueryVariables = Exact<{
+  filter?: Maybe<ChannelsQueryFilter>;
+}>;
+
+export type UserSettingsChannelsQuery = {
+  __typename?: "Query";
+  channels: Array<
+    Maybe<{
+      __typename?: "Channel";
+      id: string;
+      name: string;
+      description?: Maybe<string>;
+      slug?: Maybe<string>;
+      activity?: Maybe<{
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        icon?: Maybe<string>;
+      }>;
+    }>
+  >;
+};
+
+export type UserSettingsCreateChannelMutationVariables = Exact<{
+  input?: Maybe<CreateChannelInput>;
+}>;
+
+export type UserSettingsCreateChannelMutation = {
+  __typename?: "Mutation";
+  createChannel: {
+    __typename?: "Channel";
+    id: string;
+    name: string;
+    description?: Maybe<string>;
+    slug?: Maybe<string>;
+    activity?: Maybe<{
+      __typename?: "Activity";
+      id: string;
+      name: string;
+      icon?: Maybe<string>;
+    }>;
+  };
+};
+
 export type UserSettingsProfileFragmentFragment = {
   __typename?: "User";
   id?: Maybe<string>;
@@ -1180,6 +1273,20 @@ export type UpdateUserSettingsPreferencesMutation = {
     id?: Maybe<string>;
     useGravatar?: Maybe<boolean>;
     singleUserMode?: Maybe<boolean>;
+  }>;
+};
+
+export type UserSettingsChannelFragmentFragment = {
+  __typename?: "Channel";
+  id: string;
+  name: string;
+  description?: Maybe<string>;
+  slug?: Maybe<string>;
+  activity?: Maybe<{
+    __typename?: "Activity";
+    id: string;
+    name: string;
+    icon?: Maybe<string>;
   }>;
 };
 

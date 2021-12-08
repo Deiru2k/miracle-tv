@@ -8,12 +8,12 @@ import {
 import { ProfileSettings } from "miracle-tv-client/UserSettings/Profile";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { UserPreferences } from "miracle-tv-client/UserSettings/UserPreferences";
+import { Channels } from "miracle-tv-client/UserSettings/Channels";
 
 const components: NavComponentMap = {
-  user: {
-    profile: <ProfileSettings />,
-    preferences: <UserPreferences />,
-  },
+  "/settings/user/profile": <ProfileSettings />,
+  "/settings/user/preferences": <UserPreferences />,
+  "/settings/user/channels": <Channels />,
 };
 
 const SettingsPage = () => {
@@ -68,7 +68,7 @@ const SettingsPage = () => {
       title="Settings"
       nav={nav}
       components={components}
-      size={[1, 11]}
+      size={[1, 10]}
     />
   );
 };

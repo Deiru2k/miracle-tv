@@ -607,7 +607,7 @@
             "deprecationReason": null
           },
           {
-            "name": "user",
+            "name": "userId",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -619,7 +619,7 @@
             "deprecationReason": null
           },
           {
-            "name": "activity",
+            "name": "activityId",
             "description": null,
             "type": {
               "kind": "SCALAR",

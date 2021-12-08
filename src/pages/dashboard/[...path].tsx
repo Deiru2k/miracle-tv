@@ -43,16 +43,8 @@ const nav: NavConfig = [
   },
 ];
 const components: NavComponentMap = {
-  feeds: {
-    home: <Feeds />,
-  },
-  streams: {
-    home: <Streams />,
-    local: <Feeds />,
-  },
-  settings: {
-    profile: <ProfileSettings />,
-  },
+  "/dashboard/home/streams": <Feeds />,
+  "/dashboard/home/feed": <Streams />,
 };
 
 const Dashboard = () => {

@@ -20,6 +20,8 @@ export const navLinkStyles = {
       justifyContent: "flex-start",
       textTransform: "none",
       transition: "all 0.2s ease-in-out",
+      boxSizing: "border-box",
+      overflow: "hidden",
       _hover: {
         borderLeftWidth: "var(--chakra-space-2)",
         color: "white",

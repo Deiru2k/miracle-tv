@@ -1,17 +1,15 @@
 import {
   Box,
-  Button,
   Divider,
   Flex,
   Heading,
-  Link,
   useMultiStyleConfig,
   VStack,
 } from "@chakra-ui/react";
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { NavLink } from "miracle-tv-client/components/ui/NavLink";
 import { useRouter } from "next/dist/client/router";
-import { path } from "ramda";
+import { prop } from "ramda";
 import React from "react";
 
 export type NavConfigRecord = {
@@ -41,10 +39,7 @@ type Props = {
 };
 
 export const Navigation = ({ title, components, nav, size }: Props) => {
-  const {
-    asPath,
-    query: { path: routePath = [] },
-  } = useRouter();
+  const { asPath } = useRouter();
   const styles = useMultiStyleConfig("Navigation", {});
 
   const menuStyles = {
@@ -57,7 +52,10 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
     flex: size?.[1] || styles.content.flex || 10,
   };
 
-  const component = path(routePath as string[], components);
+  const componentKey = Object.keys(components).find((key) =>
+    asPath.startsWith(key)
+  ) as keyof typeof components;
+  const component = components[componentKey];
 
   return (
     <Flex sx={styles.container}>
@@ -75,7 +73,7 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
               <NavLink
                 href={configRecord.url}
                 key={configRecord.id}
-                isActive={asPath === configRecord.url}
+                isActive={asPath.startsWith(configRecord.url)}
               >
                 {configRecord.name}
               </NavLink>

@@ -9,8 +9,8 @@ type Channel {
 
 input ChannelsQueryFilter {
   id: ID
-  user: ID
-  activity: ID
+  userId: ID
+  activityId: ID
   slug: String
   name: String
   description: String
@@ -38,6 +38,18 @@ input UpdateChannelInput {
 }
 
 extend type Mutation {
-  createChannel(input: CreateChannelInput): Channel! @auth(rights: [{ unit: WRITE, subject: "channels" }, { unit: SELF, subject: "channels" }])
-  updateChannel(input: UpdateChannelInput): Channel! @auth(rights: [{ unit: WRITE, subject: "channels" }, { unit: SELF, subject: "channels" }])
+  createChannel(input: CreateChannelInput): Channel!
+    @auth(
+      rights: [
+        { unit: WRITE, subject: "channels" }
+        { unit: SELF, subject: "channels" }
+      ]
+    )
+  updateChannel(input: UpdateChannelInput): Channel!
+    @auth(
+      rights: [
+        { unit: WRITE, subject: "channels" }
+        { unit: SELF, subject: "channels" }
+      ]
+    )
 }
