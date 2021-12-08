@@ -27,6 +27,7 @@ import {
 } from "miracle-tv-server/graphql/resolvers/channels";
 import {
   createChannelMutation,
+  deleteChannelMutation,
   updateChannelMutation,
 } from "miracle-tv-server/graphql/mutations/channels";
 import { ActivitiesModel } from "miracle-tv-server/db/models/Activities";
@@ -105,6 +106,7 @@ let executableSchema = makeExecutableSchema({
       signIn: signInMutation,
       createChannel: createChannelMutation,
       updateChannel: updateChannelMutation,
+      deleteChannel: deleteChannelMutation,
       createActivity: createActivityMutaiton,
       updateActivity: updateActivityMutation,
       createStreamKey: createStreamKeyMutation,

@@ -62,8 +62,14 @@ export const CreateChannelModal = ({
 
   return (
     <Form<CreateChannelInput> onSubmit={createChannel}>
-      {({ handleSubmit, dirty }) => (
-        <Modal {...props}>
+      {({ handleSubmit, form, dirty }) => (
+        <Modal
+          {...props}
+          onClose={() => {
+            form.reset();
+            props.onClose();
+          }}
+        >
           <ModalOverlay />
           <ModalContent>
             <form onSubmit={handleSubmit}>

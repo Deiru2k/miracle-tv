@@ -162,6 +162,7 @@ export type Mutation = {
   updateActivity: Activity;
   createChannel: Channel;
   updateChannel: Channel;
+  deleteChannel: Scalars["Boolean"];
   uploadFile: File;
   createRole: Role;
   updateRole: Role;
@@ -190,6 +191,10 @@ export type MutationCreateChannelArgs = {
 
 export type MutationUpdateChannelArgs = {
   input?: Maybe<UpdateChannelInput>;
+};
+
+export type MutationDeleteChannelArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationUploadFileArgs = {
@@ -758,6 +763,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateChannelArgs, never>
   >;
+  deleteChannel?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteChannelArgs, "id">
+  >;
   uploadFile?: Resolver<
     ResolversTypes["File"],
     ParentType,
@@ -1123,6 +1134,15 @@ export type UserSettingsChannelsQuery = {
       }>;
     }>
   >;
+};
+
+export type UserSettingsDeleteChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UserSettingsDeleteChannelMutation = {
+  __typename?: "Mutation";
+  deleteChannel: boolean;
 };
 
 export type UserSettingsCreateChannelMutationVariables = Exact<{

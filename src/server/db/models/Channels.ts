@@ -70,4 +70,16 @@ export class ChanelsModel extends Model {
     }
     return { ...channel, id, ...input };
   }
+
+  async deleteChannel(id: string): Promise<boolean> {
+    const channel = (await this.table.get(id).run(this.conn)) as DbChannel;
+    if (!channel) {
+      throw new NotFoundError("Channel not found");
+    }
+    const result = await this.table.get(channel.id!).delete().run(this.conn);
+    if (result.errors !== 0) {
+      throw new ServerError("Could not delete any channels");
+    }
+    return true;
+  }
 }

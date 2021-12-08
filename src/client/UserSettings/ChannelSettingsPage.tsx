@@ -50,7 +50,7 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
       <Tabs index={tabIndex} onChange={() => {}}>
         <TabList>
           {tabList.map((tab) => (
-            <Tab>
+            <Tab key={tab}>
               <Link
                 w="100%"
                 href={`/settings/user/channels/${channelId}/${tab}`}

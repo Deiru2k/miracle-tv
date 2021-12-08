@@ -3,7 +3,7 @@ import { mode } from "@chakra-ui/theme-tools";
 export const buttonStyles = {
   baseStyle: {
     textTransform: "uppercase",
-    borderRadius: "4px",
+    borderRadius: "0",
   },
   variants: {
     ghost: {

@@ -273,6 +273,55 @@ export type UserSettingsChannelsQueryResult = Apollo.QueryResult<
   Types.UserSettingsChannelsQuery,
   Types.UserSettingsChannelsQueryVariables
 >;
+export const UserSettingsDeleteChannelDocument = gql`
+  mutation UserSettingsDeleteChannel($id: ID!) {
+    deleteChannel(id: $id)
+  }
+`;
+export type UserSettingsDeleteChannelMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsDeleteChannelMutation,
+  Types.UserSettingsDeleteChannelMutationVariables
+>;
+
+/**
+ * __useUserSettingsDeleteChannelMutation__
+ *
+ * To run a mutation, you first call `useUserSettingsDeleteChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsDeleteChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSettingsDeleteChannelMutation, { data, loading, error }] = useUserSettingsDeleteChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserSettingsDeleteChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >(UserSettingsDeleteChannelDocument, options);
+}
+export type UserSettingsDeleteChannelMutationHookResult = ReturnType<
+  typeof useUserSettingsDeleteChannelMutation
+>;
+export type UserSettingsDeleteChannelMutationResult =
+  Apollo.MutationResult<Types.UserSettingsDeleteChannelMutation>;
+export type UserSettingsDeleteChannelMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >;
 export const UserSettingsCreateChannelDocument = gql`
   mutation UserSettingsCreateChannel($input: CreateChannelInput) {
     createChannel(input: $input) {

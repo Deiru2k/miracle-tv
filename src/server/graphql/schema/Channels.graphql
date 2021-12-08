@@ -52,4 +52,11 @@ extend type Mutation {
         { unit: SELF, subject: "channels" }
       ]
     )
+  deleteChannel(id: ID!): Boolean!
+    @auth(
+      rights: [
+        { unit: WRITE, subject: "channels" }
+        { unit: SELF, subject: "channels" }
+      ]
+    )
 }

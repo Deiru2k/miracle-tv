@@ -33,3 +33,22 @@ export const updateChannelMutation: MutationResolvers<ResolverContext>["updateCh
     }
     return await channels.updateChannel(input);
   };
+
+export const deleteChannelMutation: MutationResolvers<ResolverContext>["deleteChannel"] =
+  async (_, { id }, { user, userRoles, db: { channels } }) => {
+    const channel = await channels.getChannelById(id);
+    const channelRights =
+      (user?.id === ((channel as any).userId as string) &&
+        checkRight(userRoles, AccessUnit.Self, "channels")) ||
+      checkRight(userRoles, AccessUnit.Write, "channels");
+    if (!user) {
+      throw new AuthenticationError();
+    }
+    if (!channel) {
+      throw new NotFoundError("Channel not found");
+    }
+    if (!channelRights) {
+      throw new AuthorizationError();
+    }
+    return await channels.deleteChannel(id);
+  };
