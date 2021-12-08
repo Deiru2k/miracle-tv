@@ -57,6 +57,7 @@ export const ChannelEdit = ({ id }: Props) => {
         name: channel.name,
         description: channel.description,
         slug: channel.slug,
+        activityId: channel.activity?.id || null,
       }
     : {};
 

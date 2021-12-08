@@ -21,6 +21,7 @@ input UpdateActivityInput {
   verb: String
 }
 
+# TODO: Implement ids filter to fetch options for ids.
 input ActivityFilter {
   id: ID
   icon: String
@@ -35,6 +36,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  createActivity(input: CreateActivityInput): Activity! @auth(rights: [{ unit: WRITE, subject: "activities" }])
-  updateActivity(input: UpdateActivityInput): Activity! @auth(rights: [{ unit: WRITE, subject: "activities" }])
+  createActivity(input: CreateActivityInput): Activity!
+    @auth(rights: [{ unit: WRITE, subject: "activities" }])
+  updateActivity(input: UpdateActivityInput): Activity!
+    @auth(rights: [{ unit: WRITE, subject: "activities" }])
 }

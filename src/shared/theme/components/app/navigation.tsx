@@ -30,7 +30,7 @@ export const navigationStyles = {
       content: {
         flex: 10,
         alignSelf: "flex-start",
-        maxHeight: "100%",
+        height: "100%",
         overflowY: "auto",
         padding: 2,
         backgroundColor: bgColorContent,

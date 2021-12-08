@@ -98,6 +98,64 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const ChannelFormSelectActivitiesDocument = gql`
+  query ChannelFormSelectActivities {
+    activities {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useChannelFormSelectActivitiesQuery__
+ *
+ * To run a query within a React component, call `useChannelFormSelectActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelFormSelectActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelFormSelectActivitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChannelFormSelectActivitiesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ChannelFormSelectActivitiesQuery,
+    Types.ChannelFormSelectActivitiesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelFormSelectActivitiesQuery,
+    Types.ChannelFormSelectActivitiesQueryVariables
+  >(ChannelFormSelectActivitiesDocument, options);
+}
+export function useChannelFormSelectActivitiesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelFormSelectActivitiesQuery,
+    Types.ChannelFormSelectActivitiesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelFormSelectActivitiesQuery,
+    Types.ChannelFormSelectActivitiesQueryVariables
+  >(ChannelFormSelectActivitiesDocument, options);
+}
+export type ChannelFormSelectActivitiesQueryHookResult = ReturnType<
+  typeof useChannelFormSelectActivitiesQuery
+>;
+export type ChannelFormSelectActivitiesLazyQueryHookResult = ReturnType<
+  typeof useChannelFormSelectActivitiesLazyQuery
+>;
+export type ChannelFormSelectActivitiesQueryResult = Apollo.QueryResult<
+  Types.ChannelFormSelectActivitiesQuery,
+  Types.ChannelFormSelectActivitiesQueryVariables
+>;
 export const UserSettingsChannelDocument = gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {

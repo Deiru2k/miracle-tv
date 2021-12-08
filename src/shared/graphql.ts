@@ -1064,6 +1064,17 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
+export type ChannelFormSelectActivitiesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type ChannelFormSelectActivitiesQuery = {
+  __typename?: "Query";
+  activities: Array<
+    Maybe<{ __typename?: "Activity"; id: string; name: string }>
+  >;
+};
+
 export type UserSettingsChannelQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
