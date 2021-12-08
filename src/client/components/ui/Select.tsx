@@ -29,6 +29,7 @@ export type SelectProps = {
 };
 
 // TODO: Reimplement option & value selection to support async options fetching
+// TODO: Use theming to style component
 export const Select = ({
   options = [],
   value,
@@ -151,7 +152,7 @@ export const Select = ({
           {!selectValue.length && !showInput && placeholder}
           {!multi && !showInput && !!selectValue.length && (
             <Badge
-              colorScheme="primary"
+              bgColor="primary.500"
               display="flex"
               alignItems="center"
               color="white"
@@ -175,7 +176,7 @@ export const Select = ({
           {multi &&
             selectValue.map((v) => (
               <Badge
-                colorScheme="primary"
+                bgColor="primary.500"
                 mr={1}
                 key={v}
                 mb="5px"
