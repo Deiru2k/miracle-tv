@@ -73,12 +73,6 @@ export const Navbar = () => {
             </MenuButton>
             <Portal>
               <MenuList>
-                <MenuItem closeOnSelect={false}>
-                  <ThemeSwitcher />
-                </MenuItem>
-                <MenuItem onClick={signOut}>
-                  <LogoutIcon mr={2} /> Logout
-                </MenuItem>
                 <MenuItem>
                   <Link href="/dashboard/home/streams" w="100%">
                     <HomeIcon mr={2} /> Dashboard
@@ -88,6 +82,12 @@ export const Navbar = () => {
                   <Link href="/settings" w="100%">
                     <SettingsIcon mr={2} /> Settings
                   </Link>
+                </MenuItem>
+                <MenuItem closeOnSelect={false}>
+                  <ThemeSwitcher />
+                </MenuItem>
+                <MenuItem onClick={signOut}>
+                  <LogoutIcon mr={2} /> Logout
                 </MenuItem>
               </MenuList>
             </Portal>
