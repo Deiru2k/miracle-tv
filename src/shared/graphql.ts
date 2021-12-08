@@ -378,13 +378,13 @@ export type User = {
   username: Scalars["String"];
   displayName?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
-  singleUserMode: Scalars["Boolean"];
   emailHash?: Maybe<Scalars["String"]>;
   roles: Array<Maybe<Role>>;
   channels: Array<Maybe<Channel>>;
   avatar?: Maybe<File>;
   header?: Maybe<File>;
   streamThumbnail?: Maybe<File>;
+  useGravatar?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UserActions = {
@@ -969,7 +969,6 @@ export type UserResolvers<
     ContextType
   >;
   bio?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  singleUserMode?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   emailHash?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -989,6 +988,11 @@ export type UserResolvers<
   header?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   streamThumbnail?: Resolver<
     Maybe<ResolversTypes["File"]>,
+    ParentType,
+    ContextType
+  >;
+  useGravatar?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
     ParentType,
     ContextType
   >;
@@ -1230,7 +1234,6 @@ export type CurrentUserFragment = {
   displayName?: Maybe<string>;
   emailHash?: Maybe<string>;
   bio?: Maybe<string>;
-  singleUserMode: boolean;
   avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   streamThumbnail?: Maybe<{
@@ -1295,7 +1298,6 @@ export type CurrentUserFullQuery = {
     displayName?: Maybe<string>;
     emailHash?: Maybe<string>;
     bio?: Maybe<string>;
-    singleUserMode: boolean;
     avatar?: Maybe<{
       __typename?: "File";
       id?: Maybe<string>;

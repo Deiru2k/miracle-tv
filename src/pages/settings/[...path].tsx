@@ -63,7 +63,14 @@ const SettingsPage = () => {
     ],
     [currentSettings]
   );
-  return <Navigation title="Settings" nav={nav} components={components} />;
+  return (
+    <Navigation
+      title="Settings"
+      nav={nav}
+      components={components}
+      size={[1, 11]}
+    />
+  );
 };
 
 export default SettingsPage;

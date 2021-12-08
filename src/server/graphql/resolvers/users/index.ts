@@ -58,6 +58,12 @@ const fileResolver: FileResolver =
       : null;
   };
 
+const gravatarResolver: UserResolvers["useGravatar"] = async (
+  user,
+  _,
+  { db: { userSettings } }
+) => (await userSettings.getUserSettingsById(user.id)).useGravatar;
+
 export const userResolver: UserResolvers = {
   id: (user) => user.id,
   username: (user) => user.username,
@@ -72,4 +78,5 @@ export const userResolver: UserResolvers = {
   avatar: fileResolver("avatar"),
   header: fileResolver("header"),
   streamThumbnail: fileResolver("streamThumbnail"),
+  useGravatar: gravatarResolver,
 };

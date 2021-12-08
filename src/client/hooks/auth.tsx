@@ -67,7 +67,6 @@ export const CurrentUserFullFragment = gql`
     emailHash
     bio
     emailHash
-    singleUserMode
     avatar {
       id
       filename
