@@ -1,4 +1,5 @@
 import db from "miracle-tv-server/db";
+import * as r from "rethinkdb";
 import { Model } from "miracle-tv-server/db/models";
 import {
   ActivityFilter,
@@ -43,8 +44,17 @@ export class ActivitiesModel extends Model {
     return (await this.table.get(id).run(this.conn)) as DbActivity;
   }
 
-  async getActivities(filter: ActivityFilter = {}): Promise<DbActivity[]> {
-    return (await this.table
+  async getActivities({ ids, name, ...filter }: ActivityFilter = {}): Promise<
+    DbActivity[]
+  > {
+    const query = ids ? this.table.getAll(...ids) : this.table;
+    return (await query
+      .filter((doc: any) => {
+        if (name) {
+          return doc("name").downcase().match(name.toLowerCase());
+        }
+        return true;
+      })
       .filter(filter)
       .coerceTo("array")
       .run(this.conn)) as DbActivity[];

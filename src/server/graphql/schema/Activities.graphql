@@ -21,9 +21,8 @@ input UpdateActivityInput {
   verb: String
 }
 
-# TODO: Implement ids filter to fetch options for ids.
 input ActivityFilter {
-  id: ID
+  ids: [ID]
   icon: String
   image: String
   name: String

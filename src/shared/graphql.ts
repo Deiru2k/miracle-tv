@@ -77,7 +77,7 @@ export type Activity = {
 };
 
 export type ActivityFilter = {
-  id?: Maybe<Scalars["ID"]>;
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
   icon?: Maybe<Scalars["String"]>;
   image?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
