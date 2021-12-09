@@ -84,6 +84,11 @@ export type ActivityFilter = {
   verb?: Maybe<Scalars["String"]>;
 };
 
+export type ActivityLimit = {
+  limit?: Maybe<Scalars["Int"]>;
+  skip?: Maybe<Scalars["Int"]>;
+};
+
 export type AuthRightConfig = {
   unit: AccessUnit;
   subject: Scalars["String"];
@@ -133,6 +138,7 @@ export type CreateRoleInput = {
 export type CreateStreamKeyInput = {
   userId: Scalars["ID"];
   channelId: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
 };
 
 export type CreateUserInput = {
@@ -169,6 +175,7 @@ export type Mutation = {
   deleteRole: Scalars["Boolean"];
   ping: Scalars["String"];
   createStreamKey: StreamKey;
+  revokeStreamKeys: Scalars["Boolean"];
   revokeStreamKey: Scalars["Boolean"];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
@@ -217,8 +224,12 @@ export type MutationCreateStreamKeyArgs = {
   input?: Maybe<CreateStreamKeyInput>;
 };
 
-export type MutationRevokeStreamKeyArgs = {
+export type MutationRevokeStreamKeysArgs = {
   input?: Maybe<CreateStreamKeyInput>;
+};
+
+export type MutationRevokeStreamKeyArgs = {
+  key: Scalars["ID"];
 };
 
 export type MutationSignUpArgs = {
@@ -254,6 +265,7 @@ export type Query = {
   test: TestResponse;
   streamKeys: Array<Maybe<StreamKey>>;
   selfStreamKeys: Array<Maybe<StreamKey>>;
+  streamKeysByChannelId: Array<Maybe<StreamKey>>;
   users: Array<Maybe<User>>;
   self: User;
   user?: Maybe<User>;
@@ -266,6 +278,7 @@ export type QueryActivityArgs = {
 
 export type QueryActivitiesArgs = {
   filter?: Maybe<ActivityFilter>;
+  limit?: Maybe<ActivityLimit>;
 };
 
 export type QueryChannelArgs = {
@@ -286,6 +299,10 @@ export type QueryRoleArgs = {
 
 export type QueryRolesArgs = {
   filter?: Maybe<UpdateRoleInput>;
+};
+
+export type QueryStreamKeysByChannelIdArgs = {
+  channelId: Scalars["ID"];
 };
 
 export type QueryUserArgs = {
@@ -323,6 +340,7 @@ export type StreamKey = {
   id: Scalars["ID"];
   user: User;
   channel: Channel;
+  name?: Maybe<Scalars["String"]>;
 };
 
 export type TestResponse = {
@@ -529,6 +547,8 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars["ID"]>;
   String: ResolverTypeWrapper<Scalars["String"]>;
   ActivityFilter: ActivityFilter;
+  ActivityLimit: ActivityLimit;
+  Int: ResolverTypeWrapper<Scalars["Int"]>;
   AuthRightConfig: AuthRightConfig;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -573,6 +593,8 @@ export type ResolversParentTypes = {
   ID: Scalars["ID"];
   String: Scalars["String"];
   ActivityFilter: ActivityFilter;
+  ActivityLimit: ActivityLimit;
+  Int: Scalars["Int"];
   AuthRightConfig: AuthRightConfig;
   Channel: Channel;
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -800,11 +822,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateStreamKeyArgs, never>
   >;
+  revokeStreamKeys?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeStreamKeysArgs, never>
+  >;
   revokeStreamKey?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
     ContextType,
-    RequireFields<MutationRevokeStreamKeyArgs, never>
+    RequireFields<MutationRevokeStreamKeyArgs, "key">
   >;
   signUp?: Resolver<
     ResolversTypes["User"],
@@ -896,6 +924,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  streamKeysByChannelId?: Resolver<
+    Array<Maybe<ResolversTypes["StreamKey"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryStreamKeysByChannelIdArgs, "channelId">
+  >;
   users?: Resolver<
     Array<Maybe<ResolversTypes["User"]>>,
     ParentType,
@@ -952,6 +986,7 @@ export type StreamKeyResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   channel?: Resolver<ResolversTypes["Channel"], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1113,6 +1148,36 @@ export type EditChannelMutation = {
   };
 };
 
+export type UserSettingsChannelKeysQueryVariables = Exact<{
+  channelId: Scalars["ID"];
+}>;
+
+export type UserSettingsChannelKeysQuery = {
+  __typename?: "Query";
+  streamKeysByChannelId: Array<
+    Maybe<{ __typename?: "StreamKey"; id: string; name?: Maybe<string> }>
+  >;
+};
+
+export type UserSettingsRevokeAllStreamKeysMutationVariables = Exact<{
+  channelId: Scalars["ID"];
+  userId: Scalars["ID"];
+}>;
+
+export type UserSettingsRevokeAllStreamKeysMutation = {
+  __typename?: "Mutation";
+  revokeStreamKeys: boolean;
+};
+
+export type UserSettingsRevokeStreamKeyMutationVariables = Exact<{
+  streamKey: Scalars["ID"];
+}>;
+
+export type UserSettingsRevokeStreamKeyMutation = {
+  __typename?: "Mutation";
+  revokeStreamKey: boolean;
+};
+
 export type UserSettingsChannelsQueryVariables = Exact<{
   filter?: Maybe<ChannelsQueryFilter>;
 }>;
@@ -1163,6 +1228,19 @@ export type UserSettingsCreateChannelMutation = {
       name: string;
       icon?: Maybe<string>;
     }>;
+  };
+};
+
+export type UserSettingsCreateChannelKeyMutationVariables = Exact<{
+  input?: Maybe<CreateStreamKeyInput>;
+}>;
+
+export type UserSettingsCreateChannelKeyMutation = {
+  __typename?: "Mutation";
+  createStreamKey: {
+    __typename?: "StreamKey";
+    id: string;
+    name?: Maybe<string>;
   };
 };
 
@@ -1342,6 +1420,7 @@ export type UploadFileWithUploaderMutation = {
 
 export type ActivitesSelectQueryVariables = Exact<{
   filter?: Maybe<ActivityFilter>;
+  limit?: Maybe<ActivityLimit>;
 }>;
 
 export type ActivitesSelectQuery = {

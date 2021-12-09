@@ -8,8 +8,8 @@ export const activityQueryResolver: QueryResolvers<ResolverContext>["activity"] 
   };
 
 export const activitiesQueryResolver: QueryResolvers<ResolverContext>["activities"] =
-  async (_, { filter }, { db: { activities } }) => {
-    return await activities.getActivities(filter);
+  async (_, { filter, limit }, { db: { activities } }) => {
+    return await activities.getActivities(filter, limit);
   };
 
 export const activityResolver: ActivityResolvers<ResolverContext> = {

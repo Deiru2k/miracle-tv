@@ -47,12 +47,14 @@ import config from "miracle-tv-server/config";
 import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import {
   selfStreamKeysQueryResolver,
+  streamKeysByChannelIdResolver,
   streamKeysQueryResolver,
   streamKeysResolver,
 } from "miracle-tv-server/graphql/resolvers/stream-keys";
 import {
   createStreamKeyMutation,
   revokeStreamKeyMutation,
+  revokeStreamKeysMutation,
 } from "miracle-tv-server/graphql/mutations/stream-keys";
 import { fileMutations } from "./mutations/file";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
@@ -91,6 +93,7 @@ let executableSchema = makeExecutableSchema({
       activity: activityQueryResolver,
       activities: activitiesQueryResolver,
       streamKeys: streamKeysQueryResolver,
+      streamKeysByChannelId: streamKeysByChannelIdResolver,
       self: userSelfQueryResolver,
       userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
@@ -110,6 +113,7 @@ let executableSchema = makeExecutableSchema({
       createActivity: createActivityMutaiton,
       updateActivity: updateActivityMutation,
       createStreamKey: createStreamKeyMutation,
+      revokeStreamKeys: revokeStreamKeysMutation,
       revokeStreamKey: revokeStreamKeyMutation,
     },
     User: userResolver,

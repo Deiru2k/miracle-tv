@@ -2,19 +2,49 @@ type StreamKey {
   id: ID!
   user: User!
   channel: Channel!
+  name: String
 }
 
 extend type Query {
-  streamKeys: [StreamKey]! @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
-  selfStreamKeys: [StreamKey]! @auth(rights: [{ unit: SELF, subject: "streamKeys" }])
+  streamKeys: [StreamKey]!
+    @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
+  selfStreamKeys: [StreamKey]!
+    @auth(rights: [{ unit: SELF, subject: "streamKeys" }])
+  streamKeysByChannelId(channelId: ID!): [StreamKey]!
+    @auth(
+      rights: [
+        { unit: SELF, subject: "streamKeys" }
+        { unit: READ, subject: "streamKeys" }
+      ]
+    )
 }
 
 input CreateStreamKeyInput {
   userId: ID!
   channelId: ID!
+  name: String
 }
 
 extend type Mutation {
-  createStreamKey(input: CreateStreamKeyInput): StreamKey! @auth(rights: [{ unit: SELF, subject: "streamKeys" }, { unit: WRITE, subject: "streamKeys" }])
-  revokeStreamKey(input: CreateStreamKeyInput): Boolean! @auth(rights: [{ unit: SELF, subject: "streamKeys" }, { unit: WRITE, subject: "streamKeys" }])
+  createStreamKey(input: CreateStreamKeyInput): StreamKey!
+    @auth(
+      rights: [
+        { unit: SELF, subject: "streamKeys" }
+        { unit: WRITE, subject: "streamKeys" }
+      ]
+    )
+  revokeStreamKeys(input: CreateStreamKeyInput): Boolean!
+    @auth(
+      rights: [
+        { unit: SELF, subject: "streamKeys" }
+        { unit: WRITE, subject: "streamKeys" }
+      ]
+    )
+  revokeStreamKey(key: ID!): Boolean!
+    @auth(
+      rights: [
+        { unit: SELF, subject: "streamKeys" }
+        { unit: WRITE, subject: "streamKeys" }
+      ]
+    )
 }

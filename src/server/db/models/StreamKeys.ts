@@ -14,12 +14,14 @@ export class StreamKeysModel extends Model {
 
   async createStreamKey(
     userId: string,
-    channelId: string
+    channelId: string,
+    name: string = null
   ): Promise<DbStreamKey> {
     return await this.table
       .insert({
         userId,
         channelId,
+        name,
       })
       .run(this.conn)
       .then(async (res) => {
@@ -34,6 +36,13 @@ export class StreamKeysModel extends Model {
 
   async getStreamKeyById(id: string): Promise<DbStreamKey> {
     return (await this.table.get(id).run(this.conn)) as DbStreamKey;
+  }
+
+  async getStreamKeysByChannelId(channelId: string): Promise<DbStreamKey[]> {
+    return (await this.table
+      .filter({ channelId })
+      .coerceTo("array")
+      .run(this.conn)) as DbStreamKey[];
   }
 
   async getStreamKeys(filter: StreamKeyFilter = {}): Promise<DbStreamKey[]> {
@@ -51,6 +60,11 @@ export class StreamKeysModel extends Model {
       .filter({ userId, channelId })
       .delete()
       .run(this.conn);
+    return res.errors <= 0;
+  }
+
+  async deleteStreamKey(keyId: string): Promise<boolean> {
+    const res = await this.table.get(keyId).delete().run(this.conn);
     return res.errors <= 0;
   }
 }

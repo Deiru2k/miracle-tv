@@ -68,19 +68,21 @@ export const Navbar = () => {
                 <Text>
                   {currentUser?.displayName || currentUser?.username}{" "}
                 </Text>
-                <ChevronDownIcon ml={2} />
+                <ChevronDownIcon />
               </HStack>
             </MenuButton>
             <Portal>
-              <MenuList>
+              <MenuList zIndex={99999}>
                 <MenuItem>
                   <Link href="/dashboard/home/streams" w="100%">
-                    <HomeIcon mr={2} /> Dashboard
+                    <HomeIcon mr={2} />
+                    Dashboard
                   </Link>
                 </MenuItem>
                 <MenuItem>
                   <Link href="/settings" w="100%">
-                    <SettingsIcon mr={2} /> Settings
+                    <SettingsIcon mr={2} />
+                    Settings
                   </Link>
                 </MenuItem>
                 <MenuItem closeOnSelect={false}>

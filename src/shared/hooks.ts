@@ -214,6 +214,164 @@ export type EditChannelMutationOptions = Apollo.BaseMutationOptions<
   Types.EditChannelMutation,
   Types.EditChannelMutationVariables
 >;
+export const UserSettingsChannelKeysDocument = gql`
+  query UserSettingsChannelKeys($channelId: ID!) {
+    streamKeysByChannelId(channelId: $channelId) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useUserSettingsChannelKeysQuery__
+ *
+ * To run a query within a React component, call `useUserSettingsChannelKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsChannelKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserSettingsChannelKeysQuery({
+ *   variables: {
+ *      channelId: // value for 'channelId'
+ *   },
+ * });
+ */
+export function useUserSettingsChannelKeysQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >(UserSettingsChannelKeysDocument, options);
+}
+export function useUserSettingsChannelKeysLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >(UserSettingsChannelKeysDocument, options);
+}
+export type UserSettingsChannelKeysQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelKeysQuery
+>;
+export type UserSettingsChannelKeysLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelKeysLazyQuery
+>;
+export type UserSettingsChannelKeysQueryResult = Apollo.QueryResult<
+  Types.UserSettingsChannelKeysQuery,
+  Types.UserSettingsChannelKeysQueryVariables
+>;
+export const UserSettingsRevokeAllStreamKeysDocument = gql`
+  mutation UserSettingsRevokeAllStreamKeys($channelId: ID!, $userId: ID!) {
+    revokeStreamKeys(input: { channelId: $channelId, userId: $userId })
+  }
+`;
+export type UserSettingsRevokeAllStreamKeysMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsRevokeAllStreamKeysMutation,
+  Types.UserSettingsRevokeAllStreamKeysMutationVariables
+>;
+
+/**
+ * __useUserSettingsRevokeAllStreamKeysMutation__
+ *
+ * To run a mutation, you first call `useUserSettingsRevokeAllStreamKeysMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsRevokeAllStreamKeysMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSettingsRevokeAllStreamKeysMutation, { data, loading, error }] = useUserSettingsRevokeAllStreamKeysMutation({
+ *   variables: {
+ *      channelId: // value for 'channelId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserSettingsRevokeAllStreamKeysMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >(UserSettingsRevokeAllStreamKeysDocument, options);
+}
+export type UserSettingsRevokeAllStreamKeysMutationHookResult = ReturnType<
+  typeof useUserSettingsRevokeAllStreamKeysMutation
+>;
+export type UserSettingsRevokeAllStreamKeysMutationResult =
+  Apollo.MutationResult<Types.UserSettingsRevokeAllStreamKeysMutation>;
+export type UserSettingsRevokeAllStreamKeysMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >;
+export const UserSettingsRevokeStreamKeyDocument = gql`
+  mutation UserSettingsRevokeStreamKey($streamKey: ID!) {
+    revokeStreamKey(key: $streamKey)
+  }
+`;
+export type UserSettingsRevokeStreamKeyMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsRevokeStreamKeyMutation,
+  Types.UserSettingsRevokeStreamKeyMutationVariables
+>;
+
+/**
+ * __useUserSettingsRevokeStreamKeyMutation__
+ *
+ * To run a mutation, you first call `useUserSettingsRevokeStreamKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsRevokeStreamKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSettingsRevokeStreamKeyMutation, { data, loading, error }] = useUserSettingsRevokeStreamKeyMutation({
+ *   variables: {
+ *      streamKey: // value for 'streamKey'
+ *   },
+ * });
+ */
+export function useUserSettingsRevokeStreamKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >(UserSettingsRevokeStreamKeyDocument, options);
+}
+export type UserSettingsRevokeStreamKeyMutationHookResult = ReturnType<
+  typeof useUserSettingsRevokeStreamKeyMutation
+>;
+export type UserSettingsRevokeStreamKeyMutationResult =
+  Apollo.MutationResult<Types.UserSettingsRevokeStreamKeyMutation>;
+export type UserSettingsRevokeStreamKeyMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >;
 export const UserSettingsChannelsDocument = gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
     channels(filter: $filter) {
@@ -373,6 +531,58 @@ export type UserSettingsCreateChannelMutationOptions =
   Apollo.BaseMutationOptions<
     Types.UserSettingsCreateChannelMutation,
     Types.UserSettingsCreateChannelMutationVariables
+  >;
+export const UserSettingsCreateChannelKeyDocument = gql`
+  mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput) {
+    createStreamKey(input: $input) {
+      id
+      name
+    }
+  }
+`;
+export type UserSettingsCreateChannelKeyMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsCreateChannelKeyMutation,
+  Types.UserSettingsCreateChannelKeyMutationVariables
+>;
+
+/**
+ * __useUserSettingsCreateChannelKeyMutation__
+ *
+ * To run a mutation, you first call `useUserSettingsCreateChannelKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsCreateChannelKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSettingsCreateChannelKeyMutation, { data, loading, error }] = useUserSettingsCreateChannelKeyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserSettingsCreateChannelKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
+  >(UserSettingsCreateChannelKeyDocument, options);
+}
+export type UserSettingsCreateChannelKeyMutationHookResult = ReturnType<
+  typeof useUserSettingsCreateChannelKeyMutation
+>;
+export type UserSettingsCreateChannelKeyMutationResult =
+  Apollo.MutationResult<Types.UserSettingsCreateChannelKeyMutation>;
+export type UserSettingsCreateChannelKeyMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
   >;
 export const UserSettingsProfileDocument = gql`
   query UserSettingsProfile {
@@ -711,8 +921,8 @@ export type UploadFileWithUploaderMutationOptions = Apollo.BaseMutationOptions<
   Types.UploadFileWithUploaderMutationVariables
 >;
 export const ActivitesSelectDocument = gql`
-  query ActivitesSelect($filter: ActivityFilter) {
-    activities(filter: $filter) {
+  query ActivitesSelect($filter: ActivityFilter, $limit: ActivityLimit) {
+    activities(filter: $filter, limit: $limit) {
       id
       name
     }
@@ -732,6 +942,7 @@ export const ActivitesSelectDocument = gql`
  * const { data, loading, error } = useActivitesSelectQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

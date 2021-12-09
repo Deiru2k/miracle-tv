@@ -17,7 +17,7 @@ export const navbarStyles = {
         color: "white",
         alignItems: "center",
         justifyContent: "space-between",
-        px: 4,
+        px: 2,
         boxShadow,
       },
     };

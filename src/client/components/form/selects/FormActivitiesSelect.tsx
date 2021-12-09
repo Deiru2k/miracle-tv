@@ -7,7 +7,7 @@ import {
   FormSelectProps,
 } from "miracle-tv-client/components/form/FormSelect";
 import {
-  useActivitesSelectLazyQuery,
+  useActivitesSelectQuery,
   useActivitiesSelectInitialQuery,
 } from "miracle-tv-shared/hooks";
 import { useField } from "react-final-form";
@@ -15,8 +15,8 @@ import { uniq } from "ramda";
 import { useDebounceCallback } from "@react-hook/debounce";
 
 gql`
-  query ActivitesSelect($filter: ActivityFilter) {
-    activities(filter: $filter) {
+  query ActivitesSelect($filter: ActivityFilter, $limit: ActivityLimit) {
+    activities(filter: $filter, limit: $limit) {
       id
       name
     }
@@ -39,10 +39,11 @@ export const FormActivitesSelect = (
     useActivitiesSelectInitialQuery({
       variables: { filter: { ids: value } },
     });
-  const [
-    getActivities,
-    { data: { activities = [] } = {}, loading: isLoading },
-  ] = useActivitesSelectLazyQuery();
+  const {
+    data: { activities = [] } = {},
+    loading: isLoading,
+    refetch: getActivities,
+  } = useActivitesSelectQuery({ variables: { limit: { limit: 20 } } });
 
   const initialOptions = useMemo(
     () => initialActivities.map((ac) => ({ label: ac.name, value: ac.id })),
@@ -59,12 +60,13 @@ export const FormActivitesSelect = (
 
   const onSearch = useCallback(
     (query: string) => {
-      getActivities({ variables: { filter: { name: query } } });
+      const filter = query ? { name: query } : {};
+      getActivities({ filter, limit: { limit: 20 } });
     },
     [getActivities]
   );
 
-  const onSearchDebounced = useDebounceCallback(onSearch, 500, true);
+  const onSearchDebounced = useDebounceCallback(onSearch, 50, true);
   return (
     <FormSelect
       {...props}

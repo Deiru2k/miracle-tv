@@ -29,9 +29,14 @@ input ActivityFilter {
   verb: String
 }
 
+input ActivityLimit {
+  limit: Int
+  skip: Int
+}
+
 extend type Query {
   activity(id: ID!): Activity
-  activities(filter: ActivityFilter): [Activity]!
+  activities(filter: ActivityFilter, limit: ActivityLimit): [Activity]!
 }
 
 extend type Mutation {

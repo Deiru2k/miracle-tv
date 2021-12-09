@@ -3,6 +3,7 @@ import * as r from "rethinkdb";
 import { Model } from "miracle-tv-server/db/models";
 import {
   ActivityFilter,
+  ActivityLimit,
   CreateActivityInput,
   UpdateActivityInput,
 } from "miracle-tv-shared/graphql";
@@ -44,18 +45,28 @@ export class ActivitiesModel extends Model {
     return (await this.table.get(id).run(this.conn)) as DbActivity;
   }
 
-  async getActivities({ ids, name, ...filter }: ActivityFilter = {}): Promise<
-    DbActivity[]
-  > {
+  async getActivities(
+    { ids, name, ...filter }: ActivityFilter = {},
+    limit?: ActivityLimit
+  ): Promise<DbActivity[]> {
     const query = ids ? this.table.getAll(...ids) : this.table;
-    return (await query
+    let filteredQuery = query
       .filter((doc: any) => {
         if (name) {
           return doc("name").downcase().match(name.toLowerCase());
         }
         return true;
       })
-      .filter(filter)
+      .filter(filter);
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+
+    return (await filteredQuery
       .coerceTo("array")
       .run(this.conn)) as DbActivity[];
   }

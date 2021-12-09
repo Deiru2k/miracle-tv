@@ -77,6 +77,8 @@ export const Select = ({
   const onInputBlur = useCallback(() => {
     setShowOptions(false);
     setShowInput(false);
+    setInputValue("");
+    onSearch("");
   }, [setShowOptions, setShowInput, multi]);
 
   const onOptionPick = useCallback(
@@ -85,9 +87,10 @@ export const Select = ({
       const changeValue = multi ? newValue : head(newValue);
       setValue(newValue);
       onChange(changeValue);
-      setInputValue("");
+      onSearch("");
       setShowOptions(false);
       setShowInput(false);
+      setInputValue("");
     },
     [selectValue, setValue, setShowInput, multi]
   );

@@ -15,6 +15,7 @@ import { gql } from "@apollo/client";
 import { channelFragment } from "miracle-tv-client/UserSettings/const";
 import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
+import { ChannelKeysSettings } from "./ChannelKeys";
 
 type Props = {
   tab?: string;
@@ -66,7 +67,7 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
             <ChannelEdit id={channelId} />
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <ChannelKeysSettings id={channelId} />
           </TabPanel>
         </TabPanels>
       </Tabs>
