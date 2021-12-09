@@ -32,6 +32,7 @@
     "@emotion/styled": "^11.3.0",
     "@graphql-tools/schema": "^8.1.2",
     "@graphql-tools/utils": "^8.1.2",
+    "@react-hook/debounce": "^4.0.0",
     "apollo-server": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "apollo-upload-client": "^16.0.0",

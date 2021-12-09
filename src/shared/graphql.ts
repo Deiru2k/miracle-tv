@@ -1064,17 +1064,6 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
-export type ChannelFormSelectActivitiesQueryVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type ChannelFormSelectActivitiesQuery = {
-  __typename?: "Query";
-  activities: Array<
-    Maybe<{ __typename?: "Activity"; id: string; name: string }>
-  >;
-};
-
 export type UserSettingsChannelQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -1349,6 +1338,28 @@ export type UploadFileWithUploaderMutation = {
     mimetype: string;
     encoding: string;
   };
+};
+
+export type ActivitesSelectQueryVariables = Exact<{
+  filter?: Maybe<ActivityFilter>;
+}>;
+
+export type ActivitesSelectQuery = {
+  __typename?: "Query";
+  activities: Array<
+    Maybe<{ __typename?: "Activity"; id: string; name: string }>
+  >;
+};
+
+export type ActivitiesSelectInitialQueryVariables = Exact<{
+  filter?: Maybe<ActivityFilter>;
+}>;
+
+export type ActivitiesSelectInitialQuery = {
+  __typename?: "Query";
+  activities: Array<
+    Maybe<{ __typename?: "Activity"; id: string; name: string }>
+  >;
 };
 
 export type UserInfoQueryVariables = Exact<{

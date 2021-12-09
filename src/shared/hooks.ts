@@ -98,64 +98,6 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
-export const ChannelFormSelectActivitiesDocument = gql`
-  query ChannelFormSelectActivities {
-    activities {
-      id
-      name
-    }
-  }
-`;
-
-/**
- * __useChannelFormSelectActivitiesQuery__
- *
- * To run a query within a React component, call `useChannelFormSelectActivitiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useChannelFormSelectActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useChannelFormSelectActivitiesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useChannelFormSelectActivitiesQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    Types.ChannelFormSelectActivitiesQuery,
-    Types.ChannelFormSelectActivitiesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    Types.ChannelFormSelectActivitiesQuery,
-    Types.ChannelFormSelectActivitiesQueryVariables
-  >(ChannelFormSelectActivitiesDocument, options);
-}
-export function useChannelFormSelectActivitiesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    Types.ChannelFormSelectActivitiesQuery,
-    Types.ChannelFormSelectActivitiesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    Types.ChannelFormSelectActivitiesQuery,
-    Types.ChannelFormSelectActivitiesQueryVariables
-  >(ChannelFormSelectActivitiesDocument, options);
-}
-export type ChannelFormSelectActivitiesQueryHookResult = ReturnType<
-  typeof useChannelFormSelectActivitiesQuery
->;
-export type ChannelFormSelectActivitiesLazyQueryHookResult = ReturnType<
-  typeof useChannelFormSelectActivitiesLazyQuery
->;
-export type ChannelFormSelectActivitiesQueryResult = Apollo.QueryResult<
-  Types.ChannelFormSelectActivitiesQuery,
-  Types.ChannelFormSelectActivitiesQueryVariables
->;
 export const UserSettingsChannelDocument = gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {
@@ -767,6 +709,124 @@ export type UploadFileWithUploaderMutationResult =
 export type UploadFileWithUploaderMutationOptions = Apollo.BaseMutationOptions<
   Types.UploadFileWithUploaderMutation,
   Types.UploadFileWithUploaderMutationVariables
+>;
+export const ActivitesSelectDocument = gql`
+  query ActivitesSelect($filter: ActivityFilter) {
+    activities(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useActivitesSelectQuery__
+ *
+ * To run a query within a React component, call `useActivitesSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActivitesSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActivitesSelectQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useActivitesSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >(ActivitesSelectDocument, options);
+}
+export function useActivitesSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >(ActivitesSelectDocument, options);
+}
+export type ActivitesSelectQueryHookResult = ReturnType<
+  typeof useActivitesSelectQuery
+>;
+export type ActivitesSelectLazyQueryHookResult = ReturnType<
+  typeof useActivitesSelectLazyQuery
+>;
+export type ActivitesSelectQueryResult = Apollo.QueryResult<
+  Types.ActivitesSelectQuery,
+  Types.ActivitesSelectQueryVariables
+>;
+export const ActivitiesSelectInitialDocument = gql`
+  query ActivitiesSelectInitial($filter: ActivityFilter) {
+    activities(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useActivitiesSelectInitialQuery__
+ *
+ * To run a query within a React component, call `useActivitiesSelectInitialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActivitiesSelectInitialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActivitiesSelectInitialQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useActivitiesSelectInitialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >(ActivitiesSelectInitialDocument, options);
+}
+export function useActivitiesSelectInitialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >(ActivitiesSelectInitialDocument, options);
+}
+export type ActivitiesSelectInitialQueryHookResult = ReturnType<
+  typeof useActivitiesSelectInitialQuery
+>;
+export type ActivitiesSelectInitialLazyQueryHookResult = ReturnType<
+  typeof useActivitiesSelectInitialLazyQuery
+>;
+export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<
+  Types.ActivitiesSelectInitialQuery,
+  Types.ActivitiesSelectInitialQueryVariables
 >;
 export const UserInfoDocument = gql`
   query UserInfo($id: ID!) {

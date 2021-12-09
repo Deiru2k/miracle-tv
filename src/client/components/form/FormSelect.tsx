@@ -14,6 +14,8 @@ export type FormSelectProps = {
   hideLabel?: boolean;
   inputProps?: InputProps;
   options: SelectProps["options"];
+  onSearch?: (query: string) => void;
+  isLoading?: boolean;
 } & FormControlProps &
   FormGroupChakraProps;
 
@@ -23,6 +25,8 @@ export const FormSelect = ({
   inputProps,
   placeholder,
   options,
+  onSearch,
+  isLoading,
   ...formGroupProps
 }: FormSelectProps) => {
   const { input } = useField(name);
@@ -38,6 +42,8 @@ export const FormSelect = ({
         value={input.value}
         onChange={input.onChange}
         placeholder={inputPlaceholder}
+        onSearch={onSearch}
+        isLoading={isLoading}
       />
     </FormGroup>
   );

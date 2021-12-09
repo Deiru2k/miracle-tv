@@ -1,9 +1,10 @@
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon, SpinnerIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
   Flex,
   Input,
+  Spinner,
   useMultiStyleConfig,
   VStack,
 } from "@chakra-ui/react";
@@ -25,17 +26,19 @@ export type SelectProps = {
   multi?: boolean;
   options: SelectOption[];
   onChange: (v: any | any[]) => void;
+  onSearch?: (query: string) => void;
+  isLoading?: boolean;
   placeholder?: string;
 };
 
-// TODO: Reimplement option & value selection to support async options fetching
-// TODO: Use theming to style component
 export const Select = ({
   options = [],
   value,
   onChange,
   multi = false,
   placeholder = "Select value...",
+  isLoading = false,
+  onSearch,
 }: SelectProps) => {
   const [selectValue, setValue] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -53,6 +56,7 @@ export const Select = ({
 
   const onInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
+      onSearch?.(e.target.value);
       setInputValue(e.target.value);
     },
     [setInputValue]
@@ -115,7 +119,9 @@ export const Select = ({
       (opt) => !selectValue.includes(String(opt.value))
     );
     const byInputValue = notContainingValue.filter((opt) =>
-      opt.label.toLowerCase().includes(inputValue.toLowerCase())
+      !onSearch
+        ? opt.label.toLowerCase().includes(inputValue.toLowerCase())
+        : true
     );
     return byInputValue;
   }, [selectValue, inputValue]);
@@ -150,6 +156,9 @@ export const Select = ({
           zIndex={1}
         >
           {!selectValue.length && !showInput && placeholder}
+          {showOptions && isLoading && (
+            <Spinner pointerEvents="none" position="absolute" right="15px" />
+          )}
           {!multi && !showInput && !!selectValue.length && (
             <Badge
               bgColor="primary.500"
