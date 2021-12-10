@@ -16,6 +16,7 @@ type Props = {
   name: string;
   label?: string;
   error?: string;
+  help?: string | React.ReactNode;
   hideLabel?: boolean;
   children: React.ReactNode | React.ReactNode[];
 } & FormGroupChakraProps &
@@ -28,6 +29,7 @@ export const FormGroup = ({
   children,
   labelProps,
   errorProps,
+  help,
   hideLabel = false,
   ...controlProps
 }: Props) => {
@@ -44,6 +46,7 @@ export const FormGroup = ({
           {error}
         </FormHelperText>
       )}
+      {!!help && <FormHelperText>{help}</FormHelperText>}
     </FormControl>
   );
 };

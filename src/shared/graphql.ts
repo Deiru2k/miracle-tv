@@ -102,6 +102,7 @@ export type Channel = {
   slug?: Maybe<Scalars["String"]>;
   name: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<File>;
 };
 
 export type ChannelsQueryFilter = {
@@ -126,6 +127,7 @@ export type CreateChannelInput = {
   name: Scalars["String"];
   slug?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["ID"]>;
 };
 
 export type CreateRoleInput = {
@@ -362,6 +364,7 @@ export type UpdateChannelInput = {
   name?: Maybe<Scalars["String"]>;
   slug?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["ID"]>;
 };
 
 export type UpdateRoleInput = {
@@ -728,6 +731,7 @@ export type ChannelResolvers<
     ParentType,
     ContextType
   >;
+  thumbnail?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1111,10 +1115,16 @@ export type UserSettingsChannelQuery = {
     name: string;
     description?: Maybe<string>;
     slug?: Maybe<string>;
+    thumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
     activity?: Maybe<{
       __typename?: "Activity";
       id: string;
       name: string;
+      verb?: Maybe<string>;
       icon?: Maybe<string>;
     }>;
   }>;
@@ -1139,10 +1149,16 @@ export type EditChannelMutation = {
     name: string;
     description?: Maybe<string>;
     slug?: Maybe<string>;
+    thumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
     activity?: Maybe<{
       __typename?: "Activity";
       id: string;
       name: string;
+      verb?: Maybe<string>;
       icon?: Maybe<string>;
     }>;
   };
@@ -1191,10 +1207,16 @@ export type UserSettingsChannelsQuery = {
       name: string;
       description?: Maybe<string>;
       slug?: Maybe<string>;
+      thumbnail?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
       activity?: Maybe<{
         __typename?: "Activity";
         id: string;
         name: string;
+        verb?: Maybe<string>;
         icon?: Maybe<string>;
       }>;
     }>
@@ -1222,10 +1244,16 @@ export type UserSettingsCreateChannelMutation = {
     name: string;
     description?: Maybe<string>;
     slug?: Maybe<string>;
+    thumbnail?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
     activity?: Maybe<{
       __typename?: "Activity";
       id: string;
       name: string;
+      verb?: Maybe<string>;
       icon?: Maybe<string>;
     }>;
   };
@@ -1374,20 +1402,6 @@ export type UpdateUserSettingsPreferencesMutation = {
   }>;
 };
 
-export type UserSettingsChannelFragmentFragment = {
-  __typename?: "Channel";
-  id: string;
-  name: string;
-  description?: Maybe<string>;
-  slug?: Maybe<string>;
-  activity?: Maybe<{
-    __typename?: "Activity";
-    id: string;
-    name: string;
-    icon?: Maybe<string>;
-  }>;
-};
-
 export type GetFileForUploaderQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
@@ -1452,6 +1466,26 @@ export type UserInfoQuery = {
     username: string;
     displayName?: Maybe<string>;
     avatar?: Maybe<{ __typename?: "File"; filename: string }>;
+  }>;
+};
+
+export type ChannelFullFragment = {
+  __typename?: "Channel";
+  id: string;
+  name: string;
+  description?: Maybe<string>;
+  slug?: Maybe<string>;
+  thumbnail?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+  }>;
+  activity?: Maybe<{
+    __typename?: "Activity";
+    id: string;
+    name: string;
+    verb?: Maybe<string>;
+    icon?: Maybe<string>;
   }>;
 };
 

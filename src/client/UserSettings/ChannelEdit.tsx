@@ -7,7 +7,7 @@ import {
 } from "miracle-tv-shared/hooks";
 import { useCallback } from "react";
 import { Form } from "react-final-form";
-import { channelFragment } from "miracle-tv-client/UserSettings/const";
+import { channelFragment } from "miracle-tv-client/components/ui/channels/const";
 import { ChannelBasicForm } from "./ChannelBasicForm";
 import { Box, Button, useToast } from "@chakra-ui/react";
 import { UpdateChannelInput } from "miracle-tv-shared/graphql";
@@ -15,7 +15,7 @@ import { UpdateChannelInput } from "miracle-tv-shared/graphql";
 gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
     selfStreamKeys {
       id
@@ -30,7 +30,7 @@ gql`
 gql`
 mutation EditChannel($input: UpdateChannelInput) {
   updateChannel(input: $input) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
   }
   ${channelFragment}
 }
@@ -58,6 +58,7 @@ export const ChannelEdit = ({ id }: Props) => {
         description: channel.description,
         slug: channel.slug,
         activityId: channel.activity?.id || null,
+        thumbnail: channel?.thumbnail?.id,
       }
     : {};
 

@@ -30,15 +30,20 @@ export const UserSettingsProfileFragmentFragmentDoc = gql`
     }
   }
 `;
-export const UserSettingsChannelFragmentFragmentDoc = gql`
-  fragment UserSettingsChannelFragment on Channel {
+export const ChannelFullFragmentDoc = gql`
+  fragment ChannelFull on Channel {
     id
     name
     description
     slug
+    thumbnail {
+      id
+      filename
+    }
     activity {
       id
       name
+      verb
       icon
     }
   }
@@ -101,7 +106,7 @@ export const CurrentUserFragmentDoc = gql`
 export const UserSettingsChannelDocument = gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
     selfStreamKeys {
       id
@@ -110,7 +115,7 @@ export const UserSettingsChannelDocument = gql`
       }
     }
   }
-  ${UserSettingsChannelFragmentFragmentDoc}
+  ${ChannelFullFragmentDoc}
 `;
 
 /**
@@ -166,10 +171,10 @@ export type UserSettingsChannelQueryResult = Apollo.QueryResult<
 export const EditChannelDocument = gql`
   mutation EditChannel($input: UpdateChannelInput) {
     updateChannel(input: $input) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
   }
-  ${UserSettingsChannelFragmentFragmentDoc}
+  ${ChannelFullFragmentDoc}
 `;
 export type EditChannelMutationFn = Apollo.MutationFunction<
   Types.EditChannelMutation,
@@ -375,10 +380,10 @@ export type UserSettingsRevokeStreamKeyMutationOptions =
 export const UserSettingsChannelsDocument = gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
     channels(filter: $filter) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
   }
-  ${UserSettingsChannelFragmentFragmentDoc}
+  ${ChannelFullFragmentDoc}
 `;
 
 /**
@@ -483,10 +488,10 @@ export type UserSettingsDeleteChannelMutationOptions =
 export const UserSettingsCreateChannelDocument = gql`
   mutation UserSettingsCreateChannel($input: CreateChannelInput) {
     createChannel(input: $input) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
   }
-  ${UserSettingsChannelFragmentFragmentDoc}
+  ${ChannelFullFragmentDoc}
 `;
 export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<
   Types.UserSettingsCreateChannelMutation,

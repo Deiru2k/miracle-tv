@@ -11,8 +11,6 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { useRouter } from "next/dist/client/router";
 import { head } from "ramda";
 import React, { useEffect } from "react";
-import { gql } from "@apollo/client";
-import { channelFragment } from "miracle-tv-client/UserSettings/const";
 import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
 import { ChannelKeysSettings } from "./ChannelKeys";

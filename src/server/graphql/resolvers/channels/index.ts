@@ -1,5 +1,6 @@
 import { ChannelResolvers, QueryResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
+import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 
 export const channelsQueryResolver: QueryResolvers<ResolverContext>["channels"] =
   async (_, { filter }, { db: { channels } }) => {
@@ -19,6 +20,7 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
     }
     return null;
   },
+  thumbnail: fileResolver("thumbnail"),
   user: async (channel, _, { db: { users } }) => {
     return (await users.getUserByIdSafe((channel as any).userId)) as any;
   },

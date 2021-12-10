@@ -7,6 +7,7 @@ import {
   UserResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
+import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 
 export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
   _,
@@ -46,15 +47,6 @@ export const userTestQueryResolver: QueryResolvers<ResolverContext>["test"] = (
 export const userSettingsQueryResolver: QueryResolvers<ResolverContext>["userSettings"] =
   (_, _args, { db: { userSettings }, user }) => {
     return userSettings.getUserSettingsById(user.id);
-  };
-
-type FileResolver = (field: string) => UserResolvers["avatar"];
-const fileResolver: FileResolver =
-  (field) =>
-  async (user, _, { db: { files } }) => {
-    return user[field as keyof typeof user]
-      ? await files.getFileById(user[field as keyof typeof user])
-      : null;
   };
 
 const gravatarResolver: UserResolvers["useGravatar"] = async (

@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import { gql } from "@apollo/client";
 import {
   useUserSettingsChannelKeysQuery,
-  useUserSettingsCreateChannelKeyMutation,
   useUserSettingsRevokeAllStreamKeysMutation,
   useUserSettingsRevokeStreamKeyMutation,
 } from "miracle-tv-shared/hooks";
@@ -20,9 +19,7 @@ import {
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { StreamKeyDisplay } from "miracle-tv-client/components/ui/StreamKeyDisplay";
 import { CreateStreamKeyModal } from "./CreateStreamKeyModal";
-import { CreateStreamKeyInput } from "miracle-tv-shared/graphql";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
-import { streamKeysByChannelIdResolver } from "miracle-tv-server/graphql/resolvers/stream-keys";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 gql`
@@ -50,6 +47,8 @@ export const ChannelKeysSettings = ({ id }: Props) => {
   const { currentUser } = useCurrentUser();
   const { data: { streamKeysByChannelId: streamKeys = [] } = {}, refetch } =
     useUserSettingsChannelKeysQuery({ variables: { channelId: id } });
+
+  const isRevokeAllDisabled = streamKeys.length === 0;
 
   const [revokeAllStreamKeys, { loading: isAllRevoking }] =
     useUserSettingsRevokeAllStreamKeysMutation({
@@ -101,6 +100,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
             colorScheme="red"
             onClick={onAllKeysRevoke}
             loading={isAllRevoking}
+            isDisabled={isRevokeAllDisabled}
           >
             Revoke all keys
           </Button>

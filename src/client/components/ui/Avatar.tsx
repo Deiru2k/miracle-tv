@@ -20,7 +20,8 @@ export const Avatar = ({
   aspectMaxW,
   ...props
 }: Props) => {
-  const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}?s=${aspectMaxW}`;
+  const gravatarSize = aspectMaxW ? `?s=${aspectMaxW}` : "";
+  const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}${gravatarSize}`;
   const imageUrl = !useGravatar ? getMediaURL(imageId) : gravatarUrl;
   const alt = `${username}'s gravatar`;
   return (

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { gql } from "@apollo/client";
-import { channelFragment } from "miracle-tv-client/UserSettings/const";
+import { channelFragment } from "miracle-tv-client/components/ui/channels/const";
 import {
   Button,
   Modal,
@@ -21,7 +21,7 @@ import { useRouter } from "next/dist/client/router";
 gql`
   mutation UserSettingsCreateChannel($input: CreateChannelInput) {
     createChannel(input: $input) {
-      ...UserSettingsChannelFragment
+      ...ChannelFull
     }
   }
   ${channelFragment}

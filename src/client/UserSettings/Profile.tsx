@@ -9,7 +9,16 @@ import {
   useUpdateUserSettingsProfileMutation,
   useUserSettingsProfileQuery,
 } from "miracle-tv-shared/hooks";
-import { Box, Button, Flex, Link, Spinner, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormHelperText,
+  Link,
+  Spinner,
+  useToast,
+  Text,
+} from "@chakra-ui/react";
 import { UpdateSelfInput } from "miracle-tv-shared/graphql";
 import { useCallback, useMemo } from "react";
 import { omit } from "ramda";
@@ -139,48 +148,68 @@ export const ProfileSettings = () => {
                         label="Profile Picture"
                         mr={4}
                         w="auto"
+                        flex={1}
+                        help={
+                          !currentSettings?.useGravatar &&
+                          "1:1 aspect ratio is preferred"
+                        }
                       >
                         {!currentSettings?.useGravatar && (
-                          <ImageUploader
-                            id="avatar"
-                            name="avatar"
-                            ratio={1}
-                            aspectMaxH="200px"
-                            aspectMaxW="200px"
-                          />
+                          <ImageUploader id="avatar" name="avatar" ratio={1} />
                         )}
                         {currentSettings?.useGravatar && (
-                          <Avatar
-                            useGravatar
-                            emailHash={data?.self?.emailHash}
-                            username={data?.self?.username}
-                            aspectMaxH="200px"
-                            aspectMaxW="200px"
-                          />
+                          <>
+                            <Avatar
+                              useGravatar
+                              emailHash={data?.self?.emailHash}
+                              username={data?.self?.username}
+                            />
+                            <FormHelperText>
+                              Controlled via{" "}
+                              <a target="_blank" href="https://gravatar.com">
+                                [Gravatar]
+                              </a>
+                              . Please visit Gravatar.com to change, or go to{" "}
+                              <Link href="/settings/user/preferences">
+                                [preferences]
+                              </Link>{" "}
+                              and disable gravatar avatars
+                            </FormHelperText>
+                          </>
                         )}
                       </FormGroup>
                       <FormGroup
-                        name="streamThumbnail"
-                        label="Stream Thumbnail"
+                        name="header"
+                        label="Profile Header"
+                        width="100%"
+                        help="16:6 aspect ratio is preffered"
+                        flex={4}
                       >
                         <ImageUploader
-                          id="streamThumbnail"
-                          name="streamThumbnail"
-                          ratio={16 / 9}
-                          aspectMaxH="100%"
-                          aspectMaxW="100%"
+                          id="header"
+                          name="header"
+                          ratio={16 / 6}
                         />
                       </FormGroup>
                     </Flex>
                     <FormGroup
-                      name="header"
-                      label="Profile Header"
-                      width="100%"
+                      name="streamThumbnail"
+                      label="Stream Thumbnail"
+                      help={
+                        <>
+                          <Text>16:9 aspect ratio is preferred.</Text>
+                          <Text>
+                            {
+                              "Used for any channel that doesn't have it's own thumbnail set."
+                            }
+                          </Text>
+                        </>
+                      }
                     >
                       <ImageUploader
-                        id="header"
-                        name="header"
-                        ratio={16 / 6}
+                        id="streamThumbnail"
+                        name="streamThumbnail"
+                        ratio={16 / 9}
                         aspectMaxH="100%"
                         aspectMaxW="100%"
                       />

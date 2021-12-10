@@ -49,13 +49,12 @@ export const CreateStreamKeyModal = ({
   });
 
   const generateKey = useCallback(
-    (values: CreateStreamKeyInput) => {
+    (values: CreateStreamKeyInput) =>
       createStreamKeyMutation({
         variables: {
           input: { userId: currentUser?.id, channelId, ...values },
         },
-      });
-    },
+      }),
     [currentUser]
   );
 
@@ -71,7 +70,8 @@ export const CreateStreamKeyModal = ({
         >
           <ModalOverlay />
           <ModalContent>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e).then(() => form.reset())}>
+              {" "}
               <ModalHeader>{"Generate new streamkey"}</ModalHeader>
               <ModalBody>
                 <FormInput label="Key name (optional)" name="name" />

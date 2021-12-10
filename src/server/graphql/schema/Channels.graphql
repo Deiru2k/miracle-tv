@@ -5,6 +5,7 @@ type Channel {
   slug: String
   name: String!
   description: String
+  thumbnail: File
 }
 
 input ChannelsQueryFilter {
@@ -27,6 +28,7 @@ input CreateChannelInput {
   name: String!
   slug: String
   description: String
+  thumbnail: ID
 }
 
 input UpdateChannelInput {
@@ -35,6 +37,7 @@ input UpdateChannelInput {
   name: String
   slug: String
   description: String
+  thumbnail: ID
 }
 
 extend type Mutation {

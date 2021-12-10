@@ -4,6 +4,7 @@ import { useField } from "react-final-form";
 import { FormGroup, FormGroupChakraProps } from "./FormGroup";
 import { Input } from "@chakra-ui/input";
 import { InputProps } from "@chakra-ui/react";
+import { identity } from "ramda";
 
 type Props = {
   name: string;
@@ -13,6 +14,7 @@ type Props = {
   type?: string;
   hideLabel?: boolean;
   inputProps?: InputProps;
+  parse?: (v: any) => any;
 } & FormControlProps &
   FormGroupChakraProps;
 
@@ -21,9 +23,10 @@ export const FormInput = ({
   type: inputType,
   inputProps,
   placeholder,
+  parse = identity,
   ...formGroupProps
 }: Props) => {
-  const { input } = useField(name);
+  const { input } = useField(name, { parse });
   const inputPlaceholder =
     formGroupProps.hideLabel && formGroupProps.label
       ? formGroupProps.label
