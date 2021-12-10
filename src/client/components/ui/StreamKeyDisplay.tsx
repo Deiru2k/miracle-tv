@@ -33,6 +33,7 @@ export const StreamKeyDisplay = ({ streamKey, ...props }: Props) => {
     <Flex {...props}>
       <Input
         value={streamKey}
+        readOnly
         type={passwordType}
         borderRightRadius={0}
         borderRight={0}

@@ -99,7 +99,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
           <Button
             colorScheme="red"
             onClick={onAllKeysRevoke}
-            loading={isAllRevoking}
+            isLoading={isAllRevoking}
             isDisabled={isRevokeAllDisabled}
           >
             Revoke all keys
@@ -109,7 +109,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
       </Box>
       <VStack>
         {streamKeys.map((sKey) => (
-          <Panel w="100%">
+          <Panel w="100%" key={sKey.id}>
             {sKey.name && <Text mb={2}>{sKey.name}</Text>}
             <HStack w="100%">
               <StreamKeyDisplay streamKey={sKey.id} w="100%" />

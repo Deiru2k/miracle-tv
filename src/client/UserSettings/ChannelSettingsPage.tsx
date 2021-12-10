@@ -11,6 +11,7 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { useRouter } from "next/dist/client/router";
 import { head } from "ramda";
 import React, { useEffect } from "react";
+import { channelFragment } from "miracle-tv-client/UserSettings/const";
 import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
 import { ChannelKeysSettings } from "./ChannelKeys";
@@ -49,10 +50,12 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
       <Tabs index={tabIndex} onChange={() => {}}>
         <TabList>
           {tabList.map((tab) => (
-            <Tab key={tab}>
+            <Tab key={tab} p={0}>
               <Link
                 w="100%"
                 href={`/settings/user/channels/${channelId}/${tab}`}
+                py={2}
+                px={3}
               >
                 {tabs[tab as keyof typeof tabs]}
               </Link>

@@ -134,7 +134,11 @@ export const SettingsChannelsList = () => {
           </Button>
         </Attract>
       )}
-      <SimpleChannelList channels={channels} controls={controlsRenderer} />
+      <SimpleChannelList
+        channels={channels}
+        controls={controlsRenderer}
+        defaultThumbnail={currentUser?.streamThumbnail?.filename}
+      />
     </>
   );
 };
@@ -146,7 +150,7 @@ export const Channels = () => {
     case 2:
       return <SettingsChannelsList />;
     case 3:
-      return <ChannelSettingsPage channelId={path[0]} />;
+      return <ChannelSettingsPage channelId={path[2]} />;
     case 4:
       return <ChannelSettingsPage channelId={path[2]} tab={path[3]} />;
     default:
