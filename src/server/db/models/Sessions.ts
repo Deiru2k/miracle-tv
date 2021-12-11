@@ -26,14 +26,43 @@ export class SessionsModel extends Model {
       });
   }
 
+  async getSessionsByUserId(userId: string): Promise<DbSession[]> {
+    return await this.table
+      .filter({ user: userId })
+      .coerceTo("array")
+      .run(this.conn);
+  }
+
   async getSessionById(id: string): Promise<DbSession> {
     return (await this.table.get(id).run(this.conn)) as DbSession;
   }
 
-  async getUsers(filter?: Record<keyof DbUser, any>): Promise<DbSession[]> {
+  async revokeAllSessionsByUserId(userId: string): Promise<boolean> {
+    const { errors } = await this.table
+      .filter({ user: userId })
+      .delete()
+      .run(this.conn);
+    if (errors) {
+      throw new ServerError("Couldn't revoke sessions");
+    }
+    return true;
+  }
+
+  async getSessionsByIds(ids: string[]): Promise<DbSession[]> {
     return (await this.table
-      .filter(filter)
+      .getAll(...ids)
       .coerceTo("array")
       .run(this.conn)) as DbSession[];
+  }
+
+  async revokeAllSessionsBySessionIds(ids: string[]): Promise<boolean> {
+    const { errors } = await this.table
+      .getAll(...ids)
+      .delete()
+      .run(this.conn);
+    if (errors) {
+      throw new ServerError("Couldn't revoke sessions");
+    }
+    return true;
   }
 }

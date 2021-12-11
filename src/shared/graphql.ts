@@ -94,6 +94,11 @@ export type AuthRightConfig = {
   subject: Scalars["String"];
 };
 
+export type ChangePasswordInput = {
+  currentPassword: Scalars["String"];
+  newPassword: Scalars["String"];
+};
+
 export type Channel = {
   __typename?: "Channel";
   id: Scalars["ID"];
@@ -183,6 +188,9 @@ export type Mutation = {
   signIn?: Maybe<SessionResponse>;
   updateUser?: Maybe<User>;
   updateSelf?: Maybe<User>;
+  revokeSelfSessions?: Maybe<Scalars["Boolean"]>;
+  updateSelfAccount?: Maybe<UserAccountDetails>;
+  changeSelfPassword?: Maybe<Scalars["Boolean"]>;
   updateUserSettings?: Maybe<UserSettings>;
 };
 
@@ -250,6 +258,18 @@ export type MutationUpdateSelfArgs = {
   input: UpdateSelfInput;
 };
 
+export type MutationRevokeSelfSessionsArgs = {
+  input: Array<Maybe<Scalars["String"]>>;
+};
+
+export type MutationUpdateSelfAccountArgs = {
+  input?: Maybe<UpdateUserAccountInput>;
+};
+
+export type MutationChangeSelfPasswordArgs = {
+  input?: Maybe<ChangePasswordInput>;
+};
+
 export type MutationUpdateUserSettingsArgs = {
   input: UpdateUserSettingsInput;
 };
@@ -270,6 +290,8 @@ export type Query = {
   streamKeysByChannelId: Array<Maybe<StreamKey>>;
   users: Array<Maybe<User>>;
   self: User;
+  selfAccount: UserAccountDetails;
+  selfSessions?: Maybe<Array<Maybe<Session>>>;
   user?: Maybe<User>;
   userSettings: UserSettings;
 };
@@ -324,6 +346,8 @@ export type Session = {
   id: Scalars["ID"];
   user: Scalars["ID"];
   expiresAt: Scalars["DateTime"];
+  lastUsedAt: Scalars["DateTime"];
+  ip: Scalars["String"];
 };
 
 export type SessionResponse = {
@@ -383,6 +407,10 @@ export type UpdateSelfInput = {
   streamThumbnail?: Maybe<Scalars["ID"]>;
 };
 
+export type UpdateUserAccountInput = {
+  email: Scalars["String"];
+};
+
 export type UpdateUserInput = {
   id?: Maybe<Scalars["ID"]>;
   displayName?: Maybe<Scalars["String"]>;
@@ -411,6 +439,13 @@ export type User = {
   header?: Maybe<File>;
   streamThumbnail?: Maybe<File>;
   useGravatar?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UserAccountDetails = {
+  __typename?: "UserAccountDetails";
+  id?: Maybe<Scalars["ID"]>;
+  username: Scalars["String"];
+  email: Scalars["String"];
 };
 
 export type UserActions = {
@@ -553,6 +588,7 @@ export type ResolversTypes = {
   ActivityLimit: ActivityLimit;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   AuthRightConfig: AuthRightConfig;
+  ChangePasswordInput: ChangePasswordInput;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
@@ -576,10 +612,12 @@ export type ResolversTypes = {
   UpdateChannelInput: UpdateChannelInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
+  UpdateUserAccountInput: UpdateUserAccountInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserSettingsInput: UpdateUserSettingsInput;
   Upload: ResolverTypeWrapper<Scalars["Upload"]>;
   User: ResolverTypeWrapper<User>;
+  UserAccountDetails: ResolverTypeWrapper<UserAccountDetails>;
   UserActions: ResolverTypeWrapper<UserActions>;
   UserActionsInput: UserActionsInput;
   UserSettings: ResolverTypeWrapper<UserSettings>;
@@ -599,6 +637,7 @@ export type ResolversParentTypes = {
   ActivityLimit: ActivityLimit;
   Int: Scalars["Int"];
   AuthRightConfig: AuthRightConfig;
+  ChangePasswordInput: ChangePasswordInput;
   Channel: Channel;
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
@@ -622,10 +661,12 @@ export type ResolversParentTypes = {
   UpdateChannelInput: UpdateChannelInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
+  UpdateUserAccountInput: UpdateUserAccountInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserSettingsInput: UpdateUserSettingsInput;
   Upload: Scalars["Upload"];
   User: User;
+  UserAccountDetails: UserAccountDetails;
   UserActions: UserActions;
   UserActionsInput: UserActionsInput;
   UserSettings: UserSettings;
@@ -862,6 +903,24 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateSelfArgs, "input">
   >;
+  revokeSelfSessions?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeSelfSessionsArgs, "input">
+  >;
+  updateSelfAccount?: Resolver<
+    Maybe<ResolversTypes["UserAccountDetails"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateSelfAccountArgs, never>
+  >;
+  changeSelfPassword?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationChangeSelfPasswordArgs, never>
+  >;
   updateUserSettings?: Resolver<
     Maybe<ResolversTypes["UserSettings"]>,
     ParentType,
@@ -940,6 +999,16 @@ export type QueryResolvers<
     ContextType
   >;
   self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  selfAccount?: Resolver<
+    ResolversTypes["UserAccountDetails"],
+    ParentType,
+    ContextType
+  >;
+  selfSessions?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Session"]>>>,
+    ParentType,
+    ContextType
+  >;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
     ParentType,
@@ -971,6 +1040,8 @@ export type SessionResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   user?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   expiresAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  lastUsedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  ip?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1049,6 +1120,16 @@ export type UserResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserAccountDetailsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["UserAccountDetails"] = ResolversParentTypes["UserAccountDetails"]
+> = {
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserActionsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["UserActions"] = ResolversParentTypes["UserActions"]
@@ -1095,12 +1176,48 @@ export type Resolvers<ContextType = any> = {
   TestResponse?: TestResponseResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
+  UserAccountDetails?: UserAccountDetailsResolvers<ContextType>;
   UserActions?: UserActionsResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
+};
+
+export type AccountDetailsQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AccountDetailsQueryQuery = {
+  __typename?: "Query";
+  selfAccount: {
+    __typename?: "UserAccountDetails";
+    id?: Maybe<string>;
+    username: string;
+    email: string;
+  };
+};
+
+export type ChangeAccountPasswordMutationVariables = Exact<{
+  input?: Maybe<ChangePasswordInput>;
+}>;
+
+export type ChangeAccountPasswordMutation = {
+  __typename?: "Mutation";
+  changeSelfPassword?: Maybe<boolean>;
+};
+
+export type SettingsUpdateAccountMutationVariables = Exact<{
+  input?: Maybe<UpdateUserAccountInput>;
+}>;
+
+export type SettingsUpdateAccountMutation = {
+  __typename?: "Mutation";
+  updateSelfAccount?: Maybe<{
+    __typename?: "UserAccountDetails";
+    id?: Maybe<string>;
+    username: string;
+    email: string;
+  }>;
 };
 
 export type UserSettingsChannelQueryVariables = Exact<{

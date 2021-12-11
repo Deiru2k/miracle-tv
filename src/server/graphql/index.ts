@@ -10,13 +10,18 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
   userQueryResolver,
   userResolver,
+  userSelfAccountResolver,
   userSelfQueryResolver,
+  userSelfSessionsResolver,
   userSettingsQueryResolver,
   usersQueryResolver,
   userTestQueryResolver,
 } from "miracle-tv-server/graphql/resolvers/users";
 import { userMutations } from "miracle-tv-server/graphql/mutations/users";
-import { signInMutation } from "miracle-tv-server/graphql/mutations/users/auth";
+import {
+  revokeSelfSessionsMutation,
+  signInMutation,
+} from "miracle-tv-server/graphql/mutations/users/auth";
 import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
@@ -95,8 +100,10 @@ let executableSchema = makeExecutableSchema({
       streamKeys: streamKeysQueryResolver,
       streamKeysByChannelId: streamKeysByChannelIdResolver,
       self: userSelfQueryResolver,
+      selfAccount: userSelfAccountResolver,
       userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
+      selfSessions: userSelfSessionsResolver,
       test: userTestQueryResolver,
       ...fileResolvers,
     },
@@ -115,6 +122,7 @@ let executableSchema = makeExecutableSchema({
       createStreamKey: createStreamKeyMutation,
       revokeStreamKeys: revokeStreamKeysMutation,
       revokeStreamKey: revokeStreamKeyMutation,
+      revokeSelfSessions: revokeSelfSessionsMutation,
     },
     User: userResolver,
     Channel: channelResolver,

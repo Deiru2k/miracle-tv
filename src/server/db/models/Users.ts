@@ -2,8 +2,10 @@ import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
   CreateUserInput,
+  UpdateUserAccountInput,
   UpdateUserInput,
   User,
+  UserAccountDetails,
 } from "miracle-tv-shared/graphql";
 import { head, map, omit } from "ramda";
 import {
@@ -83,5 +85,44 @@ export class UsersModel extends Model {
       throw new ServerError("Error updating user");
     }
     return { id, ...user, ...input } as DbUser;
+  }
+
+  async updateUserAccount({
+    id,
+    ...input
+  }: UpdateUserAccountInput & { id: string }): Promise<UserAccountDetails> {
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    const { errors } = await this.table.get(id).update(input).run(this.conn);
+
+    if (errors) {
+      throw new ServerError("Updating user account failed");
+    }
+
+    return { id, username: user.username, ...input };
+  }
+
+  async updatePassword(id: string, password: string) {
+    const hashed = await hash(password, 11);
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    const { errors } = await this.table
+      .get(id)
+      .update({ password: hashed })
+      .run(this.conn);
+
+    if (errors) {
+      throw new ServerError("Updating password failed");
+    }
+
+    return true;
   }
 }

@@ -14,6 +14,7 @@ const components: NavComponentMap = {
   "/settings/user/profile": <ProfileSettings />,
   "/settings/user/preferences": <UserPreferences />,
   "/settings/user/channels": <Channels />,
+  "/settings/security/account": <Channels />,
 };
 
 const SettingsPage = () => {
@@ -52,11 +53,6 @@ const SettingsPage = () => {
             id: "sessions",
             name: "Sessions",
             url: "/settings/security/sessions",
-          },
-          {
-            id: "password",
-            name: "Password",
-            url: "/settings/security/password",
           },
         ],
       },

@@ -103,6 +103,165 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const AccountDetailsQueryDocument = gql`
+  query AccountDetailsQuery {
+    selfAccount {
+      id
+      username
+      email
+    }
+  }
+`;
+
+/**
+ * __useAccountDetailsQueryQuery__
+ *
+ * To run a query within a React component, call `useAccountDetailsQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccountDetailsQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccountDetailsQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAccountDetailsQueryQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AccountDetailsQueryQuery,
+    Types.AccountDetailsQueryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AccountDetailsQueryQuery,
+    Types.AccountDetailsQueryQueryVariables
+  >(AccountDetailsQueryDocument, options);
+}
+export function useAccountDetailsQueryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AccountDetailsQueryQuery,
+    Types.AccountDetailsQueryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AccountDetailsQueryQuery,
+    Types.AccountDetailsQueryQueryVariables
+  >(AccountDetailsQueryDocument, options);
+}
+export type AccountDetailsQueryQueryHookResult = ReturnType<
+  typeof useAccountDetailsQueryQuery
+>;
+export type AccountDetailsQueryLazyQueryHookResult = ReturnType<
+  typeof useAccountDetailsQueryLazyQuery
+>;
+export type AccountDetailsQueryQueryResult = Apollo.QueryResult<
+  Types.AccountDetailsQueryQuery,
+  Types.AccountDetailsQueryQueryVariables
+>;
+export const ChangeAccountPasswordDocument = gql`
+  mutation ChangeAccountPassword($input: ChangePasswordInput) {
+    changeSelfPassword(input: $input)
+  }
+`;
+export type ChangeAccountPasswordMutationFn = Apollo.MutationFunction<
+  Types.ChangeAccountPasswordMutation,
+  Types.ChangeAccountPasswordMutationVariables
+>;
+
+/**
+ * __useChangeAccountPasswordMutation__
+ *
+ * To run a mutation, you first call `useChangeAccountPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeAccountPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeAccountPasswordMutation, { data, loading, error }] = useChangeAccountPasswordMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangeAccountPasswordMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.ChangeAccountPasswordMutation,
+    Types.ChangeAccountPasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.ChangeAccountPasswordMutation,
+    Types.ChangeAccountPasswordMutationVariables
+  >(ChangeAccountPasswordDocument, options);
+}
+export type ChangeAccountPasswordMutationHookResult = ReturnType<
+  typeof useChangeAccountPasswordMutation
+>;
+export type ChangeAccountPasswordMutationResult =
+  Apollo.MutationResult<Types.ChangeAccountPasswordMutation>;
+export type ChangeAccountPasswordMutationOptions = Apollo.BaseMutationOptions<
+  Types.ChangeAccountPasswordMutation,
+  Types.ChangeAccountPasswordMutationVariables
+>;
+export const SettingsUpdateAccountDocument = gql`
+  mutation SettingsUpdateAccount($input: UpdateUserAccountInput) {
+    updateSelfAccount {
+      id
+      username
+      email
+    }
+  }
+`;
+export type SettingsUpdateAccountMutationFn = Apollo.MutationFunction<
+  Types.SettingsUpdateAccountMutation,
+  Types.SettingsUpdateAccountMutationVariables
+>;
+
+/**
+ * __useSettingsUpdateAccountMutation__
+ *
+ * To run a mutation, you first call `useSettingsUpdateAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSettingsUpdateAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [settingsUpdateAccountMutation, { data, loading, error }] = useSettingsUpdateAccountMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSettingsUpdateAccountMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SettingsUpdateAccountMutation,
+    Types.SettingsUpdateAccountMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SettingsUpdateAccountMutation,
+    Types.SettingsUpdateAccountMutationVariables
+  >(SettingsUpdateAccountDocument, options);
+}
+export type SettingsUpdateAccountMutationHookResult = ReturnType<
+  typeof useSettingsUpdateAccountMutation
+>;
+export type SettingsUpdateAccountMutationResult =
+  Apollo.MutationResult<Types.SettingsUpdateAccountMutation>;
+export type SettingsUpdateAccountMutationOptions = Apollo.BaseMutationOptions<
+  Types.SettingsUpdateAccountMutation,
+  Types.SettingsUpdateAccountMutationVariables
+>;
 export const UserSettingsChannelDocument = gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {

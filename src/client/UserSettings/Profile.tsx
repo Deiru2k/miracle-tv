@@ -14,17 +14,17 @@ import {
   Button,
   Flex,
   FormHelperText,
-  Link,
   Spinner,
   useToast,
   Text,
 } from "@chakra-ui/react";
 import { UpdateSelfInput } from "miracle-tv-shared/graphql";
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { omit } from "ramda";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {

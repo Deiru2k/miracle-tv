@@ -49,6 +49,20 @@ export const userSettingsQueryResolver: QueryResolvers<ResolverContext>["userSet
     return userSettings.getUserSettingsById(user.id);
   };
 
+export const userSelfAccountResolver: QueryResolvers<ResolverContext>["selfAccount"] =
+  (_, _args, { user }) => {
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+  };
+
+export const userSelfSessionsResolver: QueryResolvers<ResolverContext>["selfSessions"] =
+  (_, _args, { db: { sessions }, user }) => {
+    return sessions.getSessionsByUserId(user.id);
+  };
+
 const gravatarResolver: UserResolvers["useGravatar"] = async (
   user,
   _,
