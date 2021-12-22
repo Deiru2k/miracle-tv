@@ -36,7 +36,7 @@ export const AccountSessions = () => {
   const sessionsSorted = useMemo(
     () =>
       sort<Session>(
-        (session) => Number(session.isCurrentSession),
+        (session) => -Number(session.isCurrentSession),
         selfSessions
       ),
     [selfSessions]
