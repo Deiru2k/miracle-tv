@@ -118,7 +118,7 @@ export const SettingsChannelsList = () => {
         {...createChannelDisclosure}
       />
       {!!channels?.length && (
-        <Box position="sticky" top="0" right="0" mb={12} zIndex={2}>
+        <Box position="sticky" top="0" right="0" mb={14} zIndex={2}>
           <Button float="right" onClick={createChannelDisclosure.onOpen}>
             Create channel
           </Button>

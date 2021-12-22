@@ -94,7 +94,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
         onCreated={onCreate}
         {...generateModalDisclosure}
       />
-      <Box position="sticky" top="0" right="0" pb={12}>
+      <Box position="sticky" top="0" right="0" pb={14}>
         <HStack float="right">
           <Button
             colorScheme="red"

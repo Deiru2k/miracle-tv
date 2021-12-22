@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { gql } from "@apollo/client";
+
+import { Heading, Box, Button, useToast, Flex } from "@chakra-ui/react";
 
 import { Form } from "react-final-form";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 
 import {
   CurrentUserFragment,
+  UpdateUserAccountInput,
   UpdateUserInput,
 } from "miracle-tv-shared/graphql";
-
-type Props = {
-  user: CurrentUserFragment;
-};
+import { useAccountDetailsQuery, useSettingsUpdateAccountMutation } from "miracle-tv-shared/hooks";
+import { Panel } from "miracle-tv-client/components/ui/Panel";
 
 gql`
-  query AccountDetailsQuery {
+  query AccountDetails {
     selfAccount {
       id
       username
@@ -25,7 +26,7 @@ gql`
     changeSelfPassword(input: $input)
   }
   mutation SettingsUpdateAccount($input: UpdateUserAccountInput) {
-    updateSelfAccount {
+    updateSelfAccount(input: $input) {
       id
       username
       email
@@ -33,15 +34,38 @@ gql`
   }
 `;
 
-export const AccountDetails = ({ user }: Props) => {
-  const userFormData = {};
+export const AccountDetails = () => {
+  const toast = useToast();
+  const { data: { selfAccount } = {} } = useAccountDetailsQuery();
+
+  const userFormData = {
+    email: selfAccount?.email,
+  };
+
+  const [updateAccountMutation, { loading: isUpdating }] = useSettingsUpdateAccountMutation({
+    onCompleted: () =>
+      toast({ status: "success", title: "Updated user account!" }),
+    onError: () =>
+      toast({ status: "error", title: "Error updating user account." }),
+  });
+
+  const updateAccount = useCallback((values: UpdateUserAccountInput) => {
+    updateAccountMutation({ variables: { input: values } });
+  }, [updateAccountMutation]);
+
   return (
-    <Form<UpdateUserInput> onSubmit={() => {}} defaultValues={userFormData}>
-      {({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <FormInput name="email" />
-        </form>
-      )}
-    </Form>
+    <Panel>
+      <Heading size="lg" mb={4}>Profile Details</Heading>
+      <Form<UpdateUserAccountInput> onSubmit={updateAccount} initialValues={userFormData}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <FormInput name="email" label="E-mail" />
+            <Flex w="100%" mt={4}>
+              <Button ml="auto" type="submit" isLoading={isUpdating}>Save</Button>
+            </Flex>
+          </form>
+        )}
+      </Form>
+    </Panel>
   );
 };

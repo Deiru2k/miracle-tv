@@ -63,10 +63,10 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
         </TabList>
 
         <TabPanels>
-          <TabPanel>
+          <TabPanel px={0}>
             <ChannelEdit id={channelId} />
           </TabPanel>
-          <TabPanel>
+          <TabPanel px={0}>
             <ChannelKeysSettings id={channelId} />
           </TabPanel>
         </TabPanels>

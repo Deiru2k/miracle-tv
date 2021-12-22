@@ -11,6 +11,7 @@ import { channelFragment } from "miracle-tv-client/components/ui/channels/const"
 import { ChannelBasicForm } from "./ChannelBasicForm";
 import { Box, Button, useToast } from "@chakra-ui/react";
 import { UpdateChannelInput } from "miracle-tv-shared/graphql";
+import { Panel } from "miracle-tv-client/components/ui/Panel";
 
 gql`
   query UserSettingsChannel($id: ID!) {
@@ -73,7 +74,9 @@ export const ChannelEdit = ({ id }: Props) => {
     <Form<UpdateChannelInput> onSubmit={updateChannel} initialValues={formData}>
       {({ handleSubmit, dirty }) => (
         <form onSubmit={handleSubmit}>
-          <ChannelBasicForm />
+          <Panel>
+            <ChannelBasicForm />
+          </Panel>
           <Box position="sticky" float="right" bottom="0" right="0">
             <Button type="submit" disabled={!dirty} isLoading={isUpdating}>
               Update channel

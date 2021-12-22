@@ -9,6 +9,7 @@ import {
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import { Form } from "react-final-form";
 import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
+import { Panel } from "miracle-tv-client/components/ui/Panel";
 
 gql`
   query UserSettingsPreferences {
@@ -58,24 +59,15 @@ export const UserPreferences = () => {
   );
 
   return (
+    <Panel>
     <Form<UpdateUserSettingsInput>
       onSubmit={updateSettings}
       initialValues={formData}
     >
       {({ handleSubmit, dirty }) => (
         <form onSubmit={handleSubmit}>
-          <FormToggle name="singleUserMode" label="Single User Mode" />
-          <Text mb={5}>
-            {
-              "If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels."
-            }
-          </Text>
-          <FormToggle name="useGravatar" label="Use Gravatar" />
-          <Text mb={5}>
-            {
-              "If enabled, profile picture will use Gravatar instead of currently uploaded image"
-            }
-          </Text>
+          <FormToggle name="singleUserMode" label="Single User Mode" help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels." mb={4} />
+          <FormToggle name="useGravatar" label="Use Gravatar" help="If enabled, profile picture will use Gravatar instead of currently uploaded image"/>
           <Box
             display="inline-block"
             position="sticky"
@@ -94,5 +86,6 @@ export const UserPreferences = () => {
         </form>
       )}
     </Form>
+      </Panel>
   );
 };

@@ -31,6 +31,7 @@ export type SelectProps = {
   placeholder?: string;
 };
 
+// TODO: Use chakra theming on Select
 export const Select = ({
   options = [],
   value,

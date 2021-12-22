@@ -62,7 +62,7 @@ export const Navbar = () => {
                   useGravatar={currentSettings?.useGravatar}
                   aspectMaxH="25px"
                   aspectMaxW="25px"
-                  imageId={currentUser.avatar.filename}
+                  imageId={currentUser.avatar?.filename}
                   bgColor="white"
                 />
                 <Text>

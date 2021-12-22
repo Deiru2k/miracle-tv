@@ -11,6 +11,7 @@ type Props = {
   placeholder?: string;
   label?: string;
   error?: string;
+  help?: string;
   type?: string;
   hideLabel?: boolean;
   inputProps?: InputProps;

@@ -8,6 +8,7 @@ type Props = {
   name: string;
   label?: string;
   error?: string;
+  help?: string;
   inputProps?: SwitchProps;
 } & FormControlProps &
   FormGroupChakraProps;

@@ -36,17 +36,17 @@ export const FormGroup = ({
   return (
     <FormControl id={name} pt={0} mt={0} {...controlProps}>
       {!!label && !hideLabel && (
-        <FormLabel pt={0} mt={0} mb={3.5} {...labelProps}>
+        <FormLabel pt={0} mt={0} mb={1} {...labelProps}>
           {label}
         </FormLabel>
       )}
       {children}
       {!!error && (
-        <FormHelperText {...errorProps} color="error">
+        <FormHelperText {...errorProps} color="error" mt={1}>
           {error}
         </FormHelperText>
       )}
-      {!!help && <FormHelperText>{help}</FormHelperText>}
+      {!!help && <FormHelperText mt={1}>{help}</FormHelperText>}
     </FormControl>
   );
 };

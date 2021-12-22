@@ -32,7 +32,10 @@ export const navigationStyles = {
         alignSelf: "flex-start",
         height: "100%",
         overflowY: "auto",
-        padding: 2,
+        pl: 2,
+        pr: 6,
+        pt: 6,
+        pb: 2,
         backgroundColor: bgColorContent,
       },
     };
