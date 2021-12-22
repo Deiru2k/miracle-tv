@@ -19,8 +19,8 @@ type CurrentUserHookReturn = {
 };
 
 type CurrentUserSettingsHookReturn = {
-  isUserLoading: boolean;
-  isUserCalled: boolean;
+  isSettingsLoading: boolean;
+  isSettingsCalled: boolean;
   currentSettings: CurrentUserSettings;
 };
 

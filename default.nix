@@ -37,6 +37,7 @@ in mkYarnPackage rec {
     # Build server and client
     yarn --offline build:server
     yarn --offline build:client
+    yarn --offline build:cli
 
     runHook postBuild
   '';
@@ -75,6 +76,16 @@ in mkYarnPackage rec {
       --add-flags "run:client" \
       --set NODE_PATH "$node_modules" \
       --set PATH "$PATH:$node_modules/.bin" \
+      --set NODE_ENV production
+
+    # Copy cli dist
+    mkdir -p $out/dist/cli
+    cp -R ./dist/cli/* $out/dist/cli
+
+    # Wrap yarn to run control as `miracle-ctl`
+    makeWrapper $yarnPkg/bin/yarn $out/bin/miracle-ctl \
+      --add-flags "--cwd $out" \
+      --add-flags "run:ctl" \
       --set NODE_ENV production
 
     runHook preInstall
