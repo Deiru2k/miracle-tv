@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Heading,
   IconButton,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { CreateChannelModal } from "./CreateChannelModal";
@@ -141,8 +142,15 @@ export const SettingsChannelsList = () => {
             <Heading mt={2} mb={2} size="lg">
               {"You have single user mode enabled, but no assigned channel."}
             </Heading>
-            {channels?.length > 0 &&
-              "Please, go to profile settings and assign one."}
+            {channels?.length > 0 && (
+              <>
+                <Text>
+                  Please, go to{" "}
+                  <Link href="/settings/user/preferences">[Preferences]</Link>{" "}
+                  and assign one.
+                </Text>
+              </>
+            )}
             {channels?.length === 0 && (
               <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
                 Create one!

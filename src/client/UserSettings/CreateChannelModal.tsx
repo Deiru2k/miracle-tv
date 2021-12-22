@@ -56,8 +56,9 @@ export const CreateChannelModal = ({
         toast({ status: "success", title: "Created channel!" });
         push(redirectUrl);
       },
-      onError: () =>
-        toast({ status: "error", title: "Error creating channel." }),
+      onError: ({ message }) => {
+        toast({ status: "error", title: `Error creating channel: ${message}` });
+      },
     });
   const createChannel = useCallback(
     (values: CreateChannelInput) => {

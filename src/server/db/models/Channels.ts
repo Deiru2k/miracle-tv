@@ -46,6 +46,17 @@ export class ChanelsModel extends Model {
     return channel;
   }
 
+  async getChannelBySlug(slug: string): Promise<DbChannel | null> {
+    const channel = head(
+      await this.table
+        .filter({ slug })
+        .limit(1)
+        .coerceTo("array")
+        .run(this.conn)
+    ) as DbChannel | null;
+    return channel;
+  }
+
   async getChannels(filter: ChanelsFilter = {}): Promise<DbChannel[]> {
     return (await this.table
       .filter(filter)

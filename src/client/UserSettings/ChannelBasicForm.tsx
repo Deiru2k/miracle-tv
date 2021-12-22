@@ -13,7 +13,12 @@ export const ChannelBasicForm = () => {
       <FormInput label="Channel name" name="name" mb={5} />
       <FormTextarea label="Channel Description" name="description" mb={5} />
       <SimpleGrid columns={2} gap={5}>
-        <FormInput label="URL Slug" name="slug" mb={5} />
+        <FormInput
+          label="URL Slug"
+          name="slug"
+          mb={5}
+          help="Used for custom channel URL"
+        />
         <FormActivitesSelect label="Activity" name="activityId" mb={5} />
       </SimpleGrid>
       <Box w="50%">

@@ -6,11 +6,18 @@ import {
 import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
 import { AccessUnit, MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
+import { UserInputError } from "apollo-server-express";
 
 export const createChannelMutation: MutationResolvers<ResolverContext>["createChannel"] =
   async (_, { input }, { user, db: { channels } }) => {
     if (!user) {
       throw new AuthenticationError();
+    }
+    if (input.slug) {
+      const targetChannel = await channels.getChannelBySlug(input.slug);
+      if (targetChannel) {
+        throw new UserInputError("This slug is already taken");
+      }
     }
     return await channels.createChannel(input, user.id!);
   };
@@ -30,6 +37,12 @@ export const updateChannelMutation: MutationResolvers<ResolverContext>["updateCh
     }
     if (!channelRights) {
       throw new AuthorizationError();
+    }
+    if (input.slug) {
+      const targetChannel = await channels.getChannelBySlug(input.slug);
+      if (targetChannel && targetChannel.id !== channel.id) {
+        throw new UserInputError("This slug is already taken");
+      }
     }
     return await channels.updateChannel(input);
   };

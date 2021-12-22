@@ -54,11 +54,13 @@ const SignUpPage = () => {
                 mb={4}
                 isRequired
                 label="Username"
+                help="This cannot be changed later! Please, choose wisely."
                 hideLabel
               />
               <FormInput
                 name="password"
                 type="password"
+                help="Recommended is minimum of 8 characters, with letters, numbers and symbols."
                 mb={4}
                 isRequired
                 label="Password"

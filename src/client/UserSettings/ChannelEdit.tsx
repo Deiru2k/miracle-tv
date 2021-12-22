@@ -49,8 +49,11 @@ export const ChannelEdit = ({ id }: Props) => {
     useEditChannelMutation({
       onCompleted: () =>
         toast({ status: "success", title: "Updated channel info!" }),
-      onError: () =>
-        toast({ status: "error", title: "Error updating channel info." }),
+      onError: ({ message }) =>
+        toast({
+          status: "error",
+          title: `Error updating channel info: ${message}`,
+        }),
     });
 
   const formData = channel
