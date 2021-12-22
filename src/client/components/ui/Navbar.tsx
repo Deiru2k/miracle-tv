@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
@@ -29,7 +29,12 @@ import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
-  const { currentSettings, isSettingsLoading } = useCurrentUserSettings();
+  const { currentSettings, isSettingsLoading, refetchSettings } =
+    useCurrentUserSettings();
+
+  useEffect(() => {
+    if (currentUser?.id && !currentSettings) refetchSettings();
+  }, [currentUser?.id]);
 
   const styles = useMultiStyleConfig("Navbar", {});
 
