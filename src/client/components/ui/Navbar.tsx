@@ -12,6 +12,7 @@ import {
   MenuItem,
   MenuList,
   Portal,
+  Spinner,
   Text,
   useMultiStyleConfig,
 } from "@chakra-ui/react";
@@ -28,7 +29,7 @@ import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
-  const { currentSettings } = useCurrentUserSettings();
+  const { currentSettings, isSettingsLoading } = useCurrentUserSettings();
 
   const styles = useMultiStyleConfig("Navbar", {});
 
@@ -55,16 +56,19 @@ export const Navbar = () => {
           <Menu>
             <MenuButton variant="ghost" px={0}>
               <HStack>
-                <Avatar
-                  borderRadius="50%"
-                  username={currentUser?.username}
-                  emailHash={currentUser?.emailHash}
-                  useGravatar={currentSettings?.useGravatar}
-                  aspectMaxH="25px"
-                  aspectMaxW="25px"
-                  imageId={currentUser.avatar?.filename}
-                  bgColor="white"
-                />
+                {isSettingsLoading && <Spinner />}
+                {!isSettingsLoading && (
+                  <Avatar
+                    borderRadius="50%"
+                    username={currentUser?.username}
+                    emailHash={currentUser?.emailHash}
+                    useGravatar={currentSettings?.useGravatar}
+                    aspectMaxH="25px"
+                    aspectMaxW="25px"
+                    imageId={currentUser.avatar?.filename}
+                    bgColor="white"
+                  />
+                )}
                 <Text>
                   {currentUser?.displayName || currentUser?.username}{" "}
                 </Text>
