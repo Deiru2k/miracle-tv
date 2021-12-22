@@ -21,11 +21,12 @@ export type Config = {
   database?: DBConfig;
 };
 
-export const getConfig = (): Config => {
-  const args = process.argv.slice(2);
-  const configPath = args[0];
-  if (configPath) {
-    const config = JSON.parse(readFileSync(configPath).toString()) as Config;
+export const getConfig = (configPath?: string): Config => {
+  const trueConfigPath = configPath || (process.env.MIRACLE_CONFIG as string);
+  if (trueConfigPath) {
+    const config = JSON.parse(
+      readFileSync(trueConfigPath).toString()
+    ) as Config;
     return { ...(defaultConfig as Config), ...config };
   }
   return defaultConfig as Config;

@@ -33,6 +33,9 @@
     "@graphql-tools/schema": "^8.1.2",
     "@graphql-tools/utils": "^8.1.2",
     "@react-hook/debounce": "^4.0.0",
+    "@types/pretty-bytes": "^5.2.0",
+    "@types/prompts": "^2.0.14",
+    "@types/yargs": "^17.0.7",
     "apollo-server": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "apollo-upload-client": "^16.0.0",
@@ -51,6 +54,8 @@
     "md5": "^2.3.0",
     "module-alias": "^2.2.2",
     "next": "^11.0.1",
+    "pretty-bytes": "^5.6.0",
+    "prompts": "^2.4.2",
     "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -62,7 +67,8 @@
     "redux-persist": "^6.0.0",
     "rethinkdb": "^2.4.2",
     "tsconfig-paths": "^3.9.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yargs": "^17.3.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.1.1",
@@ -101,7 +107,7 @@
     "prettier": "^2.3.0",
     "simple-git-hooks": "^2.6.1",
     "ts-loader": "^9.2.1",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.4.0",
     "typescript": "^4.2.4"
   }
 }
