@@ -23,7 +23,7 @@ type Props = {
 } & UseDisclosureReturn;
 
 gql`
-  mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput) {
+  mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput!) {
     createStreamKey(input: $input) {
       id
       name
@@ -74,7 +74,11 @@ export const CreateStreamKeyModal = ({
               {" "}
               <ModalHeader>{"Generate new streamkey"}</ModalHeader>
               <ModalBody>
-                <FormInput label="Key name (optional)" name="name" help="Used to easily identify keys if you're using multiple keys" />
+                <FormInput
+                  label="Key name (optional)"
+                  name="name"
+                  help="Used to easily identify keys if you're using multiple keys"
+                />
               </ModalBody>
               <ModalFooter>
                 <Button type="submit">Generate</Button>

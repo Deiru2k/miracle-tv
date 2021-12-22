@@ -53,7 +53,7 @@ export const UserInfo = ({
 
   useEffect(() => {
     if (id && propsUser) {
-      console.log("ERROR! Cannot user both ID and User in UserInfo!");
+      console.error("ERROR! Cannot user both ID and User in UserInfo!");
     } else if (id && !propsUser) {
       loadUser({ variables: { id } });
     }

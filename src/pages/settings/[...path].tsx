@@ -10,12 +10,17 @@ import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { UserPreferences } from "miracle-tv-client/UserSettings/UserPreferences";
 import { Channels } from "miracle-tv-client/UserSettings/Channels";
 import { AccountSettings } from "miracle-tv-client/UserSettings/AccountSettings";
+import { AccountStreamKeys } from "miracle-tv-client/UserSettings/AccountStreamKeys";
+import { AccountSessions } from "miracle-tv-client/UserSettings/AccountSessions";
+import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 
 const components: NavComponentMap = {
   "/settings/user/profile": <ProfileSettings />,
   "/settings/user/preferences": <UserPreferences />,
   "/settings/user/channels": <Channels />,
   "/settings/security/account": <AccountSettings />,
+  "/settings/security/streamkeys": <AccountStreamKeys />,
+  "/settings/security/sessions": <AccountSessions />,
 };
 
 const SettingsPage = () => {
@@ -36,7 +41,11 @@ const SettingsPage = () => {
           {
             id: "channels",
             name: currentSettings?.singleUserMode ? "Channel" : "Channels",
-            url: "/settings/user/channels",
+            url:
+              currentSettings?.singleUserMode &&
+              currentSettings?.singleUserChannel?.id
+                ? `/settings/user/channels/${currentSettings?.singleUserChannel?.id}/details`
+                : "/settings/user/channels",
           },
         ],
       },
@@ -58,15 +67,18 @@ const SettingsPage = () => {
         ],
       },
     ],
-    [currentSettings]
+    [currentSettings, currentSettings?.singleUserChannel?.id]
   );
+  console.log(currentSettings, nav);
   return (
-    <Navigation
-      title="Settings"
-      nav={nav}
-      components={components}
-      size={[1, 10]}
-    />
+    <AuthRedirect>
+      <Navigation
+        title="Settings"
+        nav={nav}
+        components={components}
+        size={[1, 10]}
+      />
+    </AuthRedirect>
   );
 };
 

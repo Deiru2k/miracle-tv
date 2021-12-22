@@ -1,3 +1,4 @@
+import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 import { Feeds } from "miracle-tv-client/Dashboard/Feeds";
 import {
   NavComponentMap,
@@ -48,7 +49,11 @@ const components: NavComponentMap = {
 };
 
 const Dashboard = () => {
-  return <Navigation nav={nav} components={components} size={[1, 10]} />;
+  return (
+    <AuthRedirect>
+      <Navigation nav={nav} components={components} size={[1, 10]} />
+    </AuthRedirect>
+  );
 };
 
 export default Dashboard;

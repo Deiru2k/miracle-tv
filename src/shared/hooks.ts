@@ -1,117 +1,228 @@
-import * as Types from 'miracle-tv-shared/graphql';
+import * as Types from "miracle-tv-shared/graphql";
 
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
-const defaultOptions =  {}
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
+const defaultOptions = {};
 export const UserSettingsProfileFragmentFragmentDoc = gql`
-    fragment UserSettingsProfileFragment on User {
-  id
-  username
-  displayName
-  emailHash
-  bio
-  avatar {
+  fragment UserSettingsProfileFragment on User {
     id
-    filename
-    encoding
-    mimetype
+    username
+    displayName
+    emailHash
+    bio
+    avatar {
+      id
+      filename
+      encoding
+      mimetype
+    }
+    streamThumbnail {
+      id
+      filename
+      encoding
+      mimetype
+    }
+    header {
+      id
+      filename
+      encoding
+      mimetype
+    }
   }
-  streamThumbnail {
-    id
-    filename
-    encoding
-    mimetype
-  }
-  header {
-    id
-    filename
-    encoding
-    mimetype
-  }
-}
-    `;
+`;
 export const ChannelFullFragmentDoc = gql`
-    fragment ChannelFull on Channel {
-  id
-  name
-  description
-  slug
-  thumbnail {
-    id
-    filename
-  }
-  activity {
+  fragment ChannelFull on Channel {
     id
     name
-    verb
-    icon
+    description
+    slug
+    thumbnail {
+      id
+      filename
+    }
+    activity {
+      id
+      name
+      verb
+      icon
+    }
   }
-}
-    `;
+`;
 export const CurrentUserFragmentDoc = gql`
-    fragment CurrentUser on User {
-  id
-  username
-  displayName
-  emailHash
-  bio
-  emailHash
-  avatar {
+  fragment CurrentUser on User {
     id
-    filename
-  }
-  header {
-    id
-    filename
-  }
-  streamThumbnail {
-    id
-    filename
-  }
-  roles {
-    id
-    parentId
-    name
-    access {
-      rights {
-        channels
-        streamKeys
-        users
-        activities
-      }
-      actions {
-        user {
-          silence
-          ban
-          warn
+    username
+    displayName
+    emailHash
+    bio
+    emailHash
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    streamThumbnail {
+      id
+      filename
+    }
+    roles {
+      id
+      parentId
+      name
+      access {
+        rights {
+          channels
+          streamKeys
+          users
+          activities
+        }
+        actions {
+          user {
+            silence
+            ban
+            warn
+          }
         }
       }
     }
-  }
-  channels {
-    id
-    name
-    slug
-    description
-    activity {
+    channels {
       id
-      icon
-      image
       name
-      verb
+      slug
+      description
+      activity {
+        id
+        icon
+        image
+        name
+        verb
+      }
     }
   }
-}
-    `;
-export const AccountDetailsDocument = gql`
-    query AccountDetails {
-  selfAccount {
-    id
-    username
-    email
+`;
+export const SelfSessionsDocument = gql`
+  query SelfSessions {
+    selfSessions {
+      id
+      expiresAt
+      lastUsedAt
+      userAgent
+      user
+      ip
+      isCurrentSession
+    }
   }
+`;
+
+/**
+ * __useSelfSessionsQuery__
+ *
+ * To run a query within a React component, call `useSelfSessionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelfSessionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelfSessionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSelfSessionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.SelfSessionsQuery,
+    Types.SelfSessionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.SelfSessionsQuery,
+    Types.SelfSessionsQueryVariables
+  >(SelfSessionsDocument, options);
 }
-    `;
+export function useSelfSessionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.SelfSessionsQuery,
+    Types.SelfSessionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.SelfSessionsQuery,
+    Types.SelfSessionsQueryVariables
+  >(SelfSessionsDocument, options);
+}
+export type SelfSessionsQueryHookResult = ReturnType<
+  typeof useSelfSessionsQuery
+>;
+export type SelfSessionsLazyQueryHookResult = ReturnType<
+  typeof useSelfSessionsLazyQuery
+>;
+export type SelfSessionsQueryResult = Apollo.QueryResult<
+  Types.SelfSessionsQuery,
+  Types.SelfSessionsQueryVariables
+>;
+export const RevokeSelfSessionsDocument = gql`
+  mutation RevokeSelfSessions($input: [String]!) {
+    revokeSelfSessions(input: $input)
+  }
+`;
+export type RevokeSelfSessionsMutationFn = Apollo.MutationFunction<
+  Types.RevokeSelfSessionsMutation,
+  Types.RevokeSelfSessionsMutationVariables
+>;
+
+/**
+ * __useRevokeSelfSessionsMutation__
+ *
+ * To run a mutation, you first call `useRevokeSelfSessionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRevokeSelfSessionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [revokeSelfSessionsMutation, { data, loading, error }] = useRevokeSelfSessionsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRevokeSelfSessionsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.RevokeSelfSessionsMutation,
+    Types.RevokeSelfSessionsMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.RevokeSelfSessionsMutation,
+    Types.RevokeSelfSessionsMutationVariables
+  >(RevokeSelfSessionsDocument, options);
+}
+export type RevokeSelfSessionsMutationHookResult = ReturnType<
+  typeof useRevokeSelfSessionsMutation
+>;
+export type RevokeSelfSessionsMutationResult =
+  Apollo.MutationResult<Types.RevokeSelfSessionsMutation>;
+export type RevokeSelfSessionsMutationOptions = Apollo.BaseMutationOptions<
+  Types.RevokeSelfSessionsMutation,
+  Types.RevokeSelfSessionsMutationVariables
+>;
+export const AccountDetailsDocument = gql`
+  query AccountDetails {
+    selfAccount {
+      id
+      username
+      email
+    }
+  }
+`;
 
 /**
  * __useAccountDetailsQuery__
@@ -128,23 +239,49 @@ export const AccountDetailsDocument = gql`
  *   },
  * });
  */
-export function useAccountDetailsQuery(baseOptions?: Apollo.QueryHookOptions<Types.AccountDetailsQuery, Types.AccountDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.AccountDetailsQuery, Types.AccountDetailsQueryVariables>(AccountDetailsDocument, options);
-      }
-export function useAccountDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.AccountDetailsQuery, Types.AccountDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.AccountDetailsQuery, Types.AccountDetailsQueryVariables>(AccountDetailsDocument, options);
-        }
-export type AccountDetailsQueryHookResult = ReturnType<typeof useAccountDetailsQuery>;
-export type AccountDetailsLazyQueryHookResult = ReturnType<typeof useAccountDetailsLazyQuery>;
-export type AccountDetailsQueryResult = Apollo.QueryResult<Types.AccountDetailsQuery, Types.AccountDetailsQueryVariables>;
-export const ChangeAccountPasswordDocument = gql`
-    mutation ChangeAccountPassword($input: ChangePasswordInput) {
-  changeSelfPassword(input: $input)
+export function useAccountDetailsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AccountDetailsQuery,
+    Types.AccountDetailsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AccountDetailsQuery,
+    Types.AccountDetailsQueryVariables
+  >(AccountDetailsDocument, options);
 }
-    `;
-export type ChangeAccountPasswordMutationFn = Apollo.MutationFunction<Types.ChangeAccountPasswordMutation, Types.ChangeAccountPasswordMutationVariables>;
+export function useAccountDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AccountDetailsQuery,
+    Types.AccountDetailsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AccountDetailsQuery,
+    Types.AccountDetailsQueryVariables
+  >(AccountDetailsDocument, options);
+}
+export type AccountDetailsQueryHookResult = ReturnType<
+  typeof useAccountDetailsQuery
+>;
+export type AccountDetailsLazyQueryHookResult = ReturnType<
+  typeof useAccountDetailsLazyQuery
+>;
+export type AccountDetailsQueryResult = Apollo.QueryResult<
+  Types.AccountDetailsQuery,
+  Types.AccountDetailsQueryVariables
+>;
+export const ChangeAccountPasswordDocument = gql`
+  mutation ChangeAccountPassword($input: ChangePasswordInput) {
+    changeSelfPassword(input: $input)
+  }
+`;
+export type ChangeAccountPasswordMutationFn = Apollo.MutationFunction<
+  Types.ChangeAccountPasswordMutation,
+  Types.ChangeAccountPasswordMutationVariables
+>;
 
 /**
  * __useChangeAccountPasswordMutation__
@@ -163,23 +300,40 @@ export type ChangeAccountPasswordMutationFn = Apollo.MutationFunction<Types.Chan
  *   },
  * });
  */
-export function useChangeAccountPasswordMutation(baseOptions?: Apollo.MutationHookOptions<Types.ChangeAccountPasswordMutation, Types.ChangeAccountPasswordMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.ChangeAccountPasswordMutation, Types.ChangeAccountPasswordMutationVariables>(ChangeAccountPasswordDocument, options);
-      }
-export type ChangeAccountPasswordMutationHookResult = ReturnType<typeof useChangeAccountPasswordMutation>;
-export type ChangeAccountPasswordMutationResult = Apollo.MutationResult<Types.ChangeAccountPasswordMutation>;
-export type ChangeAccountPasswordMutationOptions = Apollo.BaseMutationOptions<Types.ChangeAccountPasswordMutation, Types.ChangeAccountPasswordMutationVariables>;
-export const SettingsUpdateAccountDocument = gql`
-    mutation SettingsUpdateAccount($input: UpdateUserAccountInput) {
-  updateSelfAccount(input: $input) {
-    id
-    username
-    email
-  }
+export function useChangeAccountPasswordMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.ChangeAccountPasswordMutation,
+    Types.ChangeAccountPasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.ChangeAccountPasswordMutation,
+    Types.ChangeAccountPasswordMutationVariables
+  >(ChangeAccountPasswordDocument, options);
 }
-    `;
-export type SettingsUpdateAccountMutationFn = Apollo.MutationFunction<Types.SettingsUpdateAccountMutation, Types.SettingsUpdateAccountMutationVariables>;
+export type ChangeAccountPasswordMutationHookResult = ReturnType<
+  typeof useChangeAccountPasswordMutation
+>;
+export type ChangeAccountPasswordMutationResult =
+  Apollo.MutationResult<Types.ChangeAccountPasswordMutation>;
+export type ChangeAccountPasswordMutationOptions = Apollo.BaseMutationOptions<
+  Types.ChangeAccountPasswordMutation,
+  Types.ChangeAccountPasswordMutationVariables
+>;
+export const SettingsUpdateAccountDocument = gql`
+  mutation SettingsUpdateAccount($input: UpdateUserAccountInput) {
+    updateSelfAccount(input: $input) {
+      id
+      username
+      email
+    }
+  }
+`;
+export type SettingsUpdateAccountMutationFn = Apollo.MutationFunction<
+  Types.SettingsUpdateAccountMutation,
+  Types.SettingsUpdateAccountMutationVariables
+>;
 
 /**
  * __useSettingsUpdateAccountMutation__
@@ -198,19 +352,36 @@ export type SettingsUpdateAccountMutationFn = Apollo.MutationFunction<Types.Sett
  *   },
  * });
  */
-export function useSettingsUpdateAccountMutation(baseOptions?: Apollo.MutationHookOptions<Types.SettingsUpdateAccountMutation, Types.SettingsUpdateAccountMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.SettingsUpdateAccountMutation, Types.SettingsUpdateAccountMutationVariables>(SettingsUpdateAccountDocument, options);
-      }
-export type SettingsUpdateAccountMutationHookResult = ReturnType<typeof useSettingsUpdateAccountMutation>;
-export type SettingsUpdateAccountMutationResult = Apollo.MutationResult<Types.SettingsUpdateAccountMutation>;
-export type SettingsUpdateAccountMutationOptions = Apollo.BaseMutationOptions<Types.SettingsUpdateAccountMutation, Types.SettingsUpdateAccountMutationVariables>;
-export const SettingsChangePasswordDocument = gql`
-    mutation SettingsChangePassword($input: ChangePasswordInput) {
-  changeSelfPassword(input: $input)
+export function useSettingsUpdateAccountMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SettingsUpdateAccountMutation,
+    Types.SettingsUpdateAccountMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SettingsUpdateAccountMutation,
+    Types.SettingsUpdateAccountMutationVariables
+  >(SettingsUpdateAccountDocument, options);
 }
-    `;
-export type SettingsChangePasswordMutationFn = Apollo.MutationFunction<Types.SettingsChangePasswordMutation, Types.SettingsChangePasswordMutationVariables>;
+export type SettingsUpdateAccountMutationHookResult = ReturnType<
+  typeof useSettingsUpdateAccountMutation
+>;
+export type SettingsUpdateAccountMutationResult =
+  Apollo.MutationResult<Types.SettingsUpdateAccountMutation>;
+export type SettingsUpdateAccountMutationOptions = Apollo.BaseMutationOptions<
+  Types.SettingsUpdateAccountMutation,
+  Types.SettingsUpdateAccountMutationVariables
+>;
+export const SettingsChangePasswordDocument = gql`
+  mutation SettingsChangePassword($input: ChangePasswordInput) {
+    changeSelfPassword(input: $input)
+  }
+`;
+export type SettingsChangePasswordMutationFn = Apollo.MutationFunction<
+  Types.SettingsChangePasswordMutation,
+  Types.SettingsChangePasswordMutationVariables
+>;
 
 /**
  * __useSettingsChangePasswordMutation__
@@ -229,26 +400,151 @@ export type SettingsChangePasswordMutationFn = Apollo.MutationFunction<Types.Set
  *   },
  * });
  */
-export function useSettingsChangePasswordMutation(baseOptions?: Apollo.MutationHookOptions<Types.SettingsChangePasswordMutation, Types.SettingsChangePasswordMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.SettingsChangePasswordMutation, Types.SettingsChangePasswordMutationVariables>(SettingsChangePasswordDocument, options);
-      }
-export type SettingsChangePasswordMutationHookResult = ReturnType<typeof useSettingsChangePasswordMutation>;
-export type SettingsChangePasswordMutationResult = Apollo.MutationResult<Types.SettingsChangePasswordMutation>;
-export type SettingsChangePasswordMutationOptions = Apollo.BaseMutationOptions<Types.SettingsChangePasswordMutation, Types.SettingsChangePasswordMutationVariables>;
-export const UserSettingsChannelDocument = gql`
-    query UserSettingsChannel($id: ID!) {
-  channel(id: $id) {
-    ...ChannelFull
-  }
-  selfStreamKeys {
-    id
-    channel {
+export function useSettingsChangePasswordMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SettingsChangePasswordMutation,
+    Types.SettingsChangePasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SettingsChangePasswordMutation,
+    Types.SettingsChangePasswordMutationVariables
+  >(SettingsChangePasswordDocument, options);
+}
+export type SettingsChangePasswordMutationHookResult = ReturnType<
+  typeof useSettingsChangePasswordMutation
+>;
+export type SettingsChangePasswordMutationResult =
+  Apollo.MutationResult<Types.SettingsChangePasswordMutation>;
+export type SettingsChangePasswordMutationOptions = Apollo.BaseMutationOptions<
+  Types.SettingsChangePasswordMutation,
+  Types.SettingsChangePasswordMutationVariables
+>;
+export const SelfStreamKeysDocument = gql`
+  query SelfStreamKeys {
+    selfStreamKeys {
       id
+      name
+      channel {
+        id
+        name
+      }
     }
   }
+`;
+
+/**
+ * __useSelfStreamKeysQuery__
+ *
+ * To run a query within a React component, call `useSelfStreamKeysQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelfStreamKeysQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelfStreamKeysQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSelfStreamKeysQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.SelfStreamKeysQuery,
+    Types.SelfStreamKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.SelfStreamKeysQuery,
+    Types.SelfStreamKeysQueryVariables
+  >(SelfStreamKeysDocument, options);
 }
-    ${ChannelFullFragmentDoc}`;
+export function useSelfStreamKeysLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.SelfStreamKeysQuery,
+    Types.SelfStreamKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.SelfStreamKeysQuery,
+    Types.SelfStreamKeysQueryVariables
+  >(SelfStreamKeysDocument, options);
+}
+export type SelfStreamKeysQueryHookResult = ReturnType<
+  typeof useSelfStreamKeysQuery
+>;
+export type SelfStreamKeysLazyQueryHookResult = ReturnType<
+  typeof useSelfStreamKeysLazyQuery
+>;
+export type SelfStreamKeysQueryResult = Apollo.QueryResult<
+  Types.SelfStreamKeysQuery,
+  Types.SelfStreamKeysQueryVariables
+>;
+export const RevokeSelfStreamKeysDocument = gql`
+  mutation RevokeSelfStreamKeys($userId: ID!) {
+    revokeAllStreamKeys(input: { userId: $userId })
+  }
+`;
+export type RevokeSelfStreamKeysMutationFn = Apollo.MutationFunction<
+  Types.RevokeSelfStreamKeysMutation,
+  Types.RevokeSelfStreamKeysMutationVariables
+>;
+
+/**
+ * __useRevokeSelfStreamKeysMutation__
+ *
+ * To run a mutation, you first call `useRevokeSelfStreamKeysMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRevokeSelfStreamKeysMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [revokeSelfStreamKeysMutation, { data, loading, error }] = useRevokeSelfStreamKeysMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useRevokeSelfStreamKeysMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.RevokeSelfStreamKeysMutation,
+    Types.RevokeSelfStreamKeysMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.RevokeSelfStreamKeysMutation,
+    Types.RevokeSelfStreamKeysMutationVariables
+  >(RevokeSelfStreamKeysDocument, options);
+}
+export type RevokeSelfStreamKeysMutationHookResult = ReturnType<
+  typeof useRevokeSelfStreamKeysMutation
+>;
+export type RevokeSelfStreamKeysMutationResult =
+  Apollo.MutationResult<Types.RevokeSelfStreamKeysMutation>;
+export type RevokeSelfStreamKeysMutationOptions = Apollo.BaseMutationOptions<
+  Types.RevokeSelfStreamKeysMutation,
+  Types.RevokeSelfStreamKeysMutationVariables
+>;
+export const UserSettingsChannelDocument = gql`
+  query UserSettingsChannel($id: ID!) {
+    channel(id: $id) {
+      ...ChannelFull
+    }
+    selfStreamKeys {
+      id
+      channel {
+        id
+      }
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
 
 /**
  * __useUserSettingsChannelQuery__
@@ -266,25 +562,52 @@ export const UserSettingsChannelDocument = gql`
  *   },
  * });
  */
-export function useUserSettingsChannelQuery(baseOptions: Apollo.QueryHookOptions<Types.UserSettingsChannelQuery, Types.UserSettingsChannelQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsChannelQuery, Types.UserSettingsChannelQueryVariables>(UserSettingsChannelDocument, options);
-      }
-export function useUserSettingsChannelLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsChannelQuery, Types.UserSettingsChannelQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsChannelQuery, Types.UserSettingsChannelQueryVariables>(UserSettingsChannelDocument, options);
-        }
-export type UserSettingsChannelQueryHookResult = ReturnType<typeof useUserSettingsChannelQuery>;
-export type UserSettingsChannelLazyQueryHookResult = ReturnType<typeof useUserSettingsChannelLazyQuery>;
-export type UserSettingsChannelQueryResult = Apollo.QueryResult<Types.UserSettingsChannelQuery, Types.UserSettingsChannelQueryVariables>;
-export const EditChannelDocument = gql`
-    mutation EditChannel($input: UpdateChannelInput) {
-  updateChannel(input: $input) {
-    ...ChannelFull
-  }
+export function useUserSettingsChannelQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserSettingsChannelQuery,
+    Types.UserSettingsChannelQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsChannelQuery,
+    Types.UserSettingsChannelQueryVariables
+  >(UserSettingsChannelDocument, options);
 }
-    ${ChannelFullFragmentDoc}`;
-export type EditChannelMutationFn = Apollo.MutationFunction<Types.EditChannelMutation, Types.EditChannelMutationVariables>;
+export function useUserSettingsChannelLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsChannelQuery,
+    Types.UserSettingsChannelQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsChannelQuery,
+    Types.UserSettingsChannelQueryVariables
+  >(UserSettingsChannelDocument, options);
+}
+export type UserSettingsChannelQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelQuery
+>;
+export type UserSettingsChannelLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelLazyQuery
+>;
+export type UserSettingsChannelQueryResult = Apollo.QueryResult<
+  Types.UserSettingsChannelQuery,
+  Types.UserSettingsChannelQueryVariables
+>;
+export const EditChannelDocument = gql`
+  mutation EditChannel($input: UpdateChannelInput) {
+    updateChannel(input: $input) {
+      ...ChannelFull
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
+export type EditChannelMutationFn = Apollo.MutationFunction<
+  Types.EditChannelMutation,
+  Types.EditChannelMutationVariables
+>;
 
 /**
  * __useEditChannelMutation__
@@ -303,21 +626,35 @@ export type EditChannelMutationFn = Apollo.MutationFunction<Types.EditChannelMut
  *   },
  * });
  */
-export function useEditChannelMutation(baseOptions?: Apollo.MutationHookOptions<Types.EditChannelMutation, Types.EditChannelMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.EditChannelMutation, Types.EditChannelMutationVariables>(EditChannelDocument, options);
-      }
-export type EditChannelMutationHookResult = ReturnType<typeof useEditChannelMutation>;
-export type EditChannelMutationResult = Apollo.MutationResult<Types.EditChannelMutation>;
-export type EditChannelMutationOptions = Apollo.BaseMutationOptions<Types.EditChannelMutation, Types.EditChannelMutationVariables>;
-export const UserSettingsChannelKeysDocument = gql`
-    query UserSettingsChannelKeys($channelId: ID!) {
-  streamKeysByChannelId(channelId: $channelId) {
-    id
-    name
-  }
+export function useEditChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.EditChannelMutation,
+    Types.EditChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.EditChannelMutation,
+    Types.EditChannelMutationVariables
+  >(EditChannelDocument, options);
 }
-    `;
+export type EditChannelMutationHookResult = ReturnType<
+  typeof useEditChannelMutation
+>;
+export type EditChannelMutationResult =
+  Apollo.MutationResult<Types.EditChannelMutation>;
+export type EditChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.EditChannelMutation,
+  Types.EditChannelMutationVariables
+>;
+export const UserSettingsChannelKeysDocument = gql`
+  query UserSettingsChannelKeys($channelId: ID!) {
+    streamKeysByChannelId(channelId: $channelId) {
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useUserSettingsChannelKeysQuery__
@@ -335,23 +672,49 @@ export const UserSettingsChannelKeysDocument = gql`
  *   },
  * });
  */
-export function useUserSettingsChannelKeysQuery(baseOptions: Apollo.QueryHookOptions<Types.UserSettingsChannelKeysQuery, Types.UserSettingsChannelKeysQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsChannelKeysQuery, Types.UserSettingsChannelKeysQueryVariables>(UserSettingsChannelKeysDocument, options);
-      }
-export function useUserSettingsChannelKeysLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsChannelKeysQuery, Types.UserSettingsChannelKeysQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsChannelKeysQuery, Types.UserSettingsChannelKeysQueryVariables>(UserSettingsChannelKeysDocument, options);
-        }
-export type UserSettingsChannelKeysQueryHookResult = ReturnType<typeof useUserSettingsChannelKeysQuery>;
-export type UserSettingsChannelKeysLazyQueryHookResult = ReturnType<typeof useUserSettingsChannelKeysLazyQuery>;
-export type UserSettingsChannelKeysQueryResult = Apollo.QueryResult<Types.UserSettingsChannelKeysQuery, Types.UserSettingsChannelKeysQueryVariables>;
-export const UserSettingsRevokeAllStreamKeysDocument = gql`
-    mutation UserSettingsRevokeAllStreamKeys($channelId: ID!, $userId: ID!) {
-  revokeStreamKeys(input: {channelId: $channelId, userId: $userId})
+export function useUserSettingsChannelKeysQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >(UserSettingsChannelKeysDocument, options);
 }
-    `;
-export type UserSettingsRevokeAllStreamKeysMutationFn = Apollo.MutationFunction<Types.UserSettingsRevokeAllStreamKeysMutation, Types.UserSettingsRevokeAllStreamKeysMutationVariables>;
+export function useUserSettingsChannelKeysLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsChannelKeysQuery,
+    Types.UserSettingsChannelKeysQueryVariables
+  >(UserSettingsChannelKeysDocument, options);
+}
+export type UserSettingsChannelKeysQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelKeysQuery
+>;
+export type UserSettingsChannelKeysLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelKeysLazyQuery
+>;
+export type UserSettingsChannelKeysQueryResult = Apollo.QueryResult<
+  Types.UserSettingsChannelKeysQuery,
+  Types.UserSettingsChannelKeysQueryVariables
+>;
+export const UserSettingsRevokeAllStreamKeysDocument = gql`
+  mutation UserSettingsRevokeAllStreamKeys($channelId: ID!, $userId: ID!) {
+    revokeStreamKeys(input: { channelId: $channelId, userId: $userId })
+  }
+`;
+export type UserSettingsRevokeAllStreamKeysMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsRevokeAllStreamKeysMutation,
+  Types.UserSettingsRevokeAllStreamKeysMutationVariables
+>;
 
 /**
  * __useUserSettingsRevokeAllStreamKeysMutation__
@@ -371,19 +734,37 @@ export type UserSettingsRevokeAllStreamKeysMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUserSettingsRevokeAllStreamKeysMutation(baseOptions?: Apollo.MutationHookOptions<Types.UserSettingsRevokeAllStreamKeysMutation, Types.UserSettingsRevokeAllStreamKeysMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UserSettingsRevokeAllStreamKeysMutation, Types.UserSettingsRevokeAllStreamKeysMutationVariables>(UserSettingsRevokeAllStreamKeysDocument, options);
-      }
-export type UserSettingsRevokeAllStreamKeysMutationHookResult = ReturnType<typeof useUserSettingsRevokeAllStreamKeysMutation>;
-export type UserSettingsRevokeAllStreamKeysMutationResult = Apollo.MutationResult<Types.UserSettingsRevokeAllStreamKeysMutation>;
-export type UserSettingsRevokeAllStreamKeysMutationOptions = Apollo.BaseMutationOptions<Types.UserSettingsRevokeAllStreamKeysMutation, Types.UserSettingsRevokeAllStreamKeysMutationVariables>;
-export const UserSettingsRevokeStreamKeyDocument = gql`
-    mutation UserSettingsRevokeStreamKey($streamKey: ID!) {
-  revokeStreamKey(key: $streamKey)
+export function useUserSettingsRevokeAllStreamKeysMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >(UserSettingsRevokeAllStreamKeysDocument, options);
 }
-    `;
-export type UserSettingsRevokeStreamKeyMutationFn = Apollo.MutationFunction<Types.UserSettingsRevokeStreamKeyMutation, Types.UserSettingsRevokeStreamKeyMutationVariables>;
+export type UserSettingsRevokeAllStreamKeysMutationHookResult = ReturnType<
+  typeof useUserSettingsRevokeAllStreamKeysMutation
+>;
+export type UserSettingsRevokeAllStreamKeysMutationResult =
+  Apollo.MutationResult<Types.UserSettingsRevokeAllStreamKeysMutation>;
+export type UserSettingsRevokeAllStreamKeysMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsRevokeAllStreamKeysMutation,
+    Types.UserSettingsRevokeAllStreamKeysMutationVariables
+  >;
+export const UserSettingsRevokeStreamKeyDocument = gql`
+  mutation UserSettingsRevokeStreamKey($streamKey: ID!) {
+    revokeStreamKey(key: $streamKey)
+  }
+`;
+export type UserSettingsRevokeStreamKeyMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsRevokeStreamKeyMutation,
+  Types.UserSettingsRevokeStreamKeyMutationVariables
+>;
 
 /**
  * __useUserSettingsRevokeStreamKeyMutation__
@@ -402,20 +783,36 @@ export type UserSettingsRevokeStreamKeyMutationFn = Apollo.MutationFunction<Type
  *   },
  * });
  */
-export function useUserSettingsRevokeStreamKeyMutation(baseOptions?: Apollo.MutationHookOptions<Types.UserSettingsRevokeStreamKeyMutation, Types.UserSettingsRevokeStreamKeyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UserSettingsRevokeStreamKeyMutation, Types.UserSettingsRevokeStreamKeyMutationVariables>(UserSettingsRevokeStreamKeyDocument, options);
-      }
-export type UserSettingsRevokeStreamKeyMutationHookResult = ReturnType<typeof useUserSettingsRevokeStreamKeyMutation>;
-export type UserSettingsRevokeStreamKeyMutationResult = Apollo.MutationResult<Types.UserSettingsRevokeStreamKeyMutation>;
-export type UserSettingsRevokeStreamKeyMutationOptions = Apollo.BaseMutationOptions<Types.UserSettingsRevokeStreamKeyMutation, Types.UserSettingsRevokeStreamKeyMutationVariables>;
-export const UserSettingsChannelsDocument = gql`
-    query UserSettingsChannels($filter: ChannelsQueryFilter) {
-  channels(filter: $filter) {
-    ...ChannelFull
-  }
+export function useUserSettingsRevokeStreamKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >(UserSettingsRevokeStreamKeyDocument, options);
 }
-    ${ChannelFullFragmentDoc}`;
+export type UserSettingsRevokeStreamKeyMutationHookResult = ReturnType<
+  typeof useUserSettingsRevokeStreamKeyMutation
+>;
+export type UserSettingsRevokeStreamKeyMutationResult =
+  Apollo.MutationResult<Types.UserSettingsRevokeStreamKeyMutation>;
+export type UserSettingsRevokeStreamKeyMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsRevokeStreamKeyMutation,
+    Types.UserSettingsRevokeStreamKeyMutationVariables
+  >;
+export const UserSettingsChannelsDocument = gql`
+  query UserSettingsChannels($filter: ChannelsQueryFilter) {
+    channels(filter: $filter) {
+      ...ChannelFull
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
 
 /**
  * __useUserSettingsChannelsQuery__
@@ -433,23 +830,49 @@ export const UserSettingsChannelsDocument = gql`
  *   },
  * });
  */
-export function useUserSettingsChannelsQuery(baseOptions?: Apollo.QueryHookOptions<Types.UserSettingsChannelsQuery, Types.UserSettingsChannelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsChannelsQuery, Types.UserSettingsChannelsQueryVariables>(UserSettingsChannelsDocument, options);
-      }
-export function useUserSettingsChannelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsChannelsQuery, Types.UserSettingsChannelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsChannelsQuery, Types.UserSettingsChannelsQueryVariables>(UserSettingsChannelsDocument, options);
-        }
-export type UserSettingsChannelsQueryHookResult = ReturnType<typeof useUserSettingsChannelsQuery>;
-export type UserSettingsChannelsLazyQueryHookResult = ReturnType<typeof useUserSettingsChannelsLazyQuery>;
-export type UserSettingsChannelsQueryResult = Apollo.QueryResult<Types.UserSettingsChannelsQuery, Types.UserSettingsChannelsQueryVariables>;
-export const UserSettingsDeleteChannelDocument = gql`
-    mutation UserSettingsDeleteChannel($id: ID!) {
-  deleteChannel(id: $id)
+export function useUserSettingsChannelsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UserSettingsChannelsQuery,
+    Types.UserSettingsChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsChannelsQuery,
+    Types.UserSettingsChannelsQueryVariables
+  >(UserSettingsChannelsDocument, options);
 }
-    `;
-export type UserSettingsDeleteChannelMutationFn = Apollo.MutationFunction<Types.UserSettingsDeleteChannelMutation, Types.UserSettingsDeleteChannelMutationVariables>;
+export function useUserSettingsChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsChannelsQuery,
+    Types.UserSettingsChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsChannelsQuery,
+    Types.UserSettingsChannelsQueryVariables
+  >(UserSettingsChannelsDocument, options);
+}
+export type UserSettingsChannelsQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelsQuery
+>;
+export type UserSettingsChannelsLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsChannelsLazyQuery
+>;
+export type UserSettingsChannelsQueryResult = Apollo.QueryResult<
+  Types.UserSettingsChannelsQuery,
+  Types.UserSettingsChannelsQueryVariables
+>;
+export const UserSettingsDeleteChannelDocument = gql`
+  mutation UserSettingsDeleteChannel($id: ID!) {
+    deleteChannel(id: $id)
+  }
+`;
+export type UserSettingsDeleteChannelMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsDeleteChannelMutation,
+  Types.UserSettingsDeleteChannelMutationVariables
+>;
 
 /**
  * __useUserSettingsDeleteChannelMutation__
@@ -468,21 +891,40 @@ export type UserSettingsDeleteChannelMutationFn = Apollo.MutationFunction<Types.
  *   },
  * });
  */
-export function useUserSettingsDeleteChannelMutation(baseOptions?: Apollo.MutationHookOptions<Types.UserSettingsDeleteChannelMutation, Types.UserSettingsDeleteChannelMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UserSettingsDeleteChannelMutation, Types.UserSettingsDeleteChannelMutationVariables>(UserSettingsDeleteChannelDocument, options);
-      }
-export type UserSettingsDeleteChannelMutationHookResult = ReturnType<typeof useUserSettingsDeleteChannelMutation>;
-export type UserSettingsDeleteChannelMutationResult = Apollo.MutationResult<Types.UserSettingsDeleteChannelMutation>;
-export type UserSettingsDeleteChannelMutationOptions = Apollo.BaseMutationOptions<Types.UserSettingsDeleteChannelMutation, Types.UserSettingsDeleteChannelMutationVariables>;
-export const UserSettingsCreateChannelDocument = gql`
-    mutation UserSettingsCreateChannel($input: CreateChannelInput) {
-  createChannel(input: $input) {
-    ...ChannelFull
-  }
+export function useUserSettingsDeleteChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >(UserSettingsDeleteChannelDocument, options);
 }
-    ${ChannelFullFragmentDoc}`;
-export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<Types.UserSettingsCreateChannelMutation, Types.UserSettingsCreateChannelMutationVariables>;
+export type UserSettingsDeleteChannelMutationHookResult = ReturnType<
+  typeof useUserSettingsDeleteChannelMutation
+>;
+export type UserSettingsDeleteChannelMutationResult =
+  Apollo.MutationResult<Types.UserSettingsDeleteChannelMutation>;
+export type UserSettingsDeleteChannelMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsDeleteChannelMutation,
+    Types.UserSettingsDeleteChannelMutationVariables
+  >;
+export const UserSettingsCreateChannelDocument = gql`
+  mutation UserSettingsCreateChannel($input: CreateChannelInput) {
+    createChannel(input: $input) {
+      ...ChannelFull
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
+export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsCreateChannelMutation,
+  Types.UserSettingsCreateChannelMutationVariables
+>;
 
 /**
  * __useUserSettingsCreateChannelMutation__
@@ -501,22 +943,40 @@ export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<Types.
  *   },
  * });
  */
-export function useUserSettingsCreateChannelMutation(baseOptions?: Apollo.MutationHookOptions<Types.UserSettingsCreateChannelMutation, Types.UserSettingsCreateChannelMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UserSettingsCreateChannelMutation, Types.UserSettingsCreateChannelMutationVariables>(UserSettingsCreateChannelDocument, options);
-      }
-export type UserSettingsCreateChannelMutationHookResult = ReturnType<typeof useUserSettingsCreateChannelMutation>;
-export type UserSettingsCreateChannelMutationResult = Apollo.MutationResult<Types.UserSettingsCreateChannelMutation>;
-export type UserSettingsCreateChannelMutationOptions = Apollo.BaseMutationOptions<Types.UserSettingsCreateChannelMutation, Types.UserSettingsCreateChannelMutationVariables>;
-export const UserSettingsCreateChannelKeyDocument = gql`
-    mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput) {
-  createStreamKey(input: $input) {
-    id
-    name
-  }
+export function useUserSettingsCreateChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >(UserSettingsCreateChannelDocument, options);
 }
-    `;
-export type UserSettingsCreateChannelKeyMutationFn = Apollo.MutationFunction<Types.UserSettingsCreateChannelKeyMutation, Types.UserSettingsCreateChannelKeyMutationVariables>;
+export type UserSettingsCreateChannelMutationHookResult = ReturnType<
+  typeof useUserSettingsCreateChannelMutation
+>;
+export type UserSettingsCreateChannelMutationResult =
+  Apollo.MutationResult<Types.UserSettingsCreateChannelMutation>;
+export type UserSettingsCreateChannelMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >;
+export const UserSettingsCreateChannelKeyDocument = gql`
+  mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput!) {
+    createStreamKey(input: $input) {
+      id
+      name
+    }
+  }
+`;
+export type UserSettingsCreateChannelKeyMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsCreateChannelKeyMutation,
+  Types.UserSettingsCreateChannelKeyMutationVariables
+>;
 
 /**
  * __useUserSettingsCreateChannelKeyMutation__
@@ -535,20 +995,36 @@ export type UserSettingsCreateChannelKeyMutationFn = Apollo.MutationFunction<Typ
  *   },
  * });
  */
-export function useUserSettingsCreateChannelKeyMutation(baseOptions?: Apollo.MutationHookOptions<Types.UserSettingsCreateChannelKeyMutation, Types.UserSettingsCreateChannelKeyMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UserSettingsCreateChannelKeyMutation, Types.UserSettingsCreateChannelKeyMutationVariables>(UserSettingsCreateChannelKeyDocument, options);
-      }
-export type UserSettingsCreateChannelKeyMutationHookResult = ReturnType<typeof useUserSettingsCreateChannelKeyMutation>;
-export type UserSettingsCreateChannelKeyMutationResult = Apollo.MutationResult<Types.UserSettingsCreateChannelKeyMutation>;
-export type UserSettingsCreateChannelKeyMutationOptions = Apollo.BaseMutationOptions<Types.UserSettingsCreateChannelKeyMutation, Types.UserSettingsCreateChannelKeyMutationVariables>;
-export const UserSettingsProfileDocument = gql`
-    query UserSettingsProfile {
-  self {
-    ...UserSettingsProfileFragment
-  }
+export function useUserSettingsCreateChannelKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
+  >(UserSettingsCreateChannelKeyDocument, options);
 }
-    ${UserSettingsProfileFragmentFragmentDoc}`;
+export type UserSettingsCreateChannelKeyMutationHookResult = ReturnType<
+  typeof useUserSettingsCreateChannelKeyMutation
+>;
+export type UserSettingsCreateChannelKeyMutationResult =
+  Apollo.MutationResult<Types.UserSettingsCreateChannelKeyMutation>;
+export type UserSettingsCreateChannelKeyMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsCreateChannelKeyMutation,
+    Types.UserSettingsCreateChannelKeyMutationVariables
+  >;
+export const UserSettingsProfileDocument = gql`
+  query UserSettingsProfile {
+    self {
+      ...UserSettingsProfileFragment
+    }
+  }
+  ${UserSettingsProfileFragmentFragmentDoc}
+`;
 
 /**
  * __useUserSettingsProfileQuery__
@@ -565,25 +1041,52 @@ export const UserSettingsProfileDocument = gql`
  *   },
  * });
  */
-export function useUserSettingsProfileQuery(baseOptions?: Apollo.QueryHookOptions<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>(UserSettingsProfileDocument, options);
-      }
-export function useUserSettingsProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>(UserSettingsProfileDocument, options);
-        }
-export type UserSettingsProfileQueryHookResult = ReturnType<typeof useUserSettingsProfileQuery>;
-export type UserSettingsProfileLazyQueryHookResult = ReturnType<typeof useUserSettingsProfileLazyQuery>;
-export type UserSettingsProfileQueryResult = Apollo.QueryResult<Types.UserSettingsProfileQuery, Types.UserSettingsProfileQueryVariables>;
-export const UpdateUserSettingsProfileDocument = gql`
-    mutation UpdateUserSettingsProfile($input: UpdateSelfInput!) {
-  updateSelf(input: $input) {
-    ...UserSettingsProfileFragment
-  }
+export function useUserSettingsProfileQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UserSettingsProfileQuery,
+    Types.UserSettingsProfileQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsProfileQuery,
+    Types.UserSettingsProfileQueryVariables
+  >(UserSettingsProfileDocument, options);
 }
-    ${UserSettingsProfileFragmentFragmentDoc}`;
-export type UpdateUserSettingsProfileMutationFn = Apollo.MutationFunction<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>;
+export function useUserSettingsProfileLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsProfileQuery,
+    Types.UserSettingsProfileQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsProfileQuery,
+    Types.UserSettingsProfileQueryVariables
+  >(UserSettingsProfileDocument, options);
+}
+export type UserSettingsProfileQueryHookResult = ReturnType<
+  typeof useUserSettingsProfileQuery
+>;
+export type UserSettingsProfileLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsProfileLazyQuery
+>;
+export type UserSettingsProfileQueryResult = Apollo.QueryResult<
+  Types.UserSettingsProfileQuery,
+  Types.UserSettingsProfileQueryVariables
+>;
+export const UpdateUserSettingsProfileDocument = gql`
+  mutation UpdateUserSettingsProfile($input: UpdateSelfInput!) {
+    updateSelf(input: $input) {
+      ...UserSettingsProfileFragment
+    }
+  }
+  ${UserSettingsProfileFragmentFragmentDoc}
+`;
+export type UpdateUserSettingsProfileMutationFn = Apollo.MutationFunction<
+  Types.UpdateUserSettingsProfileMutation,
+  Types.UpdateUserSettingsProfileMutationVariables
+>;
 
 /**
  * __useUpdateUserSettingsProfileMutation__
@@ -602,22 +1105,40 @@ export type UpdateUserSettingsProfileMutationFn = Apollo.MutationFunction<Types.
  *   },
  * });
  */
-export function useUpdateUserSettingsProfileMutation(baseOptions?: Apollo.MutationHookOptions<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>(UpdateUserSettingsProfileDocument, options);
-      }
-export type UpdateUserSettingsProfileMutationHookResult = ReturnType<typeof useUpdateUserSettingsProfileMutation>;
-export type UpdateUserSettingsProfileMutationResult = Apollo.MutationResult<Types.UpdateUserSettingsProfileMutation>;
-export type UpdateUserSettingsProfileMutationOptions = Apollo.BaseMutationOptions<Types.UpdateUserSettingsProfileMutation, Types.UpdateUserSettingsProfileMutationVariables>;
-export const UserSettingsPreferencesDocument = gql`
-    query UserSettingsPreferences {
-  userSettings {
-    id
-    useGravatar
-    singleUserMode
-  }
+export function useUpdateUserSettingsProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UpdateUserSettingsProfileMutation,
+    Types.UpdateUserSettingsProfileMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UpdateUserSettingsProfileMutation,
+    Types.UpdateUserSettingsProfileMutationVariables
+  >(UpdateUserSettingsProfileDocument, options);
 }
-    `;
+export type UpdateUserSettingsProfileMutationHookResult = ReturnType<
+  typeof useUpdateUserSettingsProfileMutation
+>;
+export type UpdateUserSettingsProfileMutationResult =
+  Apollo.MutationResult<Types.UpdateUserSettingsProfileMutation>;
+export type UpdateUserSettingsProfileMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UpdateUserSettingsProfileMutation,
+    Types.UpdateUserSettingsProfileMutationVariables
+  >;
+export const UserSettingsPreferencesDocument = gql`
+  query UserSettingsPreferences {
+    userSettings {
+      id
+      useGravatar
+      singleUserMode
+      singleUserChannel {
+        id
+      }
+    }
+  }
+`;
 
 /**
  * __useUserSettingsPreferencesQuery__
@@ -634,27 +1155,56 @@ export const UserSettingsPreferencesDocument = gql`
  *   },
  * });
  */
-export function useUserSettingsPreferencesQuery(baseOptions?: Apollo.QueryHookOptions<Types.UserSettingsPreferencesQuery, Types.UserSettingsPreferencesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserSettingsPreferencesQuery, Types.UserSettingsPreferencesQueryVariables>(UserSettingsPreferencesDocument, options);
-      }
-export function useUserSettingsPreferencesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserSettingsPreferencesQuery, Types.UserSettingsPreferencesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserSettingsPreferencesQuery, Types.UserSettingsPreferencesQueryVariables>(UserSettingsPreferencesDocument, options);
-        }
-export type UserSettingsPreferencesQueryHookResult = ReturnType<typeof useUserSettingsPreferencesQuery>;
-export type UserSettingsPreferencesLazyQueryHookResult = ReturnType<typeof useUserSettingsPreferencesLazyQuery>;
-export type UserSettingsPreferencesQueryResult = Apollo.QueryResult<Types.UserSettingsPreferencesQuery, Types.UserSettingsPreferencesQueryVariables>;
-export const UpdateUserSettingsPreferencesDocument = gql`
-    mutation UpdateUserSettingsPreferences($input: UpdateUserSettingsInput!) {
-  updateUserSettings(input: $input) {
-    id
-    useGravatar
-    singleUserMode
-  }
+export function useUserSettingsPreferencesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UserSettingsPreferencesQuery,
+    Types.UserSettingsPreferencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSettingsPreferencesQuery,
+    Types.UserSettingsPreferencesQueryVariables
+  >(UserSettingsPreferencesDocument, options);
 }
-    `;
-export type UpdateUserSettingsPreferencesMutationFn = Apollo.MutationFunction<Types.UpdateUserSettingsPreferencesMutation, Types.UpdateUserSettingsPreferencesMutationVariables>;
+export function useUserSettingsPreferencesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSettingsPreferencesQuery,
+    Types.UserSettingsPreferencesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSettingsPreferencesQuery,
+    Types.UserSettingsPreferencesQueryVariables
+  >(UserSettingsPreferencesDocument, options);
+}
+export type UserSettingsPreferencesQueryHookResult = ReturnType<
+  typeof useUserSettingsPreferencesQuery
+>;
+export type UserSettingsPreferencesLazyQueryHookResult = ReturnType<
+  typeof useUserSettingsPreferencesLazyQuery
+>;
+export type UserSettingsPreferencesQueryResult = Apollo.QueryResult<
+  Types.UserSettingsPreferencesQuery,
+  Types.UserSettingsPreferencesQueryVariables
+>;
+export const UpdateUserSettingsPreferencesDocument = gql`
+  mutation UpdateUserSettingsPreferences($input: UpdateUserSettingsInput!) {
+    updateUserSettings(input: $input) {
+      id
+      useGravatar
+      singleUserMode
+      singleUserChannel {
+        id
+      }
+    }
+  }
+`;
+export type UpdateUserSettingsPreferencesMutationFn = Apollo.MutationFunction<
+  Types.UpdateUserSettingsPreferencesMutation,
+  Types.UpdateUserSettingsPreferencesMutationVariables
+>;
 
 /**
  * __useUpdateUserSettingsPreferencesMutation__
@@ -673,23 +1223,38 @@ export type UpdateUserSettingsPreferencesMutationFn = Apollo.MutationFunction<Ty
  *   },
  * });
  */
-export function useUpdateUserSettingsPreferencesMutation(baseOptions?: Apollo.MutationHookOptions<Types.UpdateUserSettingsPreferencesMutation, Types.UpdateUserSettingsPreferencesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UpdateUserSettingsPreferencesMutation, Types.UpdateUserSettingsPreferencesMutationVariables>(UpdateUserSettingsPreferencesDocument, options);
-      }
-export type UpdateUserSettingsPreferencesMutationHookResult = ReturnType<typeof useUpdateUserSettingsPreferencesMutation>;
-export type UpdateUserSettingsPreferencesMutationResult = Apollo.MutationResult<Types.UpdateUserSettingsPreferencesMutation>;
-export type UpdateUserSettingsPreferencesMutationOptions = Apollo.BaseMutationOptions<Types.UpdateUserSettingsPreferencesMutation, Types.UpdateUserSettingsPreferencesMutationVariables>;
-export const GetFileForUploaderDocument = gql`
-    query GetFileForUploader($id: ID!) {
-  fileInfo(id: $id) {
-    id
-    filename
-    mimetype
-    encoding
-  }
+export function useUpdateUserSettingsPreferencesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UpdateUserSettingsPreferencesMutation,
+    Types.UpdateUserSettingsPreferencesMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UpdateUserSettingsPreferencesMutation,
+    Types.UpdateUserSettingsPreferencesMutationVariables
+  >(UpdateUserSettingsPreferencesDocument, options);
 }
-    `;
+export type UpdateUserSettingsPreferencesMutationHookResult = ReturnType<
+  typeof useUpdateUserSettingsPreferencesMutation
+>;
+export type UpdateUserSettingsPreferencesMutationResult =
+  Apollo.MutationResult<Types.UpdateUserSettingsPreferencesMutation>;
+export type UpdateUserSettingsPreferencesMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UpdateUserSettingsPreferencesMutation,
+    Types.UpdateUserSettingsPreferencesMutationVariables
+  >;
+export const GetFileForUploaderDocument = gql`
+  query GetFileForUploader($id: ID!) {
+    fileInfo(id: $id) {
+      id
+      filename
+      mimetype
+      encoding
+    }
+  }
+`;
 
 /**
  * __useGetFileForUploaderQuery__
@@ -707,28 +1272,54 @@ export const GetFileForUploaderDocument = gql`
  *   },
  * });
  */
-export function useGetFileForUploaderQuery(baseOptions: Apollo.QueryHookOptions<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>(GetFileForUploaderDocument, options);
-      }
-export function useGetFileForUploaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>(GetFileForUploaderDocument, options);
-        }
-export type GetFileForUploaderQueryHookResult = ReturnType<typeof useGetFileForUploaderQuery>;
-export type GetFileForUploaderLazyQueryHookResult = ReturnType<typeof useGetFileForUploaderLazyQuery>;
-export type GetFileForUploaderQueryResult = Apollo.QueryResult<Types.GetFileForUploaderQuery, Types.GetFileForUploaderQueryVariables>;
-export const UploadFileWithUploaderDocument = gql`
-    mutation UploadFileWithUploader($input: Upload!) {
-  uploadFile(file: $input) {
-    id
-    filename
-    mimetype
-    encoding
-  }
+export function useGetFileForUploaderQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.GetFileForUploaderQuery,
+    Types.GetFileForUploaderQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.GetFileForUploaderQuery,
+    Types.GetFileForUploaderQueryVariables
+  >(GetFileForUploaderDocument, options);
 }
-    `;
-export type UploadFileWithUploaderMutationFn = Apollo.MutationFunction<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>;
+export function useGetFileForUploaderLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.GetFileForUploaderQuery,
+    Types.GetFileForUploaderQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.GetFileForUploaderQuery,
+    Types.GetFileForUploaderQueryVariables
+  >(GetFileForUploaderDocument, options);
+}
+export type GetFileForUploaderQueryHookResult = ReturnType<
+  typeof useGetFileForUploaderQuery
+>;
+export type GetFileForUploaderLazyQueryHookResult = ReturnType<
+  typeof useGetFileForUploaderLazyQuery
+>;
+export type GetFileForUploaderQueryResult = Apollo.QueryResult<
+  Types.GetFileForUploaderQuery,
+  Types.GetFileForUploaderQueryVariables
+>;
+export const UploadFileWithUploaderDocument = gql`
+  mutation UploadFileWithUploader($input: Upload!) {
+    uploadFile(file: $input) {
+      id
+      filename
+      mimetype
+      encoding
+    }
+  }
+`;
+export type UploadFileWithUploaderMutationFn = Apollo.MutationFunction<
+  Types.UploadFileWithUploaderMutation,
+  Types.UploadFileWithUploaderMutationVariables
+>;
 
 /**
  * __useUploadFileWithUploaderMutation__
@@ -747,21 +1338,35 @@ export type UploadFileWithUploaderMutationFn = Apollo.MutationFunction<Types.Upl
  *   },
  * });
  */
-export function useUploadFileWithUploaderMutation(baseOptions?: Apollo.MutationHookOptions<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>(UploadFileWithUploaderDocument, options);
-      }
-export type UploadFileWithUploaderMutationHookResult = ReturnType<typeof useUploadFileWithUploaderMutation>;
-export type UploadFileWithUploaderMutationResult = Apollo.MutationResult<Types.UploadFileWithUploaderMutation>;
-export type UploadFileWithUploaderMutationOptions = Apollo.BaseMutationOptions<Types.UploadFileWithUploaderMutation, Types.UploadFileWithUploaderMutationVariables>;
-export const ActivitesSelectDocument = gql`
-    query ActivitesSelect($filter: ActivityFilter, $limit: ActivityLimit) {
-  activities(filter: $filter, limit: $limit) {
-    id
-    name
-  }
+export function useUploadFileWithUploaderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UploadFileWithUploaderMutation,
+    Types.UploadFileWithUploaderMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UploadFileWithUploaderMutation,
+    Types.UploadFileWithUploaderMutationVariables
+  >(UploadFileWithUploaderDocument, options);
 }
-    `;
+export type UploadFileWithUploaderMutationHookResult = ReturnType<
+  typeof useUploadFileWithUploaderMutation
+>;
+export type UploadFileWithUploaderMutationResult =
+  Apollo.MutationResult<Types.UploadFileWithUploaderMutation>;
+export type UploadFileWithUploaderMutationOptions = Apollo.BaseMutationOptions<
+  Types.UploadFileWithUploaderMutation,
+  Types.UploadFileWithUploaderMutationVariables
+>;
+export const ActivitesSelectDocument = gql`
+  query ActivitesSelect($filter: ActivityFilter, $limit: ActivityLimit) {
+    activities(filter: $filter, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useActivitesSelectQuery__
@@ -780,25 +1385,48 @@ export const ActivitesSelectDocument = gql`
  *   },
  * });
  */
-export function useActivitesSelectQuery(baseOptions?: Apollo.QueryHookOptions<Types.ActivitesSelectQuery, Types.ActivitesSelectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.ActivitesSelectQuery, Types.ActivitesSelectQueryVariables>(ActivitesSelectDocument, options);
-      }
-export function useActivitesSelectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.ActivitesSelectQuery, Types.ActivitesSelectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.ActivitesSelectQuery, Types.ActivitesSelectQueryVariables>(ActivitesSelectDocument, options);
-        }
-export type ActivitesSelectQueryHookResult = ReturnType<typeof useActivitesSelectQuery>;
-export type ActivitesSelectLazyQueryHookResult = ReturnType<typeof useActivitesSelectLazyQuery>;
-export type ActivitesSelectQueryResult = Apollo.QueryResult<Types.ActivitesSelectQuery, Types.ActivitesSelectQueryVariables>;
-export const ActivitiesSelectInitialDocument = gql`
-    query ActivitiesSelectInitial($filter: ActivityFilter) {
-  activities(filter: $filter) {
-    id
-    name
-  }
+export function useActivitesSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >(ActivitesSelectDocument, options);
 }
-    `;
+export function useActivitesSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ActivitesSelectQuery,
+    Types.ActivitesSelectQueryVariables
+  >(ActivitesSelectDocument, options);
+}
+export type ActivitesSelectQueryHookResult = ReturnType<
+  typeof useActivitesSelectQuery
+>;
+export type ActivitesSelectLazyQueryHookResult = ReturnType<
+  typeof useActivitesSelectLazyQuery
+>;
+export type ActivitesSelectQueryResult = Apollo.QueryResult<
+  Types.ActivitesSelectQuery,
+  Types.ActivitesSelectQueryVariables
+>;
+export const ActivitiesSelectInitialDocument = gql`
+  query ActivitiesSelectInitial($filter: ActivityFilter) {
+    activities(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useActivitiesSelectInitialQuery__
@@ -816,28 +1444,110 @@ export const ActivitiesSelectInitialDocument = gql`
  *   },
  * });
  */
-export function useActivitiesSelectInitialQuery(baseOptions?: Apollo.QueryHookOptions<Types.ActivitiesSelectInitialQuery, Types.ActivitiesSelectInitialQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.ActivitiesSelectInitialQuery, Types.ActivitiesSelectInitialQueryVariables>(ActivitiesSelectInitialDocument, options);
-      }
-export function useActivitiesSelectInitialLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.ActivitiesSelectInitialQuery, Types.ActivitiesSelectInitialQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.ActivitiesSelectInitialQuery, Types.ActivitiesSelectInitialQueryVariables>(ActivitiesSelectInitialDocument, options);
-        }
-export type ActivitiesSelectInitialQueryHookResult = ReturnType<typeof useActivitiesSelectInitialQuery>;
-export type ActivitiesSelectInitialLazyQueryHookResult = ReturnType<typeof useActivitiesSelectInitialLazyQuery>;
-export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<Types.ActivitiesSelectInitialQuery, Types.ActivitiesSelectInitialQueryVariables>;
-export const UserInfoDocument = gql`
-    query UserInfo($id: ID!) {
-  user(id: $id) {
-    avatar {
-      filename
-    }
-    username
-    displayName
-  }
+export function useActivitiesSelectInitialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >(ActivitiesSelectInitialDocument, options);
 }
-    `;
+export function useActivitiesSelectInitialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ActivitiesSelectInitialQuery,
+    Types.ActivitiesSelectInitialQueryVariables
+  >(ActivitiesSelectInitialDocument, options);
+}
+export type ActivitiesSelectInitialQueryHookResult = ReturnType<
+  typeof useActivitiesSelectInitialQuery
+>;
+export type ActivitiesSelectInitialLazyQueryHookResult = ReturnType<
+  typeof useActivitiesSelectInitialLazyQuery
+>;
+export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<
+  Types.ActivitiesSelectInitialQuery,
+  Types.ActivitiesSelectInitialQueryVariables
+>;
+export const SelfChannelsSelectDocument = gql`
+  query SelfChannelsSelect($filter: ChannelsQueryFilter) {
+    channels(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useSelfChannelsSelectQuery__
+ *
+ * To run a query within a React component, call `useSelfChannelsSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelfChannelsSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelfChannelsSelectQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useSelfChannelsSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.SelfChannelsSelectQuery,
+    Types.SelfChannelsSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.SelfChannelsSelectQuery,
+    Types.SelfChannelsSelectQueryVariables
+  >(SelfChannelsSelectDocument, options);
+}
+export function useSelfChannelsSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.SelfChannelsSelectQuery,
+    Types.SelfChannelsSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.SelfChannelsSelectQuery,
+    Types.SelfChannelsSelectQueryVariables
+  >(SelfChannelsSelectDocument, options);
+}
+export type SelfChannelsSelectQueryHookResult = ReturnType<
+  typeof useSelfChannelsSelectQuery
+>;
+export type SelfChannelsSelectLazyQueryHookResult = ReturnType<
+  typeof useSelfChannelsSelectLazyQuery
+>;
+export type SelfChannelsSelectQueryResult = Apollo.QueryResult<
+  Types.SelfChannelsSelectQuery,
+  Types.SelfChannelsSelectQueryVariables
+>;
+export const UserInfoDocument = gql`
+  query UserInfo($id: ID!) {
+    user(id: $id) {
+      avatar {
+        filename
+      }
+      username
+      displayName
+    }
+  }
+`;
 
 /**
  * __useUserInfoQuery__
@@ -855,24 +1565,46 @@ export const UserInfoDocument = gql`
  *   },
  * });
  */
-export function useUserInfoQuery(baseOptions: Apollo.QueryHookOptions<Types.UserInfoQuery, Types.UserInfoQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(UserInfoDocument, options);
-      }
-export function useUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.UserInfoQuery, Types.UserInfoQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(UserInfoDocument, options);
-        }
-export type UserInfoQueryHookResult = ReturnType<typeof useUserInfoQuery>;
-export type UserInfoLazyQueryHookResult = ReturnType<typeof useUserInfoLazyQuery>;
-export type UserInfoQueryResult = Apollo.QueryResult<Types.UserInfoQuery, Types.UserInfoQueryVariables>;
-export const CurrentUserFullDocument = gql`
-    query CurrentUserFull {
-  self {
-    ...CurrentUser
-  }
+export function useUserInfoQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserInfoQuery,
+    Types.UserInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(
+    UserInfoDocument,
+    options
+  );
 }
-    ${CurrentUserFragmentDoc}`;
+export function useUserInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserInfoQuery,
+    Types.UserInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<Types.UserInfoQuery, Types.UserInfoQueryVariables>(
+    UserInfoDocument,
+    options
+  );
+}
+export type UserInfoQueryHookResult = ReturnType<typeof useUserInfoQuery>;
+export type UserInfoLazyQueryHookResult = ReturnType<
+  typeof useUserInfoLazyQuery
+>;
+export type UserInfoQueryResult = Apollo.QueryResult<
+  Types.UserInfoQuery,
+  Types.UserInfoQueryVariables
+>;
+export const CurrentUserFullDocument = gql`
+  query CurrentUserFull {
+    self {
+      ...CurrentUser
+    }
+  }
+  ${CurrentUserFragmentDoc}
+`;
 
 /**
  * __useCurrentUserFullQuery__
@@ -889,26 +1621,52 @@ export const CurrentUserFullDocument = gql`
  *   },
  * });
  */
-export function useCurrentUserFullQuery(baseOptions?: Apollo.QueryHookOptions<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>(CurrentUserFullDocument, options);
-      }
-export function useCurrentUserFullLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>(CurrentUserFullDocument, options);
-        }
-export type CurrentUserFullQueryHookResult = ReturnType<typeof useCurrentUserFullQuery>;
-export type CurrentUserFullLazyQueryHookResult = ReturnType<typeof useCurrentUserFullLazyQuery>;
-export type CurrentUserFullQueryResult = Apollo.QueryResult<Types.CurrentUserFullQuery, Types.CurrentUserFullQueryVariables>;
-export const CurrentUserSettingsDocument = gql`
-    query CurrentUserSettings {
-  userSettings {
-    id
-    useGravatar
-    singleUserMode
-  }
+export function useCurrentUserFullQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.CurrentUserFullQuery,
+    Types.CurrentUserFullQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.CurrentUserFullQuery,
+    Types.CurrentUserFullQueryVariables
+  >(CurrentUserFullDocument, options);
 }
-    `;
+export function useCurrentUserFullLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.CurrentUserFullQuery,
+    Types.CurrentUserFullQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.CurrentUserFullQuery,
+    Types.CurrentUserFullQueryVariables
+  >(CurrentUserFullDocument, options);
+}
+export type CurrentUserFullQueryHookResult = ReturnType<
+  typeof useCurrentUserFullQuery
+>;
+export type CurrentUserFullLazyQueryHookResult = ReturnType<
+  typeof useCurrentUserFullLazyQuery
+>;
+export type CurrentUserFullQueryResult = Apollo.QueryResult<
+  Types.CurrentUserFullQuery,
+  Types.CurrentUserFullQueryVariables
+>;
+export const CurrentUserSettingsDocument = gql`
+  query CurrentUserSettings {
+    userSettings {
+      id
+      useGravatar
+      singleUserMode
+      singleUserChannel {
+        id
+      }
+    }
+  }
+`;
 
 /**
  * __useCurrentUserSettingsQuery__
@@ -925,26 +1683,52 @@ export const CurrentUserSettingsDocument = gql`
  *   },
  * });
  */
-export function useCurrentUserSettingsQuery(baseOptions?: Apollo.QueryHookOptions<Types.CurrentUserSettingsQuery, Types.CurrentUserSettingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<Types.CurrentUserSettingsQuery, Types.CurrentUserSettingsQueryVariables>(CurrentUserSettingsDocument, options);
-      }
-export function useCurrentUserSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Types.CurrentUserSettingsQuery, Types.CurrentUserSettingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<Types.CurrentUserSettingsQuery, Types.CurrentUserSettingsQueryVariables>(CurrentUserSettingsDocument, options);
-        }
-export type CurrentUserSettingsQueryHookResult = ReturnType<typeof useCurrentUserSettingsQuery>;
-export type CurrentUserSettingsLazyQueryHookResult = ReturnType<typeof useCurrentUserSettingsLazyQuery>;
-export type CurrentUserSettingsQueryResult = Apollo.QueryResult<Types.CurrentUserSettingsQuery, Types.CurrentUserSettingsQueryVariables>;
-export const SignInDocument = gql`
-    mutation SignIn($username: String!, $password: String!) {
-  signIn(input: {username: $username, password: $password}) {
-    token
-    expiresAt
-  }
+export function useCurrentUserSettingsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.CurrentUserSettingsQuery,
+    Types.CurrentUserSettingsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.CurrentUserSettingsQuery,
+    Types.CurrentUserSettingsQueryVariables
+  >(CurrentUserSettingsDocument, options);
 }
-    `;
-export type SignInMutationFn = Apollo.MutationFunction<Types.SignInMutation, Types.SignInMutationVariables>;
+export function useCurrentUserSettingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.CurrentUserSettingsQuery,
+    Types.CurrentUserSettingsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.CurrentUserSettingsQuery,
+    Types.CurrentUserSettingsQueryVariables
+  >(CurrentUserSettingsDocument, options);
+}
+export type CurrentUserSettingsQueryHookResult = ReturnType<
+  typeof useCurrentUserSettingsQuery
+>;
+export type CurrentUserSettingsLazyQueryHookResult = ReturnType<
+  typeof useCurrentUserSettingsLazyQuery
+>;
+export type CurrentUserSettingsQueryResult = Apollo.QueryResult<
+  Types.CurrentUserSettingsQuery,
+  Types.CurrentUserSettingsQueryVariables
+>;
+export const SignInDocument = gql`
+  mutation SignIn($username: String!, $password: String!) {
+    signIn(input: { username: $username, password: $password }) {
+      token
+      expiresAt
+    }
+  }
+`;
+export type SignInMutationFn = Apollo.MutationFunction<
+  Types.SignInMutation,
+  Types.SignInMutationVariables
+>;
 
 /**
  * __useSignInMutation__
@@ -964,22 +1748,36 @@ export type SignInMutationFn = Apollo.MutationFunction<Types.SignInMutation, Typ
  *   },
  * });
  */
-export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<Types.SignInMutation, Types.SignInMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.SignInMutation, Types.SignInMutationVariables>(SignInDocument, options);
-      }
+export function useSignInMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SignInMutation,
+    Types.SignInMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SignInMutation,
+    Types.SignInMutationVariables
+  >(SignInDocument, options);
+}
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<Types.SignInMutation>;
-export type SignInMutationOptions = Apollo.BaseMutationOptions<Types.SignInMutation, Types.SignInMutationVariables>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<
+  Types.SignInMutation,
+  Types.SignInMutationVariables
+>;
 export const SignUpDocument = gql`
-    mutation SignUp($username: String!, $password: String!, $email: String!) {
-  signUp(input: {username: $username, password: $password, email: $email}) {
-    id
-    username
+  mutation SignUp($username: String!, $password: String!, $email: String!) {
+    signUp(input: { username: $username, password: $password, email: $email }) {
+      id
+      username
+    }
   }
-}
-    `;
-export type SignUpMutationFn = Apollo.MutationFunction<Types.SignUpMutation, Types.SignUpMutationVariables>;
+`;
+export type SignUpMutationFn = Apollo.MutationFunction<
+  Types.SignUpMutation,
+  Types.SignUpMutationVariables
+>;
 
 /**
  * __useSignUpMutation__
@@ -1000,10 +1798,21 @@ export type SignUpMutationFn = Apollo.MutationFunction<Types.SignUpMutation, Typ
  *   },
  * });
  */
-export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<Types.SignUpMutation, Types.SignUpMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<Types.SignUpMutation, Types.SignUpMutationVariables>(SignUpDocument, options);
-      }
+export function useSignUpMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SignUpMutation,
+    Types.SignUpMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SignUpMutation,
+    Types.SignUpMutationVariables
+  >(SignUpDocument, options);
+}
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<Types.SignUpMutation>;
-export type SignUpMutationOptions = Apollo.BaseMutationOptions<Types.SignUpMutation, Types.SignUpMutationVariables>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<
+  Types.SignUpMutation,
+  Types.SignUpMutationVariables
+>;

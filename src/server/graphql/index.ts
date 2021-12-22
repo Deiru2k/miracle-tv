@@ -8,6 +8,8 @@ import { connection } from "miracle-tv-server/db/setup-db";
 import { readFileSync } from "fs";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
+  sessionResolver,
+  settingsResolver,
   userQueryResolver,
   userResolver,
   userSelfAccountResolver,
@@ -58,6 +60,7 @@ import {
 } from "miracle-tv-server/graphql/resolvers/stream-keys";
 import {
   createStreamKeyMutation,
+  revokeAllStreamKeysMutation,
   revokeStreamKeyMutation,
   revokeStreamKeysMutation,
 } from "miracle-tv-server/graphql/mutations/stream-keys";
@@ -69,6 +72,7 @@ import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { authDirective } from "miracle-tv-server/graphql/directives/auth";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
+import { UserAgent } from "express-useragent";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -122,9 +126,12 @@ let executableSchema = makeExecutableSchema({
       createStreamKey: createStreamKeyMutation,
       revokeStreamKeys: revokeStreamKeysMutation,
       revokeStreamKey: revokeStreamKeyMutation,
+      revokeAllStreamKeys: revokeAllStreamKeysMutation,
       revokeSelfSessions: revokeSelfSessionsMutation,
     },
     User: userResolver,
+    UserSettings: settingsResolver,
+    Session: sessionResolver,
     Channel: channelResolver,
     Activity: activityResolver,
     Role: roleResolvers,
@@ -142,7 +149,7 @@ export const graphqlEndpoint = new ApolloServer({
       console.error(
         red`There was an internal server error while handling a request:`
       );
-      console.log(err.originalError);
+      console.error(err.originalError);
     }
     return err;
   },
@@ -167,6 +174,11 @@ export const graphqlEndpoint = new ApolloServer({
     const sessionIsValid =
       DateTime.fromISO(session?.expiresAt).diffNow("seconds").seconds > 0 ||
       false;
+    if (sessionIsValid) {
+      const ua = new UserAgent().parse(req.headers["user-agent"]);
+      const userAgent = `${ua.browser} (${ua.os})`;
+      db.sessions.updateSessionInfo(session.id, req.ip, userAgent);
+    }
     const user = sessionIsValid
       ? ((await db.users.getUserById(session?.user)) as DbUser | null)
       : null;

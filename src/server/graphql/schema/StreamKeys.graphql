@@ -25,15 +25,32 @@ input CreateStreamKeyInput {
   name: String
 }
 
+input RevokeStreamKeysInput {
+  userId: ID!
+  channelId: ID!
+  name: String
+}
+
+input RevokeAllStreamKeysInput {
+  userId: ID!
+}
+
 extend type Mutation {
-  createStreamKey(input: CreateStreamKeyInput): StreamKey!
+  createStreamKey(input: CreateStreamKeyInput!): StreamKey!
     @auth(
       rights: [
         { unit: SELF, subject: "streamKeys" }
         { unit: WRITE, subject: "streamKeys" }
       ]
     )
-  revokeStreamKeys(input: CreateStreamKeyInput): Boolean!
+  revokeStreamKeys(input: RevokeStreamKeysInput!): Boolean!
+    @auth(
+      rights: [
+        { unit: SELF, subject: "streamKeys" }
+        { unit: WRITE, subject: "streamKeys" }
+      ]
+    )
+  revokeAllStreamKeys(input: RevokeAllStreamKeysInput!): Boolean!
     @auth(
       rights: [
         { unit: SELF, subject: "streamKeys" }

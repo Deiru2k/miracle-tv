@@ -13,7 +13,7 @@ export const NavLink = ({ isActive, href, ...props }: Props) => {
 
   const onClick = useCallback(() => {
     push(href, null, { shallow: true });
-  }, []);
+  }, [href]);
 
   return <Button {...props} sx={styles} variant="link" onClick={onClick} />;
 };

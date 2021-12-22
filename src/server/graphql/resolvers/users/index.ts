@@ -3,8 +3,10 @@ import { AuthenticationError } from "miracle-tv-server/graphql/errors/auth";
 import {
   QueryResolvers,
   Role,
+  SessionResolvers,
   User,
   UserResolvers,
+  UserSettingsResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
@@ -68,6 +70,22 @@ const gravatarResolver: UserResolvers["useGravatar"] = async (
   _,
   { db: { userSettings } }
 ) => (await userSettings.getUserSettingsById(user.id)).useGravatar;
+
+export const sessionResolver: SessionResolvers<ResolverContext> = {
+  isCurrentSession: (session, _, { session: currentSession }) => {
+    return session.id === currentSession.id;
+  },
+};
+
+export const settingsResolver: UserSettingsResolvers<ResolverContext> = {
+  singleUserChannel: async (settings, _, { db: { channels } }) => {
+    return settings.singleUserChannel
+      ? await channels.getChannelById(
+          settings.singleUserChannel as unknown as string
+        )
+      : null;
+  },
+};
 
 export const userResolver: UserResolvers = {
   id: (user) => user.id,

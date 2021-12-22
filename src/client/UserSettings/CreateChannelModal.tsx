@@ -14,9 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { Form } from "react-final-form";
 import { ChannelBasicForm } from "./ChannelBasicForm";
-import { useUserSettingsCreateChannelMutation } from "miracle-tv-shared/hooks";
+import {
+  useUpdateUserSettingsPreferencesMutation,
+  useUserSettingsCreateChannelMutation,
+} from "miracle-tv-shared/hooks";
 import { CreateChannelInput } from "miracle-tv-shared/graphql";
 import { useRouter } from "next/dist/client/router";
+import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 
 gql`
   mutation UserSettingsCreateChannel($input: CreateChannelInput) {
@@ -39,6 +43,8 @@ export const CreateChannelModal = ({
 }: Props) => {
   const toast = useToast();
   const { push } = useRouter();
+  const { currentSettings } = useCurrentUserSettings();
+  const [updateSettings] = useUpdateUserSettingsPreferencesMutation();
   const [createChannelMutation, { loading: isCreating }] =
     useUserSettingsCreateChannelMutation({
       onCompleted: ({ createChannel }) => {
@@ -55,9 +61,22 @@ export const CreateChannelModal = ({
     });
   const createChannel = useCallback(
     (values: CreateChannelInput) => {
-      createChannelMutation({ variables: { input: values } });
+      createChannelMutation({ variables: { input: values } }).then(
+        ({ data = {} }) => {
+          if (
+            currentSettings?.singleUserMode &&
+            !currentSettings.singleUserChannel
+          ) {
+            updateSettings({
+              variables: {
+                input: { singleUserChannel: data?.createChannel?.id },
+              },
+            });
+          }
+        }
+      );
     },
-    [createChannelMutation]
+    [createChannelMutation, currentSettings]
   );
 
   return (

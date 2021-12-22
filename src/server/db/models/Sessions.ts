@@ -3,7 +3,10 @@ import { Model } from "miracle-tv-server/db/models";
 import { SessionResponse } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { head } from "ramda";
-import { ServerError } from "miracle-tv-server/graphql/errors/general";
+import {
+  NotFoundError,
+  ServerError,
+} from "miracle-tv-server/graphql/errors/general";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 
 export class SessionsModel extends Model {
@@ -63,6 +66,26 @@ export class SessionsModel extends Model {
     if (errors) {
       throw new ServerError("Couldn't revoke sessions");
     }
+    return true;
+  }
+
+  async updateSessionInfo(
+    id: string,
+    ip: string,
+    userAgent: string
+  ): Promise<boolean> {
+    const session = await this.getSessionById(id);
+    if (!session) {
+      throw new NotFoundError("Session not found");
+    }
+    await this.table
+      .get(id)
+      .update({
+        lastUsedAt: DateTime.now().toISO(),
+        userAgent,
+        ip,
+      })
+      .run(this.conn);
     return true;
   }
 }

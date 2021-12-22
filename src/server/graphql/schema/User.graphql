@@ -23,7 +23,9 @@ type Session {
   user: ID!
   expiresAt: DateTime!
   lastUsedAt: DateTime!
+  userAgent: String!
   ip: String!
+  isCurrentSession: Boolean!
 }
 
 type SessionResponse {
@@ -31,11 +33,11 @@ type SessionResponse {
   expiresAt: DateTime!
 }
 
-# TODO: Implement UserSettings query & mutation to update non-profile settings
 type UserSettings {
   id: ID
   useGravatar: Boolean
   singleUserMode: Boolean
+  singleUserChannel: Channel
 }
 
 extend type Query {
@@ -82,6 +84,7 @@ input UpdateUserInput {
 input UpdateUserSettingsInput {
   singleUserMode: Boolean
   useGravatar: Boolean
+  singleUserChannel: ID
 }
 
 input UpdateUserAccountInput {

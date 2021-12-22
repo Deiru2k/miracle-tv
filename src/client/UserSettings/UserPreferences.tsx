@@ -6,10 +6,11 @@ import {
   useUpdateUserSettingsPreferencesMutation,
   useUserSettingsPreferencesQuery,
 } from "miracle-tv-shared/hooks";
-import { Box, Button, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
 import { Form } from "react-final-form";
 import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
+import { FormSelfChannelSelect } from "miracle-tv-client/components/form/selects/FormSelfChannelSelect";
 
 gql`
   query UserSettingsPreferences {
@@ -17,6 +18,9 @@ gql`
       id
       useGravatar
       singleUserMode
+      singleUserChannel {
+        id
+      }
     }
   }
   mutation UpdateUserSettingsPreferences($input: UpdateUserSettingsInput!) {
@@ -24,6 +28,9 @@ gql`
       id
       useGravatar
       singleUserMode
+      singleUserChannel {
+        id
+      }
     }
   }
 `;
@@ -46,6 +53,7 @@ export const UserPreferences = () => {
         ? {
             useGravatar: data?.userSettings?.useGravatar,
             singleUserMode: data?.userSettings?.singleUserMode,
+            singleUserChannel: data?.userSettings?.singleUserChannel?.id,
           }
         : {},
     [data]
@@ -59,33 +67,54 @@ export const UserPreferences = () => {
   );
 
   return (
-    <Panel>
-    <Form<UpdateUserSettingsInput>
-      onSubmit={updateSettings}
-      initialValues={formData}
-    >
-      {({ handleSubmit, dirty }) => (
-        <form onSubmit={handleSubmit}>
-          <FormToggle name="singleUserMode" label="Single User Mode" help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels." mb={4} />
-          <FormToggle name="useGravatar" label="Use Gravatar" help="If enabled, profile picture will use Gravatar instead of currently uploaded image"/>
-          <Box
-            display="inline-block"
-            position="sticky"
-            float="right"
-            bottom={0}
-          >
-            <Button
-              type="submit"
-              mt={6}
-              isLoading={isUpdating}
-              isDisabled={!dirty}
-            >
-              Update Settings
-            </Button>
-          </Box>
-        </form>
-      )}
-    </Form>
+    <>
+      <Heading as="h3" size="md" mb={6}>
+        Profile preferences
+      </Heading>
+      <Panel>
+        <Form<UpdateUserSettingsInput>
+          onSubmit={updateSettings}
+          initialValues={formData}
+        >
+          {({ handleSubmit, values, dirty }) => (
+            <form onSubmit={handleSubmit}>
+              <FormToggle
+                name="singleUserMode"
+                label="Single User Mode"
+                help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels."
+                mb={4}
+              />
+              {values.singleUserMode && (
+                <FormSelfChannelSelect
+                  name="singleUserChannel"
+                  help="Select channel that you would like to use."
+                  mb={4}
+                />
+              )}
+              <FormToggle
+                name="useGravatar"
+                label="Use Gravatar"
+                help="If enabled, profile picture will use Gravatar instead of currently uploaded image"
+              />
+              <Box
+                display="inline-block"
+                position="sticky"
+                float="right"
+                bottom={0}
+              >
+                <Button
+                  type="submit"
+                  mt={6}
+                  isLoading={isUpdating}
+                  isDisabled={!dirty}
+                >
+                  Update Settings
+                </Button>
+              </Box>
+            </form>
+          )}
+        </Form>
       </Panel>
+    </>
   );
 };

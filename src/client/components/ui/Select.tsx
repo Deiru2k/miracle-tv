@@ -79,7 +79,7 @@ export const Select = ({
     setShowOptions(false);
     setShowInput(false);
     setInputValue("");
-    onSearch("");
+    onSearch?.("");
   }, [setShowOptions, setShowInput, multi]);
 
   const onOptionPick = useCallback(
@@ -88,7 +88,7 @@ export const Select = ({
       const changeValue = multi ? newValue : head(newValue);
       setValue(newValue);
       onChange(changeValue);
-      onSearch("");
+      onSearch?.("");
       setShowOptions(false);
       setShowInput(false);
       setInputValue("");
@@ -123,12 +123,12 @@ export const Select = ({
       (opt) => !selectValue.includes(String(opt.value))
     );
     const byInputValue = notContainingValue.filter((opt) =>
-      !onSearch
+      !onSearch && inputValue !== ""
         ? opt.label.toLowerCase().includes(inputValue.toLowerCase())
         : true
     );
     return byInputValue;
-  }, [selectValue, inputValue]);
+  }, [options, selectValue, inputValue]);
 
   return (
     <>

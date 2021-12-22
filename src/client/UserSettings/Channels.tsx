@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { gql } from "@apollo/client";
 import {
   useUserSettingsChannelsQuery,
@@ -8,13 +8,9 @@ import { channelFragment } from "miracle-tv-client/components/ui/channels/const"
 import {
   Box,
   Button,
-  VStack,
   useDisclosure,
-  Flex,
   Heading,
-  HStack,
   IconButton,
-  Text,
   useToast,
 } from "@chakra-ui/react";
 import { CreateChannelModal } from "./CreateChannelModal";
@@ -23,13 +19,15 @@ import NotFound from "src/pages/404";
 import { ChannelSettingsPage } from "miracle-tv-client/UserSettings/ChannelSettingsPage";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { Panel } from "miracle-tv-client/components/ui/Panel";
-import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import {
+  useCurrentUser,
+  useCurrentUserSettings,
+} from "miracle-tv-client/hooks/auth";
 import { Attract } from "miracle-tv-client/components/ui/Attract";
 import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
-import { getMediaURL } from "miracle-tv-shared/media";
 import { ChannelFullFragment } from "miracle-tv-shared/graphql";
 import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/SimpleChannelList";
+import { FloatingControls } from "miracle-tv-client/components/ui/FloatingControls";
 
 gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
@@ -46,6 +44,7 @@ gql`
 export const SettingsChannelsList = () => {
   const toast = useToast();
   const { currentUser } = useCurrentUser();
+  const { currentSettings } = useCurrentUserSettings();
   const createChannelDisclosure = useDisclosure();
   const deleteChannelDisclosure = useDisclosure();
   const [channelToDelete, setChannelToDelete] = useState<string | null>();
@@ -104,41 +103,61 @@ export const SettingsChannelsList = () => {
 
   return (
     <>
-      <ConfirmDialog
-        {...deleteChannelDisclosure}
-        onConfirm={onChannelDelete}
-        confirmColorScheme="red"
-        isLoading={isDeleting}
-      >
-        {"Are you sure you want to delete this channel?"}
-      </ConfirmDialog>
-      <CreateChannelModal
-        redirectUrlBase={(id) => `/settings/user/channels/${id}/details`}
-        onCreate={refetch}
-        {...createChannelDisclosure}
-      />
-      {!!channels?.length && (
-        <Box position="sticky" top="0" right="0" mb={14} zIndex={2}>
-          <Button float="right" onClick={createChannelDisclosure.onOpen}>
-            Create channel
-          </Button>
-        </Box>
-      )}
-      {!channels?.length && (
-        <Attract>
-          <Heading mt={2} mb={2}>
-            {"You don't seem to have any channels yet."}
-          </Heading>
-          <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
-            Create one!
-          </Button>
-        </Attract>
-      )}
-      <SimpleChannelList
-        channels={channels}
-        controls={controlsRenderer}
-        defaultThumbnail={currentUser?.streamThumbnail?.filename}
-      />
+      <Box>
+        <ConfirmDialog
+          {...deleteChannelDisclosure}
+          onConfirm={onChannelDelete}
+          confirmColorScheme="red"
+          isLoading={isDeleting}
+        >
+          {"Are you sure you want to delete this channel?"}
+        </ConfirmDialog>
+        <CreateChannelModal
+          redirectUrlBase={(id) => `/settings/user/channels/${id}/details`}
+          onCreate={refetch}
+          {...createChannelDisclosure}
+        />
+        <FloatingControls heading="Channels" m={6}>
+          {!!channels?.length && (
+            <>
+              <Button float="right" onClick={createChannelDisclosure.onOpen}>
+                Create channel
+              </Button>
+            </>
+          )}
+        </FloatingControls>
+        {!channels?.length && !currentSettings?.singleUserMode && (
+          <Attract>
+            <Heading mt={2} mb={2}>
+              {"You don't seem to have any channels yet."}
+            </Heading>
+            <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
+              Create one!
+            </Button>
+          </Attract>
+        )}
+        {currentSettings?.singleUserMode && !currentSettings.singleUserChannel && (
+          <Attract>
+            <Heading mt={2} mb={2} size="lg">
+              {"You have single user mode enabled, but no assigned channel."}
+            </Heading>
+            {channels?.length > 0 &&
+              "Please, go to profile settings and assign one."}
+            {channels?.length === 0 && (
+              <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
+                Create one!
+              </Button>
+            )}
+          </Attract>
+        )}
+        {!currentSettings?.singleUserMode && (
+          <SimpleChannelList
+            channels={channels}
+            controls={controlsRenderer}
+            defaultThumbnail={currentUser?.streamThumbnail?.filename}
+          />
+        )}
+      </Box>
     </>
   );
 };

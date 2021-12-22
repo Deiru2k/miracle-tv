@@ -63,6 +63,11 @@ export class StreamKeysModel extends Model {
     return res.errors <= 0;
   }
 
+  async deleteStreamKeysByUser(userId: string): Promise<boolean> {
+    const res = await this.table.filter({ userId }).delete().run(this.conn);
+    return res.errors <= 0;
+  }
+
   async deleteStreamKey(keyId: string): Promise<boolean> {
     const res = await this.table.get(keyId).delete().run(this.conn);
     return res.errors <= 0;

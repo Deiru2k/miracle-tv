@@ -11,7 +11,10 @@ import {
   UpdateUserAccountInput,
   UpdateUserInput,
 } from "miracle-tv-shared/graphql";
-import { useAccountDetailsQuery, useSettingsUpdateAccountMutation } from "miracle-tv-shared/hooks";
+import {
+  useAccountDetailsQuery,
+  useSettingsUpdateAccountMutation,
+} from "miracle-tv-shared/hooks";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 
 gql`
@@ -42,30 +45,43 @@ export const AccountDetails = () => {
     email: selfAccount?.email,
   };
 
-  const [updateAccountMutation, { loading: isUpdating }] = useSettingsUpdateAccountMutation({
-    onCompleted: () =>
-      toast({ status: "success", title: "Updated user account!" }),
-    onError: () =>
-      toast({ status: "error", title: "Error updating user account." }),
-  });
+  const [updateAccountMutation, { loading: isUpdating }] =
+    useSettingsUpdateAccountMutation({
+      onCompleted: () =>
+        toast({ status: "success", title: "Updated user account!" }),
+      onError: () =>
+        toast({ status: "error", title: "Error updating user account." }),
+    });
 
-  const updateAccount = useCallback((values: UpdateUserAccountInput) => {
-    updateAccountMutation({ variables: { input: values } });
-  }, [updateAccountMutation]);
+  const updateAccount = useCallback(
+    (values: UpdateUserAccountInput) => {
+      updateAccountMutation({ variables: { input: values } });
+    },
+    [updateAccountMutation]
+  );
 
   return (
-    <Panel>
-      <Heading size="lg" mb={4}>Profile Details</Heading>
-      <Form<UpdateUserAccountInput> onSubmit={updateAccount} initialValues={userFormData}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <FormInput name="email" label="E-mail" />
-            <Flex w="100%" mt={4}>
-              <Button ml="auto" type="submit" isLoading={isUpdating}>Save</Button>
-            </Flex>
-          </form>
-        )}
-      </Form>
-    </Panel>
+    <>
+      <Heading as="h3" size="md" mb={6}>
+        Account Details
+      </Heading>
+      <Panel>
+        <Form<UpdateUserAccountInput>
+          onSubmit={updateAccount}
+          initialValues={userFormData}
+        >
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <FormInput name="email" label="E-mail" />
+              <Flex w="100%" mt={4}>
+                <Button ml="auto" type="submit" isLoading={isUpdating}>
+                  Save
+                </Button>
+              </Flex>
+            </form>
+          )}
+        </Form>
+      </Panel>
+    </>
   );
 };

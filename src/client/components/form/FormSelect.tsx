@@ -9,6 +9,7 @@ export type FormSelectProps = {
   name: string;
   placeholder?: string;
   label?: string;
+  help?: string;
   error?: string;
   type?: string;
   hideLabel?: boolean;

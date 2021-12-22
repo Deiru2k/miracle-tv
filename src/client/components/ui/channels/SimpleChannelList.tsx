@@ -26,7 +26,7 @@ export const SimpleChannelList = ({
   defaultThumbnail,
 }: Props) => {
   return (
-    <VStack spacing={4} zIndex={1}>
+    <VStack spacing={4} zIndex={1} w="100%">
       {channels?.map((channel) => (
         <Panel key={channel.id} width="100%" p={0}>
           <Flex>

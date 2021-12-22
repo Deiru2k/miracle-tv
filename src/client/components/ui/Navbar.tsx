@@ -17,7 +17,6 @@ import {
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 import {
-  signOut,
   useCurrentUser,
   useCurrentUserSettings,
 } from "miracle-tv-client/hooks/auth";
@@ -28,7 +27,7 @@ import { HomeIcon } from "../icons/HomeIcon";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 export const Navbar = () => {
-  const { currentUser, isUserCalled, isUserLoading } = useCurrentUser();
+  const { currentUser, isUserCalled, isUserLoading, logout } = useCurrentUser();
   const { currentSettings, isSettingsLoading, refetchSettings } =
     useCurrentUserSettings();
 
@@ -97,7 +96,7 @@ export const Navbar = () => {
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
                 </MenuItem>
-                <MenuItem onClick={signOut}>
+                <MenuItem onClick={logout}>
                   <LogoutIcon mr={2} /> Logout
                 </MenuItem>
               </MenuList>

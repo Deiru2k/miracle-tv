@@ -19,7 +19,7 @@ export const Attract = ({ children }: Props) => {
   return (
     <Flex
       w="100%"
-      h="100%"
+      h="90%"
       justify="center"
       align="center"
       flexDirection="column"

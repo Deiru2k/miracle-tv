@@ -7,6 +7,8 @@ import {
   CurrentUserFullQuery,
   CurrentUserSettingsQuery,
 } from "miracle-tv-shared/graphql";
+import { useRouter } from "next/dist/client/router";
+import { Url } from "url";
 
 type CurrentUserInfo = CurrentUserFullQuery["self"];
 type CurrentUserSettings = CurrentUserSettingsQuery["userSettings"];
@@ -33,12 +35,14 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
     called: isUserCalled,
     refetch: refetchUser,
   } = useCurrentUserFullQuery({});
+  const { reload } = useRouter();
 
   return {
     currentUser: self || null,
     isUserLoading: isUserLoading,
     isUserCalled,
     refetchUser,
+    logout: signOut(reload),
   } as CurrentUserHookReturn;
 };
 
@@ -58,11 +62,9 @@ export const useCurrentUserSettings = (): CurrentUserSettingsHookReturn => {
   } as CurrentUserSettingsHookReturn;
 };
 
-export const signOut = () => {
+export const signOut = (push: any) => () => {
   localStorage.removeItem("token");
-  if (global.window) {
-    window.location.replace("/");
-  }
+  push("/");
 };
 
 export const CurrentUserFullFragment = gql`
@@ -136,6 +138,9 @@ gql`
       id
       useGravatar
       singleUserMode
+      singleUserChannel {
+        id
+      }
     }
   }
 `;
