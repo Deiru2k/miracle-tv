@@ -16,12 +16,14 @@ type CurrentUserHookReturn = {
   isUserCalled: boolean;
   currentUser: CurrentUserInfo;
   logout: () => void;
+  refetchUser: () => void;
 };
 
 type CurrentUserSettingsHookReturn = {
   isSettingsLoading: boolean;
   isSettingsCalled: boolean;
   currentSettings: CurrentUserSettings;
+  refetchSettings: () => void;
 };
 
 export const useCurrentUser = (): CurrentUserHookReturn => {
@@ -29,12 +31,14 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
     data: { self } = { self: null },
     loading: isUserLoading,
     called: isUserCalled,
+    refetch: refetchUser,
   } = useCurrentUserFullQuery({});
 
   return {
     currentUser: self || null,
     isUserLoading: isUserLoading,
     isUserCalled,
+    refetchUser,
   } as CurrentUserHookReturn;
 };
 
@@ -43,12 +47,14 @@ export const useCurrentUserSettings = (): CurrentUserSettingsHookReturn => {
     data: { userSettings } = { userSettings: null },
     loading: isSettingsLoading,
     called: isSettingsCalled,
+    refetch: refetchSettings,
   } = useCurrentUserSettingsQuery({});
 
   return {
     currentSettings: userSettings || null,
     isSettingsLoading,
     isSettingsCalled,
+    refetchSettings,
   } as CurrentUserSettingsHookReturn;
 };
 
