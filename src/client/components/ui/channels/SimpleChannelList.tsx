@@ -12,6 +12,8 @@ import {
 import { ChannelFullFragment } from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { getMediaURL } from "miracle-tv-shared/media";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 type Props = {
   channels: ChannelFullFragment[];
@@ -25,6 +27,7 @@ export const SimpleChannelList = ({
   controls,
   defaultThumbnail,
 }: Props) => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <VStack spacing={4} zIndex={1} w="100%">
       {channels?.map((channel) => (

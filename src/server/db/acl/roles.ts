@@ -8,18 +8,18 @@ const fetchAccess = (
   roles: RowMap,
   targetRole: keyof RowMap,
   target: keyof Role["access"]["rights"]
-): AccessUnit => {
+): AccessUnit[] => {
   const currentAccessPath = [targetRole, "access", "rights", target];
   const currentParentPath = [targetRole, "parentId"];
-  const access: AccessUnit = pathOr(
-    AccessUnit.Inherit,
+  const access: AccessUnit[] = pathOr(
+    [AccessUnit.Inherit],
     currentAccessPath,
     roles
   );
   const parent: keyof RowMap = pathOr(null, currentParentPath, roles);
-  if (access === AccessUnit.Inherit && !parent) {
-    return AccessUnit.Deny;
-  } else if (access !== AccessUnit.Inherit) {
+  if (access === [AccessUnit.Inherit] && !parent) {
+    return [AccessUnit.Deny];
+  } else if (access !== [AccessUnit.Inherit]) {
     return access;
   }
   return fetchAccess(roles, parent, target);
@@ -78,8 +78,7 @@ export const checkRight = (
   subject: string
 ) => {
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
-  return any(
-    (right: AccessUnit) => right === unit,
-    roles.map(view(channelEditRightsLens))
-  );
+  return any((right: AccessUnit[]) => {
+    return right.includes(unit);
+  }, roles.map(view(channelEditRightsLens)));
 };

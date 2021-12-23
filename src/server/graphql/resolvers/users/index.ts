@@ -10,6 +10,7 @@ import {
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
+import { validate as uuidValidate } from "uuid";
 
 export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
   _,
@@ -24,7 +25,11 @@ export const userQueryResolver: QueryResolvers<ResolverContext>["user"] = (
   args,
   { db: { users } }
 ) => {
-  return users.getUserByIdSafe(args.id) as any;
+  if (uuidValidate(args.id)) {
+    return users.getUserByIdSafe(args.id) as any;
+  } else {
+    return users.getUserByUsernameSafe(args.id) as any;
+  }
 };
 
 export const userSelfQueryResolver: QueryResolvers<ResolverContext>["self"] =

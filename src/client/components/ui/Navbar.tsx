@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
+import { AtSignIcon, ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -38,7 +38,7 @@ export const Navbar = () => {
   const styles = useMultiStyleConfig("Navbar", {});
 
   return (
-    <Flex __css={styles.navbar}>
+    <Flex __css={styles.navbar} zIndex={10}>
       <Box>
         <Link as={Heading} href="/">
           Miracle TV
@@ -88,7 +88,13 @@ export const Navbar = () => {
                   </Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link href="/settings" w="100%">
+                  <Link href={`/user/${currentUser.username}`} w="100%">
+                    <AtSignIcon mr={2} />
+                    Your profile page
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href="/settings/user/profile" w="100%">
                     <SettingsIcon mr={2} />
                     Settings
                   </Link>

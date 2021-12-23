@@ -17,12 +17,12 @@ type Actions {
 }
 
 type AccessRights {
-  channels: AccessUnit
-  streamKeys: AccessUnit
-  roles: AccessUnit
-  users: AccessUnit
-  activities: AccessUnit
-  userSettings: AccessUnit
+  channels: [AccessUnit]
+  streamKeys: [AccessUnit]
+  roles: [AccessUnit]
+  users: [AccessUnit]
+  activities: [AccessUnit]
+  userSettings: [AccessUnit]
 }
 
 type AccessTargets {

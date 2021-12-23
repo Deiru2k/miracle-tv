@@ -11,10 +11,10 @@ const defaultAdminRole: Role = {
   parentId: "moderator",
   access: {
     rights: {
-      channels: AccessUnit.Write,
-      streamKeys: AccessUnit.Write,
-      users: AccessUnit.Write,
-      roles: AccessUnit.Write,
+      channels: [AccessUnit.Write],
+      streamKeys: [AccessUnit.Write],
+      users: [AccessUnit.Write],
+      roles: [AccessUnit.Write],
     },
     actions: {
       user: {
@@ -32,7 +32,7 @@ const defaultModeratorRole: Role = {
   parentId: "user",
   access: {
     rights: {
-      activities: AccessUnit.Write,
+      activities: [AccessUnit.Write],
     },
     actions: {
       user: {
@@ -63,12 +63,12 @@ const defaultUserRole: Role = {
   name: "user",
   access: {
     rights: {
-      streamKeys: AccessUnit.Self,
-      channels: AccessUnit.Self,
-      users: AccessUnit.Self,
-      activities: AccessUnit.Read,
-      roles: AccessUnit.Read,
-      userSettings: AccessUnit.Self,
+      streamKeys: [AccessUnit.Self],
+      channels: [AccessUnit.Self, AccessUnit.Read],
+      users: [AccessUnit.Self, AccessUnit.Read],
+      activities: [AccessUnit.Self, AccessUnit.Read],
+      roles: [AccessUnit.Self, AccessUnit.Read],
+      userSettings: [AccessUnit.Self],
     },
     actions: {
       user: {

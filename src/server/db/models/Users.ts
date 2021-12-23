@@ -56,8 +56,26 @@ export class UsersModel extends Model {
     return (await this.table.get(id).run(this.conn)) as DbUser | null;
   }
 
+  async getUserByUsername(username: string): Promise<DbUser | null> {
+    return head(
+      (await this.table
+        .filter({ username })
+        .limit(1)
+        .coerceTo("array")
+        .run(this.conn)) as DbUser[]
+    ) as DbUser | null;
+  }
+
   async getUserByIdSafe(id: string): Promise<DbUserSafe> {
     const user = await this.getUserById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    return this.sanitizeUser(user);
+  }
+
+  async getUserByUsernameSafe(username: string): Promise<DbUserSafe> {
+    const user = await this.getUserByUsername(username);
     if (!user) {
       throw new NotFoundError("User not found");
     }

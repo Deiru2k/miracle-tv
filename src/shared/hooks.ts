@@ -30,6 +30,23 @@ export const UserSettingsProfileFragmentFragmentDoc = gql`
     }
   }
 `;
+export const ChannelCommonFragmentDoc = gql`
+  fragment ChannelCommon on Channel {
+    id
+    name
+    slug
+    thumbnail {
+      filename
+      id
+    }
+    description
+    activity {
+      id
+      name
+      verb
+    }
+  }
+`;
 export const ChannelFullFragmentDoc = gql`
   fragment ChannelFull on Channel {
     id
@@ -1815,4 +1832,80 @@ export type SignUpMutationResult = Apollo.MutationResult<Types.SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<
   Types.SignUpMutation,
   Types.SignUpMutationVariables
+>;
+export const UserPageDocument = gql`
+  query UserPage($username: ID!) {
+    user(id: $username) {
+      id
+      username
+      displayName
+      bio
+      emailHash
+      channels {
+        ...ChannelCommon
+      }
+      avatar {
+        id
+        filename
+      }
+      header {
+        id
+        filename
+      }
+      useGravatar
+      streamThumbnail {
+        filename
+      }
+    }
+  }
+  ${ChannelCommonFragmentDoc}
+`;
+
+/**
+ * __useUserPageQuery__
+ *
+ * To run a query within a React component, call `useUserPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserPageQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserPageQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserPageQuery,
+    Types.UserPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(
+    UserPageDocument,
+    options
+  );
+}
+export function useUserPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserPageQuery,
+    Types.UserPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<Types.UserPageQuery, Types.UserPageQueryVariables>(
+    UserPageDocument,
+    options
+  );
+}
+export type UserPageQueryHookResult = ReturnType<typeof useUserPageQuery>;
+export type UserPageLazyQueryHookResult = ReturnType<
+  typeof useUserPageLazyQuery
+>;
+export type UserPageQueryResult = Apollo.QueryResult<
+  Types.UserPageQuery,
+  Types.UserPageQueryVariables
 >;

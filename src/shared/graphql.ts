@@ -29,12 +29,12 @@ export type Scalars = {
 
 export type AccessRights = {
   __typename?: "AccessRights";
-  channels?: Maybe<AccessUnit>;
-  streamKeys?: Maybe<AccessUnit>;
-  roles?: Maybe<AccessUnit>;
-  users?: Maybe<AccessUnit>;
-  activities?: Maybe<AccessUnit>;
-  userSettings?: Maybe<AccessUnit>;
+  channels?: Maybe<Array<Maybe<AccessUnit>>>;
+  streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
+  roles?: Maybe<Array<Maybe<AccessUnit>>>;
+  users?: Maybe<Array<Maybe<AccessUnit>>>;
+  activities?: Maybe<Array<Maybe<AccessUnit>>>;
+  userSettings?: Maybe<Array<Maybe<AccessUnit>>>;
 };
 
 export type AccessTargets = {
@@ -712,32 +712,32 @@ export type AccessRightsResolvers<
   ParentType extends ResolversParentTypes["AccessRights"] = ResolversParentTypes["AccessRights"]
 > = {
   channels?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   streamKeys?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   roles?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   users?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   activities?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   userSettings?: Resolver<
-    Maybe<ResolversTypes["AccessUnit"]>,
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
@@ -1698,6 +1698,25 @@ export type UserInfoQuery = {
   }>;
 };
 
+export type ChannelCommonFragment = {
+  __typename?: "Channel";
+  id: string;
+  name: string;
+  slug?: Maybe<string>;
+  description?: Maybe<string>;
+  thumbnail?: Maybe<{
+    __typename?: "File";
+    filename: string;
+    id?: Maybe<string>;
+  }>;
+  activity?: Maybe<{
+    __typename?: "Activity";
+    id: string;
+    name: string;
+    verb?: Maybe<string>;
+  }>;
+};
+
 export type ChannelFullFragment = {
   __typename?: "Channel";
   id: string;
@@ -1742,10 +1761,10 @@ export type CurrentUserFragment = {
         __typename?: "AccessTargets";
         rights: {
           __typename?: "AccessRights";
-          channels?: Maybe<AccessUnit>;
-          streamKeys?: Maybe<AccessUnit>;
-          users?: Maybe<AccessUnit>;
-          activities?: Maybe<AccessUnit>;
+          channels?: Maybe<Array<Maybe<AccessUnit>>>;
+          streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
+          users?: Maybe<Array<Maybe<AccessUnit>>>;
+          activities?: Maybe<Array<Maybe<AccessUnit>>>;
         };
         actions: {
           __typename?: "Actions";
@@ -1814,10 +1833,10 @@ export type CurrentUserFullQuery = {
           __typename?: "AccessTargets";
           rights: {
             __typename?: "AccessRights";
-            channels?: Maybe<AccessUnit>;
-            streamKeys?: Maybe<AccessUnit>;
-            users?: Maybe<AccessUnit>;
-            activities?: Maybe<AccessUnit>;
+            channels?: Maybe<Array<Maybe<AccessUnit>>>;
+            streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
+            users?: Maybe<Array<Maybe<AccessUnit>>>;
+            activities?: Maybe<Array<Maybe<AccessUnit>>>;
           };
           actions: {
             __typename?: "Actions";
@@ -1887,4 +1906,52 @@ export type SignUpMutationVariables = Exact<{
 export type SignUpMutation = {
   __typename?: "Mutation";
   signUp: { __typename?: "User"; id?: Maybe<string>; username: string };
+};
+
+export type UserPageQueryVariables = Exact<{
+  username: Scalars["ID"];
+}>;
+
+export type UserPageQuery = {
+  __typename?: "Query";
+  user?: Maybe<{
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    displayName?: Maybe<string>;
+    bio?: Maybe<string>;
+    emailHash?: Maybe<string>;
+    useGravatar?: Maybe<boolean>;
+    channels: Array<
+      Maybe<{
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        slug?: Maybe<string>;
+        description?: Maybe<string>;
+        thumbnail?: Maybe<{
+          __typename?: "File";
+          filename: string;
+          id?: Maybe<string>;
+        }>;
+        activity?: Maybe<{
+          __typename?: "Activity";
+          id: string;
+          name: string;
+          verb?: Maybe<string>;
+        }>;
+      }>
+    >;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+    header?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+    streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
+  }>;
 };
