@@ -9,6 +9,7 @@ const tables: string[] = [
   "sessions",
   "activities",
   "stream-keys",
+  "channel-status",
   "channels",
   "roles",
   "files",

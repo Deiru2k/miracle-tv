@@ -6,6 +6,7 @@ type Channel {
   name: String!
   description: String
   thumbnail: File
+  status: ChannelStatus
 }
 
 input ChannelsQueryFilter {

@@ -6,4 +6,12 @@ module.exports = {
     apiUrl: process.env.NEXT_PUBLIC_API_URL,
     mediaUrl: process.env.NEXT_PUBLIC_MEDIA_URL,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/streaming/:path*",
+        destination: "http://localhost/hls/:path*", // Proxy to Backend
+      },
+    ];
+  },
 };

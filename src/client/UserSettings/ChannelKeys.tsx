@@ -27,6 +27,10 @@ gql`
     streamKeysByChannelId(channelId: $channelId) {
       id
       name
+      channel {
+        id
+        name
+      }
     }
   }
   mutation UserSettingsRevokeAllStreamKeys($channelId: ID!, $userId: ID!) {
@@ -112,7 +116,11 @@ export const ChannelKeysSettings = ({ id }: Props) => {
           <Panel w="100%" key={sKey.id}>
             {sKey.name && <Text mb={2}>{sKey.name}</Text>}
             <HStack w="100%">
-              <StreamKeyDisplay streamKey={sKey.id} w="100%" />
+              <StreamKeyDisplay
+                streamKey={sKey.id}
+                channelId={sKey.channel.id}
+                w="100%"
+              />
               <IconButton
                 colorScheme="red"
                 aria-label="Delete stream key"

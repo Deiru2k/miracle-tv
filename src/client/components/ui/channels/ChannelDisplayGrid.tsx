@@ -13,29 +13,10 @@ import {
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { ellipsis } from "miracle-tv-client/utils/text";
-import { Channel, ChannelCommonFragment } from "miracle-tv-shared/graphql";
+import { ChannelCommonFragment } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
-import { Link } from "../Link";
 import { Panel } from "../Panel";
-
-export const ChannelDisplayFragment = gql`
-  fragment ChannelCommon on Channel {
-    id
-    name
-    slug
-    thumbnail {
-      filename
-      id
-    }
-    description
-    activity {
-      id
-      name
-      verb
-    }
-  }
-`;
 
 type Props = {
   channels: ChannelCommonFragment[];
@@ -56,7 +37,7 @@ export const ChannelDisplayGrid = ({
           key={channel.id}
           width="100%"
           p={0}
-          href={`/channels/${channel.slug || channel.id}`}
+          href={`/channel/${channel.slug || channel.id}`}
         >
           <Flex direction="column" position="relative">
             <AspectRatio ratio={16 / 9} h="100%" w="100%">

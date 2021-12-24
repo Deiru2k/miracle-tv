@@ -11,15 +11,17 @@ import React, { useCallback, useState } from "react";
 
 type Props = {
   streamKey: string;
+  channelId: string;
 } & FlexProps;
-export const StreamKeyDisplay = ({ streamKey, ...props }: Props) => {
+export const StreamKeyDisplay = ({ streamKey, channelId, ...props }: Props) => {
   const toast = useToast();
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const passwordType = isVisible ? undefined : "password";
   const VisibleIcon = isVisible ? ViewOffIcon : ViewIcon;
 
   const copyKey = useCallback(() => {
-    navigator.clipboard.writeText(streamKey).then(
+    const fullKey = `${channelId}?key=${streamKey}`;
+    navigator.clipboard.writeText(fullKey).then(
       function () {
         toast({ status: "success", title: "Stream key copied!" });
       },
@@ -27,12 +29,12 @@ export const StreamKeyDisplay = ({ streamKey, ...props }: Props) => {
         toast({ status: "error", title: "Stream key copy failed :(" });
       }
     );
-  }, [toast, streamKey]);
+  }, [toast, streamKey, channelId]);
 
   return (
     <Flex {...props}>
       <Input
-        value={streamKey}
+        value={`${channelId}?key=${streamKey}`}
         readOnly
         type={passwordType}
         borderRightRadius={0}

@@ -108,7 +108,11 @@ export const AccountStreamKeys = () => {
               )}
             </Flex>
             <HStack w="100%">
-              <StreamKeyDisplay streamKey={sKey.id} w="100%" />
+              <StreamKeyDisplay
+                channelId={sKey.channel.id}
+                streamKey={sKey.id}
+                w="100%"
+              />
               <IconButton
                 colorScheme="red"
                 aria-label="Delete stream key"

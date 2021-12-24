@@ -9,6 +9,7 @@ import { Operation } from "rethinkdb";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
+import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
@@ -20,6 +21,7 @@ export type ResolverContext = {
     users: UsersModel;
     userSettings: UserSettingsModel;
     sessions: SessionsModel;
+    channelStatus: ChannelStatusModel;
     channels: ChanelsModel;
     streamKeys: StreamKeysModel;
     activities: ActivitiesModel;

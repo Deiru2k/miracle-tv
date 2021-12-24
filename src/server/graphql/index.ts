@@ -73,6 +73,7 @@ import { authDirective } from "miracle-tv-server/graphql/directives/auth";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 import { UserAgent } from "express-useragent";
+import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -160,6 +161,7 @@ export const graphqlEndpoint = new ApolloServer({
       sessions: new SessionsModel(con),
       users: new UsersModel(con),
       channels: new ChanelsModel(con),
+      channelStatus: new ChannelStatusModel(con),
       activities: new ActivitiesModel(con),
       streamKeys: new StreamKeysModel(con),
       roles: new RolesModel(con),

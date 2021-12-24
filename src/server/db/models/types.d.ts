@@ -5,6 +5,7 @@ import {
   File,
   Role,
   Session,
+  ChannelStatus,
 } from "miracle-tv-shared/graphql";
 
 export type DbUser = {
@@ -43,3 +44,5 @@ export type DbSession = {
 export type DbStreamKey = {
   channelId: string;
 } & Omit<StreamKey, "channel">;
+
+export type DbChannelStatus = Omit<ChannelStatus, "viewers" | "length">;

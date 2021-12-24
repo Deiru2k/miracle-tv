@@ -3,6 +3,80 @@ import * as Types from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {};
+export const ChannelViewFragmentDoc = gql`
+  fragment ChannelView on Channel {
+    id
+    name
+    description
+    slug
+    thumbnail {
+      id
+      filename
+    }
+    activity {
+      id
+      name
+      verb
+    }
+    user {
+      id
+      username
+      displayName
+      avatar {
+        id
+        filename
+      }
+    }
+  }
+`;
+export const ChannelViewStatusFragmentDoc = gql`
+  fragment ChannelViewStatus on ChannelStatus {
+    id
+    isLive
+  }
+`;
+export const ChannelCommonFragmentDoc = gql`
+  fragment ChannelCommon on Channel {
+    id
+    name
+    slug
+    thumbnail {
+      filename
+      id
+    }
+    description
+    activity {
+      id
+      name
+      verb
+    }
+  }
+`;
+export const UserProfileFragmentDoc = gql`
+  fragment UserProfile on User {
+    id
+    username
+    displayName
+    bio
+    emailHash
+    channels {
+      ...ChannelCommon
+    }
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    useGravatar
+    streamThumbnail {
+      filename
+    }
+  }
+  ${ChannelCommonFragmentDoc}
+`;
 export const UserSettingsProfileFragmentFragmentDoc = gql`
   fragment UserSettingsProfileFragment on User {
     id
@@ -27,23 +101,6 @@ export const UserSettingsProfileFragmentFragmentDoc = gql`
       filename
       encoding
       mimetype
-    }
-  }
-`;
-export const ChannelCommonFragmentDoc = gql`
-  fragment ChannelCommon on Channel {
-    id
-    name
-    slug
-    thumbnail {
-      filename
-      id
-    }
-    description
-    activity {
-      id
-      name
-      verb
     }
   }
 `;
@@ -669,6 +726,10 @@ export const UserSettingsChannelKeysDocument = gql`
     streamKeysByChannelId(channelId: $channelId) {
       id
       name
+      channel {
+        id
+        name
+      }
     }
   }
 `;
@@ -1833,32 +1894,131 @@ export type SignUpMutationOptions = Apollo.BaseMutationOptions<
   Types.SignUpMutation,
   Types.SignUpMutationVariables
 >;
-export const UserPageDocument = gql`
-  query UserPage($username: ID!) {
-    user(id: $username) {
-      id
-      username
-      displayName
-      bio
-      emailHash
-      channels {
-        ...ChannelCommon
-      }
-      avatar {
-        id
-        filename
-      }
-      header {
-        id
-        filename
-      }
-      useGravatar
-      streamThumbnail {
-        filename
+export const ChannelPageDocument = gql`
+  query ChannelPage($id: ID!) {
+    channel(id: $id) {
+      ...ChannelView
+    }
+  }
+  ${ChannelViewFragmentDoc}
+`;
+
+/**
+ * __useChannelPageQuery__
+ *
+ * To run a query within a React component, call `useChannelPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChannelPageQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.ChannelPageQuery,
+    Types.ChannelPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelPageQuery,
+    Types.ChannelPageQueryVariables
+  >(ChannelPageDocument, options);
+}
+export function useChannelPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelPageQuery,
+    Types.ChannelPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelPageQuery,
+    Types.ChannelPageQueryVariables
+  >(ChannelPageDocument, options);
+}
+export type ChannelPageQueryHookResult = ReturnType<typeof useChannelPageQuery>;
+export type ChannelPageLazyQueryHookResult = ReturnType<
+  typeof useChannelPageLazyQuery
+>;
+export type ChannelPageQueryResult = Apollo.QueryResult<
+  Types.ChannelPageQuery,
+  Types.ChannelPageQueryVariables
+>;
+export const ChannelPageStatusDocument = gql`
+  query ChannelPageStatus($id: ID!) {
+    channel(id: $id) {
+      status {
+        ...ChannelViewStatus
       }
     }
   }
-  ${ChannelCommonFragmentDoc}
+  ${ChannelViewStatusFragmentDoc}
+`;
+
+/**
+ * __useChannelPageStatusQuery__
+ *
+ * To run a query within a React component, call `useChannelPageStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelPageStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelPageStatusQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChannelPageStatusQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.ChannelPageStatusQuery,
+    Types.ChannelPageStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelPageStatusQuery,
+    Types.ChannelPageStatusQueryVariables
+  >(ChannelPageStatusDocument, options);
+}
+export function useChannelPageStatusLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelPageStatusQuery,
+    Types.ChannelPageStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelPageStatusQuery,
+    Types.ChannelPageStatusQueryVariables
+  >(ChannelPageStatusDocument, options);
+}
+export type ChannelPageStatusQueryHookResult = ReturnType<
+  typeof useChannelPageStatusQuery
+>;
+export type ChannelPageStatusLazyQueryHookResult = ReturnType<
+  typeof useChannelPageStatusLazyQuery
+>;
+export type ChannelPageStatusQueryResult = Apollo.QueryResult<
+  Types.ChannelPageStatusQuery,
+  Types.ChannelPageStatusQueryVariables
+>;
+export const UserPageDocument = gql`
+  query UserPage($username: ID!) {
+    user(id: $username) {
+      ...UserProfile
+    }
+  }
+  ${UserProfileFragmentDoc}
 `;
 
 /**

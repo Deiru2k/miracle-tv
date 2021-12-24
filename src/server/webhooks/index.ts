@@ -3,6 +3,8 @@ import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
 import { connection } from "miracle-tv-server/db/setup-db";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
+import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
+import { DbChannelStatus } from "miracle-tv-server/db/models/types";
 
 const webhooks = Router();
 
@@ -13,7 +15,7 @@ const getStreamKey = async (req: Request, res: Response) => {
     return undefined;
   }
   // This is the ID of the stream key.
-  const { name } = body;
+  const { key: name } = body;
 
   // database setup
   const con = await connection;
@@ -39,6 +41,15 @@ const getChannel = async (id: string) => {
   return await channels.getChannelById(id);
 };
 
+const updateChannelStatus = async (
+  id: string,
+  status: Omit<DbChannelStatus, "id">
+) => {
+  const con = await connection;
+  const statusModel = new ChannelStatusModel(con);
+  return await statusModel.upsertStatus({ id, ...status });
+};
+
 interface ReturnedKey {
   id: string;
   channelId: string;
@@ -55,6 +66,9 @@ webhooks.post("/on_publish", async (req, res) => {
 
   // const user = getUser(streamKey.userId)
   //const channel = await getChannel(streamKey.channelId)
+  setTimeout(async () => {
+    await updateChannelStatus(streamKey.channelId, { isLive: true });
+  }, 5000);
 
   // We need to redirect the stream to a location that doesn't include the stream
   // key. This may not be the right way to do it; TODO: ensure the stream still works
@@ -63,6 +77,7 @@ webhooks.post("/on_publish", async (req, res) => {
 
 webhooks.post("/on_publish_done", async (req, res) => {
   const streamKey = await getStreamKey(req, res);
+  await updateChannelStatus(streamKey.channelId, { isLive: false });
   res.status(200).send();
 });
 

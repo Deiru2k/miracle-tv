@@ -17,6 +17,7 @@ const main = async () => {
   const prefix = pathPrefix ? `/${pathPrefix}/` : "/";
   app.use(graphqlUploadExpress());
   app.use(`${prefix}media/`, Express.static(`${dataDir}/media`));
+  app.use(`${prefix}streaming/`, Express.static(`${dataDir}/streaming/dash`));
   app.use(`${prefix}hook/`, webhooks);
   const graphqlPath = prefix + "graphql";
   graphqlEndpoint.applyMiddleware({ app, path: graphqlPath });

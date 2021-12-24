@@ -1,0 +1,10 @@
+type ChannelStatus {
+  id: ID
+  isLive: Boolean
+  viewers: Int
+  length: Int
+}
+
+extend type Query {
+  channelStatus(id: ID!): ChannelStatus
+}
