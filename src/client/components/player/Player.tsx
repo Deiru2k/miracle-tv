@@ -85,7 +85,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
             controls
             autoPlay
             muted
-            src={`/streaming/${channelId}.m3u8`}
+            src={`/streaming/${channelId}/index.m3u8`}
             hlsConfig={{
               startPosition: 10000,
               manifestLoadingMaxRetry: 10,
