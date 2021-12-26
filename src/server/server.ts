@@ -15,6 +15,7 @@ const main = async () => {
   app.use(Express.urlencoded());
 
   const prefix = pathPrefix ? `/${pathPrefix}/` : "/";
+  app.use(Express.json());
   app.use(graphqlUploadExpress());
   app.use(`${prefix}media/`, Express.static(`${dataDir}/media`));
   app.use(`${prefix}streaming/`, Express.static(`${dataDir}/streaming/dash`));
