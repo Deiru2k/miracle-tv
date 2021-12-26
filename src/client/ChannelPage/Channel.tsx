@@ -108,7 +108,7 @@ export const ChannelView = ({ channel, status }: Props) => {
   );
   return (
     <>
-      <Flex mx={2}>
+      <Flex m={2}>
         <Box role="group" w="100%" h="100%" flex={9} mr={2} position="relative">
           <Player
             channelId={channel.id}
@@ -134,9 +134,6 @@ export const ChannelView = ({ channel, status }: Props) => {
           {channel.name}
         </Heading>
         <Divider />
-        <Heading size="sm" mt={4}>
-          About {channel.name}:
-        </Heading>
         <Text>{channel.description}</Text>
       </Box>
     </>

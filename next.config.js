@@ -9,8 +9,12 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: "/streaming/:path*",
-        destination: "http://localhost/hls/:path*", // Proxy to Backend
+        source: "/streaming/hls/:path*",
+        destination: "http://localhost:8081/live/:path*", // Proxy to Backend
+      },
+      {
+        source: "/streaming/dash/:path*",
+        destination: "http://localhost:8081/dash/:path*", // Proxy to Backend
       },
     ];
   },

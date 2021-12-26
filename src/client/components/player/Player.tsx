@@ -1,13 +1,4 @@
-import {
-  AspectRatio,
-  Box,
-  Flex,
-  Heading,
-  Image,
-  useTimeout,
-} from "@chakra-ui/react";
-import { MediaPlayer } from "dashjs";
-import * as shaka from "shaka-player";
+import { AspectRatio, Box, Flex, Heading, Image } from "@chakra-ui/react";
 import React, {
   useCallback,
   useEffect,
@@ -15,7 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ReactHlsPlayer from "react-hls-player/dist";
+import { VideoJsPlayer } from "video.js";
+import { PlayerControls } from "./PlayerControls";
+import VideoJS from "./VideoJS";
 
 type Props = {
   channelId: string;
@@ -24,90 +17,104 @@ type Props = {
 };
 
 export const Player = ({ channelId, isLive, thumbnail }: Props) => {
-  const playerRef = useRef<HTMLVideoElement>();
+  const playerRef = useRef<VideoJsPlayer>();
+  const videoRef = React.useRef<HTMLVideoElement>();
+  const containerRef = useRef<HTMLDivElement>();
+  const [isFullscreen, setFullscreen] = useState<boolean>(false);
+  const streamSrc = useMemo(
+    () => `/streaming/hls/${channelId}/index.m3u8`,
+    [channelId]
+  );
 
-  // const player = useMemo(() => {
-  //   console.log(document.getElementById(`stream-player-${channelId}`));
-  //   return new shaka.Player(
-  //     document.getElementById(`stream-player-${channelId}`)
-  //   );
-  // }, [playerRef.current]);
+  useEffect(() => {
+    document.onfullscreenchange = () => {
+      if (!document.fullscreenElement) {
+        setFullscreen(false);
+      }
+    };
+    return () => {
+      document.onfullscreenchange = undefined;
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   if (channelId && isLive && player) {
-  //     console.log(shaka);
-  //     // const source = new shaka.player.DashVideoSource(
-  //     //   `/streaming/${channelId}.mpd`,
-  //     //   null
-  //     // );
-  //     // player
-  //     //   .load(source)
-  //     //   .then(() => {
-  //     //     console.log("The video has now been loaded!");
-  //     //   })
-  //     //   .catch((e: any) => console.log(e));
-  //   }
-  // }, [channelId, isLive, playerRef.current, player]);
-
-  // useEffect(() => {
-  //   if (!isLive && player) {
-  //     // player.pause();
-  //   }
-  // }, [isLive, player]);
+  const onPlayerReady = useCallback(
+    (player: VideoJsPlayer, video: HTMLVideoElement) => {
+      player.autoplay("any");
+      video.oncanplay = () => {
+        video.currentTime = video.duration - 1;
+        video.oncanplay = undefined;
+      };
+    },
+    [streamSrc]
+  );
 
   return (
-    <AspectRatio ratio={16 / 9} maxW="100%" maxH="100%" zIndex={1}>
-      <>
-        <Box
-          opacity={isLive ? 0 : 1}
-          pointerEvents={isLive ? "none" : "auto"}
-          transition="opacity linear 0.2s"
-          position="relative"
-        >
-          <Image src={thumbnail} />
-          <Flex
-            position="absolute"
-            top={0}
-            w="100%"
-            h="100%"
-            justify="center"
-            align="center"
-            backgroundColor="rgba(0, 0, 0, 0.6)"
+    <Box role="group" position="relative" ref={containerRef}>
+      <AspectRatio
+        ratio={16 / 9}
+        maxW="100%"
+        maxH={isFullscreen ? "100%" : "90vh"}
+        zIndex={1}
+      >
+        <>
+          <Box
+            opacity={isLive ? 0 : 1}
+            pointerEvents={isLive ? "none" : "auto"}
+            transition="opacity linear 0.2s"
+            position="relative"
+            zIndex={isLive ? -1 : 3}
           >
-            <Heading size="sm" color="white">
-              Stream is offline. Check back later, oh hang out in the chat!
-            </Heading>
-          </Flex>
-        </Box>
-        {isLive && (
-          <ReactHlsPlayer
-            playerRef={playerRef}
-            controls
-            autoPlay
-            muted
-            src={`/streaming/${channelId}/index.m3u8`}
-            hlsConfig={{
-              startPosition: 10000,
-              manifestLoadingMaxRetry: 10,
-              enableWorker: true,
+            <Image src={thumbnail} w="100%" h="100%" objectFit="cover" />
+            <Flex
+              position="absolute"
+              top={0}
+              w="100%"
+              h="100%"
+              justify="center"
+              align="center"
+              backgroundColor="rgba(0, 0, 0, 0.6)"
+            >
+              <Heading size="sm" color="white">
+                Stream is offline. Check back later, oh hang out in the chat!
+              </Heading>
+            </Flex>
+          </Box>
+          <VideoJS
+            options={{
+              liveui: true,
+              sources: [{ src: streamSrc, type: "application/x-mpegURL" }],
+              html5: {
+                vhs: {
+                  overrideNative: true,
+                },
+                nativeAudioTracks: false,
+                nativeVideoTracks: false,
+              },
             }}
+            playerRef={playerRef}
+            videoRef={videoRef}
+            onReady={onPlayerReady}
           />
-        )}
-      </>
-    </AspectRatio>
+        </>
+      </AspectRatio>
+      {isLive && (
+        <PlayerControls
+          isFullscreen={isFullscreen}
+          setFullscreen={setFullscreen}
+          playerRef={playerRef}
+          videoRef={videoRef}
+          containerRef={containerRef}
+          stats={{ isLive, viewers: 0 }}
+        />
+      )}
+    </Box>
   );
 };
-// <video
-//   id={`stream-player-${channelId}`}
-//   style={{
-//     opacity: isLive ? 1 : 0,
-//     pointerEvents: isLive ? "auto" : "none",
-//   }}
-//   ref={playerRef}
-//   width="100%"
-//   height="100%"
-//   controls
-//   muted
-// />
 
 export default Player;
+
+// src={streamUrl}
+// hlsConfig={{
+//   startPosition: 10000,
+//   manifestLoadingMaxRetry: 10,
+// }}

@@ -27,7 +27,14 @@ const ChatControls = () => {
   );
   return (
     <Flex mt={2}>
-      <Input borderRadius={0} p={1} mr={2} value={value} onChange={onChange} />
+      <Input
+        borderRadius={0}
+        p={1}
+        mr={2}
+        value={value}
+        onChange={onChange}
+        placeholder="Remember to be nice to eachother"
+      />
       <Button size="sm" h="100%">
         CHAT
       </Button>
