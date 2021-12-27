@@ -29,6 +29,7 @@ import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
 import { ChannelFullFragment } from "miracle-tv-shared/graphql";
 import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/SimpleChannelList";
 import { FloatingControls } from "miracle-tv-client/components/ui/FloatingControls";
+import Head from "next/head";
 
 gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
@@ -104,6 +105,9 @@ export const SettingsChannelsList = () => {
 
   return (
     <>
+      <Head>
+        <title>Channels settings - Miracle TV</title>
+      </Head>
       <Box>
         <ConfirmDialog
           {...deleteChannelDisclosure}

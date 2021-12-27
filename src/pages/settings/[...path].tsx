@@ -69,7 +69,6 @@ const SettingsPage = () => {
     ],
     [currentSettings, currentSettings?.singleUserChannel?.id]
   );
-  console.log(currentSettings, nav);
   return (
     <AuthRedirect>
       <Navigation

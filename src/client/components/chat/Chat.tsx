@@ -1,5 +1,21 @@
-import { Box, Text, Flex, Input, Button, VStack } from "@chakra-ui/react";
-import React, { ChangeEvent, useCallback, useState } from "react";
+import { ChatIcon } from "@chakra-ui/icons";
+import { Box, Text, Flex, Input, VStack, IconButton } from "@chakra-ui/react";
+import { getIOClient } from "miracle-tv-client/socketio";
+import { Socket } from "socket.io-client";
+import {
+  ChatJoinData,
+  ChatLeaveData,
+  ChatMessageData,
+  ChatResponseType,
+} from "miracle-tv-shared/websocket/types";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { sort, takeLast } from "ramda";
 
 type ChatMessageProps = {
   username: string;
@@ -9,15 +25,21 @@ type ChatMessageProps = {
 const ChatMessage = ({ username, message }: ChatMessageProps) => {
   return (
     <Box display="block" w="100%">
-      <Text as="span" fontWeight="bold">
-        {username}:&nbsp;
-      </Text>
+      {username && (
+        <Text as="span" fontWeight="bold">
+          {username}:&nbsp;
+        </Text>
+      )}
       <Text as="span">{message}</Text>
     </Box>
   );
 };
 
-const ChatControls = () => {
+type ChatControlsProps = {
+  onSend: (msg: string) => void;
+};
+
+const ChatControls = ({ onSend }: ChatControlsProps) => {
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -25,24 +47,106 @@ const ChatControls = () => {
     },
     [setValue]
   );
+  const sendMessage = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      onSend(value);
+      setValue("");
+    },
+    [value, setValue, onSend]
+  );
   return (
-    <Flex mt={2}>
-      <Input
-        borderRadius={0}
-        p={1}
-        mr={2}
-        value={value}
-        onChange={onChange}
-        placeholder="Remember to be nice to eachother"
-      />
-      <Button size="sm" h="100%">
-        CHAT
-      </Button>
-    </Flex>
+    <form onSubmit={sendMessage}>
+      <Flex mt={2}>
+        <Input
+          borderRadius={0}
+          p={1}
+          mr={2}
+          value={value}
+          onChange={onChange}
+          placeholder="Remember to be nice to eachother"
+        />
+        <IconButton
+          variant="ghost"
+          aria-label="Send message"
+          icon={<ChatIcon color="primary.200" />}
+          type="submit"
+        >
+          CHAT
+        </IconButton>
+      </Flex>
+    </form>
   );
 };
 
-export const Chat = () => {
+type Props = {
+  channelId: string;
+};
+
+type ChatLog = {
+  username?: string;
+  message: string;
+  timestamp: number;
+};
+
+export const Chat = ({ channelId }: Props) => {
+  const [chatLog, setChatLog] = useState<ChatLog[]>([]);
+  const chatLogSorted = useMemo(
+    () => sort((msg) => msg.timestamp, chatLog),
+    [chatLog]
+  );
+  const appendToChat = useCallback(
+    (msg: ChatResponseType) => {
+      const chatMessages = takeLast(99, chatLogSorted);
+      console.log(chatMessages);
+      setChatLog([
+        ...chatMessages,
+        { username: msg.username, message: msg.data, timestamp: msg.timestamp },
+      ]);
+    },
+    [chatLogSorted, setChatLog]
+  );
+
+  const chatClient = useMemo(() => {
+    const client = getIOClient({
+      namespace: "chat",
+    });
+    return client;
+  }, []);
+
+  const sendChatMessage = useCallback(
+    (message: string) => {
+      const msgData: ChatMessageData = {
+        token: localStorage.getItem("token"),
+        message: message,
+        channel: channelId,
+      };
+      chatClient.emit("chat:send", msgData);
+    },
+    [chatClient, channelId]
+  );
+
+  useEffect(() => {
+    const joinData: ChatJoinData = {
+      token: localStorage.getItem("token"),
+      channel: channelId,
+    };
+    chatClient.emit("chat:join", joinData);
+
+    return () => {
+      const leaveData: ChatLeaveData = {
+        token: localStorage.getItem("token"),
+        channel: channelId,
+      };
+      chatClient.emit("chat:leave", leaveData);
+      chatClient.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    chatClient.on("chat:message", appendToChat);
+  }, [chatClient, appendToChat]);
+
   return (
     <Flex w="100%" direction="column" height="100%">
       <VStack
@@ -52,41 +156,17 @@ export const Chat = () => {
         flexGrow={1}
         height={0}
       >
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage
-          username="Deiru"
-          message="Chat message but like really long so it's like takes a lot of space and hopefully gets to wrap to the next line since this is an inline element"
-        />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
-        <ChatMessage username="Deiru" message="Chat message" />
+        {chatLogSorted.map((msg) => (
+          <ChatMessage
+            key={msg.timestamp}
+            username={msg.username}
+            message={msg.message}
+          />
+        ))}
       </VStack>
-      <ChatControls />
+      <ChatControls onSend={sendChatMessage} />
     </Flex>
   );
 };
+
+export default Chat;

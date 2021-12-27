@@ -5,6 +5,8 @@ import { graphqlUploadExpress } from "graphql-upload";
 import config from "miracle-tv-server/config";
 import { green } from "chalk";
 import webhooks from "miracle-tv-server/webhooks";
+import http from "http";
+import { websocketEntry } from "./websocket";
 
 const { pathPrefix, dataDir } = config;
 
@@ -22,7 +24,9 @@ const main = async () => {
   app.use(`${prefix}hook/`, webhooks);
   const graphqlPath = prefix + "graphql";
   graphqlEndpoint.applyMiddleware({ app, path: graphqlPath });
-  app.listen(
+  const httpServer = http.createServer(app);
+  websocketEntry(httpServer);
+  httpServer.listen(
     config.server?.port || 4000,
     config.server?.hostname || "0.0.0.0",
     () => {

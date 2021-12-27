@@ -82,7 +82,7 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
         ))}
       </VStack>
       <Box sx={contentStyles}>
-        {!component && <NotFound isBacklinkHidden />}
+        {!component && <NotFound isTextHidden />}
         {!!component && component}
       </Box>
     </Flex>

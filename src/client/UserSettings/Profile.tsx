@@ -25,6 +25,7 @@ import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import Head from "next/head";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -114,6 +115,9 @@ export const ProfileSettings = () => {
 
   return (
     <>
+      <Head>
+        <title>Profile settings - Miracle TV</title>
+      </Head>
       {loading && <Spinner />}
       {!loading && data?.self && (
         <Form<UpdateSelfInput>

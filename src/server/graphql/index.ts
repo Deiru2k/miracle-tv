@@ -31,6 +31,7 @@ import {
   channelQueryResolver,
   channelResolver,
   channelsQueryResolver,
+  selfChannelQueryResolver,
 } from "miracle-tv-server/graphql/resolvers/channels";
 import {
   createChannelMutation,
@@ -106,6 +107,7 @@ let executableSchema = makeExecutableSchema({
       streamKeysByChannelId: streamKeysByChannelIdResolver,
       self: userSelfQueryResolver,
       selfAccount: userSelfAccountResolver,
+      selfChannels: selfChannelQueryResolver,
       userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
       selfSessions: userSelfSessionsResolver,

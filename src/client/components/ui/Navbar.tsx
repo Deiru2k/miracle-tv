@@ -25,6 +25,7 @@ import { ThemeSwitcher } from "miracle-tv-client/components/ui/ThemeSwitcher";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { HomeIcon } from "../icons/HomeIcon";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
+import { LiveUpdateSwitch } from "miracle-tv-client/context/liveUpdate";
 
 export const Navbar = () => {
   const { currentUser, isUserCalled, isUserLoading, logout } = useCurrentUser();
@@ -101,6 +102,9 @@ export const Navbar = () => {
                 </MenuItem>
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
+                </MenuItem>
+                <MenuItem closeOnSelect={false}>
+                  <LiveUpdateSwitch />
                 </MenuItem>
                 <MenuItem onClick={logout}>
                   <LogoutIcon mr={2} /> Logout

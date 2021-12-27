@@ -10,7 +10,6 @@ const webhooks = Router();
 
 webhooks.post("/on_publish", async (req, res) => {
   const key = getOSSRSKey(req.body.param);
-  console.log(key);
   const streamKey = await getStreamKey(key);
   // If there's no stream key, deny the stream.
   if (!streamKey) {
@@ -28,7 +27,6 @@ webhooks.post("/on_publish", async (req, res) => {
 
 webhooks.post("/on_unpublish", async (req, res) => {
   const key = getOSSRSKey(req.body.param);
-  console.log(key);
   const streamKey = await getStreamKey(key);
   if (streamKey) {
     await updateChannelStatus(streamKey.channelId, { isLive: false });

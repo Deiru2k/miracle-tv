@@ -18,7 +18,7 @@
     "run:client": "next start",
     "dev:client": "next dev",
     "codegen": "graphql-codegen --config codegen.yml",
-    "dev:both": "concurrently --kill-others \"yarn dev:server\" \"yarn dev:client\""
+    "dev:both": "NODE_ENV=development concurrently --kill-others \"yarn dev:server\" \"yarn dev:client\""
   },
   "simple-git-hooks": {
     "pre-commit": "lint-staged"
@@ -55,6 +55,7 @@
     "glob": "^7.1.7",
     "graphql": "^15.5.1",
     "graphql-upload": "^12.0.0",
+    "http": "^0.0.1-security",
     "luxon": "^1.27.0",
     "md5": "^2.3.0",
     "module-alias": "^2.2.2",
@@ -72,6 +73,8 @@
     "redux-actions": "^2.6.5",
     "redux-persist": "^6.0.0",
     "rethinkdb": "^2.4.2",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0",
     "tsconfig-paths": "^3.9.0",
     "url-parse": "^1.5.3",
     "uuid": "^8.3.2",

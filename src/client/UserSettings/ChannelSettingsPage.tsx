@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
 import { ChannelKeysSettings } from "./ChannelKeys";
+import Head from "next/head";
 
 type Props = {
   tab?: string;
@@ -43,6 +44,9 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
 
   return (
     <>
+      <Head>
+        <title>Channel settings for {channel?.name} - Miracle TV</title>
+      </Head>
       <Heading size="lg" mb={5}>
         Channel settings for "{channel?.name}"
       </Heading>

@@ -21,6 +21,7 @@ import {
   useSelfStreamKeysQuery,
   useUserSettingsRevokeStreamKeyMutation,
 } from "miracle-tv-shared/hooks";
+import Head from "next/head";
 import React, { useCallback } from "react";
 
 gql`
@@ -74,6 +75,9 @@ export const AccountStreamKeys = () => {
 
   return (
     <>
+      <Head>
+        <title>Stream keys - Miracle TV</title>
+      </Head>
       <FloatingControls heading="All Account Keys" m={6}>
         {!!keys?.length && (
           <>

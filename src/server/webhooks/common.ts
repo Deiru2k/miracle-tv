@@ -11,7 +11,7 @@ export const getOSSRSKey = (queryParam: string) => {
   // Needed for url-parse to parse our query params
   const url = `http://example.com/${queryParam}`;
   const urlParsed = new Url(url, true);
-  return (urlParsed.query as any).key as string;
+  return (urlParsed as any).key as string;
 };
 
 export const getNginxKey = (req: Request, res: Response) => {

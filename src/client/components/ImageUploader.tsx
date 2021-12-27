@@ -77,7 +77,9 @@ export const ImageUploader = ({
   const onFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const input = e.target?.files?.item(0);
-      uploadFile({ variables: { input } });
+      if (input) {
+        uploadFile({ variables: { input } });
+      }
     },
     [uploadFile]
   );

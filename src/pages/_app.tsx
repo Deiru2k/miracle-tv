@@ -7,13 +7,23 @@ import Head from "next/head";
 import getConfig from "next/config";
 import { propOr } from "ramda";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
 import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { Navbar } from "miracle-tv-client/components/ui/Navbar";
 import { Chakra } from "miracle-tv-client/Chakra";
+import { LiveUpdateContext } from "miracle-tv-client/context/liveUpdate";
+import dynamic from "next/dynamic";
+
+const SetIsLiveFromLocalStorage = dynamic(
+  () =>
+    import("miracle-tv-client/context/liveUpdate").then(
+      (c) => c.SetIsLiveFromLocalStorage
+    ) as any,
+  { ssr: false, loading: () => null }
+);
 
 const env = process.env.NEXT_PUBLIC_ENV;
 
@@ -58,10 +68,10 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
   //   noNavbarRoutes
   // );
   const isShowcase = router.asPath.startsWith("/docs");
+  const [isLiveUpdate, setLiveUpdate] = useState<boolean>(false);
   return (
     <>
       <Head>
-        <title>Miracle TV</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Global
@@ -76,23 +86,26 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           }
         `}
       />
-      <Chakra cookies={pageProps.cookies}>
-        <ApolloProvider client={client}>
-          {!isShowcase && (
-            <Flex h="100%" w="100%" direction="column">
-              <PageWrapper paddingTop="50px">
-                <Navbar />
+      <LiveUpdateContext.Provider value={{ isLiveUpdate, setLiveUpdate }}>
+        <SetIsLiveFromLocalStorage />
+        <Chakra cookies={pageProps.cookies}>
+          <ApolloProvider client={client}>
+            {!isShowcase && (
+              <Flex h="100%" w="100%" direction="column">
+                <PageWrapper paddingTop="50px">
+                  <Navbar />
+                  <Component {...pageProps} />
+                </PageWrapper>
+              </Flex>
+            )}
+            {isShowcase && (
+              <ShowcaseWrapper>
                 <Component {...pageProps} />
-              </PageWrapper>
-            </Flex>
-          )}
-          {isShowcase && (
-            <ShowcaseWrapper>
-              <Component {...pageProps} />
-            </ShowcaseWrapper>
-          )}
-        </ApolloProvider>
-      </Chakra>
+              </ShowcaseWrapper>
+            )}
+          </ApolloProvider>
+        </Chakra>
+      </LiveUpdateContext.Provider>
     </>
   );
 }

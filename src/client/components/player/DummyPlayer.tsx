@@ -8,3 +8,11 @@ export const DummyPlayerComponent = () => {
     </AspectRatio>
   );
 };
+
+export const DummyChatComponent = () => {
+  return (
+    <Flex w="100%" overflowY="auto" direction="column" flexGrow={1} height={0}>
+      <Loading />
+    </Flex>
+  );
+};

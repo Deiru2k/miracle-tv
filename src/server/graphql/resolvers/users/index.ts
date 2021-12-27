@@ -70,12 +70,6 @@ export const userSelfSessionsResolver: QueryResolvers<ResolverContext>["selfSess
     return sessions.getSessionsByUserId(user.id);
   };
 
-const gravatarResolver: UserResolvers["useGravatar"] = async (
-  user,
-  _,
-  { db: { userSettings } }
-) => (await userSettings.getUserSettingsById(user.id)).useGravatar;
-
 export const sessionResolver: SessionResolvers<ResolverContext> = {
   isCurrentSession: (session, _, { session: currentSession }) => {
     return session.id === currentSession.id;
@@ -106,5 +100,8 @@ export const userResolver: UserResolvers = {
   avatar: fileResolver("avatar"),
   header: fileResolver("header"),
   streamThumbnail: fileResolver("streamThumbnail"),
-  useGravatar: gravatarResolver,
+  settings: async (user, _, { db: { userSettings } }) => {
+    const settings = await userSettings.getUserSettingsById(user.id);
+    return settings;
+  },
 };

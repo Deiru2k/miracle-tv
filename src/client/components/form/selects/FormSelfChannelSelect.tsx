@@ -10,7 +10,7 @@ import { useSelfChannelsSelectQuery } from "miracle-tv-shared/hooks";
 
 gql`
   query SelfChannelsSelect($filter: ChannelsQueryFilter) {
-    channels(filter: $filter) {
+    selfChannels(filter: $filter) {
       id
       name
     }
@@ -20,7 +20,7 @@ gql`
 export const FormSelfChannelSelect = (
   props: Omit<FormSelectProps, "options">
 ) => {
-  const { data: { channels = [] } = {}, loading: isLoading } =
+  const { data: { selfChannels: channels = [] } = {}, loading: isLoading } =
     useSelfChannelsSelectQuery();
 
   const options = useMemo(

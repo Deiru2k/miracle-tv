@@ -78,7 +78,6 @@ export const PlayerControls = ({
   const handleVolumeChange = useCallback(
     (level: number) => {
       if (playerRef.current) {
-        console.log(playerRef.current?.liveTracker.isLive());
         setVolume(level);
         setIsMuted(false);
         playerRef.current.muted(false);

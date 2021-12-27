@@ -41,7 +41,7 @@ type Props = { id: string };
 
 export const ChannelEdit = ({ id }: Props) => {
   const toast = useToast();
-  const { data: { channel } = {} } = useUserSettingsChannelQuery({
+  const { data: { channel } = {}, error } = useUserSettingsChannelQuery({
     variables: { id },
   });
 

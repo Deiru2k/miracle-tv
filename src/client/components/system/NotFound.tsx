@@ -1,21 +1,23 @@
-import {
-  AspectRatio,
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { Link } from "miracle-tv-client/components/ui/Link";
 
 type Props = {
-  isBacklinkHidden?: boolean;
+  heading?: React.ReactNode;
+  text?: React.ReactNode;
+  isTextHidden?: boolean;
 };
 
-export const NotFound = ({ isBacklinkHidden }: Props) => {
+export const NotFound = ({
+  isTextHidden,
+  heading = "Ooops, this page doesn't seem to exist!",
+  text = (
+    <Text zIndex={2} px={4}>
+      Try going back to <Link href="/">[main page]</Link>.
+    </Text>
+  ),
+}: Props) => {
   return (
     <Flex
       w="100%"
@@ -46,13 +48,9 @@ export const NotFound = ({ isBacklinkHidden }: Props) => {
         zIndex={1}
       />
       <Heading zIndex={2} mt={4} px={4}>
-        {"Ooops, this page doesn't seem to exist!"}
+        {heading}
       </Heading>
-      {!isBacklinkHidden && (
-        <Text zIndex={2} px={4}>
-          Try going back to <Link href="/">[main page]</Link>.
-        </Text>
-      )}
+      {!isTextHidden && text}
     </Flex>
   );
 };

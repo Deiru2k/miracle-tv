@@ -11,6 +11,7 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { DateTime } from "luxon";
 import { head, sort } from "ramda";
 import { Session } from "miracle-tv-shared/graphql";
+import Head from "next/head";
 
 gql`
   query SelfSessions {
@@ -71,6 +72,9 @@ export const AccountSessions = () => {
 
   return (
     <>
+      <Head>
+        <title>Account sessions - Miracle TV</title>
+      </Head>
       <FloatingControls heading="Sessions">
         {selfSessions.length > 0 && (
           <Button

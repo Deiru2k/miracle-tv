@@ -1,15 +1,7 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
-import {
-  ActivityFilter,
-  UpdateUserSettingsInput,
-  UpdateActivityInput,
-} from "miracle-tv-shared/graphql";
-import { head } from "ramda";
-import {
-  NotFoundError,
-  ServerError,
-} from "miracle-tv-server/graphql/errors/general";
+import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
+import { ServerError } from "miracle-tv-server/graphql/errors/general";
 import { DbUserSettings } from "miracle-tv-server/db/models/types";
 
 export class UserSettingsModel extends Model {

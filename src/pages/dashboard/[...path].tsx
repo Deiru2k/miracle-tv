@@ -1,3 +1,4 @@
+import getConfig from "next/config";
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 import { Feeds } from "miracle-tv-client/Dashboard/Feeds";
 import {
@@ -6,8 +7,12 @@ import {
   Navigation,
 } from "miracle-tv-client/Dashboard/Navigation";
 import { Streams } from "miracle-tv-client/Dashboard/Streams";
-import { ProfileSettings } from "miracle-tv-client/UserSettings/Profile";
+import Head from "next/head";
 import React from "react";
+import { Attract } from "miracle-tv-client/components/ui/Attract";
+import { Heading } from "@chakra-ui/react";
+
+const { publicRuntimeConfig } = getConfig();
 
 const nav: NavConfig = [
   {
@@ -51,7 +56,18 @@ const components: NavComponentMap = {
 const Dashboard = () => {
   return (
     <AuthRedirect>
-      <Navigation nav={nav} components={components} size={[1, 10]} />
+      <Head>
+        <title>Dashboard - Miracle TV</title>
+      </Head>
+      {publicRuntimeConfig?.isDev ? (
+        <Navigation nav={nav} components={components} size={[1, 10]} />
+      ) : (
+        <Attract>
+          <Heading mt={12} size="md">
+            This section is under construction!
+          </Heading>
+        </Attract>
+      )}
     </AuthRedirect>
   );
 };

@@ -52,6 +52,6 @@ export const streamKeysResolver: StreamKeyResolvers<ResolverContext> = {
     return (await users.getUserByIdSafe((streamKey as any).userId)) as any;
   },
   channel: async (streamKey, _, { db: { channels } }) => {
-    return await channels.getChannelById((streamKey as any).channelId);
+    return await channels.getChannelById((streamKey as any).channelId, true);
   },
 };

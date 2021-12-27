@@ -294,6 +294,7 @@ export type Query = {
   activities: Array<Maybe<Activity>>;
   channel?: Maybe<Channel>;
   channels: Array<Maybe<Channel>>;
+  selfChannels: Array<Maybe<Channel>>;
   channelStatus?: Maybe<ChannelStatus>;
   fileInfo?: Maybe<File>;
   role?: Maybe<Role>;
@@ -325,6 +326,10 @@ export type QueryChannelArgs = {
 };
 
 export type QueryChannelsArgs = {
+  filter?: Maybe<ChannelsQueryFilter>;
+};
+
+export type QuerySelfChannelsArgs = {
   filter?: Maybe<ChannelsQueryFilter>;
 };
 
@@ -470,7 +475,7 @@ export type User = {
   avatar?: Maybe<File>;
   header?: Maybe<File>;
   streamThumbnail?: Maybe<File>;
-  useGravatar?: Maybe<Scalars["Boolean"]>;
+  settings?: Maybe<UserSettings>;
 };
 
 export type UserAccountDetails = {
@@ -1018,6 +1023,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryChannelsArgs, never>
   >;
+  selfChannels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySelfChannelsArgs, never>
+  >;
   channelStatus?: Resolver<
     Maybe<ResolversTypes["ChannelStatus"]>,
     ParentType,
@@ -1185,8 +1196,8 @@ export type UserResolvers<
     ParentType,
     ContextType
   >;
-  useGravatar?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
+  settings?: Resolver<
+    Maybe<ResolversTypes["UserSettings"]>,
     ParentType,
     ContextType
   >;
@@ -1307,7 +1318,6 @@ export type UserProfileFragment = {
   displayName?: Maybe<string>;
   bio?: Maybe<string>;
   emailHash?: Maybe<string>;
-  useGravatar?: Maybe<boolean>;
   channels: Array<
     Maybe<{
       __typename?: "Channel";
@@ -1331,6 +1341,40 @@ export type UserProfileFragment = {
   avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
+  settings?: Maybe<{
+    __typename?: "UserSettings";
+    useGravatar?: Maybe<boolean>;
+    singleUserMode?: Maybe<boolean>;
+    singleUserChannel?: Maybe<{
+      __typename?: "Channel";
+      id: string;
+      name: string;
+      description?: Maybe<string>;
+      slug?: Maybe<string>;
+      thumbnail?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
+      activity?: Maybe<{
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: Maybe<string>;
+      }>;
+      user?: Maybe<{
+        __typename?: "User";
+        id?: Maybe<string>;
+        username: string;
+        displayName?: Maybe<string>;
+        avatar?: Maybe<{
+          __typename?: "File";
+          id?: Maybe<string>;
+          filename: string;
+        }>;
+      }>;
+    }>;
+  }>;
 };
 
 export type SelfSessionsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1794,7 +1838,9 @@ export type SelfChannelsSelectQueryVariables = Exact<{
 
 export type SelfChannelsSelectQuery = {
   __typename?: "Query";
-  channels: Array<Maybe<{ __typename?: "Channel"; id: string; name: string }>>;
+  selfChannels: Array<
+    Maybe<{ __typename?: "Channel"; id: string; name: string }>
+  >;
 };
 
 export type UserInfoQueryVariables = Exact<{
@@ -2087,7 +2133,6 @@ export type UserPageQuery = {
     displayName?: Maybe<string>;
     bio?: Maybe<string>;
     emailHash?: Maybe<string>;
-    useGravatar?: Maybe<boolean>;
     channels: Array<
       Maybe<{
         __typename?: "Channel";
@@ -2119,5 +2164,62 @@ export type UserPageQuery = {
       filename: string;
     }>;
     streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
+    settings?: Maybe<{
+      __typename?: "UserSettings";
+      useGravatar?: Maybe<boolean>;
+      singleUserMode?: Maybe<boolean>;
+      singleUserChannel?: Maybe<{
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        description?: Maybe<string>;
+        slug?: Maybe<string>;
+        thumbnail?: Maybe<{
+          __typename?: "File";
+          id?: Maybe<string>;
+          filename: string;
+        }>;
+        activity?: Maybe<{
+          __typename?: "Activity";
+          id: string;
+          name: string;
+          verb?: Maybe<string>;
+        }>;
+        user?: Maybe<{
+          __typename?: "User";
+          id?: Maybe<string>;
+          username: string;
+          displayName?: Maybe<string>;
+          avatar?: Maybe<{
+            __typename?: "File";
+            id?: Maybe<string>;
+            filename: string;
+          }>;
+        }>;
+      }>;
+    }>;
+  }>;
+};
+
+export type UserPageChannelStatusQueryVariables = Exact<{
+  username: Scalars["ID"];
+}>;
+
+export type UserPageChannelStatusQuery = {
+  __typename?: "Query";
+  user?: Maybe<{
+    __typename?: "User";
+    id?: Maybe<string>;
+    channels: Array<
+      Maybe<{
+        __typename?: "Channel";
+        id: string;
+        status?: Maybe<{
+          __typename?: "ChannelStatus";
+          id?: Maybe<string>;
+          isLive?: Maybe<boolean>;
+        }>;
+      }>
+    >;
   }>;
 };

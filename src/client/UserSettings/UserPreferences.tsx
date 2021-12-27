@@ -11,6 +11,7 @@ import { Form } from "react-final-form";
 import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { FormSelfChannelSelect } from "miracle-tv-client/components/form/selects/FormSelfChannelSelect";
+import Head from "next/head";
 
 gql`
   query UserSettingsPreferences {
@@ -68,6 +69,9 @@ export const UserPreferences = () => {
 
   return (
     <>
+      <Head>
+        <title>User preferences - Miracle TV</title>
+      </Head>
       <Heading as="h3" size="md" mb={6}>
         Profile preferences
       </Heading>

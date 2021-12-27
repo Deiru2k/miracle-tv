@@ -9,7 +9,7 @@ type User {
   avatar: File
   header: File
   streamThumbnail: File
-  useGravatar: Boolean
+  settings: UserSettings
 }
 
 type UserAccountDetails {

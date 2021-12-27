@@ -21,6 +21,7 @@ input ChannelsQueryFilter {
 extend type Query {
   channel(id: ID!): Channel
   channels(filter: ChannelsQueryFilter): [Channel]!
+  selfChannels(filter: ChannelsQueryFilter): [Channel]!
 }
 
 input CreateChannelInput {

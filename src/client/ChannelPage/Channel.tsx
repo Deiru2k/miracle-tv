@@ -8,7 +8,6 @@ import {
   IconButton,
   Divider,
 } from "@chakra-ui/react";
-import { Chat } from "miracle-tv-client/components/chat/Chat";
 import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
 import {
   ChannelViewFragment,
@@ -17,7 +16,10 @@ import {
 import React, { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { getMediaURL } from "miracle-tv-shared/media";
-import { DummyPlayerComponent } from "miracle-tv-client/components/player/DummyPlayer";
+import {
+  DummyChatComponent,
+  DummyPlayerComponent,
+} from "miracle-tv-client/components/player/DummyPlayer";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -26,6 +28,11 @@ const Player = dynamic(
     loading: () => <DummyPlayerComponent />,
   }
 );
+
+const Chat = dynamic(() => import("miracle-tv-client/components/chat/Chat"), {
+  ssr: false,
+  loading: () => <DummyChatComponent />,
+});
 
 export const CHANNEL_VIEW_FRAGMENT = gql`
   fragment ChannelView on Channel {
@@ -100,34 +107,40 @@ const ChatViewControls = ({ isChatOpen, onChatOpenClick }: ControlProps) => {
   );
 };
 
-export const ChannelView = ({ channel, status }: Props) => {
+export const ChannelPlayerView = ({ channel, status }: Props) => {
   const [isChatOpen, setChatOpen] = useState<boolean>(true);
   const onChatOpenClick = useCallback(
     () => setChatOpen(!isChatOpen),
     [setChatOpen, isChatOpen]
   );
   return (
-    <>
-      <Flex m={2}>
-        <Box role="group" w="100%" h="100%" flex={9} mr={2} position="relative">
-          <Player
-            channelId={channel.id}
-            isLive={status?.isLive}
-            thumbnail={`${
-              channel.thumbnail
-                ? getMediaURL(channel.thumbnail?.filename)
-                : "/images/sanae_gyate.png"
-            }`}
-          />
-          <ChatViewControls
-            isChatOpen={isChatOpen}
-            onChatOpenClick={onChatOpenClick}
-          />
-        </Box>
-        <Flex w="100%" display={isChatOpen ? "initial" : "none"} flex={4}>
-          <Chat />
-        </Flex>
+    <Flex m={2}>
+      <Box role="group" w="100%" h="100%" flex={9} mr={2} position="relative">
+        <Player
+          channelId={channel.id}
+          isLive={status?.isLive}
+          thumbnail={`${
+            channel.thumbnail
+              ? getMediaURL(channel.thumbnail?.filename)
+              : "/images/sanae_gyate.png"
+          }`}
+        />
+        <ChatViewControls
+          isChatOpen={isChatOpen}
+          onChatOpenClick={onChatOpenClick}
+        />
+      </Box>
+      <Flex w="100%" display={isChatOpen ? "initial" : "none"} flex={4}>
+        <Chat channelId={channel.id} />
       </Flex>
+    </Flex>
+  );
+};
+
+export const ChannelView = ({ channel, status }: Props) => {
+  return (
+    <>
+      <ChannelPlayerView channel={channel} status={status} />
       <Box mx={2} my={2}>
         <Heading as={Flex} align="center" mb={2}>
           {status?.isLive && <CircleIcon color="red" mr={2} />}

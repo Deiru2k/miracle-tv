@@ -1,31 +1,33 @@
-import { gql } from "@apollo/client";
 import {
   AspectRatio,
   Text,
   Box,
   Flex,
   Heading,
-  VStack,
   Badge,
   Image,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
-import { ellipsis } from "miracle-tv-client/utils/text";
-import { ChannelCommonFragment } from "miracle-tv-shared/graphql";
+import {
+  ChannelCommonFragment,
+  ChannelViewStatusFragment,
+} from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
 import { Panel } from "../Panel";
 
 type Props = {
   channels: ChannelCommonFragment[];
+  channelStatuses?: Record<string, ChannelViewStatusFragment>;
   columns?: number;
   defaultThumbnail: string;
 };
 
 export const ChannelDisplayGrid = ({
   channels,
+  channelStatuses,
   columns = 3,
   defaultThumbnail,
 }: Props) => {
@@ -68,10 +70,13 @@ export const ChannelDisplayGrid = ({
                   whiteSpace="nowrap"
                   overflow="hidden"
                   textOverflow="ellipsis"
+                  py={1}
                 >
-                  <Text fontSize="1.6rem" color="red" display="inline" mr={2}>
-                    ●
-                  </Text>
+                  {channelStatuses?.[channel.id]?.isLive && (
+                    <Text fontSize="1.6rem" color="red" display="inline" mr={2}>
+                      ●
+                    </Text>
+                  )}
                   {channel.name}
                 </Heading>
               </Flex>

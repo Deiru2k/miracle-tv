@@ -17,7 +17,7 @@ export const VideoJS = ({ playerRef, videoRef, options, onReady }: Props) => {
       if (!videoElement) return;
 
       const player = (playerRef.current = videojs(videoElement, options, () => {
-        console.log("player is ready");
+        console.info("player is ready");
         onReady?.(player, videoElement);
       }));
     }

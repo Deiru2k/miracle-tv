@@ -23,6 +23,7 @@ export class ChanelsModel extends Model {
     return await this.table
       .insert({
         ...input,
+        disabled: false,
         userId,
       })
       .run(this.conn)
@@ -36,11 +37,14 @@ export class ChanelsModel extends Model {
       });
   }
 
-  async getChannelById(id: string): Promise<DbChannel> {
+  async getChannelById(
+    id: string,
+    includeDisabled: boolean = false
+  ): Promise<DbChannel> {
     const channel = (await this.table
       .get(id)
       .run(this.conn)) as DbChannel | null;
-    if (!channel) {
+    if (!channel || (!!channel.disabled && !includeDisabled)) {
       throw new NotFoundError("Channel not found");
     }
     return channel;
@@ -49,7 +53,7 @@ export class ChanelsModel extends Model {
   async getChannelBySlug(slug: string): Promise<DbChannel | null> {
     const channel = head(
       await this.table
-        .filter({ slug })
+        .filter({ slug, disabled: false })
         .limit(1)
         .coerceTo("array")
         .run(this.conn)
@@ -57,9 +61,13 @@ export class ChanelsModel extends Model {
     return channel;
   }
 
-  async getChannels(filter: ChanelsFilter = {}): Promise<DbChannel[]> {
+  async getChannels(
+    filter: ChanelsFilter = {},
+    includeDisabled: boolean = false
+  ): Promise<DbChannel[]> {
+    const disabledFilter = includeDisabled ? {} : { disabled: false };
     return (await this.table
-      .filter(filter)
+      .filter({ ...filter, ...disabledFilter })
       .coerceTo("array")
       .run(this.conn)) as DbChannel[];
   }
@@ -80,6 +88,34 @@ export class ChanelsModel extends Model {
       throw new ServerError("Could not update any chanels");
     }
     return { ...channel, id, ...input };
+  }
+
+  async setChannelAsMain(id: string, userId: string): Promise<boolean> {
+    const resultDisable = await this.table
+      .filter((doc) => doc("id").ne(id).and(doc("userId").eq(userId)))
+      .update({ disabled: true })
+      .run(this.conn);
+    const resultMain = await this.table
+      .get(id)
+      .update({ disabled: false })
+      .run(this.conn);
+
+    if (resultDisable.errors || resultMain.errors) {
+      throw new ServerError("Could not update any channels");
+    }
+    return true;
+  }
+
+  async resetMainChannel(userId: string): Promise<boolean> {
+    const result = await this.table
+      .filter({ userId })
+      .update({ disabled: false })
+      .run(this.conn);
+
+    if (result.errors) {
+      throw new ServerError("Could not update any channels");
+    }
+    return true;
   }
 
   async deleteChannel(id: string): Promise<boolean> {

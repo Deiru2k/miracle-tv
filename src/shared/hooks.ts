@@ -3,6 +3,29 @@ import * as Types from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {};
+export const ChannelViewStatusFragmentDoc = gql`
+  fragment ChannelViewStatus on ChannelStatus {
+    id
+    isLive
+  }
+`;
+export const ChannelCommonFragmentDoc = gql`
+  fragment ChannelCommon on Channel {
+    id
+    name
+    slug
+    thumbnail {
+      filename
+      id
+    }
+    description
+    activity {
+      id
+      name
+      verb
+    }
+  }
+`;
 export const ChannelViewFragmentDoc = gql`
   fragment ChannelView on Channel {
     id
@@ -29,29 +52,6 @@ export const ChannelViewFragmentDoc = gql`
     }
   }
 `;
-export const ChannelViewStatusFragmentDoc = gql`
-  fragment ChannelViewStatus on ChannelStatus {
-    id
-    isLive
-  }
-`;
-export const ChannelCommonFragmentDoc = gql`
-  fragment ChannelCommon on Channel {
-    id
-    name
-    slug
-    thumbnail {
-      filename
-      id
-    }
-    description
-    activity {
-      id
-      name
-      verb
-    }
-  }
-`;
 export const UserProfileFragmentDoc = gql`
   fragment UserProfile on User {
     id
@@ -70,12 +70,19 @@ export const UserProfileFragmentDoc = gql`
       id
       filename
     }
-    useGravatar
     streamThumbnail {
       filename
     }
+    settings {
+      useGravatar
+      singleUserMode
+      singleUserChannel {
+        ...ChannelView
+      }
+    }
   }
   ${ChannelCommonFragmentDoc}
+  ${ChannelViewFragmentDoc}
 `;
 export const UserSettingsProfileFragmentFragmentDoc = gql`
   fragment UserSettingsProfileFragment on User {
@@ -1558,7 +1565,7 @@ export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<
 >;
 export const SelfChannelsSelectDocument = gql`
   query SelfChannelsSelect($filter: ChannelsQueryFilter) {
-    channels(filter: $filter) {
+    selfChannels(filter: $filter) {
       id
       name
     }
@@ -2068,4 +2075,69 @@ export type UserPageLazyQueryHookResult = ReturnType<
 export type UserPageQueryResult = Apollo.QueryResult<
   Types.UserPageQuery,
   Types.UserPageQueryVariables
+>;
+export const UserPageChannelStatusDocument = gql`
+  query UserPageChannelStatus($username: ID!) {
+    user(id: $username) {
+      id
+      channels {
+        id
+        status {
+          ...ChannelViewStatus
+        }
+      }
+    }
+  }
+  ${ChannelViewStatusFragmentDoc}
+`;
+
+/**
+ * __useUserPageChannelStatusQuery__
+ *
+ * To run a query within a React component, call `useUserPageChannelStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserPageChannelStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserPageChannelStatusQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserPageChannelStatusQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserPageChannelStatusQuery,
+    Types.UserPageChannelStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserPageChannelStatusQuery,
+    Types.UserPageChannelStatusQueryVariables
+  >(UserPageChannelStatusDocument, options);
+}
+export function useUserPageChannelStatusLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserPageChannelStatusQuery,
+    Types.UserPageChannelStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserPageChannelStatusQuery,
+    Types.UserPageChannelStatusQueryVariables
+  >(UserPageChannelStatusDocument, options);
+}
+export type UserPageChannelStatusQueryHookResult = ReturnType<
+  typeof useUserPageChannelStatusQuery
+>;
+export type UserPageChannelStatusLazyQueryHookResult = ReturnType<
+  typeof useUserPageChannelStatusLazyQuery
+>;
+export type UserPageChannelStatusQueryResult = Apollo.QueryResult<
+  Types.UserPageChannelStatusQuery,
+  Types.UserPageChannelStatusQueryVariables
 >;
