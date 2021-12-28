@@ -63,9 +63,9 @@ rtmp {
       deny play all;
       allow publish all;
       hls_continuous on;
-      hls_fragment 1;
+      hls_fragment 3;
       hls_cleanup on;
-      hls_playlist_length 1s;
+      hls_playlist_length 10s;
       dash_path /mnt/dash;
       dash on;
       on_publish http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish;
@@ -136,18 +136,6 @@ http {
 
       # Don't cache.
       add_header Cache-Control no-cache;
-
-      # CORS.
-      add_header 'Access-Control-Allow-Origin' '*' always;
-      add_header 'Access-Control-Expose-Headers' 'Content-Length';
-      # Allow CORS preflight requests.
-      if ($request_method = 'OPTIONS') {
-        add_header 'Access-Control-Allow-Origin' '*';
-        add_header 'Access-Control-Max-Age' 1728000;
-        add_header 'Content-Type' 'text/plain charset=UTF-8';
-        add_header 'Content-Length' 0;
-        return 204;
-      }
     }
 
     # DASH fragments; largely similar to HLS config.
