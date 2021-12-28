@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "@chakra-ui/react";
 import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js";
 import "video.js/dist/video-js.css";
 
@@ -29,12 +30,14 @@ export const VideoJS = ({ playerRef, videoRef, options, onReady }: Props) => {
 
     return () => {
       if (player) {
+        player.dispose();
         playerRef.current = null;
       }
     };
   }, [playerRef]);
 
-  return <video ref={videoRef} />;
+  return <Box w="100%" h="100%"><video ref={videoRef} /></Box>;
+;
 };
 
 export default VideoJS;
