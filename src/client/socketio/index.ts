@@ -5,13 +5,8 @@ export type IOClientConfig = {
 };
 
 export const getIOClient = (config?: IOClientConfig) => {
-  const socket = io(
-    config.namespace
-      ? `ws://localhost:4000/${config.namespace}`
-      : "ws://localhost:4000",
-    {
-      transports: ["websocket"],
-    }
-  );
+  const socket = io(config.namespace ? `${config.namespace}` : undefined, {
+    transports: ["websocket"],
+  });
   return socket;
 };
