@@ -30,13 +30,14 @@ const env = process.env.NEXT_PUBLIC_ENV;
 const { publicRuntimeConfig } = getConfig();
 
 const apiUrls: Record<string, string> = {
-  development: "https://dev.miracle-tv.live/api/graphql",
+  development: `${publicRuntimeConfig?.apiUrl}/graphql`,
   local: `http://localhost:4000/graphql`,
-  production: "https://miracle-tv.live/api/graphql",
+  production: `${publicRuntimeConfig?.apiUrl}/graphql`,
 } as const;
 
 const defaultURI: string =
-  publicRuntimeConfig?.apiUrl || propOr(apiUrls.local, env, apiUrls);
+  `${publicRuntimeConfig?.apiUrl}/graphql` ||
+  propOr(apiUrls.local, env, apiUrls);
 
 const uploadLink = createUploadLink({
   uri: defaultURI,
