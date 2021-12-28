@@ -9,7 +9,7 @@ const onMessage = (socket: Socket) => {};
 export const websocketEntry = (httpServer: http.Server) => {
   const io = new SocketIO(httpServer, {
     serveClient: false,
-    path: `${config.pathPrefix}/socket.io/`,
+    path: `${config.socketPrefix}/socket.io/`,
   });
   setupChat(io);
   io.on("connection", onConnection);

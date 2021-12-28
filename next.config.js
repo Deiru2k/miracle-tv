@@ -7,6 +7,7 @@ module.exports = {
     // Will be available on both server and client
     isDev: isDev,
     apiUrl: process.env.NEXT_PUBLIC_API_URL,
+    socketPreix: process.env.NEXT_PUBLIC_SOCKET_PREFIX,
     mediaUrl: process.env.NEXT_PUBLIC_MEDIA_URL,
   },
   async rewrites() {
