@@ -107,7 +107,7 @@ export const UserProfile = ({ user, statuses }: Props) => {
               <Image
                 src={getMediaURL(user?.header?.filename)}
                 borderTopRadius="5px"
-                objectPosition="top"
+                objectPosition="center"
               />
             </AspectRatio>
             <Flex
