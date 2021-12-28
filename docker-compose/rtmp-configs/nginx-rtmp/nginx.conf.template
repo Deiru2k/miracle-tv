@@ -28,58 +28,75 @@ rtmp {
 
     # This accepts the external connections, and redirects them to `live`
     # if a valid stream key is provided.
-    application miracle {
-      # Allow streaming to this endpoint, and disable recording.
+    # application miracle {
+    #   # Allow streaming to this endpoint, and disable recording.
+    #   live on;
+    #   record off;
+
+    #   # Callback for when a stream begins.
+    #   # On 2xx: Allows streaming.
+    #   # On 3xx: Redirects? Not sure what that would be, honestly.
+    #   # On 4xx: Denies streaming.
+    #   on_publish "http://miracle-backend:4000/hook/nginx-rtmp/on_publish?name=$uri";
+
+    #   # Callback for when a stream stops.
+    #   on_publish_done http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish_done;
+
+    #   # Deny listening to this endpoint for non-localhost.
+    #   allow play 127.0.0.1;
+    #   deny play all;
+
+    #   exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/$app/$name -async 1 -vsync -1
+    #     -c:v libx264 -c:a aac -b:v 256k  -b:a 64k  -vf "scale=480:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_low
+    #     -c:v libx264 -c:a aac -b:v 768k  -b:a 128k -vf "scale=720:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_mid
+    #     -c:v libx264 -c:a aac -b:v 1024k -b:a 128k -vf "scale=960:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_high
+    #     -c:v libx264 -c:a aac -b:v 1920k -b:a 128k -vf "scale=1280:trunc(ow/a/2)*2" -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_hd720
+    #     -c copy -f flv rtmp://localhost:1935/live/$name_src;
+    # }
+
+    application live {
       live on;
       record off;
-
-      # Callback for when a stream begins.
-      # On 2xx: Allows streaming.
-      # On 3xx: Redirects? Not sure what that would be, honestly.
-      # On 4xx: Denies streaming.
-      on_publish "http://127.0.0.1:4000/hook/nginx-rtmp/on_publish?name=$uri";
-
-      # Callback for when a stream stops.
-      on_publish_done http://127.0.0.1:4000/api/hook/nginx-rtmp/on_publish_done;
-
-      # Deny listening to this endpoint for non-localhost.
-      allow play 127.0.0.1;
+      hls on;
+      hls_path /mnt/hls;
+      hls_nested on;
       deny play all;
-
-      exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/$app/$name -async 1 -vsync -1
-        -c:v libx264 -c:a aac -b:v 256k  -b:a 64k  -vf "scale=480:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_low
-        -c:v libx264 -c:a aac -b:v 768k  -b:a 128k -vf "scale=720:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_mid
-        -c:v libx264 -c:a aac -b:v 1024k -b:a 128k -vf "scale=960:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_high
-        -c:v libx264 -c:a aac -b:v 1920k -b:a 128k -vf "scale=1280:trunc(ow/a/2)*2" -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_hd720
-        -c copy -f flv rtmp://localhost:1935/live/$name_src;
+      allow publish all;
+      hls_continuous on;
+      hls_fragment 3;
+      hls_cleanup on;
+      hls_playlist_length 10s;
+      dash_path /mnt/dash;
+      dash on;
+      on_publish http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish;
+      on_publish_done http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish_done;
     }
 
     # Application for receiving.
-    application live {
-      live on;       # Allow streaming from localhost.
-      deny play all; # Deny receiving as RTMP.
+    # application unlike {
+    #   live on;       # Allow streaming from localhost.
+    #   deny play all; # Deny receiving as RTMP.
 
-      # Only allow publishing from localhost - `miracle` handles publishing here.
-      allow publish 127.0.0.1;
-      deny publish all;
+    #   # Only allow publishing from localhost - `miracle` handles publishing here.
+    #   allow publish all;
 
-      # HLS config.
-      hls on; # Enable HLS.
-      hls_fragment 3;
-      hls_playlist_length 10;
-      hls_path /mnt/hls/;
-      hls_variant _src BANDWIDTH=4096000;   # Source bitrate, source resolution
-      hls_variant _hd720 BANDWIDTH=2048000; # High bitrate, HD 720p resolution
-      hls_variant _high BANDWIDTH=1152000;  # High bitrate, higher-than-SD resolution
-      hls_variant _mid BANDWIDTH=448000;    # Medium bitrate, SD resolution
-      hls_variant _low BANDWIDTH=288000;    # Low bitrate, sub-SD resolution
+    #   # HLS config.
+    #   hls on; # Enable HLS.
+    #   hls_fragment 3;
+    #   hls_playlist_length 10;
+    #   hls_path /mnt/hls/;
+    #   hls_variant _src BANDWIDTH=4096000;   # Source bitrate, source resolution
+    #   hls_variant _hd720 BANDWIDTH=2048000; # High bitrate, HD 720p resolution
+    #   hls_variant _high BANDWIDTH=1152000;  # High bitrate, higher-than-SD resolution
+    #   hls_variant _mid BANDWIDTH=448000;    # Medium bitrate, SD resolution
+    #   hls_variant _low BANDWIDTH=288000;    # Low bitrate, sub-SD resolution
 
-      # DASH config.
-      dash on;
-      dash_path /mnt/dash/;
-      dash_fragment 3;
-      dash_playlist_length 10;
-    }
+    #   # DASH config.
+    #   dash on;
+    #   dash_path /mnt/dash/;
+    #   dash_fragment 3;
+    #   dash_playlist_length 10;
+    # }
   }
 }
 
@@ -168,11 +185,11 @@ http {
     location /socket.io/ {
       proxy_pass http://miracle-backend:4000;
       client_max_body_size 10M;
-      #proxy_http_version 1.1;
-      #proxy_set_header Upgrade $http_upgrade;
-      #proxy_set_header Connection 'upgrade';
-      #proxy_set_header Host $host;
-      #proxy_cache_bypass $http_upgrade;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
 
       # CORS.
       add_header 'Access-Control-Allow-Origin' '*' always;

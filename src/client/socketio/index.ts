@@ -14,7 +14,6 @@ export const getIOClient = (config?: IOClientConfig) => {
       : undefined,
     {
       transports: ["websocket"],
-      path: `${publicRuntimeConfig.socketPrefix}/socket.io/`,
     }
   );
   return socket;
