@@ -1,4 +1,5 @@
 import { ChatIcon } from "@chakra-ui/icons";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { Box, Text, Flex, Input, VStack, IconButton } from "@chakra-ui/react";
 import { getIOClient } from "miracle-tv-client/socketio";
 import { Socket } from "socket.io-client";
@@ -37,9 +38,10 @@ const ChatMessage = ({ username, message }: ChatMessageProps) => {
 
 type ChatControlsProps = {
   onSend: (msg: string) => void;
+  isDisabled?: boolean;
 };
 
-const ChatControls = ({ onSend }: ChatControlsProps) => {
+const ChatControls = ({ onSend, isDisabled }: ChatControlsProps) => {
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +66,7 @@ const ChatControls = ({ onSend }: ChatControlsProps) => {
           mr={2}
           value={value}
           onChange={onChange}
+        isDisabled={isDisabled}
           placeholder="Remember to be nice to eachother"
         />
         <IconButton
@@ -71,6 +74,7 @@ const ChatControls = ({ onSend }: ChatControlsProps) => {
           aria-label="Send message"
           icon={<ChatIcon color="primary.200" />}
           type="submit"
+          isDisabled={isDisabled}
         >
           CHAT
         </IconButton>
@@ -90,6 +94,7 @@ type ChatLog = {
 };
 
 export const Chat = ({ channelId }: Props) => {
+  const { currentUser } = useCurrentUser();
   const [chatLog, setChatLog] = useState<ChatLog[]>([]);
   const chatLogSorted = useMemo(
     () => sort((msg) => msg.timestamp, chatLog),
@@ -149,22 +154,37 @@ export const Chat = ({ channelId }: Props) => {
 
   return (
     <Flex w="100%" direction="column" height="100%">
-      <VStack
-        w="100%"
-        overflowY="auto"
-        direction="column"
-        flexGrow={1}
-        height={0}
-      >
-        {chatLogSorted.map((msg) => (
-          <ChatMessage
-            key={msg.timestamp}
-            username={msg.username}
-            message={msg.message}
-          />
-        ))}
-      </VStack>
-      <ChatControls onSend={sendChatMessage} />
+      {currentUser && (
+        <VStack
+            w="100%"
+            overflowY="auto"
+            direction="column"
+            flexGrow={1}
+            height={0}
+        >
+          {chatLogSorted.map((msg) => (
+            <ChatMessage
+                key={msg.timestamp}
+                username={msg.username}
+                message={msg.message}
+            />
+          ))}
+        </VStack>
+      )}
+      {!currentUser && (
+        <Flex
+          w="100%"
+          overflowY="auto"
+          direction="column"
+          flexGrow={1}
+          height={0}
+          justify="center"
+          align="center"
+        >
+          Please login to use chat
+        </Flex>
+      )}
+    <ChatControls onSend={sendChatMessage} />
     </Flex>
   );
 };
