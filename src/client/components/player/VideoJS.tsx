@@ -36,7 +36,7 @@ export const VideoJS = ({ playerRef, videoRef, options, onReady }: Props) => {
     };
   }, [playerRef]);
 
-  return <Box><video ref={videoRef} /></Box>;
+  return <div><video ref={videoRef} /></div>;
 ;
 };
 
