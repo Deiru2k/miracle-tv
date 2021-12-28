@@ -92,7 +92,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
                 nativeAudioTracks: false,
                 nativeVideoTracks: false,
               },
-            }}
+            } as any}
             playerRef={playerRef}
             videoRef={videoRef}
             onReady={onPlayerReady}
