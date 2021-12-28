@@ -82,7 +82,9 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
           <VideoJS
             options={{
               liveui: true,
-              sources: [{ src: streamSrc, type: "application/x-mpegURL" }],
+              errorDisplay: false,
+              loadingSpinner: false,
+              sources: isLive ? [{ src: streamSrc, type: "application/x-mpegURL" }] : [],
               html5: {
                 vhs: {
                   overrideNative: true,
