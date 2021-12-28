@@ -79,24 +79,26 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
               </Heading>
             </Flex>
           </Box>
-          <VideoJS
-            options={{
-              liveui: true,
-              errorDisplay: false,
-              loadingSpinner: false,
-              sources: isLive ? [{ src: streamSrc, type: "application/x-mpegURL" }] : [],
-              html5: {
-                vhs: {
-                  overrideNative: true,
+          {isLive && (
+            <VideoJS
+              options={{
+                liveui: true,
+                errorDisplay: false,
+                loadingSpinner: false,
+                sources: [{ src: streamSrc, type: "application/x-mpegURL" }],
+                html5: {
+                  vhs: {
+                    overrideNative: true,
+                  },
+                  nativeAudioTracks: false,
+                  nativeVideoTracks: false,
                 },
-                nativeAudioTracks: false,
-                nativeVideoTracks: false,
-              },
-            } as any}
-            playerRef={playerRef}
-            videoRef={videoRef}
-            onReady={onPlayerReady}
-          />
+              } as any}
+              playerRef={playerRef}
+              videoRef={videoRef}
+              onReady={onPlayerReady}
+            />
+          )}
         </>
       </AspectRatio>
       {isLive && (
