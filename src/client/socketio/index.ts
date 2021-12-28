@@ -8,9 +8,14 @@ export type IOClientConfig = {
 };
 
 export const getIOClient = (config?: IOClientConfig) => {
-  const socket = io(config.namespace ? config.namespace : undefined, {
-    transports: ["websocket"],
-    path: `${publicRuntimeConfig.socketPrefix}/socket.io/`,
-  });
+  const socket = io(
+    config.namespace
+      ? `${window.location.host}/${config.namespace}`
+      : undefined,
+    {
+      transports: ["websocket"],
+      path: `${publicRuntimeConfig.socketPrefix}/socket.io/`,
+    }
+  );
   return socket;
 };
