@@ -184,7 +184,7 @@ export const Chat = ({ channelId }: Props) => {
           Please login to use chat
         </Flex>
       )}
-    <ChatControls onSend={sendChatMessage} />
+    <ChatControls isDisabled={!currentUser} onSend={sendChatMessage} />
     </Flex>
   );
 };
