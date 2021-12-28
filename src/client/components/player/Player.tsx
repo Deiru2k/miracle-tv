@@ -84,7 +84,6 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
               options={{
                 liveui: true,
                 errorDisplay: false,
-                resizeManager: false,
                 loadingSpinner: false,
                 sources: [{ src: streamSrc, type: "application/x-mpegURL" }],
                 html5: {
