@@ -36,7 +36,7 @@ export const VideoJS = ({ playerRef, videoRef, options, onReady }: Props) => {
     };
   }, [playerRef]);
 
-  return <div><video ref={videoRef} /></div>;
+  return <div><video ref={videoRef} style={{ maxWidth: "unset" }} /></div>;
 ;
 };
 
