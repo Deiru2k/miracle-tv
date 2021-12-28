@@ -63,9 +63,9 @@ rtmp {
       deny play all;
       allow publish all;
       hls_continuous on;
-      hls_fragment 3;
+      hls_fragment 1;
       hls_cleanup on;
-      hls_playlist_length 10s;
+      hls_playlist_length 1s;
       dash_path /mnt/dash;
       dash on;
       on_publish http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish;
