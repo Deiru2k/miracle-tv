@@ -37,10 +37,10 @@ rtmp {
       # On 2xx: Allows streaming.
       # On 3xx: Redirects? Not sure what that would be, honestly.
       # On 4xx: Denies streaming.
-      on_publish "http://miracle-backend:4000/api/hook/on_publish?name=$uri";
+      on_publish "http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish?name=$uri";
 
       # Callback for when a stream stops.
-      on_publish_done http://miracle-backend:4000/api/hook/on_publish_done;
+      on_publish_done http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish_done;
 
       # Deny listening to this endpoint for non-localhost.
       allow play 127.0.0.1;
@@ -110,12 +110,12 @@ http {
     # }
 
     # HLS fragments.
-    location /hls {
+    location /streaming/hls {
       types {
         application/vnd.apple.mpegurl m3u8;
         video/mp2t ts;
       }
-      root /mnt;
+      alias /mnt/hls/;
 
       # Don't cache.
       add_header Cache-Control no-cache;
@@ -135,12 +135,12 @@ http {
 
     # DASH fragments; largely similar to HLS config.
     # TODO: refactor so these cache bits can be more DRY?
-    location /dash {
+    location /streaming/dash {
       types {
         application/dash+xml mpd;
         video/mp4 mp4;
       }
-      root /mnt;
+      alias /mnt/dash/;
     }
 
     # Proxy all /api requests to Miracle backend.
@@ -186,5 +186,4 @@ http {
       }
     }
   }
-
 }

@@ -28,6 +28,8 @@ in mkYarnPackage rec {
     cp -R $node_modules/* ./node_modules
     cp -R $node_modules/.bin ./node_modules
 
+    # rm -rf ./node_modules/socket.io/client-dist
+
     runHook preConfigure
   '';
 
@@ -35,7 +37,6 @@ in mkYarnPackage rec {
     runHook preBuild
 
     # Build server and client
-    yarn --offline build:server
     yarn --offline build:client
     yarn --offline build:cli
 
@@ -48,6 +49,7 @@ in mkYarnPackage rec {
     # Create output dirs
     mkdir -p $out/bin
     mkdir -p $out/dist/server/graphql
+    mkdir -p $out/dist/shared
     mkdir -p $out/dist/server/lib/binding/napi-v3
 
     # Copy files needed for the suite to run
@@ -57,13 +59,15 @@ in mkYarnPackage rec {
     cp next.config.js $out/next.config.js
 
     # Copy server dist
-    cp -r ./dist/server/* $out/dist/server
-    cp -r ./src/server/graphql/schema/* $out/dist/server/graphql
+    cp -r ./src/server/* $out/dist/server
+    cp -r ./src/shared/* $out/dist/shared
 
     # Wrap yarn to run server as `miracle-server`
     makeWrapper $yarnPkg/bin/yarn $out/bin/miracle-server \
       --add-flags "--cwd $out" \
       --add-flags "run:server" \
+      --set NODE_PATH "$node_modules" \
+      --set PATH "$PATH:$node_modules/.bin" \
       --set NODE_ENV production
 
     # Copy client dist
