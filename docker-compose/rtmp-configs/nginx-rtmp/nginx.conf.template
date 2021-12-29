@@ -51,7 +51,7 @@ rtmp {
       hls_path /mnt/hls;
       hls_nested on;
       deny play all;
-      allow publish localhost;
+      allow publish 127.0.0.1;
       hls_continuous on;
       hls_fragment 3;
       hls_cleanup on;
@@ -67,8 +67,9 @@ rtmp {
     }
 
     application live {
+      live on;
       deny play all;
-      allow play localhost;
+      allow play 127.0.0.1;
       allow publish all;
       exec_push  /usr/local/bin/ffmpeg -i rtmp://localhost:1935/miracle/$name -async 1 -vsync -1
         # -c:v libx264 -c:a aac -b:v 256k  -b:a 64k  -vf "scale=480:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_low
