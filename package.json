@@ -3,7 +3,7 @@
   "main": "server.js",
   "version": "0.1.6",
   "repository": "https://code.gensokyo.social/Gensokyo.social/miracle-tv",
-  "license": "MIT",
+  "license": "GPLv3",
   "scripts": {
     "daemon:start": "NODE_ENV=production name=miracle-tv pm2 start yarn --name miracle-tv -- server",
     "daemon:stop": "pm2 delete miracle-tv",
