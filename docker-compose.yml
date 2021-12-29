@@ -1,21 +1,32 @@
 version: "3.3"
 
+networks:
+  external:
+  internal:
+    internal: false
+
 services:
   nginx:
     image: "alqutami/rtmp-hls"
     ports:
       - "1935:1935"
-      - "1337:1337"
+      - "127.0.0.1:1337:1337"
     volumes:
       - ./docker-compose/rtmp-configs/nginx-rtmp/nginx.conf.template:/etc/nginx/nginx.conf
       - /home/ubuntu/miracle-data/media:/mnt/media
+      - /home/ubuntu/miracle-data/streaming/hls:/mnt/hls
     depends_on:
       - miracle-backend
       - miracle-frontend
+    networks:
+      - external
+      - internal
   rethinkdb:
     image: "rethinkdb"
     volumes:
       - /home/ubuntu/miracle-data/db:/data
+    networks:
+      - internal
   miracle-backend:
     build:
       context: "."
@@ -29,16 +40,20 @@ services:
       - /home/ubuntu/miracle-data:/data/miracle-tv
     environment:
       - MIRACLE_CONFIG=/conf/config.json
+    networks:
+      - internal
   miracle-frontend:
     build:
       context: "."
       dockerfile: "./frontend.Dockerfile"
+    networks:
+      - internal
     ports:
       - "3000:3000"
     depends_on:
       - miracle-backend
     environment:
-      - NEXT_PUBLIC_MEDIA_URL=http://miracle-tv.live:1337/media
+      - NEXT_PUBLIC_MEDIA_URL=https://miracle-tv.live/media
       - NEXT_PUBLIC_SOCKET_PREFIX=/api
       - NEXT_PUBLIC_ENV=production
-      - NEXT_PUBLIC_API_URL=http://miracle-tv.live:1337/api
+      - NEXT_PUBLIC_API_URL=https://miracle-tv.live/api
