@@ -52,6 +52,16 @@ services:
       - "3000:3000"
     depends_on:
       - miracle-backend
+    command:
+      [
+        "./wait-for",
+        "-t",
+        "30",
+        "http://miracle-backend:4000/api/hook/ping",
+        "--",
+        "yarn",
+        "run:client",
+      ]
     environment:
       - NEXT_PUBLIC_MEDIA_URL=https://miracle-tv.live/media
       - NEXT_PUBLIC_SOCKET_PREFIX=/api
