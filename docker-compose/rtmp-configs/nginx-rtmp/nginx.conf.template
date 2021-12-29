@@ -53,9 +53,9 @@ rtmp {
       deny play all;
       allow publish 127.0.0.1;
       hls_continuous on;
-      hls_fragment 3;
+      hls_fragment 2s;
       hls_cleanup on;
-      hls_playlist_length 10s;
+      hls_playlist_length 6s;
       dash_path /mnt/dash;
       dash on;
 
