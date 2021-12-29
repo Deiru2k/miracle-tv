@@ -75,7 +75,7 @@ rtmp {
         # -c:v libx264 -c:a aac -b:v 256k  -b:a 64k  -vf "scale=480:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_low
         # -c:v libx264 -c:a aac -b:v 768k  -b:a 128k -vf "scale=720:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_mid
         # -c:v libx264 -c:a aac -b:v 1024k -b:a 128k -vf "scale=960:trunc(ow/a/2)*2"  -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/live/$name_high
-        -c:v libx265 -c:a aac -b:v 1920k -b:a 128k -vf "scale=1280:trunc(ow/a/2)*2" -intra-refresh 1 -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/miracle/$name_hd720
+        -c:v libx264 -c:a aac -b:v 1920k -b:a 128k -vf "scale=1280:trunc(ow/a/2)*2" -intra-refresh 1 -tune zerolatency -preset superfast -crf 23 -f flv rtmp://localhost:1935/miracle/$name_hd720
         -c copy -f flv rtmp://localhost:1935/miracle/$name;
 
       on_publish http://miracle-backend:4000/api/hook/nginx-rtmp/on_publish;
