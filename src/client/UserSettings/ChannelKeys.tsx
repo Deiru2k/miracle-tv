@@ -11,6 +11,7 @@ import {
   Button,
   HStack,
   IconButton,
+  Stack,
   Text,
   useDisclosure,
   useToast,
@@ -21,6 +22,8 @@ import { StreamKeyDisplay } from "miracle-tv-client/components/ui/StreamKeyDispl
 import { CreateStreamKeyModal } from "./CreateStreamKeyModal";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 gql`
   query UserSettingsChannelKeys($channelId: ID!) {
@@ -51,6 +54,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
   const { currentUser } = useCurrentUser();
   const { data: { streamKeysByChannelId: streamKeys = [] } = {}, refetch } =
     useUserSettingsChannelKeysQuery({ variables: { channelId: id } });
+  const isMobile = useMediaQuery(MediaQuery.mobile);
 
   const isRevokeAllDisabled = streamKeys.length === 0;
 
@@ -99,7 +103,10 @@ export const ChannelKeysSettings = ({ id }: Props) => {
         {...generateModalDisclosure}
       />
       <Box position="sticky" top="0" right="0" pb={14}>
-        <HStack float="right">
+        <Stack
+          float={isMobile ? undefined : "right"}
+          direction={isMobile ? "column" : "row"}
+        >
           <Button
             colorScheme="red"
             onClick={onAllKeysRevoke}
@@ -109,13 +116,13 @@ export const ChannelKeysSettings = ({ id }: Props) => {
             Revoke all keys
           </Button>
           <Button onClick={generateModalDisclosure.onOpen}>Generate</Button>
-        </HStack>
+        </Stack>
       </Box>
       <VStack>
         {streamKeys.map((sKey) => (
           <Panel w="100%" key={sKey.id}>
             {sKey.name && <Text mb={2}>{sKey.name}</Text>}
-            <HStack w="100%">
+            <Stack w="100%" direction={isMobile ? "column" : "row"}>
               <StreamKeyDisplay
                 streamKey={sKey.id}
                 channelId={sKey.channel.id}
@@ -127,7 +134,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
                 icon={<DeleteIcon />}
                 onClick={() => onKeyRevoke(sKey.id)}
               />
-            </HStack>
+            </Stack>
           </Panel>
         ))}
       </VStack>

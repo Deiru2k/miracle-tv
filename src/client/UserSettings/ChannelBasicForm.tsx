@@ -6,8 +6,11 @@ import { FormTextarea } from "miracle-tv-client/components/form/FormTextarea";
 import { FormActivitesSelect } from "miracle-tv-client/components/form/selects/FormActivitiesSelect";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 export const ChannelBasicForm = () => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
       <FormInput label="Channel name" name="name" mb={5} />
@@ -21,7 +24,7 @@ export const ChannelBasicForm = () => {
         />
         <FormActivitesSelect label="Activity" name="activityId" mb={5} />
       </SimpleGrid>
-      <Box w="50%">
+      <Box w={isMobile ? "100%" : "50%"}>
         <FormGroup
           name="thumbnail"
           label="Channel Thumbnail"

@@ -20,6 +20,8 @@ import {
   DummyChatComponent,
   DummyPlayerComponent,
 } from "miracle-tv-client/components/player/DummyPlayer";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -108,13 +110,14 @@ const ChatViewControls = ({ isChatOpen, onChatOpenClick }: ControlProps) => {
 };
 
 export const ChannelPlayerView = ({ channel, status }: Props) => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const [isChatOpen, setChatOpen] = useState<boolean>(true);
   const onChatOpenClick = useCallback(
     () => setChatOpen(!isChatOpen),
     [setChatOpen, isChatOpen]
   );
   return (
-    <Flex m={2}>
+    <Flex m={2} direction={isMobile ? "column" : "row"}>
       <Box role="group" w="100%" h="100%" flex={9} mr={2} position="relative">
         <Player
           channelId={channel.id}

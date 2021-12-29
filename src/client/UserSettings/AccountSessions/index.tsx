@@ -87,7 +87,7 @@ export const AccountSessions = () => {
           </Button>
         )}
       </FloatingControls>
-      <VStack w="100%" align="flex-start">
+      <VStack w="100%" align="flex-start" pt={2}>
         {sessionsSorted.map((session) => (
           <SessionDisplay
             session={session}

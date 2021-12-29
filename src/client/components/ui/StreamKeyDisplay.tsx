@@ -7,6 +7,8 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
+import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
 import React, { useCallback, useState } from "react";
 
 type Props = {
@@ -16,6 +18,7 @@ type Props = {
 export const StreamKeyDisplay = ({ streamKey, channelId, ...props }: Props) => {
   const toast = useToast();
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const passwordType = isVisible ? undefined : "password";
   const VisibleIcon = isVisible ? ViewOffIcon : ViewIcon;
 
@@ -32,27 +35,30 @@ export const StreamKeyDisplay = ({ streamKey, channelId, ...props }: Props) => {
   }, [toast, streamKey, channelId]);
 
   return (
-    <Flex {...props}>
+    <Flex {...props} direction={isMobile ? "column" : "row"}>
       <Input
         value={`${channelId}?key=${streamKey}`}
         readOnly
         type={passwordType}
-        borderRightRadius={0}
-        borderRight={0}
+        borderRightRadius={isMobile ? undefined : 0}
+        borderRight={isMobile ? undefined : 0}
+        mb={isMobile ? 1 : undefined}
       />
       <IconButton
         aria-label="Show / Hide password"
         icon={<VisibleIcon />}
         onClick={() => setIsVisible(!isVisible)}
+        mb={isMobile ? 1 : undefined}
       />
       <IconButton
         aria-label="Copy stream key"
         icon={<CopyIcon />}
         borderLeftWidth="1px"
-        borderLeftStyle="solid"
-        borderLeftColor="primary.500"
-        borderRightRadius="4px"
+        borderLeftStyle={isMobile ? undefined : "solid"}
+        borderLeftColor={isMobile ? undefined : "primary.500"}
+        borderRightRadius={isMobile ? undefined : "4px"}
         onClick={copyKey}
+        mb={isMobile ? 1 : undefined}
       />
     </Flex>
   );

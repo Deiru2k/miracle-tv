@@ -32,8 +32,12 @@ export const SimpleChannelList = ({
     <VStack spacing={4} zIndex={1} w="100%">
       {channels?.map((channel) => (
         <Panel key={channel.id} width="100%" p={0}>
-          <Flex>
-            <AspectRatio ratio={16 / 9} w="200px" maxH="100%">
+          <Flex direction={isMobile ? "column" : "row"}>
+            <AspectRatio
+              ratio={16 / 9}
+              w={isMobile ? "100%" : "200px"}
+              maxH="100%"
+            >
               <Box
                 borderLeftRadius="4px"
                 backgroundImage={`url(${

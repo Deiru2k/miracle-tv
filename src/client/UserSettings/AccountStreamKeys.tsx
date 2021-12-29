@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Stack,
   Text,
   useToast,
   VStack,
@@ -16,6 +17,8 @@ import { FloatingControls } from "miracle-tv-client/components/ui/FloatingContro
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { StreamKeyDisplay } from "miracle-tv-client/components/ui/StreamKeyDisplay";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
 import {
   useRevokeSelfStreamKeysMutation,
   useSelfStreamKeysQuery,
@@ -42,6 +45,7 @@ gql`
 
 export const AccountStreamKeys = () => {
   const toast = useToast();
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const { currentUser } = useCurrentUser();
   const { data: { selfStreamKeys: keys = [] } = {}, refetch } =
     useSelfStreamKeysQuery();
@@ -105,13 +109,16 @@ export const AccountStreamKeys = () => {
       <VStack w="100%">
         {keys.map((sKey) => (
           <Panel w="100%" key={sKey.id}>
-            <Flex justify="space-between">
+            <Flex
+              justify="space-between"
+              direction={isMobile ? "column" : "row"}
+            >
               {sKey.name && <Text mb={2}>{sKey.name}</Text>}
               {sKey.channel.name && (
                 <Text mb={2}>Channel: {sKey.channel.name}</Text>
               )}
             </Flex>
-            <HStack w="100%">
+            <Stack w="100%" direction={isMobile ? "column" : "row"}>
               <StreamKeyDisplay
                 channelId={sKey.channel.id}
                 streamKey={sKey.id}
@@ -123,7 +130,7 @@ export const AccountStreamKeys = () => {
                 icon={<DeleteIcon />}
                 onClick={() => onKeyRevoke(sKey.id)}
               />
-            </HStack>
+            </Stack>
           </Panel>
         ))}
       </VStack>

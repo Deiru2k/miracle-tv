@@ -181,7 +181,7 @@ export const ImageUploader = ({
               backgroundColor={bgColor}
             />
           </AspectRatio>
-          <Box>
+          <Box w="100%">
             <IconButton
               variant="link"
               color="red.300"

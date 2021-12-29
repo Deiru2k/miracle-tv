@@ -11,6 +11,8 @@ import Head from "next/head";
 import React from "react";
 import { Attract } from "miracle-tv-client/components/ui/Attract";
 import { Heading } from "@chakra-ui/react";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -54,13 +56,19 @@ const components: NavComponentMap = {
 };
 
 const Dashboard = () => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <AuthRedirect>
       <Head>
         <title>Dashboard - Miracle TV</title>
       </Head>
       {publicRuntimeConfig?.isDev ? (
-        <Navigation nav={nav} components={components} size={[1, 10]} />
+        <Navigation
+          nav={nav}
+          components={components}
+          size={[1, 10]}
+          title={isMobile ? "Dashboard" : undefined}
+        />
       ) : (
         <Attract>
           <Heading mt={12} size="md">

@@ -26,8 +26,11 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { HomeIcon } from "../icons/HomeIcon";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { LiveUpdateSwitch } from "miracle-tv-client/context/liveUpdate";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 export const Navbar = () => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const { currentUser, isUserCalled, isUserLoading, logout } = useCurrentUser();
   const { currentSettings, isSettingsLoading, refetchSettings } =
     useCurrentUserSettings();
@@ -41,7 +44,12 @@ export const Navbar = () => {
   return (
     <Flex __css={styles.navbar} zIndex={10}>
       <Box>
-        <Link as={Heading} href="/">
+        <Link
+          as={(props: any) => (
+            <Heading {...props} size={isMobile ? "md" : undefined} />
+          )}
+          href="/"
+        >
           Miracle TV
         </Link>
       </Box>
@@ -59,7 +67,7 @@ export const Navbar = () => {
         )}
         {isUserCalled && !isUserLoading && !!currentUser && (
           <Menu>
-            <MenuButton variant="ghost" px={0}>
+            <MenuButton variant="ghost" px={0} aria-label="Open user menu">
               <HStack>
                 {isSettingsLoading && <Spinner />}
                 {!isSettingsLoading && (
@@ -74,9 +82,11 @@ export const Navbar = () => {
                     bgColor="white"
                   />
                 )}
-                <Text>
-                  {currentUser?.displayName || currentUser?.username}{" "}
-                </Text>
+                {!isMobile && (
+                  <Text>
+                    {currentUser?.displayName || currentUser?.username}{" "}
+                  </Text>
+                )}
                 <ChevronDownIcon />
               </HStack>
             </MenuButton>

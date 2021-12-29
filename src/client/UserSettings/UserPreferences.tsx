@@ -75,13 +75,13 @@ export const UserPreferences = () => {
       <Heading as="h3" size="md" mb={6}>
         Profile preferences
       </Heading>
-      <Panel>
-        <Form<UpdateUserSettingsInput>
-          onSubmit={updateSettings}
-          initialValues={formData}
-        >
-          {({ handleSubmit, values, dirty }) => (
-            <form onSubmit={handleSubmit}>
+      <Form<UpdateUserSettingsInput>
+        onSubmit={updateSettings}
+        initialValues={formData}
+      >
+        {({ handleSubmit, values, dirty }) => (
+          <form onSubmit={handleSubmit}>
+            <Panel>
               <FormToggle
                 name="singleUserMode"
                 label="Single User Mode"
@@ -100,25 +100,25 @@ export const UserPreferences = () => {
                 label="Use Gravatar"
                 help="If enabled, profile picture will use Gravatar instead of currently uploaded image"
               />
-              <Box
-                display="inline-block"
-                position="sticky"
-                float="right"
-                bottom={0}
+            </Panel>
+            <Box
+              display="inline-block"
+              position="sticky"
+              float="right"
+              bottom={0}
+            >
+              <Button
+                type="submit"
+                mt={6}
+                isLoading={isUpdating}
+                isDisabled={!dirty}
               >
-                <Button
-                  type="submit"
-                  mt={6}
-                  isLoading={isUpdating}
-                  isDisabled={!dirty}
-                >
-                  Update Settings
-                </Button>
-              </Box>
-            </form>
-          )}
-        </Form>
-      </Panel>
+                Update Settings
+              </Button>
+            </Box>
+          </form>
+        )}
+      </Form>
     </>
   );
 };

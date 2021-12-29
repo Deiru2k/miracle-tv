@@ -26,6 +26,8 @@ import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import Head from "next/head";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -81,6 +83,7 @@ export const ProfileSettings = () => {
     });
 
   const { currentSettings } = useCurrentUserSettings();
+  const isMobile = useMediaQuery(MediaQuery.mobile);
 
   const formData = useMemo(
     () =>
@@ -126,8 +129,8 @@ export const ProfileSettings = () => {
         >
           {({ handleSubmit, dirty }) => (
             <form onSubmit={handleSubmit}>
-              <Flex>
-                <Box flex={2} mr={4}>
+              <Flex direction={isMobile ? "column" : "row"}>
+                <Box flex={2} mr={isMobile ? 0 : 4} mb={isMobile ? 4 : 0}>
                   <Heading as="h3" size="md" mb={6}>
                     Profile
                   </Heading>
@@ -138,7 +141,12 @@ export const ProfileSettings = () => {
                       label="Display Name"
                       mb={4}
                     />
-                    <FormTextarea id="bio" name="bio" label="Bio" />
+                    <FormTextarea
+                      id="bio"
+                      name="bio"
+                      label="Bio"
+                      inputProps={{ rows: 10 }}
+                    />
                   </Panel>
                 </Box>
                 <Box flex={4}>
@@ -146,7 +154,10 @@ export const ProfileSettings = () => {
                     Icons and Headers
                   </Heading>
                   <Panel pb={12}>
-                    <Flex justify="space-between">
+                    <Flex
+                      justify="space-between"
+                      direction={isMobile ? "column" : "row"}
+                    >
                       <FormGroup
                         name="avatar"
                         label="Profile Picture"

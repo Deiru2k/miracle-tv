@@ -80,7 +80,7 @@ export const ChannelEdit = ({ id }: Props) => {
           <Panel>
             <ChannelBasicForm />
           </Panel>
-          <Box position="sticky" float="right" bottom="0" right="0">
+          <Box position="sticky" float="right" bottom="0" right="0" pt={2}>
             <Button type="submit" disabled={!dirty} isLoading={isUpdating}>
               Update channel
             </Button>

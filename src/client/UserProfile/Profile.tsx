@@ -101,6 +101,7 @@ export const UserProfile = ({ user, statuses }: Props) => {
           position={!isMobile ? "sticky" : undefined}
           top="0"
           height="0%"
+          order={isMobile ? 2 : 1}
         >
           <Flex position="relative">
             <AspectRatio w="100%" ratio={16 / 6} zIndex={1}>
@@ -183,22 +184,28 @@ export const UserProfile = ({ user, statuses }: Props) => {
           )}
           {user?.settings?.singleUserMode &&
             user?.settings?.singleUserChannel?.description && (
-              <>
+              <Box order={isMobile ? 1 : 2}>
                 <Divider />
-                <Text mb={6}>
+                <Text mt={1} mb={6}>
                   {user?.settings?.singleUserChannel?.description}
                 </Text>
-              </>
+              </Box>
             )}
-          {publicRuntimeConfig.isDev && (
-            <Box flex={!isMobile ? 3 : undefined} w="100%">
-              <Heading size="md" mb={2}>
-                Latest Clips
-              </Heading>
-              <VodList columns={isMobile ? 2 : 4} />
-            </Box>
-          )}
         </Box>
+        {publicRuntimeConfig.isDev && (
+          <Box
+            flex={!isMobile ? 3 : undefined}
+            w="100%"
+            order={isMobile ? 3 : undefined}
+            px={2}
+            py={6}
+          >
+            <Heading size="md" mb={2}>
+              Latest Clips
+            </Heading>
+            <VodList columns={isMobile ? 2 : 4} />
+          </Box>
+        )}
       </Flex>
     </>
   );

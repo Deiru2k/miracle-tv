@@ -11,6 +11,8 @@ import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { Session } from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import React from "react";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 type Props = {
   session: Session;
@@ -18,9 +20,10 @@ type Props = {
 };
 
 export const SessionDisplay = ({ session, onRevoke }: Props) => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <VStack w="100%" align="flex-start">
-      <Panel>
+      <Panel w={isMobile ? "100%" : undefined}>
         <VStack align="flex-start">
           <Box>
             <Text>

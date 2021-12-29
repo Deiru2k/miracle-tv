@@ -9,6 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  ModalCloseButton,
   UseDisclosureReturn,
   useToast,
 } from "@chakra-ui/react";
@@ -21,6 +22,8 @@ import {
 import { CreateChannelInput } from "miracle-tv-shared/graphql";
 import { useRouter } from "next/dist/client/router";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 gql`
   mutation UserSettingsCreateChannel($input: CreateChannelInput) {
@@ -44,6 +47,8 @@ export const CreateChannelModal = ({
   const toast = useToast();
   const { push } = useRouter();
   const { currentSettings } = useCurrentUserSettings();
+  const isMobile = useMediaQuery(MediaQuery.mobile);
+
   const [updateSettings] = useUpdateUserSettingsPreferencesMutation();
   const [createChannelMutation, { loading: isCreating }] =
     useUserSettingsCreateChannelMutation({
@@ -85,6 +90,7 @@ export const CreateChannelModal = ({
       {({ handleSubmit, form, dirty }) => (
         <Modal
           {...props}
+          size={isMobile ? "full" : undefined}
           onClose={() => {
             form.reset();
             props.onClose();
@@ -92,6 +98,7 @@ export const CreateChannelModal = ({
         >
           <ModalOverlay />
           <ModalContent>
+            <ModalCloseButton />
             <form onSubmit={handleSubmit}>
               <ModalHeader>Create Channel</ModalHeader>
               <ModalBody>
