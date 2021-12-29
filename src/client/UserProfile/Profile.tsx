@@ -101,7 +101,7 @@ export const UserProfile = ({ user, statuses }: Props) => {
           position={!isMobile ? "sticky" : undefined}
           top="0"
           height="0%"
-          order={isMobile ? 2 : 1}
+          order={isMobile ? 2 : undefined}
         >
           <Flex position="relative">
             <AspectRatio w="100%" ratio={16 / 6} zIndex={1}>
@@ -163,7 +163,29 @@ export const UserProfile = ({ user, statuses }: Props) => {
             <Text whiteSpace="pre-wrap">{user?.bio}</Text>
           </Box>
         </Box>
-        <Box flex={9} px={4} mt={6} pb={6}>
+        {user?.settings?.singleUserMode && (
+          <Box flex={9} px={4} mt={6} pb={6}>
+            <Heading size="lg" mb={2}>
+              {user?.settings?.singleUserChannel?.name}
+            </Heading>
+            {user?.settings?.singleUserChannel?.description && (
+              <Box order={isMobile ? 1 : 2}>
+                <Divider />
+                <Text mt={1} mb={6}>
+                  {user?.settings?.singleUserChannel?.description}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        )}
+        <Flex
+          direction="column"
+          flex={9}
+          px={4}
+          mt={6}
+          pb={6}
+          order={isMobile ? 5 : undefined}
+        >
           {!user?.settings?.singleUserMode && (
             <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
               <Heading size="md" mb={2}>
@@ -177,35 +199,15 @@ export const UserProfile = ({ user, statuses }: Props) => {
               />
             </Box>
           )}
-          {user?.settings?.singleUserMode && (
-            <Heading size="lg" mb={2}>
-              {user?.settings?.singleUserChannel?.name}
-            </Heading>
+          {publicRuntimeConfig.isDev && (
+            <Box w="100%" order={isMobile ? 3 : undefined}>
+              <Heading size="md" mb={2}>
+                Latest Clips
+              </Heading>
+              <VodList columns={isMobile ? 2 : 4} />
+            </Box>
           )}
-          {user?.settings?.singleUserMode &&
-            user?.settings?.singleUserChannel?.description && (
-              <Box order={isMobile ? 1 : 2}>
-                <Divider />
-                <Text mt={1} mb={6}>
-                  {user?.settings?.singleUserChannel?.description}
-                </Text>
-              </Box>
-            )}
-        </Box>
-        {publicRuntimeConfig.isDev && (
-          <Box
-            flex={!isMobile ? 3 : undefined}
-            w="100%"
-            order={isMobile ? 3 : undefined}
-            px={2}
-            py={6}
-          >
-            <Heading size="md" mb={2}>
-              Latest Clips
-            </Heading>
-            <VodList columns={isMobile ? 2 : 4} />
-          </Box>
-        )}
+        </Flex>
       </Flex>
     </>
   );
