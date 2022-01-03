@@ -48,7 +48,7 @@ export const Streams = () => {
   return !isLoading ? (
     <>
       <Head>
-        <title>User Directory - Dashboard - Miracle TV</title>
+        <title>Streams - Dashboard - Miracle TV</title>
       </Head>
       <Box>
         <Heading size="lg">Your subscriptions</Heading>
