@@ -11,6 +11,7 @@ type Channel {
 
 input ChannelsQueryFilter {
   id: ID
+  ids: [ID]
   userId: ID
   activityId: ID
   slug: String
@@ -20,8 +21,12 @@ input ChannelsQueryFilter {
 
 extend type Query {
   channel(id: ID!): Channel
-  channels(filter: ChannelsQueryFilter): [Channel]!
+  channels(filter: ChannelsQueryFilter, limit: QueryLimit): [Channel]!
   selfChannels(filter: ChannelsQueryFilter): [Channel]!
+  channelSubscriptions(
+    filter: ChannelsQueryFilter
+    limit: QueryLimit
+  ): [Channel]!
 }
 
 input CreateChannelInput {

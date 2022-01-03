@@ -11,6 +11,7 @@ const tables: string[] = [
   "stream-keys",
   "channel-status",
   "channels",
+  "subscriptions",
   "roles",
   "files",
 ];

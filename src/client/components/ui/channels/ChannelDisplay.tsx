@@ -11,11 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
-import { ellipsis } from "miracle-tv-client/utils/text";
-import { Channel, ChannelCommonFragment } from "miracle-tv-shared/graphql";
+import { ChannelCommonFragment } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
-import { Link } from "../Link";
 import { Panel } from "../Panel";
 
 export const ChannelDisplayFragment = gql`
@@ -26,6 +24,11 @@ export const ChannelDisplayFragment = gql`
     thumbnail {
       filename
       id
+    }
+    status {
+      id
+      isLive
+      viewers
     }
     description
     activity {

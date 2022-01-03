@@ -75,6 +75,16 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 import { UserAgent } from "express-useragent";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
+import { SubscriptionsModel } from "miracle-tv-server/db/models/Subscriptions";
+import {
+  selfSubscribedChannelsResolver,
+  selfSubscribedUsersResolver,
+  subsciptionByIdResolver,
+} from "./resolvers/subscriptions";
+import {
+  subscribeMutaiton,
+  unsubscribeMutation,
+} from "./mutations/subscriptions";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -111,7 +121,10 @@ let executableSchema = makeExecutableSchema({
       userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
       selfSessions: userSelfSessionsResolver,
+      selfSubscribedChannels: selfSubscribedChannelsResolver,
+      selfSubscribedUsers: selfSubscribedUsersResolver,
       test: userTestQueryResolver,
+      subscription: subsciptionByIdResolver,
       ...fileResolvers,
     },
     Mutation: {
@@ -131,6 +144,8 @@ let executableSchema = makeExecutableSchema({
       revokeStreamKey: revokeStreamKeyMutation,
       revokeAllStreamKeys: revokeAllStreamKeysMutation,
       revokeSelfSessions: revokeSelfSessionsMutation,
+      subscribe: subscribeMutaiton,
+      unsubscribe: unsubscribeMutation,
     },
     User: userResolver,
     UserSettings: settingsResolver,
@@ -164,6 +179,7 @@ export const graphqlEndpoint = new ApolloServer({
       users: new UsersModel(con),
       channels: new ChanelsModel(con),
       channelStatus: new ChannelStatusModel(con),
+      subscriptions: new SubscriptionsModel(con),
       activities: new ActivitiesModel(con),
       streamKeys: new StreamKeysModel(con),
       roles: new RolesModel(con),

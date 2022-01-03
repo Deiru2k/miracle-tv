@@ -9,6 +9,32 @@ export const ChannelViewStatusFragmentDoc = gql`
     isLive
   }
 `;
+export const DashboardChannelFragmentDoc = gql`
+  fragment DashboardChannel on Channel {
+    id
+    name
+    slug
+    description
+    thumbnail {
+      id
+      filename
+    }
+    status {
+      id
+      isLive
+      viewers
+    }
+    user {
+      id
+      username
+      displayName
+      avatar {
+        id
+        filename
+      }
+    }
+  }
+`;
 export const ChannelCommonFragmentDoc = gql`
   fragment ChannelCommon on Channel {
     id
@@ -17,6 +43,11 @@ export const ChannelCommonFragmentDoc = gql`
     thumbnail {
       filename
       id
+    }
+    status {
+      id
+      isLive
+      viewers
     }
     description
     activity {
@@ -184,6 +215,122 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const DashboardChannelsDocument = gql`
+  query DashboardChannels {
+    channels(limit: { limit: 25 }) {
+      ...DashboardChannel
+    }
+  }
+  ${DashboardChannelFragmentDoc}
+`;
+
+/**
+ * __useDashboardChannelsQuery__
+ *
+ * To run a query within a React component, call `useDashboardChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDashboardChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDashboardChannelsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDashboardChannelsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.DashboardChannelsQuery,
+    Types.DashboardChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.DashboardChannelsQuery,
+    Types.DashboardChannelsQueryVariables
+  >(DashboardChannelsDocument, options);
+}
+export function useDashboardChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.DashboardChannelsQuery,
+    Types.DashboardChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.DashboardChannelsQuery,
+    Types.DashboardChannelsQueryVariables
+  >(DashboardChannelsDocument, options);
+}
+export type DashboardChannelsQueryHookResult = ReturnType<
+  typeof useDashboardChannelsQuery
+>;
+export type DashboardChannelsLazyQueryHookResult = ReturnType<
+  typeof useDashboardChannelsLazyQuery
+>;
+export type DashboardChannelsQueryResult = Apollo.QueryResult<
+  Types.DashboardChannelsQuery,
+  Types.DashboardChannelsQueryVariables
+>;
+export const DashboardFollowedChannelsDocument = gql`
+  query DashboardFollowedChannels {
+    selfSubscribedChannels {
+      ...DashboardChannel
+    }
+  }
+  ${DashboardChannelFragmentDoc}
+`;
+
+/**
+ * __useDashboardFollowedChannelsQuery__
+ *
+ * To run a query within a React component, call `useDashboardFollowedChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDashboardFollowedChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDashboardFollowedChannelsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDashboardFollowedChannelsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.DashboardFollowedChannelsQuery,
+    Types.DashboardFollowedChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.DashboardFollowedChannelsQuery,
+    Types.DashboardFollowedChannelsQueryVariables
+  >(DashboardFollowedChannelsDocument, options);
+}
+export function useDashboardFollowedChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.DashboardFollowedChannelsQuery,
+    Types.DashboardFollowedChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.DashboardFollowedChannelsQuery,
+    Types.DashboardFollowedChannelsQueryVariables
+  >(DashboardFollowedChannelsDocument, options);
+}
+export type DashboardFollowedChannelsQueryHookResult = ReturnType<
+  typeof useDashboardFollowedChannelsQuery
+>;
+export type DashboardFollowedChannelsLazyQueryHookResult = ReturnType<
+  typeof useDashboardFollowedChannelsLazyQuery
+>;
+export type DashboardFollowedChannelsQueryResult = Apollo.QueryResult<
+  Types.DashboardFollowedChannelsQuery,
+  Types.DashboardFollowedChannelsQueryVariables
+>;
 export const SelfSessionsDocument = gql`
   query SelfSessions {
     selfSessions {
@@ -2018,6 +2165,162 @@ export type ChannelPageStatusLazyQueryHookResult = ReturnType<
 export type ChannelPageStatusQueryResult = Apollo.QueryResult<
   Types.ChannelPageStatusQuery,
   Types.ChannelPageStatusQueryVariables
+>;
+export const SubscribeToChannelDocument = gql`
+  mutation SubscribeToChannel($id: ID!) {
+    subscribe(input: { target: CHANNEL, targetId: $id }) {
+      id
+    }
+  }
+`;
+export type SubscribeToChannelMutationFn = Apollo.MutationFunction<
+  Types.SubscribeToChannelMutation,
+  Types.SubscribeToChannelMutationVariables
+>;
+
+/**
+ * __useSubscribeToChannelMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToChannelMutation, { data, loading, error }] = useSubscribeToChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSubscribeToChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SubscribeToChannelMutation,
+    Types.SubscribeToChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SubscribeToChannelMutation,
+    Types.SubscribeToChannelMutationVariables
+  >(SubscribeToChannelDocument, options);
+}
+export type SubscribeToChannelMutationHookResult = ReturnType<
+  typeof useSubscribeToChannelMutation
+>;
+export type SubscribeToChannelMutationResult =
+  Apollo.MutationResult<Types.SubscribeToChannelMutation>;
+export type SubscribeToChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.SubscribeToChannelMutation,
+  Types.SubscribeToChannelMutationVariables
+>;
+export const UnsubscribeFromChannelDocument = gql`
+  mutation UnsubscribeFromChannel($id: ID!) {
+    unsubscribe(input: { target: CHANNEL, targetId: $id })
+  }
+`;
+export type UnsubscribeFromChannelMutationFn = Apollo.MutationFunction<
+  Types.UnsubscribeFromChannelMutation,
+  Types.UnsubscribeFromChannelMutationVariables
+>;
+
+/**
+ * __useUnsubscribeFromChannelMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromChannelMutation, { data, loading, error }] = useUnsubscribeFromChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UnsubscribeFromChannelMutation,
+    Types.UnsubscribeFromChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UnsubscribeFromChannelMutation,
+    Types.UnsubscribeFromChannelMutationVariables
+  >(UnsubscribeFromChannelDocument, options);
+}
+export type UnsubscribeFromChannelMutationHookResult = ReturnType<
+  typeof useUnsubscribeFromChannelMutation
+>;
+export type UnsubscribeFromChannelMutationResult =
+  Apollo.MutationResult<Types.UnsubscribeFromChannelMutation>;
+export type UnsubscribeFromChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.UnsubscribeFromChannelMutation,
+  Types.UnsubscribeFromChannelMutationVariables
+>;
+export const ChannelSubscriptionDocument = gql`
+  query ChannelSubscription($id: ID!) {
+    subscription(input: { target: CHANNEL, targetId: $id }) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useChannelSubscriptionQuery__
+ *
+ * To run a query within a React component, call `useChannelSubscriptionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelSubscriptionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelSubscriptionQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChannelSubscriptionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.ChannelSubscriptionQuery,
+    Types.ChannelSubscriptionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelSubscriptionQuery,
+    Types.ChannelSubscriptionQueryVariables
+  >(ChannelSubscriptionDocument, options);
+}
+export function useChannelSubscriptionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelSubscriptionQuery,
+    Types.ChannelSubscriptionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelSubscriptionQuery,
+    Types.ChannelSubscriptionQueryVariables
+  >(ChannelSubscriptionDocument, options);
+}
+export type ChannelSubscriptionQueryHookResult = ReturnType<
+  typeof useChannelSubscriptionQuery
+>;
+export type ChannelSubscriptionLazyQueryHookResult = ReturnType<
+  typeof useChannelSubscriptionLazyQuery
+>;
+export type ChannelSubscriptionQueryResult = Apollo.QueryResult<
+  Types.ChannelSubscriptionQuery,
+  Types.ChannelSubscriptionQueryVariables
 >;
 export const UserPageDocument = gql`
   query UserPage($username: ID!) {

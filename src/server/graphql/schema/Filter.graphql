@@ -1,0 +1,4 @@
+input QueryLimit {
+  limit: Int
+  skip: Int
+}

@@ -2,10 +2,12 @@ import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
   CreateUserInput,
+  QueryLimit,
   UpdateUserAccountInput,
   UpdateUserInput,
   User,
   UserAccountDetails,
+  UsersFilter,
 } from "miracle-tv-shared/graphql";
 import { head, map, omit } from "ramda";
 import {
@@ -18,8 +20,6 @@ import {
 } from "miracle-tv-server/graphql/errors/general";
 import { hash } from "bcrypt";
 import { DbUser, DbUserSafe } from "miracle-tv-server/db/models/types";
-
-type UsersFilter = Partial<Record<keyof DbUser, any>>;
 
 export class UsersModel extends Model {
   table = db.table("users");
@@ -82,11 +82,28 @@ export class UsersModel extends Model {
     return this.sanitizeUser(user);
   }
 
-  async getUsers(filter: UsersFilter = {}): Promise<DbUser[]> {
-    return (await this.table
-      .filter(filter)
-      .coerceTo("array")
-      .run(this.conn)) as DbUser[];
+  async getUsers(
+    { ids, username, displayName, ...filter }: UsersFilter = {},
+    limit?: QueryLimit
+  ): Promise<DbUser[]> {
+    const query = ids ? this.table.getAll(...ids) : this.table;
+    let filteredQuery = query
+      .filter((doc: any) => {
+        if (username) {
+          return doc("name").downcase().match(username.toLowerCase());
+        }
+        return true;
+      })
+      .filter(filter);
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+
+    return (await filteredQuery.coerceTo("array").run(this.conn)) as DbUser[];
   }
 
   async getUsersSafe(filter: UsersFilter = {}): Promise<User[]> {

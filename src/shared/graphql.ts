@@ -121,6 +121,7 @@ export type ChannelStatus = {
 
 export type ChannelsQueryFilter = {
   id?: Maybe<Scalars["ID"]>;
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
   userId?: Maybe<Scalars["ID"]>;
   activityId?: Maybe<Scalars["ID"]>;
   slug?: Maybe<Scalars["String"]>;
@@ -194,6 +195,8 @@ export type Mutation = {
   revokeStreamKeys: Scalars["Boolean"];
   revokeAllStreamKeys: Scalars["Boolean"];
   revokeStreamKey: Scalars["Boolean"];
+  subscribe: Subscription;
+  unsubscribe: Scalars["Boolean"];
   signUp: User;
   signIn?: Maybe<SessionResponse>;
   updateUser?: Maybe<User>;
@@ -256,6 +259,14 @@ export type MutationRevokeStreamKeyArgs = {
   key: Scalars["ID"];
 };
 
+export type MutationSubscribeArgs = {
+  input: SubscriptionInput;
+};
+
+export type MutationUnsubscribeArgs = {
+  input: SubscriptionInput;
+};
+
 export type MutationSignUpArgs = {
   input: CreateUserInput;
 };
@@ -295,6 +306,7 @@ export type Query = {
   channel?: Maybe<Channel>;
   channels: Array<Maybe<Channel>>;
   selfChannels: Array<Maybe<Channel>>;
+  channelSubscriptions: Array<Maybe<Channel>>;
   channelStatus?: Maybe<ChannelStatus>;
   fileInfo?: Maybe<File>;
   role?: Maybe<Role>;
@@ -304,6 +316,10 @@ export type Query = {
   streamKeys: Array<Maybe<StreamKey>>;
   selfStreamKeys: Array<Maybe<StreamKey>>;
   streamKeysByChannelId: Array<Maybe<StreamKey>>;
+  subscription?: Maybe<Subscription>;
+  selfSubscriptions: Array<Maybe<Subscription>>;
+  selfSubscribedChannels: Array<Maybe<Channel>>;
+  selfSubscribedUsers: Array<Maybe<User>>;
   users: Array<Maybe<User>>;
   self: User;
   selfAccount: UserAccountDetails;
@@ -327,10 +343,16 @@ export type QueryChannelArgs = {
 
 export type QueryChannelsArgs = {
   filter?: Maybe<ChannelsQueryFilter>;
+  limit?: Maybe<QueryLimit>;
 };
 
 export type QuerySelfChannelsArgs = {
   filter?: Maybe<ChannelsQueryFilter>;
+};
+
+export type QueryChannelSubscriptionsArgs = {
+  filter?: Maybe<ChannelsQueryFilter>;
+  limit?: Maybe<QueryLimit>;
 };
 
 export type QueryChannelStatusArgs = {
@@ -353,8 +375,22 @@ export type QueryStreamKeysByChannelIdArgs = {
   channelId: Scalars["ID"];
 };
 
+export type QuerySubscriptionArgs = {
+  input?: Maybe<SubscriptionByTargetId>;
+};
+
+export type QueryUsersArgs = {
+  filter?: Maybe<UsersFilter>;
+  limit?: Maybe<QueryLimit>;
+};
+
 export type QueryUserArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryLimit = {
+  limit?: Maybe<Scalars["Int"]>;
+  skip?: Maybe<Scalars["Int"]>;
 };
 
 export type RevokeAllStreamKeysInput = {
@@ -403,6 +439,35 @@ export type StreamKey = {
   user: User;
   channel: Channel;
   name?: Maybe<Scalars["String"]>;
+};
+
+export type Subscription = {
+  __typename?: "Subscription";
+  id: Scalars["ID"];
+  target: SubscriptionTarget;
+  targetId: Scalars["ID"];
+  sourceId: Scalars["ID"];
+};
+
+export type SubscriptionByTargetId = {
+  targetId: Scalars["ID"];
+  target: SubscriptionTarget;
+};
+
+export type SubscriptionInput = {
+  target: SubscriptionTarget;
+  targetId: Scalars["ID"];
+};
+
+export enum SubscriptionTarget {
+  Channel = "CHANNEL",
+  User = "USER",
+}
+
+export type SubscriptionsFilter = {
+  sourceId?: Maybe<Scalars["ID"]>;
+  targetId?: Maybe<Scalars["ID"]>;
+  target?: Maybe<SubscriptionTarget>;
 };
 
 export type TestResponse = {
@@ -504,6 +569,13 @@ export type UserSettings = {
   useGravatar?: Maybe<Scalars["Boolean"]>;
   singleUserMode?: Maybe<Scalars["Boolean"]>;
   singleUserChannel?: Maybe<Channel>;
+};
+
+export type UsersFilter = {
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+  username?: Maybe<Scalars["String"]>;
+  displayName?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -641,6 +713,7 @@ export type ResolversTypes = {
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  QueryLimit: QueryLimit;
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
@@ -648,6 +721,11 @@ export type ResolversTypes = {
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
   SignInInput: SignInInput;
   StreamKey: ResolverTypeWrapper<StreamKey>;
+  Subscription: ResolverTypeWrapper<{}>;
+  SubscriptionByTargetId: SubscriptionByTargetId;
+  SubscriptionInput: SubscriptionInput;
+  SubscriptionTarget: SubscriptionTarget;
+  SubscriptionsFilter: SubscriptionsFilter;
   TestResponse: ResolverTypeWrapper<TestResponse>;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -662,6 +740,7 @@ export type ResolversTypes = {
   UserActions: ResolverTypeWrapper<UserActions>;
   UserActionsInput: UserActionsInput;
   UserSettings: ResolverTypeWrapper<UserSettings>;
+  UsersFilter: UsersFilter;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -693,6 +772,7 @@ export type ResolversParentTypes = {
   InfoResponse: InfoResponse;
   Mutation: {};
   Query: {};
+  QueryLimit: QueryLimit;
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
@@ -700,6 +780,10 @@ export type ResolversParentTypes = {
   SessionResponse: SessionResponse;
   SignInInput: SignInInput;
   StreamKey: StreamKey;
+  Subscription: {};
+  SubscriptionByTargetId: SubscriptionByTargetId;
+  SubscriptionInput: SubscriptionInput;
+  SubscriptionsFilter: SubscriptionsFilter;
   TestResponse: TestResponse;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -714,6 +798,7 @@ export type ResolversParentTypes = {
   UserActions: UserActions;
   UserActionsInput: UserActionsInput;
   UserSettings: UserSettings;
+  UsersFilter: UsersFilter;
 };
 
 export type AuthDirectiveArgs = {
@@ -945,6 +1030,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRevokeStreamKeyArgs, "key">
   >;
+  subscribe?: Resolver<
+    ResolversTypes["Subscription"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSubscribeArgs, "input">
+  >;
+  unsubscribe?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsubscribeArgs, "input">
+  >;
   signUp?: Resolver<
     ResolversTypes["User"],
     ParentType,
@@ -1029,6 +1126,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySelfChannelsArgs, never>
   >;
+  channelSubscriptions?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryChannelSubscriptionsArgs, never>
+  >;
   channelStatus?: Resolver<
     Maybe<ResolversTypes["ChannelStatus"]>,
     ParentType,
@@ -1071,10 +1174,32 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryStreamKeysByChannelIdArgs, "channelId">
   >;
-  users?: Resolver<
+  subscription?: Resolver<
+    Maybe<ResolversTypes["Subscription"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySubscriptionArgs, never>
+  >;
+  selfSubscriptions?: Resolver<
+    Array<Maybe<ResolversTypes["Subscription"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfSubscribedChannels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfSubscribedUsers?: Resolver<
     Array<Maybe<ResolversTypes["User"]>>,
     ParentType,
     ContextType
+  >;
+  users?: Resolver<
+    Array<Maybe<ResolversTypes["User"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUsersArgs, never>
   >;
   self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   selfAccount?: Resolver<
@@ -1147,6 +1272,36 @@ export type StreamKeyResolvers<
   channel?: Resolver<ResolversTypes["Channel"], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Subscription"] = ResolversParentTypes["Subscription"]
+> = {
+  id?: SubscriptionResolver<
+    ResolversTypes["ID"],
+    "id",
+    ParentType,
+    ContextType
+  >;
+  target?: SubscriptionResolver<
+    ResolversTypes["SubscriptionTarget"],
+    "target",
+    ParentType,
+    ContextType
+  >;
+  targetId?: SubscriptionResolver<
+    ResolversTypes["ID"],
+    "targetId",
+    ParentType,
+    ContextType
+  >;
+  sourceId?: SubscriptionResolver<
+    ResolversTypes["ID"],
+    "sourceId",
+    ParentType,
+    ContextType
+  >;
 };
 
 export type TestResponseResolvers<
@@ -1263,6 +1418,7 @@ export type Resolvers<ContextType = any> = {
   Session?: SessionResolvers<ContextType>;
   SessionResponse?: SessionResponseResolvers<ContextType>;
   StreamKey?: StreamKeyResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   TestResponse?: TestResponseResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
@@ -1311,6 +1467,112 @@ export type ChannelViewStatusFragment = {
   isLive?: Maybe<boolean>;
 };
 
+export type DashboardChannelFragment = {
+  __typename?: "Channel";
+  id: string;
+  name: string;
+  slug?: Maybe<string>;
+  description?: Maybe<string>;
+  thumbnail?: Maybe<{
+    __typename?: "File";
+    id?: Maybe<string>;
+    filename: string;
+  }>;
+  status?: Maybe<{
+    __typename?: "ChannelStatus";
+    id?: Maybe<string>;
+    isLive?: Maybe<boolean>;
+    viewers?: Maybe<number>;
+  }>;
+  user?: Maybe<{
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    displayName?: Maybe<string>;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
+  }>;
+};
+
+export type DashboardChannelsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type DashboardChannelsQuery = {
+  __typename?: "Query";
+  channels: Array<
+    Maybe<{
+      __typename?: "Channel";
+      id: string;
+      name: string;
+      slug?: Maybe<string>;
+      description?: Maybe<string>;
+      thumbnail?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
+      status?: Maybe<{
+        __typename?: "ChannelStatus";
+        id?: Maybe<string>;
+        isLive?: Maybe<boolean>;
+        viewers?: Maybe<number>;
+      }>;
+      user?: Maybe<{
+        __typename?: "User";
+        id?: Maybe<string>;
+        username: string;
+        displayName?: Maybe<string>;
+        avatar?: Maybe<{
+          __typename?: "File";
+          id?: Maybe<string>;
+          filename: string;
+        }>;
+      }>;
+    }>
+  >;
+};
+
+export type DashboardFollowedChannelsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type DashboardFollowedChannelsQuery = {
+  __typename?: "Query";
+  selfSubscribedChannels: Array<
+    Maybe<{
+      __typename?: "Channel";
+      id: string;
+      name: string;
+      slug?: Maybe<string>;
+      description?: Maybe<string>;
+      thumbnail?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
+      status?: Maybe<{
+        __typename?: "ChannelStatus";
+        id?: Maybe<string>;
+        isLive?: Maybe<boolean>;
+        viewers?: Maybe<number>;
+      }>;
+      user?: Maybe<{
+        __typename?: "User";
+        id?: Maybe<string>;
+        username: string;
+        displayName?: Maybe<string>;
+        avatar?: Maybe<{
+          __typename?: "File";
+          id?: Maybe<string>;
+          filename: string;
+        }>;
+      }>;
+    }>
+  >;
+};
+
 export type UserProfileFragment = {
   __typename?: "User";
   id?: Maybe<string>;
@@ -1329,6 +1591,12 @@ export type UserProfileFragment = {
         __typename?: "File";
         filename: string;
         id?: Maybe<string>;
+      }>;
+      status?: Maybe<{
+        __typename?: "ChannelStatus";
+        id?: Maybe<string>;
+        isLive?: Maybe<boolean>;
+        viewers?: Maybe<number>;
       }>;
       activity?: Maybe<{
         __typename?: "Activity";
@@ -1868,6 +2136,12 @@ export type ChannelCommonFragment = {
     filename: string;
     id?: Maybe<string>;
   }>;
+  status?: Maybe<{
+    __typename?: "ChannelStatus";
+    id?: Maybe<string>;
+    isLive?: Maybe<boolean>;
+    viewers?: Maybe<number>;
+  }>;
   activity?: Maybe<{
     __typename?: "Activity";
     id: string;
@@ -2120,6 +2394,33 @@ export type ChannelPageStatusQuery = {
   }>;
 };
 
+export type SubscribeToChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type SubscribeToChannelMutation = {
+  __typename?: "Mutation";
+  subscribe: { __typename?: "Subscription"; id: string };
+};
+
+export type UnsubscribeFromChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UnsubscribeFromChannelMutation = {
+  __typename?: "Mutation";
+  unsubscribe: boolean;
+};
+
+export type ChannelSubscriptionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ChannelSubscriptionQuery = {
+  __typename?: "Query";
+  subscription?: Maybe<{ __typename?: "Subscription"; id: string }>;
+};
+
 export type UserPageQueryVariables = Exact<{
   username: Scalars["ID"];
 }>;
@@ -2144,6 +2445,12 @@ export type UserPageQuery = {
           __typename?: "File";
           filename: string;
           id?: Maybe<string>;
+        }>;
+        status?: Maybe<{
+          __typename?: "ChannelStatus";
+          id?: Maybe<string>;
+          isLive?: Maybe<boolean>;
+          viewers?: Maybe<number>;
         }>;
         activity?: Maybe<{
           __typename?: "Activity";

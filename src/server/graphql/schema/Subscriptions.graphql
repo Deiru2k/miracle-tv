@@ -1,0 +1,39 @@
+enum SubscriptionTarget {
+  CHANNEL
+  USER
+}
+
+type Subscription {
+  id: ID!
+  target: SubscriptionTarget!
+  targetId: ID!
+  sourceId: ID!
+}
+
+input SubscriptionsFilter {
+  sourceId: ID
+  targetId: ID
+  target: SubscriptionTarget
+}
+
+input SubscriptionByTargetId {
+  targetId: ID!
+  target: SubscriptionTarget!
+}
+
+extend type Query {
+  subscription(input: SubscriptionByTargetId): Subscription
+  selfSubscriptions: [Subscription]!
+  selfSubscribedChannels: [Channel]!
+  selfSubscribedUsers: [User]!
+}
+
+input SubscriptionInput {
+  target: SubscriptionTarget!
+  targetId: ID!
+}
+
+extend type Mutation {
+  subscribe(input: SubscriptionInput!): Subscription!
+  unsubscribe(input: SubscriptionInput!): Boolean!
+}

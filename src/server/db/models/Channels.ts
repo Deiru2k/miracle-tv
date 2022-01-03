@@ -1,7 +1,10 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
+  ActivityLimit,
+  ChannelsQueryFilter,
   CreateChannelInput,
+  QueryLimit,
   UpdateChannelInput,
 } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
@@ -62,12 +65,31 @@ export class ChanelsModel extends Model {
   }
 
   async getChannels(
-    filter: ChanelsFilter = {},
+    { ids, name, ...filter }: ChannelsQueryFilter = {},
+    limit?: QueryLimit,
     includeDisabled: boolean = false
   ): Promise<DbChannel[]> {
-    const disabledFilter = includeDisabled ? {} : { disabled: false };
-    return (await this.table
-      .filter({ ...filter, ...disabledFilter })
+    const query = ids ? this.table.getAll(...ids) : this.table;
+    let filteredQuery = query
+      .filter((doc: any) => {
+        if (name) {
+          return doc("name").downcase().match(name.toLowerCase());
+        }
+        return true;
+      })
+      .filter(filter);
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+    if (!includeDisabled) {
+      filteredQuery = filteredQuery.filter({ disabled: false });
+    }
+
+    return (await filteredQuery
       .coerceTo("array")
       .run(this.conn)) as DbChannel[];
   }

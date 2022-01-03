@@ -17,7 +17,6 @@ import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { ChannelDisplayFragment } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/ChannelDisplayGrid";
 import { VodList } from "miracle-tv-client/components/ui/vods/VodList";
-import { LiveUpdateContext } from "miracle-tv-client/context/liveUpdate";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import {

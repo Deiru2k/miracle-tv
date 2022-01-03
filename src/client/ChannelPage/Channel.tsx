@@ -7,6 +7,7 @@ import {
   Heading,
   IconButton,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
 import {
@@ -73,6 +74,9 @@ export const CHANNEL_VIEW_STATUS_FRAGMENT = gql`
 type Props = {
   channel: ChannelViewFragment;
   status?: ChannelViewStatusFragment;
+  isSubscribed?: boolean;
+  onSubscribe?: () => void;
+  onUnsubscribe?: () => void;
 };
 
 type ControlProps = {
@@ -140,15 +144,31 @@ export const ChannelPlayerView = ({ channel, status }: Props) => {
   );
 };
 
-export const ChannelView = ({ channel, status }: Props) => {
+export const ChannelView = ({
+  channel,
+  status,
+  isSubscribed,
+  onSubscribe,
+  onUnsubscribe,
+}: Props) => {
   return (
     <>
       <ChannelPlayerView channel={channel} status={status} />
       <Box mx={2} my={2}>
-        <Heading as={Flex} align="center" mb={2}>
-          {status?.isLive && <CircleIcon color="red" mr={2} />}
-          {channel.name}
-        </Heading>
+        <Flex direction="row" justify="space-between">
+          <Heading as={Flex} align="center" mb={2}>
+            {status?.isLive && <CircleIcon color="red" mr={2} />}
+            {channel.name}
+          </Heading>
+          <Box>
+            {!isSubscribed && <Button onClick={onSubscribe}>Subscribe</Button>}
+            {isSubscribed && (
+              <Button colorScheme="red" onClick={onUnsubscribe}>
+                Unsubscribe
+              </Button>
+            )}
+          </Box>
+        </Flex>
         <Divider />
         <Text>{channel.description}</Text>
       </Box>

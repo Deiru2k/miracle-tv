@@ -40,13 +40,20 @@ type UserSettings {
   singleUserChannel: Channel
 }
 
+input UsersFilter {
+  ids: [ID]
+  username: String
+  displayName: String
+  email: String
+}
+
 extend type Query {
-  users: [User]!
+  users(filter: UsersFilter, limit: QueryLimit): [User]!
   self: User! @auth(rights: [{ unit: SELF, subject: "users" }])
   selfAccount: UserAccountDetails!
     @auth(rights: [{ unit: SELF, subject: "users" }])
   selfSessions: [Session] @auth(rights: [{ unit: SELF, subject: "users" }])
-  user(id: ID!): User 
+  user(id: ID!): User
   userSettings: UserSettings!
     @auth(rights: [{ unit: SELF, subject: "userSettings" }])
 }

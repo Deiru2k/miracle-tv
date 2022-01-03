@@ -15,14 +15,14 @@ import {
   ChannelViewStatusFragment,
 } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
-import React from "react";
+import React, { useCallback } from "react";
 import { Panel } from "../Panel";
 
 type Props = {
   channels: ChannelCommonFragment[];
   channelStatuses?: Record<string, ChannelViewStatusFragment>;
   columns?: number;
-  defaultThumbnail: string;
+  defaultThumbnail?: string;
 };
 
 export const ChannelDisplayGrid = ({
@@ -32,6 +32,12 @@ export const ChannelDisplayGrid = ({
   defaultThumbnail,
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
+  const getChannelLive = useCallback(
+    (channel: ChannelCommonFragment) => {
+      return channel.status?.isLive || channelStatuses?.[channel.id].isLive;
+    },
+    [channelStatuses]
+  );
   return (
     <SimpleGrid w="100%" columns={columns} spacing={2}>
       {channels?.map((channel) => (
@@ -72,7 +78,7 @@ export const ChannelDisplayGrid = ({
                   textOverflow="ellipsis"
                   py={1}
                 >
-                  {channelStatuses?.[channel.id]?.isLive && (
+                  {getChannelLive(channel) && (
                     <Text fontSize="1.6rem" color="red" display="inline" mr={2}>
                       ●
                     </Text>

@@ -51,8 +51,8 @@ const nav: NavConfig = [
   },
 ];
 const components: NavComponentMap = {
-  "/dashboard/home/streams": <Feeds />,
-  "/dashboard/home/feed": <Streams />,
+  "/dashboard/home/streams": <Streams />,
+  "/dashboard/home/feed": <Feeds />,
 };
 
 const Dashboard = () => {

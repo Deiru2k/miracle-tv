@@ -3,7 +3,6 @@ import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";
 import {
   AccessUnit,
   QueryResolvers,
-  StreamKey,
   StreamKeyResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
@@ -12,12 +11,12 @@ import { IncorrectUserError } from "miracle-tv-server/graphql/errors/users";
 import { DbChannel } from "miracle-tv-server/db/models/types";
 
 export const streamKeysQueryResolver: QueryResolvers<ResolverContext>["streamKeys"] =
-  async (_, _args, { userRoles, db: { streamKeys } }) => {
+  async (_, _args, { db: { streamKeys } }) => {
     return streamKeys.getStreamKeys() as any;
   };
 
 export const selfStreamKeysQueryResolver: QueryResolvers<ResolverContext>["selfStreamKeys"] =
-  async (_, _args, { user, userRoles, db: { streamKeys } }) => {
+  async (_, _args, { user, db: { streamKeys } }) => {
     return streamKeys.getStreamKeys({ userId: user.id }) as any;
   };
 

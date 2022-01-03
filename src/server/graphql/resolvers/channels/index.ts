@@ -5,7 +5,7 @@ import { validate as uuidValidate } from "uuid";
 
 export const channelsQueryResolver: QueryResolvers<ResolverContext>["channels"] =
   async (_, { filter }, { db: { channels } }) => {
-    return await channels.getChannels(filter);
+    return await channels.getChannels(filter, null);
   };
 
 export const channelQueryResolver: QueryResolvers<ResolverContext>["channel"] =
@@ -18,7 +18,11 @@ export const channelQueryResolver: QueryResolvers<ResolverContext>["channel"] =
 
 export const selfChannelQueryResolver: QueryResolvers<ResolverContext>["selfChannels"] =
   async (_, { filter }, { db: { channels }, user }) => {
-    return await channels.getChannels({ ...filter, userId: user.id }, true);
+    return await channels.getChannels(
+      { ...filter, userId: user.id },
+      null,
+      true
+    );
   };
 
 export const channelResolver: ChannelResolvers<ResolverContext> = {

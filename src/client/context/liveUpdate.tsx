@@ -48,3 +48,8 @@ export const LiveUpdateSwitch = () => {
     </Box>
   );
 };
+
+export const useLiveUpdate = () => {
+  const { isLiveUpdate } = useContext(LiveUpdateContext);
+  return isLiveUpdate;
+};

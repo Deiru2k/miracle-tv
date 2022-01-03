@@ -1,10 +1,9 @@
 import db from "miracle-tv-server/db";
-import * as r from "rethinkdb";
 import { Model } from "miracle-tv-server/db/models";
 import {
   ActivityFilter,
-  ActivityLimit,
   CreateActivityInput,
+  QueryLimit,
   UpdateActivityInput,
 } from "miracle-tv-shared/graphql";
 import { head } from "ramda";
@@ -47,7 +46,7 @@ export class ActivitiesModel extends Model {
 
   async getActivities(
     { ids, name, ...filter }: ActivityFilter = {},
-    limit?: ActivityLimit
+    limit?: QueryLimit
   ): Promise<DbActivity[]> {
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query

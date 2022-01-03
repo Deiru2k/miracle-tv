@@ -10,6 +10,7 @@ import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
+import { SubscriptionsModel } from "miracle-tv-server/db/models/Subscriptions";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
@@ -24,6 +25,7 @@ export type ResolverContext = {
     channelStatus: ChannelStatusModel;
     channels: ChanelsModel;
     streamKeys: StreamKeysModel;
+    subscriptions: SubscriptionsModel;
     activities: ActivitiesModel;
     roles: RolesModel;
     files: FilesModel;
