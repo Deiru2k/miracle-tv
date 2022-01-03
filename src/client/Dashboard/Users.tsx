@@ -7,6 +7,7 @@ import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { useUsersDirectoryQuery } from "miracle-tv-shared/hooks";
+import Head from "next/head";
 import React from "react";
 
 export const USER_DIRECTORY_FRAGMENT = gql`
@@ -48,6 +49,9 @@ export const DashboardUserDirectory = (): any => {
     useUsersDirectoryQuery();
   return !isLoading ? (
     <>
+      <Head>
+        <title>User Directory - Miracle TV</title>
+      </Head>
       {!userDirectory.length && (
         <Text>
           No users in the directory... be the first to{" "}
