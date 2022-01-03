@@ -72,6 +72,13 @@ export class SubscriptionsModel extends Model {
     return head(subs) || null;
   }
 
+  async getFollowersCount(id: string): Promise<number> {
+    return this.table
+      .filter({ target: SubscriptionTarget.User, targetId: id })
+      .count()
+      .run(this.conn);
+  }
+
   async getSubscriptions(
     filter: SubscriptionsFilter = {},
     limit?: QueryLimit

@@ -1,20 +1,9 @@
 import { gql } from "@apollo/client";
-import {
-  AspectRatio,
-  Box,
-  Text,
-  Flex,
-  Image,
-  Heading,
-  Divider,
-  Button,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Heading, Divider } from "@chakra-ui/react";
 import {
   ChannelPlayerView,
   CHANNEL_VIEW_FRAGMENT,
 } from "miracle-tv-client/ChannelPage/Channel";
-import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
-import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/ChannelDisplayGrid";
 import { VodList } from "miracle-tv-client/components/ui/vods/VodList";
@@ -24,7 +13,6 @@ import {
   ChannelViewStatusFragment,
   UserProfileFragment,
 } from "miracle-tv-shared/graphql";
-import { getMediaURL } from "miracle-tv-shared/media";
 import React, { useMemo } from "react";
 
 import getConfig from "next/config";
@@ -59,6 +47,9 @@ export const USER_PROFILE_FRAGMENT = gql`
     }
     streamThumbnail {
       filename
+    }
+    meta {
+      followerCount
     }
     settings {
       useGravatar

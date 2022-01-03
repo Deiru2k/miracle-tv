@@ -10,8 +10,7 @@ import {
   BoxProps,
 } from "@chakra-ui/react";
 import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
-import { MediaQuery } from "miracle-tv-client/utils/const";
-import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
 import { UserProfileFragment } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
@@ -94,20 +93,26 @@ export const UserPanel = ({
           {isUserLive && <CircleIcon color="red" mr={2} />}
           {displayName}
         </Heading>
-        {onSubscribe && onUnsubscribe && (
-          <Flex justify="flex-end">
-            {!isSubscribed && (
-              <Button size="sm" onClick={onSubscribe}>
-                Follow
-              </Button>
-            )}
-            {isSubscribed && (
-              <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
-                Unfollow
-              </Button>
-            )}
+        <Flex justify="space-between" align="center">
+          <Flex title="Followers:" align="center">
+            <PersonIcon aria-label="Followers:" mr={1} />
+            {user.meta.followerCount}
           </Flex>
-        )}
+          {onSubscribe && onUnsubscribe && (
+            <>
+              {!isSubscribed && (
+                <Button size="sm" onClick={onSubscribe}>
+                  Follow
+                </Button>
+              )}
+              {isSubscribed && (
+                <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
+                  Unfollow
+                </Button>
+              )}
+            </>
+          )}
+        </Flex>
         {includeDescription && user?.bio && (
           <>
             <Divider mb={2} mt={2} />

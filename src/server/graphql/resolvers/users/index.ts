@@ -91,7 +91,7 @@ export const settingsResolver: UserSettingsResolvers<ResolverContext> = {
   },
 };
 
-export const userResolver: UserResolvers = {
+export const userResolver: UserResolvers<ResolverContext> = {
   id: (user) => user.id,
   username: (user) => user.username,
   emailHash: (user) => md5((user as any).email || ""),
@@ -99,7 +99,9 @@ export const userResolver: UserResolvers = {
     return await channels.getChannels({ userId: user.id! });
   },
   roles: async (user, _, { db: { roles } }) => {
-    const rolesList = await roles.getAll(user.roles || []);
+    const rolesList = await roles.getAll(
+      (user.roles as unknown as string[]) || []
+    );
     return rolesList as Role[];
   },
   avatar: fileResolver("avatar"),
@@ -108,5 +110,10 @@ export const userResolver: UserResolvers = {
   settings: async (user, _, { db: { userSettings } }) => {
     const settings = await userSettings.getUserSettingsById(user.id);
     return settings;
+  },
+  meta: async (user, _, { db: { subscriptions } }) => {
+    return {
+      followerCount: await subscriptions.getFollowersCount(user.id),
+    };
   },
 };

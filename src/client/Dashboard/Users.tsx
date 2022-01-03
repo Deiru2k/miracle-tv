@@ -24,6 +24,9 @@ export const USER_DIRECTORY_FRAGMENT = gql`
       id
       filename
     }
+    meta {
+      followerCount
+    }
     settings {
       useGravatar
     }

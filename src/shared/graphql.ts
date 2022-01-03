@@ -581,6 +581,7 @@ export type User = {
   header?: Maybe<File>;
   streamThumbnail?: Maybe<File>;
   settings?: Maybe<UserSettings>;
+  meta?: Maybe<UserMeta>;
 };
 
 export type UserAccountDetails = {
@@ -601,6 +602,11 @@ export type UserActionsInput = {
   silence?: Maybe<Scalars["Boolean"]>;
   ban?: Maybe<Scalars["Boolean"]>;
   warn?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UserMeta = {
+  __typename?: "UserMeta";
+  followerCount: Scalars["Int"];
 };
 
 export type UserSettings = {
@@ -783,6 +789,7 @@ export type ResolversTypes = {
   UserAccountDetails: ResolverTypeWrapper<UserAccountDetails>;
   UserActions: ResolverTypeWrapper<UserActions>;
   UserActionsInput: UserActionsInput;
+  UserMeta: ResolverTypeWrapper<UserMeta>;
   UserSettings: ResolverTypeWrapper<UserSettings>;
   UsersFilter: UsersFilter;
 };
@@ -844,6 +851,7 @@ export type ResolversParentTypes = {
   UserAccountDetails: UserAccountDetails;
   UserActions: UserActions;
   UserActionsInput: UserActionsInput;
+  UserMeta: UserMeta;
   UserSettings: UserSettings;
   UsersFilter: UsersFilter;
 };
@@ -1437,6 +1445,7 @@ export type UserResolvers<
     ParentType,
     ContextType
   >;
+  meta?: Resolver<Maybe<ResolversTypes["UserMeta"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1457,6 +1466,14 @@ export type UserActionsResolvers<
   silence?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   ban?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   warn?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserMetaResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["UserMeta"] = ResolversParentTypes["UserMeta"]
+> = {
+  followerCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1511,6 +1528,7 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
   UserAccountDetails?: UserAccountDetailsResolvers<ContextType>;
   UserActions?: UserActionsResolvers<ContextType>;
+  UserMeta?: UserMetaResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;
 };
 
@@ -1663,6 +1681,7 @@ export type UserDirectoryProfileFragment = {
   emailHash?: Maybe<string>;
   avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
+  meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
   settings?: Maybe<{
     __typename?: "UserSettings";
     useGravatar?: Maybe<boolean>;
@@ -1691,6 +1710,7 @@ export type UsersDirectoryQuery = {
         id?: Maybe<string>;
         filename: string;
       }>;
+      meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
       settings?: Maybe<{
         __typename?: "UserSettings";
         useGravatar?: Maybe<boolean>;
@@ -1750,6 +1770,7 @@ export type UserProfileFragment = {
   avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
   streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
+  meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
   settings?: Maybe<{
     __typename?: "UserSettings";
     useGravatar?: Maybe<boolean>;
@@ -2652,6 +2673,7 @@ export type UserPageQuery = {
       filename: string;
     }>;
     streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
+    meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
     settings?: Maybe<{
       __typename?: "UserSettings";
       useGravatar?: Maybe<boolean>;

@@ -24,6 +24,9 @@ export const UserDirectoryProfileFragmentDoc = gql`
       id
       filename
     }
+    meta {
+      followerCount
+    }
     settings {
       useGravatar
     }
@@ -112,6 +115,9 @@ export const UserProfileFragmentDoc = gql`
     }
     streamThumbnail {
       filename
+    }
+    meta {
+      followerCount
     }
     settings {
       useGravatar
