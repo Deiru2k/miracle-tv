@@ -11,16 +11,29 @@ const AboutPage = () => {
       <Head>
         <title>Miracle TV</title>
       </Head>
-      <Page>
-        <Flex justify="center" direction="column" align="center">
-          <Image src="/images/sanae_gyate.png" w="20vw" h="20vw" />
-          <Heading>Welcome to Miracle TV!</Heading>
-          <Heading size="md">An open source streaming suite.</Heading>
-          <Text as="span" size="md">
-            <Link href="/auth/login">[Login]</Link> or{" "}
-            <Link href="/auth/sign-up">[Sign up]</Link> to start using this
-            instance.
-          </Text>
+      <Page h="100%">
+        <Flex direction="column" h="100%" justify="space-between">
+          <Flex justify="center" direction="column" align="center">
+            <Image src="/images/sanae_gyate.png" w="20vw" h="20vw" />
+            <Heading>Welcome to Miracle TV!</Heading>
+            <Heading size="md">An open source streaming suite.</Heading>
+            <Text as="span" size="md">
+              <Link href="/auth/login">[Login]</Link> or{" "}
+              <Link href="/auth/sign-up">[Sign up]</Link> to start using this
+              instance.
+            </Text>
+          </Flex>
+          <Flex justify="flex-end">
+            Join the development at our
+            <Link
+              href="https://code.gensokyo.social/Gensokyo.social/miracle-tv"
+              target="_blank"
+              ml={1}
+            >
+              [Gitea Instance]
+            </Link>
+            !
+          </Flex>
         </Flex>
       </Page>
     </>

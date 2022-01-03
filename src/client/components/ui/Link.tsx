@@ -12,8 +12,10 @@ export const Link = ({ isShallow = true, href, ...props }: Props) => {
 
   const onClick = useCallback(
     (e: any) => {
-      e.preventDefault();
-      push(href, null, { shallow: isShallow });
+      if (!props.target) {
+        e.preventDefault();
+        push(href, null, { shallow: isShallow });
+      }
     },
     [push, href, isShallow]
   );
