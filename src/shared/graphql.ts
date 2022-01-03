@@ -123,10 +123,28 @@ export type ChannelsQueryFilter = {
   id?: Maybe<Scalars["ID"]>;
   ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
   userId?: Maybe<Scalars["ID"]>;
+  userIds?: Maybe<Array<Maybe<Scalars["ID"]>>>;
   activityId?: Maybe<Scalars["ID"]>;
   slug?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+};
+
+export type CommunityPost = {
+  __typename?: "CommunityPost";
+  id: Scalars["ID"];
+  user: User;
+  body: Scalars["String"];
+};
+
+export type CommunityPostInput = {
+  body: Scalars["String"];
+};
+
+export type CommunityPostsFilter = {
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+  userId?: Maybe<Scalars["ID"]>;
+  body?: Maybe<Scalars["String"]>;
 };
 
 export type CreateActivityInput = {
@@ -186,6 +204,8 @@ export type Mutation = {
   createChannel: Channel;
   updateChannel: Channel;
   deleteChannel: Scalars["Boolean"];
+  createCommunityPosts: CommunityPost;
+  deleteCommunityPost?: Maybe<Scalars["Boolean"]>;
   uploadFile: File;
   createRole: Role;
   updateRole: Role;
@@ -224,6 +244,14 @@ export type MutationUpdateChannelArgs = {
 };
 
 export type MutationDeleteChannelArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationCreateCommunityPostsArgs = {
+  input: CommunityPostInput;
+};
+
+export type MutationDeleteCommunityPostArgs = {
   id: Scalars["ID"];
 };
 
@@ -308,6 +336,7 @@ export type Query = {
   selfChannels: Array<Maybe<Channel>>;
   channelSubscriptions: Array<Maybe<Channel>>;
   channelStatus?: Maybe<ChannelStatus>;
+  communityPosts: Array<Maybe<CommunityPost>>;
   fileInfo?: Maybe<File>;
   role?: Maybe<Role>;
   roles: Array<Maybe<Role>>;
@@ -357,6 +386,11 @@ export type QueryChannelSubscriptionsArgs = {
 
 export type QueryChannelStatusArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryCommunityPostsArgs = {
+  filter?: Maybe<CommunityPostsFilter>;
+  limit?: Maybe<QueryLimit>;
 };
 
 export type QueryFileInfoArgs = {
@@ -703,6 +737,9 @@ export type ResolversTypes = {
   ChannelStatus: ResolverTypeWrapper<ChannelStatus>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   ChannelsQueryFilter: ChannelsQueryFilter;
+  CommunityPost: ResolverTypeWrapper<CommunityPost>;
+  CommunityPostInput: CommunityPostInput;
+  CommunityPostsFilter: CommunityPostsFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
@@ -762,6 +799,9 @@ export type ResolversParentTypes = {
   ChannelStatus: ChannelStatus;
   Boolean: Scalars["Boolean"];
   ChannelsQueryFilter: ChannelsQueryFilter;
+  CommunityPost: CommunityPost;
+  CommunityPostInput: CommunityPostInput;
+  CommunityPostsFilter: CommunityPostsFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
@@ -921,6 +961,16 @@ export type ChannelStatusResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CommunityPostResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["CommunityPost"] = ResolversParentTypes["CommunityPost"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  body?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface DateTimeScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["DateTime"], any> {
   name: "DateTime";
@@ -980,6 +1030,18 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeleteChannelArgs, "id">
+  >;
+  createCommunityPosts?: Resolver<
+    ResolversTypes["CommunityPost"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCommunityPostsArgs, "input">
+  >;
+  deleteCommunityPost?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCommunityPostArgs, "id">
   >;
   uploadFile?: Resolver<
     ResolversTypes["File"],
@@ -1137,6 +1199,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryChannelStatusArgs, "id">
+  >;
+  communityPosts?: Resolver<
+    Array<Maybe<ResolversTypes["CommunityPost"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCommunityPostsArgs, never>
   >;
   fileInfo?: Resolver<
     Maybe<ResolversTypes["File"]>,
@@ -1409,6 +1477,7 @@ export type Resolvers<ContextType = any> = {
   Activity?: ActivityResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
   ChannelStatus?: ChannelStatusResolvers<ContextType>;
+  CommunityPost?: CommunityPostResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   File?: FileResolvers<ContextType>;
   InfoResponse?: InfoResponseResolvers<ContextType>;
@@ -1458,6 +1527,10 @@ export type ChannelViewFragment = {
       id?: Maybe<string>;
       filename: string;
     }>;
+    settings?: Maybe<{
+      __typename?: "UserSettings";
+      singleUserMode?: Maybe<boolean>;
+    }>;
   }>;
 };
 
@@ -1494,6 +1567,10 @@ export type DashboardChannelFragment = {
       id?: Maybe<string>;
       filename: string;
     }>;
+    settings?: Maybe<{
+      __typename?: "UserSettings";
+      singleUserMode?: Maybe<boolean>;
+    }>;
   }>;
 };
 
@@ -1528,6 +1605,10 @@ export type DashboardChannelsQuery = {
           __typename?: "File";
           id?: Maybe<string>;
           filename: string;
+        }>;
+        settings?: Maybe<{
+          __typename?: "UserSettings";
+          singleUserMode?: Maybe<boolean>;
         }>;
       }>;
     }>
@@ -1568,6 +1649,10 @@ export type DashboardFollowedChannelsQuery = {
           id?: Maybe<string>;
           filename: string;
         }>;
+        settings?: Maybe<{
+          __typename?: "UserSettings";
+          singleUserMode?: Maybe<boolean>;
+        }>;
       }>;
     }>
   >;
@@ -1604,6 +1689,15 @@ export type UserProfileFragment = {
         name: string;
         verb?: Maybe<string>;
       }>;
+      user?: Maybe<{
+        __typename?: "User";
+        id?: Maybe<string>;
+        username: string;
+        settings?: Maybe<{
+          __typename?: "UserSettings";
+          singleUserMode?: Maybe<boolean>;
+        }>;
+      }>;
     }>
   >;
   avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
@@ -1639,6 +1733,10 @@ export type UserProfileFragment = {
           __typename?: "File";
           id?: Maybe<string>;
           filename: string;
+        }>;
+        settings?: Maybe<{
+          __typename?: "UserSettings";
+          singleUserMode?: Maybe<boolean>;
         }>;
       }>;
     }>;
@@ -2148,6 +2246,15 @@ export type ChannelCommonFragment = {
     name: string;
     verb?: Maybe<string>;
   }>;
+  user?: Maybe<{
+    __typename?: "User";
+    id?: Maybe<string>;
+    username: string;
+    settings?: Maybe<{
+      __typename?: "UserSettings";
+      singleUserMode?: Maybe<boolean>;
+    }>;
+  }>;
 };
 
 export type ChannelFullFragment = {
@@ -2374,6 +2481,10 @@ export type ChannelPageQuery = {
         id?: Maybe<string>;
         filename: string;
       }>;
+      settings?: Maybe<{
+        __typename?: "UserSettings";
+        singleUserMode?: Maybe<boolean>;
+      }>;
     }>;
   }>;
 };
@@ -2458,6 +2569,15 @@ export type UserPageQuery = {
           name: string;
           verb?: Maybe<string>;
         }>;
+        user?: Maybe<{
+          __typename?: "User";
+          id?: Maybe<string>;
+          username: string;
+          settings?: Maybe<{
+            __typename?: "UserSettings";
+            singleUserMode?: Maybe<boolean>;
+          }>;
+        }>;
       }>
     >;
     avatar?: Maybe<{
@@ -2502,6 +2622,10 @@ export type UserPageQuery = {
             id?: Maybe<string>;
             filename: string;
           }>;
+          settings?: Maybe<{
+            __typename?: "UserSettings";
+            singleUserMode?: Maybe<boolean>;
+          }>;
         }>;
       }>;
     }>;
@@ -2529,4 +2653,31 @@ export type UserPageChannelStatusQuery = {
       }>
     >;
   }>;
+};
+
+export type SubscribeToUserMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type SubscribeToUserMutation = {
+  __typename?: "Mutation";
+  subscribe: { __typename?: "Subscription"; id: string };
+};
+
+export type UnsubscribeFromUserMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UnsubscribeFromUserMutation = {
+  __typename?: "Mutation";
+  unsubscribe: boolean;
+};
+
+export type UserSubscriptionQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type UserSubscriptionQuery = {
+  __typename?: "Query";
+  subscription?: Maybe<{ __typename?: "Subscription"; id: string }>;
 };

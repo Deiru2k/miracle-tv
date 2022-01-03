@@ -7,6 +7,7 @@ import {
   Image,
   Heading,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 import {
   ChannelPlayerView,
@@ -32,6 +33,9 @@ const { publicRuntimeConfig } = getConfig();
 type Props = {
   user: UserProfileFragment;
   statuses: ChannelViewStatusFragment[];
+  isSubscribed?: boolean;
+  onSubscribe?: () => void;
+  onUnsubscribe?: () => void;
 };
 
 export const USER_PROFILE_FRAGMENT = gql`
@@ -67,7 +71,13 @@ export const USER_PROFILE_FRAGMENT = gql`
   ${CHANNEL_VIEW_FRAGMENT}
 `;
 
-export const UserProfile = ({ user, statuses }: Props) => {
+export const UserProfile = ({
+  user,
+  statuses,
+  isSubscribed,
+  onSubscribe,
+  onUnsubscribe,
+}: Props) => {
   const displayName = user?.displayName || user?.username;
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const isUserLive = useMemo(
@@ -158,7 +168,19 @@ export const UserProfile = ({ user, statuses }: Props) => {
               {isUserLive && <CircleIcon color="red" mr={2} />}
               {displayName}
             </Heading>
-            <Divider mb={2} />
+            <Flex justify="flex-end">
+              {!isSubscribed && (
+                <Button size="sm" onClick={onSubscribe}>
+                  Follow
+                </Button>
+              )}
+              {isSubscribed && (
+                <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
+                  Unfollow
+                </Button>
+              )}
+            </Flex>
+            <Divider mb={2} mt={2} />
             <Text whiteSpace="pre-wrap">{user?.bio}</Text>
           </Box>
         </Box>
@@ -175,38 +197,70 @@ export const UserProfile = ({ user, statuses }: Props) => {
                 </Text>
               </Box>
             )}
+            {!isMobile && (
+              <Flex
+                direction="column"
+                flex={9}
+                mt={6}
+                order={isMobile ? 5 : undefined}
+              >
+                {!user?.settings?.singleUserMode && (
+                  <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
+                    <Heading size="md" mb={2}>
+                      Their channels
+                    </Heading>
+                    <ChannelDisplayGrid
+                      columns={isMobile ? 1 : undefined}
+                      channels={user?.channels ?? []}
+                      defaultThumbnail={user?.streamThumbnail?.filename}
+                      channelStatuses={statusesMap}
+                    />
+                  </Box>
+                )}
+                {publicRuntimeConfig.isDev && (
+                  <Box w="100%" order={isMobile ? 3 : undefined}>
+                    <Heading size="md" mb={2}>
+                      Latest Clips
+                    </Heading>
+                    <VodList columns={isMobile ? 2 : 4} />
+                  </Box>
+                )}
+              </Flex>
+            )}
           </Box>
         )}
-        <Flex
-          direction="column"
-          flex={9}
-          px={4}
-          mt={6}
-          pb={6}
-          order={isMobile ? 5 : undefined}
-        >
-          {!user?.settings?.singleUserMode && (
-            <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
-              <Heading size="md" mb={2}>
-                Their channels
-              </Heading>
-              <ChannelDisplayGrid
-                columns={isMobile ? 1 : undefined}
-                channels={user?.channels ?? []}
-                defaultThumbnail={user?.streamThumbnail?.filename}
-                channelStatuses={statusesMap}
-              />
-            </Box>
-          )}
-          {publicRuntimeConfig.isDev && (
-            <Box w="100%" order={isMobile ? 3 : undefined}>
-              <Heading size="md" mb={2}>
-                Latest Clips
-              </Heading>
-              <VodList columns={isMobile ? 2 : 4} />
-            </Box>
-          )}
-        </Flex>
+        {(isMobile || !user?.settings?.singleUserMode) && (
+          <Flex
+            direction="column"
+            flex={9}
+            px={4}
+            mt={6}
+            pb={6}
+            order={isMobile ? 5 : undefined}
+          >
+            {!user?.settings?.singleUserMode && (
+              <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
+                <Heading size="md" mb={2}>
+                  Their channels
+                </Heading>
+                <ChannelDisplayGrid
+                  columns={isMobile ? 1 : undefined}
+                  channels={user?.channels ?? []}
+                  defaultThumbnail={user?.streamThumbnail?.filename}
+                  channelStatuses={statusesMap}
+                />
+              </Box>
+            )}
+            {publicRuntimeConfig.isDev && (
+              <Box w="100%" order={isMobile ? 3 : undefined}>
+                <Heading size="md" mb={2}>
+                  Latest Clips
+                </Heading>
+                <VodList columns={isMobile ? 2 : 4} />
+              </Box>
+            )}
+          </Flex>
+        )}
       </Flex>
     </>
   );

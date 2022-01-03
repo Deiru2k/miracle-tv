@@ -60,6 +60,9 @@ export const CHANNEL_VIEW_FRAGMENT = gql`
         id
         filename
       }
+      settings {
+        singleUserMode
+      }
     }
   }
 `;

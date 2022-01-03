@@ -4,6 +4,7 @@ import {
   User,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
+import { uniq } from "ramda";
 
 export const subsciptionByIdResolver: QueryResolvers<ResolverContext>["subscription"] =
   async (_, { input }, { user, db: { subscriptions } }) => {
@@ -17,7 +18,17 @@ export const selfSubscribedChannelsResolver: QueryResolvers<ResolverContext>["se
       sourceId: user.id,
       target: SubscriptionTarget.Channel,
     });
-    return channels.getChannels({ ids: subTargets.map((sub) => sub.targetId) });
+    const subUsers = await subscriptions.getSubscriptions({
+      sourceId: user.id,
+      target: SubscriptionTarget.User,
+    });
+    const subbedUserChannels = await channels.getChannels({
+      userIds: subUsers.map((usr) => usr.targetId),
+    });
+    const subbedChannels = await channels.getChannels({
+      ids: subTargets.map((sub) => sub.targetId),
+    });
+    return uniq([...subbedChannels, ...subbedUserChannels]);
   };
 
 export const selfSubscribedUsersResolver: QueryResolvers<ResolverContext>["selfSubscribedUsers"] =

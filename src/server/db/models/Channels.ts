@@ -1,5 +1,6 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
+import * as r from "rethinkdb";
 import {
   ActivityLimit,
   ChannelsQueryFilter,
@@ -65,14 +66,16 @@ export class ChanelsModel extends Model {
   }
 
   async getChannels(
-    { ids, name, ...filter }: ChannelsQueryFilter = {},
+    { ids, userIds, name, ...filter }: ChannelsQueryFilter = {},
     limit?: QueryLimit,
     includeDisabled: boolean = false
   ): Promise<DbChannel[]> {
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query
       .filter((doc: any) => {
-        if (name) {
+        if (userIds) {
+          return r.expr(userIds).contains(doc("userId"));
+        } else if (name) {
           return doc("name").downcase().match(name.toLowerCase());
         }
         return true;

@@ -36,6 +36,13 @@ export const ChannelDisplayFragment = gql`
       name
       verb
     }
+    user {
+      id
+      username
+      settings {
+        singleUserMode
+      }
+    }
   }
 `;
 

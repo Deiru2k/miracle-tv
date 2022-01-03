@@ -32,6 +32,9 @@ export const DashboardChannelFragmentDoc = gql`
         id
         filename
       }
+      settings {
+        singleUserMode
+      }
     }
   }
 `;
@@ -54,6 +57,13 @@ export const ChannelCommonFragmentDoc = gql`
       id
       name
       verb
+    }
+    user {
+      id
+      username
+      settings {
+        singleUserMode
+      }
     }
   }
 `;
@@ -79,6 +89,9 @@ export const ChannelViewFragmentDoc = gql`
       avatar {
         id
         filename
+      }
+      settings {
+        singleUserMode
       }
     }
   }
@@ -2443,4 +2456,160 @@ export type UserPageChannelStatusLazyQueryHookResult = ReturnType<
 export type UserPageChannelStatusQueryResult = Apollo.QueryResult<
   Types.UserPageChannelStatusQuery,
   Types.UserPageChannelStatusQueryVariables
+>;
+export const SubscribeToUserDocument = gql`
+  mutation SubscribeToUser($id: ID!) {
+    subscribe(input: { target: USER, targetId: $id }) {
+      id
+    }
+  }
+`;
+export type SubscribeToUserMutationFn = Apollo.MutationFunction<
+  Types.SubscribeToUserMutation,
+  Types.SubscribeToUserMutationVariables
+>;
+
+/**
+ * __useSubscribeToUserMutation__
+ *
+ * To run a mutation, you first call `useSubscribeToUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubscribeToUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [subscribeToUserMutation, { data, loading, error }] = useSubscribeToUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSubscribeToUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.SubscribeToUserMutation,
+    Types.SubscribeToUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.SubscribeToUserMutation,
+    Types.SubscribeToUserMutationVariables
+  >(SubscribeToUserDocument, options);
+}
+export type SubscribeToUserMutationHookResult = ReturnType<
+  typeof useSubscribeToUserMutation
+>;
+export type SubscribeToUserMutationResult =
+  Apollo.MutationResult<Types.SubscribeToUserMutation>;
+export type SubscribeToUserMutationOptions = Apollo.BaseMutationOptions<
+  Types.SubscribeToUserMutation,
+  Types.SubscribeToUserMutationVariables
+>;
+export const UnsubscribeFromUserDocument = gql`
+  mutation UnsubscribeFromUser($id: ID!) {
+    unsubscribe(input: { target: USER, targetId: $id })
+  }
+`;
+export type UnsubscribeFromUserMutationFn = Apollo.MutationFunction<
+  Types.UnsubscribeFromUserMutation,
+  Types.UnsubscribeFromUserMutationVariables
+>;
+
+/**
+ * __useUnsubscribeFromUserMutation__
+ *
+ * To run a mutation, you first call `useUnsubscribeFromUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsubscribeFromUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsubscribeFromUserMutation, { data, loading, error }] = useUnsubscribeFromUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnsubscribeFromUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UnsubscribeFromUserMutation,
+    Types.UnsubscribeFromUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UnsubscribeFromUserMutation,
+    Types.UnsubscribeFromUserMutationVariables
+  >(UnsubscribeFromUserDocument, options);
+}
+export type UnsubscribeFromUserMutationHookResult = ReturnType<
+  typeof useUnsubscribeFromUserMutation
+>;
+export type UnsubscribeFromUserMutationResult =
+  Apollo.MutationResult<Types.UnsubscribeFromUserMutation>;
+export type UnsubscribeFromUserMutationOptions = Apollo.BaseMutationOptions<
+  Types.UnsubscribeFromUserMutation,
+  Types.UnsubscribeFromUserMutationVariables
+>;
+export const UserSubscriptionDocument = gql`
+  query UserSubscription($id: ID!) {
+    subscription(input: { target: USER, targetId: $id }) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useUserSubscriptionQuery__
+ *
+ * To run a query within a React component, call `useUserSubscriptionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserSubscriptionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserSubscriptionQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserSubscriptionQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.UserSubscriptionQuery,
+    Types.UserSubscriptionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UserSubscriptionQuery,
+    Types.UserSubscriptionQueryVariables
+  >(UserSubscriptionDocument, options);
+}
+export function useUserSubscriptionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UserSubscriptionQuery,
+    Types.UserSubscriptionQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UserSubscriptionQuery,
+    Types.UserSubscriptionQueryVariables
+  >(UserSubscriptionDocument, options);
+}
+export type UserSubscriptionQueryHookResult = ReturnType<
+  typeof useUserSubscriptionQuery
+>;
+export type UserSubscriptionLazyQueryHookResult = ReturnType<
+  typeof useUserSubscriptionLazyQuery
+>;
+export type UserSubscriptionQueryResult = Apollo.QueryResult<
+  Types.UserSubscriptionQuery,
+  Types.UserSubscriptionQueryVariables
 >;

@@ -7,6 +7,8 @@ import {
 } from "miracle-tv-shared/hooks";
 import { useLiveUpdate } from "miracle-tv-client/context/liveUpdate";
 import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/ChannelDisplayGrid";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { MediaQuery } from "miracle-tv-client/utils/const";
 
 const DASHBOARD_CHANNELS_FRAGMENT = gql`
   fragment DashboardChannel on Channel {
@@ -31,6 +33,9 @@ const DASHBOARD_CHANNELS_FRAGMENT = gql`
         id
         filename
       }
+      settings {
+        singleUserMode
+      }
     }
   }
 `;
@@ -51,6 +56,7 @@ gql`
 
 export const Streams = () => {
   const isLiveUpdate = useLiveUpdate();
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const { data: { channels = [] } = {} } = useDashboardChannelsQuery({
     pollInterval: isLiveUpdate ? 5000 : 0,
   });
@@ -74,7 +80,10 @@ export const Streams = () => {
       <Divider mb={2} />
       {!!subscriptions?.length && (
         <>
-          <ChannelDisplayGrid columns={4} channels={subscriptions} />
+          <ChannelDisplayGrid
+            columns={isMobile ? 2 : 4}
+            channels={subscriptions}
+          />
         </>
       )}
       {!subscriptions?.length && (
@@ -86,7 +95,10 @@ export const Streams = () => {
       <Divider mb={2} />
       {!!liveChannels?.length && (
         <>
-          <ChannelDisplayGrid channels={liveChannels} />
+          <ChannelDisplayGrid
+            columns={isMobile ? 2 : undefined}
+            channels={liveChannels}
+          />
         </>
       )}
       {!liveChannels?.length && (
@@ -96,7 +108,10 @@ export const Streams = () => {
         Discover other channels!
       </Heading>
       <Divider mb={2} />
-      <ChannelDisplayGrid columns={4} channels={nonLiveChannels} />
+      <ChannelDisplayGrid
+        columns={isMobile ? 2 : 4}
+        channels={nonLiveChannels}
+      />
     </Box>
   );
 };

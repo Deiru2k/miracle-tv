@@ -25,6 +25,13 @@ type Props = {
   defaultThumbnail?: string;
 };
 
+const getChannelUrl = (channel: ChannelCommonFragment): string => {
+  if (channel.user.settings?.singleUserMode) {
+    return `/user/${channel.user.username}`;
+  }
+  return `/channel/${channel.slug || channel.id}`;
+};
+
 export const ChannelDisplayGrid = ({
   channels,
   channelStatuses,
@@ -34,7 +41,7 @@ export const ChannelDisplayGrid = ({
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const getChannelLive = useCallback(
     (channel: ChannelCommonFragment) => {
-      return channel.status?.isLive || channelStatuses?.[channel.id].isLive;
+      return channel.status?.isLive || channelStatuses?.[channel.id]?.isLive;
     },
     [channelStatuses]
   );
@@ -45,7 +52,7 @@ export const ChannelDisplayGrid = ({
           key={channel.id}
           width="100%"
           p={0}
-          href={`/channel/${channel.slug || channel.id}`}
+          href={getChannelUrl(channel)}
         >
           <Flex direction="column" position="relative">
             <AspectRatio ratio={16 / 9} h="100%" w="100%">

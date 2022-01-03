@@ -48,7 +48,7 @@ gql`
   }
 `;
 
-const CHANNEL_SUBSCRIPTION_QUERY = gql`
+gql`
   query ChannelSubscription($id: ID!) {
     subscription(input: { target: CHANNEL, targetId: $id }) {
       id
@@ -78,7 +78,7 @@ const ChannelPage = () => {
 
   const [subscribeMutation] = useSubscribeToChannelMutation({
     onCompleted: () => {
-      toast({ status: "success", title: `Subscribe to ${channel?.name}` });
+      toast({ status: "success", title: `Subscribed to ${channel?.name}` });
     },
     onError: () => {
       toast({
