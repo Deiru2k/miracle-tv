@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { SimpleGrid, Text } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
@@ -40,8 +41,9 @@ gql`
 
 export const DashboardUserDirectory = (): any => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
-  const { data: { userDirectory = [] } = {} } = useUsersDirectoryQuery();
-  return (
+  const { data: { userDirectory = [] } = {}, loading: isLoading } =
+    useUsersDirectoryQuery();
+  return !isLoading ? (
     <>
       {!userDirectory.length && (
         <Text>
@@ -71,5 +73,7 @@ export const DashboardUserDirectory = (): any => {
         ))}
       </SimpleGrid>
     </>
+  ) : (
+    <Loading />
   );
 };

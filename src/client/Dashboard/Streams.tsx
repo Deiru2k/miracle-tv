@@ -11,6 +11,7 @@ import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { Loading } from "miracle-tv-client/components/ui/Loading";
 
 gql`
   query DashboardChannels {
@@ -29,9 +30,10 @@ gql`
 export const Streams = () => {
   const isLiveUpdate = useLiveUpdate();
   const isMobile = useMediaQuery(MediaQuery.mobile);
-  const { data: { channels = [] } = {} } = useDashboardChannelsQuery({
-    pollInterval: isLiveUpdate ? 5000 : 0,
-  });
+  const { data: { channels = [] } = {}, loading: isLoading } =
+    useDashboardChannelsQuery({
+      pollInterval: isLiveUpdate ? 5000 : 0,
+    });
   const { data: { selfSubscribedChannels: subscriptions = [] } = {} } =
     useDashboardFollowedChannelsQuery({
       pollInterval: isLiveUpdate ? 5000 : 0,
@@ -42,7 +44,7 @@ export const Streams = () => {
     [channels]
   );
 
-  return (
+  return !isLoading ? (
     <Box>
       <Heading size="lg">Your subscriptions</Heading>
       <Divider mb={2} />
@@ -94,5 +96,7 @@ export const Streams = () => {
         </Text>
       )}
     </Box>
+  ) : (
+    <Loading />
   );
 };
