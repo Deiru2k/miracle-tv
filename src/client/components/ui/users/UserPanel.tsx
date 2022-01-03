@@ -1,0 +1,120 @@
+import {
+  AspectRatio,
+  Image,
+  Box,
+  Flex,
+  Heading,
+  Button,
+  Divider,
+  Text,
+  BoxProps,
+} from "@chakra-ui/react";
+import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
+import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { UserProfileFragment } from "miracle-tv-shared/graphql";
+import { getMediaURL } from "miracle-tv-shared/media";
+import React from "react";
+import { Avatar } from "../Avatar";
+
+type Props = {
+  user: Omit<UserProfileFragment, "channels">;
+  isUserLive?: boolean;
+  isSubscribed?: boolean;
+  onSubscribe?: () => void;
+  onUnsubscribe?: () => void;
+  includeDescription?: boolean;
+} & BoxProps;
+
+export const UserPanel = ({
+  user,
+  isUserLive,
+  isSubscribed,
+  onSubscribe,
+  onUnsubscribe,
+  includeDescription = true,
+  ...boxProps
+}: Props) => {
+  const displayName = user?.displayName || user?.username;
+  return (
+    <Box {...boxProps}>
+      <Flex position="relative">
+        <AspectRatio w="100%" ratio={16 / 6} zIndex={1}>
+          <Image
+            src={getMediaURL(user?.header?.filename)}
+            borderTopRadius="5px"
+            objectPosition="center"
+          />
+        </AspectRatio>
+        <Flex
+          zIndex={2}
+          w="100%"
+          px={2}
+          py={1}
+          align="center"
+          bottom="-2rem"
+          position="absolute"
+        >
+          <Avatar
+            borderRadius="50%"
+            username={user?.username}
+            emailHash={user?.emailHash}
+            useGravatar={user?.settings?.useGravatar}
+            aspectMaxH="70px"
+            aspectMaxW="70px"
+            imageId={user?.avatar?.filename}
+            bgColor="white"
+            useAspectRatio={false}
+            borderLeftWidth="1px"
+            borderRightWidth="1px"
+            borderTopWidth="1px"
+            borderStyle="solid"
+            borderColor="primary.200"
+          />
+        </Flex>
+      </Flex>
+      <Box
+        px={4}
+        py={4}
+        borderLeftWidth="1px"
+        borderRightWidth="1px"
+        borderBottomWidth="1px"
+        borderStyle="solid"
+        borderColor="primary.500"
+        borderBottomRadius="5px"
+      >
+        <Heading
+          size="md"
+          display="flex"
+          align="center"
+          mb={2}
+          mt="2rem"
+          py={1}
+        >
+          {isUserLive && <CircleIcon color="red" mr={2} />}
+          {displayName}
+        </Heading>
+        {onSubscribe && onUnsubscribe && (
+          <Flex justify="flex-end">
+            {!isSubscribed && (
+              <Button size="sm" onClick={onSubscribe}>
+                Follow
+              </Button>
+            )}
+            {isSubscribed && (
+              <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
+                Unfollow
+              </Button>
+            )}
+          </Flex>
+        )}
+        {includeDescription && (
+          <>
+            <Divider mb={2} mt={2} />
+            <Text whiteSpace="pre-wrap">{user?.bio}</Text>
+          </>
+        )}
+      </Box>
+    </Box>
+  );
+};

@@ -1,22 +1,6 @@
 import { gql } from "@apollo/client";
-import {
-  AspectRatio,
-  Box,
-  Text,
-  Flex,
-  Image,
-  Heading,
-  Circle,
-  HStack,
-  VStack,
-  Stack,
-  Divider,
-  useToast,
-} from "@chakra-ui/react";
-import {
-  CHANNEL_VIEW_FRAGMENT,
-  CHANNEL_VIEW_STATUS_FRAGMENT,
-} from "miracle-tv-client/ChannelPage/Channel";
+import { useToast } from "@chakra-ui/react";
+import { CHANNEL_VIEW_STATUS_FRAGMENT } from "miracle-tv-client/ChannelPage/Channel";
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { LiveUpdateContext } from "miracle-tv-client/context/liveUpdate";
@@ -27,9 +11,6 @@ import {
 import { ChannelViewStatusFragment } from "miracle-tv-shared/graphql";
 import {
   useUserSubscriptionQuery,
-  UserPageChannelStatusQueryResult,
-  useSubscribeToChannelMutation,
-  useUnsubscribeFromChannelMutation,
   useUserPageChannelStatusQuery,
   useUserPageQuery,
   useSubscribeToUserMutation,

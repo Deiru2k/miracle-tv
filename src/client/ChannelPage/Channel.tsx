@@ -156,7 +156,6 @@ export const ChannelView = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
-  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
       <ChannelPlayerView channel={channel} status={status} />

@@ -350,6 +350,7 @@ export type Query = {
   selfSubscribedChannels: Array<Maybe<Channel>>;
   selfSubscribedUsers: Array<Maybe<User>>;
   users: Array<Maybe<User>>;
+  userDirectory: Array<Maybe<User>>;
   self: User;
   selfAccount: UserAccountDetails;
   selfSessions?: Maybe<Array<Maybe<Session>>>;
@@ -415,6 +416,10 @@ export type QuerySubscriptionArgs = {
 
 export type QueryUsersArgs = {
   filter?: Maybe<UsersFilter>;
+  limit?: Maybe<QueryLimit>;
+};
+
+export type QueryUserDirectoryArgs = {
   limit?: Maybe<QueryLimit>;
 };
 
@@ -560,6 +565,7 @@ export type UpdateUserSettingsInput = {
   singleUserMode?: Maybe<Scalars["Boolean"]>;
   useGravatar?: Maybe<Scalars["Boolean"]>;
   singleUserChannel?: Maybe<Scalars["ID"]>;
+  featureInDirectory?: Maybe<Scalars["Boolean"]>;
 };
 
 export type User = {
@@ -603,6 +609,7 @@ export type UserSettings = {
   useGravatar?: Maybe<Scalars["Boolean"]>;
   singleUserMode?: Maybe<Scalars["Boolean"]>;
   singleUserChannel?: Maybe<Channel>;
+  featureInDirectory?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UsersFilter = {
@@ -1269,6 +1276,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryUsersArgs, never>
   >;
+  userDirectory?: Resolver<
+    Array<Maybe<ResolversTypes["User"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserDirectoryArgs, never>
+  >;
   self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   selfAccount?: Resolver<
     ResolversTypes["UserAccountDetails"],
@@ -1467,6 +1480,11 @@ export type UserSettingsResolvers<
     ParentType,
     ContextType
   >;
+  featureInDirectory?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1631,6 +1649,51 @@ export type DashboardFollowedChannelsQuery = {
           __typename?: "UserSettings";
           singleUserMode?: Maybe<boolean>;
         }>;
+      }>;
+    }>
+  >;
+};
+
+export type UserDirectoryProfileFragment = {
+  __typename?: "User";
+  id?: Maybe<string>;
+  username: string;
+  displayName?: Maybe<string>;
+  bio?: Maybe<string>;
+  emailHash?: Maybe<string>;
+  avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
+  header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
+  settings?: Maybe<{
+    __typename?: "UserSettings";
+    useGravatar?: Maybe<boolean>;
+  }>;
+};
+
+export type UsersDirectoryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UsersDirectoryQuery = {
+  __typename?: "Query";
+  userDirectory: Array<
+    Maybe<{
+      __typename?: "User";
+      id?: Maybe<string>;
+      username: string;
+      displayName?: Maybe<string>;
+      bio?: Maybe<string>;
+      emailHash?: Maybe<string>;
+      avatar?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
+      header?: Maybe<{
+        __typename?: "File";
+        id?: Maybe<string>;
+        filename: string;
+      }>;
+      settings?: Maybe<{
+        __typename?: "UserSettings";
+        useGravatar?: Maybe<boolean>;
       }>;
     }>
   >;
@@ -2110,6 +2173,7 @@ export type UserSettingsPreferencesQuery = {
     id?: Maybe<string>;
     useGravatar?: Maybe<boolean>;
     singleUserMode?: Maybe<boolean>;
+    featureInDirectory?: Maybe<boolean>;
     singleUserChannel?: Maybe<{ __typename?: "Channel"; id: string }>;
   };
 };
@@ -2125,6 +2189,7 @@ export type UpdateUserSettingsPreferencesMutation = {
     id?: Maybe<string>;
     useGravatar?: Maybe<boolean>;
     singleUserMode?: Maybe<boolean>;
+    featureInDirectory?: Maybe<boolean>;
     singleUserChannel?: Maybe<{ __typename?: "Channel"; id: string }>;
   }>;
 };

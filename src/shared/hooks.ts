@@ -9,6 +9,26 @@ export const ChannelViewStatusFragmentDoc = gql`
     isLive
   }
 `;
+export const UserDirectoryProfileFragmentDoc = gql`
+  fragment UserDirectoryProfile on User {
+    id
+    username
+    displayName
+    bio
+    emailHash
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    settings {
+      useGravatar
+    }
+  }
+`;
 export const ChannelCommonFragmentDoc = gql`
   fragment ChannelCommon on Channel {
     id
@@ -319,6 +339,64 @@ export type DashboardFollowedChannelsLazyQueryHookResult = ReturnType<
 export type DashboardFollowedChannelsQueryResult = Apollo.QueryResult<
   Types.DashboardFollowedChannelsQuery,
   Types.DashboardFollowedChannelsQueryVariables
+>;
+export const UsersDirectoryDocument = gql`
+  query UsersDirectory {
+    userDirectory {
+      ...UserDirectoryProfile
+    }
+  }
+  ${UserDirectoryProfileFragmentDoc}
+`;
+
+/**
+ * __useUsersDirectoryQuery__
+ *
+ * To run a query within a React component, call `useUsersDirectoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersDirectoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersDirectoryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersDirectoryQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UsersDirectoryQuery,
+    Types.UsersDirectoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UsersDirectoryQuery,
+    Types.UsersDirectoryQueryVariables
+  >(UsersDirectoryDocument, options);
+}
+export function useUsersDirectoryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UsersDirectoryQuery,
+    Types.UsersDirectoryQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UsersDirectoryQuery,
+    Types.UsersDirectoryQueryVariables
+  >(UsersDirectoryDocument, options);
+}
+export type UsersDirectoryQueryHookResult = ReturnType<
+  typeof useUsersDirectoryQuery
+>;
+export type UsersDirectoryLazyQueryHookResult = ReturnType<
+  typeof useUsersDirectoryLazyQuery
+>;
+export type UsersDirectoryQueryResult = Apollo.QueryResult<
+  Types.UsersDirectoryQuery,
+  Types.UsersDirectoryQueryVariables
 >;
 export const SelfSessionsDocument = gql`
   query SelfSessions {
@@ -1354,6 +1432,7 @@ export const UserSettingsPreferencesDocument = gql`
       id
       useGravatar
       singleUserMode
+      featureInDirectory
       singleUserChannel {
         id
       }
@@ -1416,6 +1495,7 @@ export const UpdateUserSettingsPreferencesDocument = gql`
       id
       useGravatar
       singleUserMode
+      featureInDirectory
       singleUserChannel {
         id
       }

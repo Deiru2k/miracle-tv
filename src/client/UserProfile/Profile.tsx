@@ -28,6 +28,7 @@ import { getMediaURL } from "miracle-tv-shared/media";
 import React, { useMemo } from "react";
 
 import getConfig from "next/config";
+import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -78,7 +79,6 @@ export const UserProfile = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
-  const displayName = user?.displayName || user?.username;
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const isUserLive = useMemo(
     () => statuses.findIndex((status) => status.isLive) > -1,
@@ -102,7 +102,12 @@ export const UserProfile = ({
         />
       )}
       <Flex direction={isMobile ? "column" : "row"}>
-        <Box
+        <UserPanel
+          user={user}
+          isUserLive={isUserLive}
+          isSubscribed={isSubscribed}
+          onSubscribe={onSubscribe}
+          onUnsubscribe={onUnsubscribe}
           w="100%"
           px={2}
           py={6}
@@ -111,79 +116,7 @@ export const UserProfile = ({
           top="0"
           height="0%"
           order={isMobile ? 2 : undefined}
-        >
-          <Flex position="relative">
-            <AspectRatio w="100%" ratio={16 / 6} zIndex={1}>
-              <Image
-                src={getMediaURL(user?.header?.filename)}
-                borderTopRadius="5px"
-                objectPosition="center"
-              />
-            </AspectRatio>
-            <Flex
-              zIndex={2}
-              w="100%"
-              px={2}
-              py={1}
-              align="center"
-              bottom="-2rem"
-              position="absolute"
-            >
-              <Avatar
-                borderRadius="50%"
-                username={user?.username}
-                emailHash={user?.emailHash}
-                useGravatar={user?.settings?.useGravatar}
-                aspectMaxH="70px"
-                aspectMaxW="70px"
-                imageId={user?.avatar?.filename}
-                bgColor="white"
-                useAspectRatio={false}
-                borderLeftWidth="1px"
-                borderRightWidth="1px"
-                borderTopWidth="1px"
-                borderStyle="solid"
-                borderColor="primary.200"
-              />
-            </Flex>
-          </Flex>
-          <Box
-            px={4}
-            py={4}
-            borderLeftWidth="1px"
-            borderRightWidth="1px"
-            borderBottomWidth="1px"
-            borderStyle="solid"
-            borderColor="primary.500"
-            borderBottomRadius="5px"
-          >
-            <Heading
-              size="md"
-              display="flex"
-              align="center"
-              mb={2}
-              mt="2rem"
-              py={1}
-            >
-              {isUserLive && <CircleIcon color="red" mr={2} />}
-              {displayName}
-            </Heading>
-            <Flex justify="flex-end">
-              {!isSubscribed && (
-                <Button size="sm" onClick={onSubscribe}>
-                  Follow
-                </Button>
-              )}
-              {isSubscribed && (
-                <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
-                  Unfollow
-                </Button>
-              )}
-            </Flex>
-            <Divider mb={2} mt={2} />
-            <Text whiteSpace="pre-wrap">{user?.bio}</Text>
-          </Box>
-        </Box>
+        />
         {user?.settings?.singleUserMode && (
           <Box flex={9} px={4} mt={6} pb={6}>
             <Heading size="lg" mb={2}>

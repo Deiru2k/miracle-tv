@@ -10,6 +10,7 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
   sessionResolver,
   settingsResolver,
+  userDirectoryQueryResolver,
   userQueryResolver,
   userResolver,
   userSelfAccountResolver,
@@ -109,6 +110,7 @@ let executableSchema = makeExecutableSchema({
       }),
       user: userQueryResolver,
       users: usersQueryResolver,
+      userDirectory: userDirectoryQueryResolver,
       channel: channelQueryResolver,
       channels: channelsQueryResolver,
       activity: activityQueryResolver,

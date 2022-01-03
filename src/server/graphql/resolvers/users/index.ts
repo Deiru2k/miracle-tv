@@ -20,6 +20,11 @@ export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
   return users.getUsersSafe();
 };
 
+export const userDirectoryQueryResolver: QueryResolvers<ResolverContext>["userDirectory"] =
+  (_, _args, { db: { users } }): Promise<User[]> => {
+    return users.getUsersForDirectory() as Promise<User[]>;
+  };
+
 export const userQueryResolver: QueryResolvers<ResolverContext>["user"] = (
   _,
   args,

@@ -38,6 +38,7 @@ type UserSettings {
   useGravatar: Boolean
   singleUserMode: Boolean
   singleUserChannel: Channel
+  featureInDirectory: Boolean
 }
 
 input UsersFilter {
@@ -49,6 +50,7 @@ input UsersFilter {
 
 extend type Query {
   users(filter: UsersFilter, limit: QueryLimit): [User]!
+  userDirectory(limit: QueryLimit): [User]!
   self: User! @auth(rights: [{ unit: SELF, subject: "users" }])
   selfAccount: UserAccountDetails!
     @auth(rights: [{ unit: SELF, subject: "users" }])
@@ -92,6 +94,7 @@ input UpdateUserSettingsInput {
   singleUserMode: Boolean
   useGravatar: Boolean
   singleUserChannel: ID
+  featureInDirectory: Boolean
 }
 
 input UpdateUserAccountInput {

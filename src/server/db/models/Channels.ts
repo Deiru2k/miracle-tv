@@ -2,7 +2,6 @@ import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import * as r from "rethinkdb";
 import {
-  ActivityLimit,
   ChannelsQueryFilter,
   CreateChannelInput,
   QueryLimit,
@@ -14,8 +13,6 @@ import {
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
 import { DbChannel } from "miracle-tv-server/db/models/types";
-
-type ChanelsFilter = object;
 
 export class ChanelsModel extends Model {
   table = db.table("channels");

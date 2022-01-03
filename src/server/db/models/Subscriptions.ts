@@ -1,10 +1,7 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import { head } from "ramda";
-import {
-  NotFoundError,
-  ServerError,
-} from "miracle-tv-server/graphql/errors/general";
+import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
 import {
   SubscriptionsFilter,
   SubscriptionInput,

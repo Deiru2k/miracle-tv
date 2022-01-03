@@ -56,6 +56,21 @@ export class UsersModel extends Model {
     return (await this.table.get(id).run(this.conn)) as DbUser | null;
   }
 
+  async getUsersForDirectory(limit?: QueryLimit): Promise<User[]> {
+    const usersForDirectory = await db
+      .table("user-settings")
+      .filter({ featureInDirectory: true })
+      .pluck("id")
+      .coerceTo("array")
+      .run(this.conn);
+
+    const users = await this.getUsers(
+      { ids: usersForDirectory.map((usr) => usr.id) },
+      limit
+    );
+    return users.map(this.sanitizeUser) as any as User[];
+  }
+
   async getUserByUsername(username: string): Promise<DbUser | null> {
     return head(
       (await this.table

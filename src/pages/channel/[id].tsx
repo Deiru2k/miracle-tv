@@ -8,7 +8,6 @@ import {
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { LiveUpdateContext } from "miracle-tv-client/context/liveUpdate";
-import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
 import {
   useChannelPageQuery,
   useChannelPageStatusQuery,

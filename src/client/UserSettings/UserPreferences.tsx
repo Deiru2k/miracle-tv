@@ -6,7 +6,7 @@ import {
   useUpdateUserSettingsPreferencesMutation,
   useUserSettingsPreferencesQuery,
 } from "miracle-tv-shared/hooks";
-import { Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Heading, useToast } from "@chakra-ui/react";
 import { Form } from "react-final-form";
 import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
@@ -19,6 +19,7 @@ gql`
       id
       useGravatar
       singleUserMode
+      featureInDirectory
       singleUserChannel {
         id
       }
@@ -29,6 +30,7 @@ gql`
       id
       useGravatar
       singleUserMode
+      featureInDirectory
       singleUserChannel {
         id
       }
@@ -39,7 +41,7 @@ gql`
 export const UserPreferences = () => {
   const toast = useToast();
 
-  const { data, loading } = useUserSettingsPreferencesQuery();
+  const { data } = useUserSettingsPreferencesQuery();
   const [updateSettingsMutation, { loading: isUpdating }] =
     useUpdateUserSettingsPreferencesMutation({
       onCompleted: () =>
@@ -55,6 +57,7 @@ export const UserPreferences = () => {
             useGravatar: data?.userSettings?.useGravatar,
             singleUserMode: data?.userSettings?.singleUserMode,
             singleUserChannel: data?.userSettings?.singleUserChannel?.id,
+            featureInDirectory: data?.userSettings?.featureInDirectory,
           }
         : {},
     [data]
@@ -99,6 +102,12 @@ export const UserPreferences = () => {
                 name="useGravatar"
                 label="Use Gravatar"
                 help="If enabled, profile picture will use Gravatar instead of currently uploaded image"
+                mb={4}
+              />
+              <FormToggle
+                name="featureInDirectory"
+                label="Feature in User Directory"
+                help={`If enabled, your profile will be featured in the "Users" page on the dashboard`}
               />
             </Panel>
             <Box
