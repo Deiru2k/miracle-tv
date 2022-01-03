@@ -105,7 +105,7 @@ export class UsersModel extends Model {
     let filteredQuery = query
       .filter((doc: any) => {
         if (username) {
-          return doc("name").downcase().match(username.toLowerCase());
+          return doc("username").downcase().match(username.toLowerCase());
         }
         return true;
       })
