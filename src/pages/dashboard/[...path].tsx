@@ -5,7 +5,7 @@ import {
   NavComponentMap,
   NavConfig,
   Navigation,
-} from "miracle-tv-client/Dashboard/Navigation";
+} from "miracle-tv-client/components/ui/Navigation";
 import { Streams } from "miracle-tv-client/Dashboard/Streams";
 import Head from "next/head";
 import React from "react";

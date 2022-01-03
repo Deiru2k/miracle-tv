@@ -13,8 +13,7 @@ import { NavLink } from "miracle-tv-client/components/ui/NavLink";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { useRouter } from "next/dist/client/router";
-import { prop } from "ramda";
-import React, { useCallback, useMemo, useEffect, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 export type NavConfigRecord = {
   id: string;

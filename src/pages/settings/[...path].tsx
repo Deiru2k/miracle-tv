@@ -4,7 +4,7 @@ import {
   NavComponentMap,
   NavConfig,
   Navigation,
-} from "miracle-tv-client/Dashboard/Navigation";
+} from "miracle-tv-client/components/ui/Navigation";
 import { ProfileSettings } from "miracle-tv-client/UserSettings/Profile";
 import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { UserPreferences } from "miracle-tv-client/UserSettings/UserPreferences";
