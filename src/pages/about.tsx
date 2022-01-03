@@ -24,6 +24,12 @@ const AboutPage = () => {
             </Text>
           </Flex>
           <Flex justify="flex-end">
+            <Link href="/licenses.txt" target="_blank">
+              [Licenses]
+            </Link>
+            {" | "}
+          </Flex>
+          <Flex justify="flex-end">
             Join the development at our
             <Link
               href="https://code.gensokyo.social/Gensokyo.social/miracle-tv"
