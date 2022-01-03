@@ -9,49 +9,20 @@ import { useLiveUpdate } from "miracle-tv-client/context/liveUpdate";
 import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/ChannelDisplayGrid";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
-
-const DASHBOARD_CHANNELS_FRAGMENT = gql`
-  fragment DashboardChannel on Channel {
-    id
-    name
-    slug
-    description
-    thumbnail {
-      id
-      filename
-    }
-    status {
-      id
-      isLive
-      viewers
-    }
-    user {
-      id
-      username
-      displayName
-      avatar {
-        id
-        filename
-      }
-      settings {
-        singleUserMode
-      }
-    }
-  }
-`;
+import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 
 gql`
   query DashboardChannels {
     channels(limit: { limit: 25 }) {
-      ...DashboardChannel
+      ...ChannelCommon
     }
   }
   query DashboardFollowedChannels {
     selfSubscribedChannels {
-      ...DashboardChannel
+      ...ChannelCommon
     }
   }
-  ${DASHBOARD_CHANNELS_FRAGMENT}
+  ${CHANNEL_DISPLAY_FRAGMENT}
 `;
 
 export const Streams = () => {

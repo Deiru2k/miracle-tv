@@ -16,7 +16,7 @@ import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
 import { Panel } from "../Panel";
 
-export const ChannelDisplayFragment = gql`
+export const CHANNEL_DISPLAY_FRAGMENT = gql`
   fragment ChannelCommon on Channel {
     id
     name
@@ -39,6 +39,11 @@ export const ChannelDisplayFragment = gql`
     user {
       id
       username
+      displayName
+      avatar {
+        id
+        filename
+      }
       settings {
         singleUserMode
       }

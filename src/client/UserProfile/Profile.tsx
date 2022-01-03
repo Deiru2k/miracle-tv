@@ -15,7 +15,7 @@ import {
 } from "miracle-tv-client/ChannelPage/Channel";
 import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
-import { ChannelDisplayFragment } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
+import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/ChannelDisplayGrid";
 import { VodList } from "miracle-tv-client/components/ui/vods/VodList";
 import { MediaQuery } from "miracle-tv-client/utils/const";
@@ -67,7 +67,7 @@ export const USER_PROFILE_FRAGMENT = gql`
       }
     }
   }
-  ${ChannelDisplayFragment}
+  ${CHANNEL_DISPLAY_FRAGMENT}
   ${CHANNEL_VIEW_FRAGMENT}
 `;
 

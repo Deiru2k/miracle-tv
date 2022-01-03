@@ -1540,40 +1540,6 @@ export type ChannelViewStatusFragment = {
   isLive?: Maybe<boolean>;
 };
 
-export type DashboardChannelFragment = {
-  __typename?: "Channel";
-  id: string;
-  name: string;
-  slug?: Maybe<string>;
-  description?: Maybe<string>;
-  thumbnail?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-  }>;
-  status?: Maybe<{
-    __typename?: "ChannelStatus";
-    id?: Maybe<string>;
-    isLive?: Maybe<boolean>;
-    viewers?: Maybe<number>;
-  }>;
-  user?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    username: string;
-    displayName?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    settings?: Maybe<{
-      __typename?: "UserSettings";
-      singleUserMode?: Maybe<boolean>;
-    }>;
-  }>;
-};
-
 export type DashboardChannelsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type DashboardChannelsQuery = {
@@ -1587,14 +1553,20 @@ export type DashboardChannelsQuery = {
       description?: Maybe<string>;
       thumbnail?: Maybe<{
         __typename?: "File";
-        id?: Maybe<string>;
         filename: string;
+        id?: Maybe<string>;
       }>;
       status?: Maybe<{
         __typename?: "ChannelStatus";
         id?: Maybe<string>;
         isLive?: Maybe<boolean>;
         viewers?: Maybe<number>;
+      }>;
+      activity?: Maybe<{
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: Maybe<string>;
       }>;
       user?: Maybe<{
         __typename?: "User";
@@ -1630,14 +1602,20 @@ export type DashboardFollowedChannelsQuery = {
       description?: Maybe<string>;
       thumbnail?: Maybe<{
         __typename?: "File";
-        id?: Maybe<string>;
         filename: string;
+        id?: Maybe<string>;
       }>;
       status?: Maybe<{
         __typename?: "ChannelStatus";
         id?: Maybe<string>;
         isLive?: Maybe<boolean>;
         viewers?: Maybe<number>;
+      }>;
+      activity?: Maybe<{
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: Maybe<string>;
       }>;
       user?: Maybe<{
         __typename?: "User";
@@ -1693,6 +1671,12 @@ export type UserProfileFragment = {
         __typename?: "User";
         id?: Maybe<string>;
         username: string;
+        displayName?: Maybe<string>;
+        avatar?: Maybe<{
+          __typename?: "File";
+          id?: Maybe<string>;
+          filename: string;
+        }>;
         settings?: Maybe<{
           __typename?: "UserSettings";
           singleUserMode?: Maybe<boolean>;
@@ -2250,6 +2234,12 @@ export type ChannelCommonFragment = {
     __typename?: "User";
     id?: Maybe<string>;
     username: string;
+    displayName?: Maybe<string>;
+    avatar?: Maybe<{
+      __typename?: "File";
+      id?: Maybe<string>;
+      filename: string;
+    }>;
     settings?: Maybe<{
       __typename?: "UserSettings";
       singleUserMode?: Maybe<boolean>;
@@ -2573,6 +2563,12 @@ export type UserPageQuery = {
           __typename?: "User";
           id?: Maybe<string>;
           username: string;
+          displayName?: Maybe<string>;
+          avatar?: Maybe<{
+            __typename?: "File";
+            id?: Maybe<string>;
+            filename: string;
+          }>;
           settings?: Maybe<{
             __typename?: "UserSettings";
             singleUserMode?: Maybe<boolean>;

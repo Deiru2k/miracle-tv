@@ -23,6 +23,8 @@ import {
 } from "miracle-tv-client/components/player/DummyPlayer";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { Link } from "miracle-tv-client/components/ui/Link";
+import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -154,6 +156,7 @@ export const ChannelView = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
       <ChannelPlayerView channel={channel} status={status} />
@@ -172,6 +175,24 @@ export const ChannelView = ({
             )}
           </Box>
         </Flex>
+        <Box mb={2}>
+          Run by{" "}
+          {channel.user.avatar && (
+            <Avatar
+              username={channel.user.username}
+              imageId={channel.user.avatar.filename}
+              maxH="1rem"
+              maxW="1rem"
+              useAspectRatio={false}
+              display="inline-block"
+              borderRadius="50%"
+              mr={1}
+            />
+          )}
+          <Link href={`/user/${channel.user.username}`}>
+            {channel.user.displayName || channel.user.username}
+          </Link>
+        </Box>
         <Divider />
         <Text>{channel.description}</Text>
       </Box>

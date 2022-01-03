@@ -32,6 +32,7 @@ export const Avatar = ({
       ratio={1}
       maxH={aspectMaxH}
       maxW={aspectMaxW}
+      mr={0}
     >
       <Image
         {...props}

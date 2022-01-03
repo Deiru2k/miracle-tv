@@ -9,35 +9,6 @@ export const ChannelViewStatusFragmentDoc = gql`
     isLive
   }
 `;
-export const DashboardChannelFragmentDoc = gql`
-  fragment DashboardChannel on Channel {
-    id
-    name
-    slug
-    description
-    thumbnail {
-      id
-      filename
-    }
-    status {
-      id
-      isLive
-      viewers
-    }
-    user {
-      id
-      username
-      displayName
-      avatar {
-        id
-        filename
-      }
-      settings {
-        singleUserMode
-      }
-    }
-  }
-`;
 export const ChannelCommonFragmentDoc = gql`
   fragment ChannelCommon on Channel {
     id
@@ -61,6 +32,11 @@ export const ChannelCommonFragmentDoc = gql`
     user {
       id
       username
+      displayName
+      avatar {
+        id
+        filename
+      }
       settings {
         singleUserMode
       }
@@ -231,10 +207,10 @@ export const CurrentUserFragmentDoc = gql`
 export const DashboardChannelsDocument = gql`
   query DashboardChannels {
     channels(limit: { limit: 25 }) {
-      ...DashboardChannel
+      ...ChannelCommon
     }
   }
-  ${DashboardChannelFragmentDoc}
+  ${ChannelCommonFragmentDoc}
 `;
 
 /**
@@ -289,10 +265,10 @@ export type DashboardChannelsQueryResult = Apollo.QueryResult<
 export const DashboardFollowedChannelsDocument = gql`
   query DashboardFollowedChannels {
     selfSubscribedChannels {
-      ...DashboardChannel
+      ...ChannelCommon
     }
   }
-  ${DashboardChannelFragmentDoc}
+  ${ChannelCommonFragmentDoc}
 `;
 
 /**
