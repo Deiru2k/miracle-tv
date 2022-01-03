@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Heading, Text } from "@chakra-ui/react";
 import { gql } from "@apollo/client";
 import React, { useMemo } from "react";
 import {
@@ -10,6 +10,7 @@ import { ChannelDisplayGrid } from "miracle-tv-client/components/ui/channels/Cha
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 gql`
   query DashboardChannels {
@@ -38,10 +39,6 @@ export const Streams = () => {
 
   const liveChannels = useMemo(
     () => channels.filter((ch) => ch.status.isLive),
-    [channels]
-  );
-  const nonLiveChannels = useMemo(
-    () => channels.filter((ch) => !ch.status.isLive),
     [channels]
   );
 
@@ -79,10 +76,23 @@ export const Streams = () => {
         Discover other channels!
       </Heading>
       <Divider mb={2} />
-      <ChannelDisplayGrid
-        columns={isMobile ? 2 : 4}
-        channels={nonLiveChannels}
-      />
+      {!!channels?.length && (
+        <ChannelDisplayGrid columns={isMobile ? 2 : 4} channels={channels} />
+      )}
+      {!channels?.length && (
+        <Text>
+          No channels found. Perhaps you can be the first to{" "}
+          <Link
+            as={(props) => (
+              <Button py={0} px={1} variant="ghost" mr={1} {...props} />
+            )}
+            href="/settings/user/channels"
+          >
+            [create one]
+          </Link>
+          ?
+        </Text>
+      )}
     </Box>
   );
 };
