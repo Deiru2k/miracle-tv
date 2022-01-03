@@ -108,7 +108,7 @@ export const UserPanel = ({
             )}
           </Flex>
         )}
-        {includeDescription && (
+        {includeDescription && user?.bio && (
           <>
             <Divider mb={2} mt={2} />
             <Text whiteSpace="pre-wrap">{user?.bio}</Text>
