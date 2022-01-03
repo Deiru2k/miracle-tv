@@ -66,19 +66,35 @@ export const DashboardUserDirectory = (): any => {
           ?
         </Text>
       )}
-      <SimpleGrid columns={isMobile ? 2 : 4} spacing={4}>
-        {userDirectory.map((user) => (
-          <Link key={user.id} href={`/user/${user.username}`}>
-            <UserPanel
-              user={user}
-              _hover={{
-                textDecoration: "none",
-              }}
-              includeDescription={false}
-            />
-          </Link>
-        ))}
-      </SimpleGrid>
+      {!!userDirectory.length && (
+        <>
+          <Text as="span" size="sm">
+            To add your own account to this page, go to{" "}
+            <Link
+              as={(props) => (
+                <Button py={0} px={1} variant="ghost" mr={1} {...props} />
+              )}
+              href="/settings/user/preferences"
+            >
+              [profile preferences]
+            </Link>
+            and feature yourself!
+          </Text>
+          <SimpleGrid columns={isMobile ? 2 : 4} spacing={4}>
+            {userDirectory.map((user) => (
+              <Link key={user.id} href={`/user/${user.username}`}>
+                <UserPanel
+                  user={user}
+                  _hover={{
+                    textDecoration: "none",
+                  }}
+                  includeDescription={false}
+                />
+              </Link>
+            ))}
+          </SimpleGrid>
+        </>
+      )}
     </>
   ) : (
     <Loading />
