@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <>
       <Head>
-        <title>Miracle TV</title>
+        <title>Login - Miracle TV</title>
       </Head>
       <Flex
         w="100%"

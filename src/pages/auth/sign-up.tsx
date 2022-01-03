@@ -41,7 +41,7 @@ const SignUpPage = () => {
   return (
     <>
       <Head>
-        <title>Miracle TV</title>
+        <title>Sign Up - Miracle TV</title>
       </Head>
       <Flex
         w="100%"
