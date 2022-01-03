@@ -73,20 +73,12 @@ const Dashboard = () => {
       <Head>
         <title>Dashboard - Miracle TV</title>
       </Head>
-      {publicRuntimeConfig?.isDev ? (
-        <Navigation
-          nav={nav}
-          components={components}
-          size={[1, 10]}
-          title={isMobile ? "Dashboard" : undefined}
-        />
-      ) : (
-        <Attract>
-          <Heading mt={12} size="md">
-            This section is under construction!
-          </Heading>
-        </Attract>
-      )}
+      <Navigation
+        nav={nav}
+        components={components}
+        size={[1, 10]}
+        title={isMobile ? "Dashboard" : undefined}
+      />
     </AuthRedirect>
   );
 };
