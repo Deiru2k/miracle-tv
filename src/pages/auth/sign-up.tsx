@@ -3,8 +3,9 @@ import { Form } from "react-final-form";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { gql } from "@apollo/client";
 import { useSignInMutation, useSignUpMutation } from "miracle-tv-shared/hooks";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useRouter } from "next/dist/client/router";
+import Head from "next/head";
 
 gql`
   mutation SignUp($username: String!, $password: String!, $email: String!) {
@@ -39,6 +40,9 @@ const SignUpPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Miracle TV</title>
+      </Head>
       <Flex
         w="100%"
         h="100%"
