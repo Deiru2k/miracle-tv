@@ -9,7 +9,7 @@ yargs(hideBin(process.argv))
   .command({
     command: "change-password <username> <password>",
     describe: "Change password for a specific user",
-    handler: changePassword,
+    handler: changePassword as any,
   })
   .command({
     command: "stats",
