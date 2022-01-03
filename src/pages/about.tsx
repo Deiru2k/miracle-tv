@@ -28,8 +28,6 @@ const AboutPage = () => {
               [Licenses]
             </Link>
             {" | "}
-          </Flex>
-          <Flex justify="flex-end">
             Join the development at our
             <Link
               href="https://code.gensokyo.social/Gensokyo.social/miracle-tv"
