@@ -50,7 +50,7 @@ export const DashboardUserDirectory = (): any => {
   return !isLoading ? (
     <>
       <Head>
-        <title>User Directory - Miracle TV</title>
+        <title>User Directory - Dashboard - Miracle TV</title>
       </Head>
       {!userDirectory.length && (
         <Text>

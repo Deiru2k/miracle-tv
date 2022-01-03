@@ -12,6 +12,7 @@ import { MediaQuery } from "miracle-tv-client/utils/const";
 import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
+import Head from "next/head";
 
 gql`
   query DashboardChannels {
@@ -45,57 +46,62 @@ export const Streams = () => {
   );
 
   return !isLoading ? (
-    <Box>
-      <Heading size="lg">Your subscriptions</Heading>
-      <Divider mb={2} />
-      {!!subscriptions?.length && (
-        <>
-          <ChannelDisplayGrid
-            columns={isMobile ? 2 : 4}
-            channels={subscriptions}
-          />
-        </>
-      )}
-      {!subscriptions?.length && (
-        <Text>Channels you've subscribed to will appear here.</Text>
-      )}
-      <Heading size="lg" mt={4}>
-        Live Right now!
-      </Heading>
-      <Divider mb={2} />
-      {!!liveChannels?.length && (
-        <>
-          <ChannelDisplayGrid
-            columns={isMobile ? 2 : undefined}
-            channels={liveChannels}
-          />
-        </>
-      )}
-      {!liveChannels?.length && (
-        <Text>No channels are live right now. Come back later?</Text>
-      )}
-      <Heading size="lg" mt={4}>
-        Discover other channels!
-      </Heading>
-      <Divider mb={2} />
-      {!!channels?.length && (
-        <ChannelDisplayGrid columns={isMobile ? 2 : 4} channels={channels} />
-      )}
-      {!channels?.length && (
-        <Text>
-          No channels found. Perhaps you can be the first to{" "}
-          <Link
-            as={(props) => (
-              <Button py={0} px={1} variant="ghost" mr={1} {...props} />
-            )}
-            href="/settings/user/channels"
-          >
-            [create one]
-          </Link>
-          ?
-        </Text>
-      )}
-    </Box>
+    <>
+      <Head>
+        <title>User Directory - Dashboard - Miracle TV</title>
+      </Head>
+      <Box>
+        <Heading size="lg">Your subscriptions</Heading>
+        <Divider mb={2} />
+        {!!subscriptions?.length && (
+          <>
+            <ChannelDisplayGrid
+              columns={isMobile ? 2 : 4}
+              channels={subscriptions}
+            />
+          </>
+        )}
+        {!subscriptions?.length && (
+          <Text>Channels you've subscribed to will appear here.</Text>
+        )}
+        <Heading size="lg" mt={4}>
+          Live Right now!
+        </Heading>
+        <Divider mb={2} />
+        {!!liveChannels?.length && (
+          <>
+            <ChannelDisplayGrid
+              columns={isMobile ? 2 : undefined}
+              channels={liveChannels}
+            />
+          </>
+        )}
+        {!liveChannels?.length && (
+          <Text>No channels are live right now. Come back later?</Text>
+        )}
+        <Heading size="lg" mt={4}>
+          Discover other channels!
+        </Heading>
+        <Divider mb={2} />
+        {!!channels?.length && (
+          <ChannelDisplayGrid columns={isMobile ? 2 : 4} channels={channels} />
+        )}
+        {!channels?.length && (
+          <Text>
+            No channels found. Perhaps you can be the first to{" "}
+            <Link
+              as={(props) => (
+                <Button py={0} px={1} variant="ghost" mr={1} {...props} />
+              )}
+              href="/settings/user/channels"
+            >
+              [create one]
+            </Link>
+            ?
+          </Text>
+        )}
+      </Box>
+    </>
   ) : (
     <Loading />
   );
