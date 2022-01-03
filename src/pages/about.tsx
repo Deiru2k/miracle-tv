@@ -24,7 +24,7 @@ const AboutPage = () => {
             </Text>
           </Flex>
           <Flex justify="flex-end">
-            <Link href="/licenses.txt" target="_blank">
+            <Link href="/licenses.txt" target="_blank" ml={1}>
               [Licenses]
             </Link>
             {" | "}
