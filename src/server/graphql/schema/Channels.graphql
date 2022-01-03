@@ -1,3 +1,7 @@
+type ChannelMeta {
+  subscriberCount: Int!
+}
+
 type Channel {
   id: ID!
   user: User
@@ -7,6 +11,7 @@ type Channel {
   description: String
   thumbnail: File
   status: ChannelStatus
+  meta: ChannelMeta
 }
 
 input ChannelsQueryFilter {

@@ -104,14 +104,14 @@ const ChannelPage = () => {
       variables: {
         id: channel?.id,
       },
-      refetchQueries: ["ChannelSubscription"],
+      refetchQueries: ["ChannelSubscription", "ChannelPage"],
     });
   }, [channel]);
 
   const onUnsubscribe = useCallback(() => {
     unusbscribeMutation({
       variables: { id: channel?.id },
-      refetchQueries: ["ChannelSubscription"],
+      refetchQueries: ["ChannelSubscription", "ChannelPage"],
     });
   }, [channel]);
 

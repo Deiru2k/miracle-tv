@@ -25,6 +25,7 @@ import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
+import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -65,6 +66,9 @@ export const CHANNEL_VIEW_FRAGMENT = gql`
       settings {
         singleUserMode
       }
+    }
+    meta {
+      subscriberCount
     }
   }
 `;
@@ -165,14 +169,18 @@ export const ChannelView = ({
             {status?.isLive && <CircleIcon color="red" mr={2} />}
             {channel.name}
           </Heading>
-          <Box>
+          <Flex align="center">
+            <Flex title="Subscribers:" align="center" mr={2}>
+              <PersonIcon aria-label="Subscribers:" mr={1} />
+              {channel.meta.subscriberCount}
+            </Flex>
             {!isSubscribed && <Button onClick={onSubscribe}>Subscribe</Button>}
             {isSubscribed && (
               <Button colorScheme="red" onClick={onUnsubscribe}>
                 Unsubscribe
               </Button>
             )}
-          </Box>
+          </Flex>
         </Flex>
         <Box mb={2}>
           Run by{" "}

@@ -167,6 +167,9 @@ export const UserProfile = ({
                 <Heading size="md" mb={2}>
                   Their channels
                 </Heading>
+                {!user?.channels?.length && (
+                  <Text>This user does not have channels yet</Text>
+                )}
                 <ChannelDisplayGrid
                   columns={isMobile ? 1 : undefined}
                   channels={user?.channels ?? []}

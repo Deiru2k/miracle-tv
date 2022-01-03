@@ -46,4 +46,9 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
   user: async (channel, _, { db: { users } }) => {
     return (await users.getUserByIdSafe((channel as any).userId)) as any;
   },
+  meta: async (channel, _, { db: { subscriptions } }) => {
+    return {
+      subscriberCount: await subscriptions.getSubscribersCount(channel.id),
+    };
+  },
 };

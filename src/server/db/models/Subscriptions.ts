@@ -79,6 +79,13 @@ export class SubscriptionsModel extends Model {
       .run(this.conn);
   }
 
+  async getSubscribersCount(id: string): Promise<number> {
+    return this.table
+      .filter({ target: SubscriptionTarget.Channel, targetId: id })
+      .count()
+      .run(this.conn);
+  }
+
   async getSubscriptions(
     filter: SubscriptionsFilter = {},
     limit?: QueryLimit

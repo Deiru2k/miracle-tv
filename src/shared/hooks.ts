@@ -93,6 +93,9 @@ export const ChannelViewFragmentDoc = gql`
         singleUserMode
       }
     }
+    meta {
+      subscriberCount
+    }
   }
 `;
 export const UserProfileFragmentDoc = gql`

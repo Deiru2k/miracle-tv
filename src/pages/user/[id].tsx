@@ -126,14 +126,14 @@ const UserPage = () => {
       variables: {
         id: user?.id,
       },
-      refetchQueries: ["UserSubscription"],
+      refetchQueries: ["UserSubscription", "UserPage"],
     });
   }, [user]);
 
   const onUnsubscribe = useCallback(() => {
     unusbscribeMutation({
       variables: { id: user?.id },
-      refetchQueries: ["UserSubscription"],
+      refetchQueries: ["UserSubscription", "UserPage"],
     });
   }, [user]);
 

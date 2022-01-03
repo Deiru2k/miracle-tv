@@ -109,6 +109,12 @@ export type Channel = {
   description?: Maybe<Scalars["String"]>;
   thumbnail?: Maybe<File>;
   status?: Maybe<ChannelStatus>;
+  meta?: Maybe<ChannelMeta>;
+};
+
+export type ChannelMeta = {
+  __typename?: "ChannelMeta";
+  subscriberCount: Scalars["Int"];
 };
 
 export type ChannelStatus = {
@@ -747,6 +753,7 @@ export type ResolversTypes = {
   AuthRightConfig: AuthRightConfig;
   ChangePasswordInput: ChangePasswordInput;
   Channel: ResolverTypeWrapper<Channel>;
+  ChannelMeta: ResolverTypeWrapper<ChannelMeta>;
   ChannelStatus: ResolverTypeWrapper<ChannelStatus>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -810,6 +817,7 @@ export type ResolversParentTypes = {
   AuthRightConfig: AuthRightConfig;
   ChangePasswordInput: ChangePasswordInput;
   Channel: Channel;
+  ChannelMeta: ChannelMeta;
   ChannelStatus: ChannelStatus;
   Boolean: Scalars["Boolean"];
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -962,6 +970,19 @@ export type ChannelResolvers<
     ParentType,
     ContextType
   >;
+  meta?: Resolver<
+    Maybe<ResolversTypes["ChannelMeta"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ChannelMetaResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ChannelMeta"] = ResolversParentTypes["ChannelMeta"]
+> = {
+  subscriberCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1511,6 +1532,7 @@ export type Resolvers<ContextType = any> = {
   Actions?: ActionsResolvers<ContextType>;
   Activity?: ActivityResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
+  ChannelMeta?: ChannelMetaResolvers<ContextType>;
   ChannelStatus?: ChannelStatusResolvers<ContextType>;
   CommunityPost?: CommunityPostResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -1568,6 +1590,7 @@ export type ChannelViewFragment = {
       singleUserMode?: Maybe<boolean>;
     }>;
   }>;
+  meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
 };
 
 export type ChannelViewStatusFragment = {
@@ -1807,6 +1830,7 @@ export type UserProfileFragment = {
           singleUserMode?: Maybe<boolean>;
         }>;
       }>;
+      meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
     }>;
   }>;
 };
@@ -2562,6 +2586,7 @@ export type ChannelPageQuery = {
         singleUserMode?: Maybe<boolean>;
       }>;
     }>;
+    meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
   }>;
 };
 
@@ -2710,6 +2735,7 @@ export type UserPageQuery = {
             singleUserMode?: Maybe<boolean>;
           }>;
         }>;
+        meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
       }>;
     }>;
   }>;
