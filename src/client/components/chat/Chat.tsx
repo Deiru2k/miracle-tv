@@ -152,6 +152,7 @@ export const Chat = ({ channelId }: Props) => {
   }, []);
 
   useEffect(() => {
+    chatClient.off("chat:message");
     chatClient.on("chat:message", appendToChat);
   }, [chatClient, appendToChat]);
 
