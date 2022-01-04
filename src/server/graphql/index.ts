@@ -86,6 +86,11 @@ import {
   subscribeMutaiton,
   unsubscribeMutation,
 } from "./mutations/subscriptions";
+import {
+  fullUserEntityResolver,
+  fullUserResolvers,
+} from "./resolvers/full-users";
+import { fullUserMutations } from "./mutations/full-users";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -127,6 +132,7 @@ let executableSchema = makeExecutableSchema({
       selfSubscribedUsers: selfSubscribedUsersResolver,
       test: userTestQueryResolver,
       subscription: subsciptionByIdResolver,
+      ...fullUserResolvers,
       ...fileResolvers,
     },
     Mutation: {
@@ -148,8 +154,10 @@ let executableSchema = makeExecutableSchema({
       revokeSelfSessions: revokeSelfSessionsMutation,
       subscribe: subscribeMutaiton,
       unsubscribe: unsubscribeMutation,
+      ...fullUserMutations,
     },
     User: userResolver,
+    FullUser: fullUserEntityResolver,
     UserSettings: settingsResolver,
     Session: sessionResolver,
     Channel: channelResolver,
@@ -205,6 +213,9 @@ export const graphqlEndpoint = new ApolloServer({
       ? ((await db.users.getUserById(session?.user)) as DbUser | null)
       : null;
 
+    const isUserInvalid =
+      user?.loginDisabled || user?.suspended || user?.deleted;
+
     const allRoles = await db.roles.list();
     const userRoles =
       user?.roles?.map((role) =>
@@ -213,7 +224,7 @@ export const graphqlEndpoint = new ApolloServer({
     return {
       db,
       session,
-      user,
+      user: !isUserInvalid ? user : null,
       userRoles,
     } as ResolverContext;
   },

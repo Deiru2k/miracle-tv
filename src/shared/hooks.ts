@@ -3,6 +3,70 @@ import * as Types from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {};
+export const AdminFullUserFragmentDoc = gql`
+  fragment AdminFullUser on FullUser {
+    id
+    username
+    displayName
+    bio
+    email
+    roles {
+      id
+      name
+      access {
+        rights {
+          channels
+          streamKeys
+          roles
+          users
+          activities
+          userSettings
+        }
+        actions {
+          user {
+            silence
+            ban
+            warn
+          }
+        }
+      }
+      parentId
+    }
+    channels {
+      id
+      name
+    }
+    avatar {
+      id
+      filename
+    }
+    header {
+      id
+      filename
+    }
+    streamThumbnail {
+      id
+      filename
+    }
+    silenced
+    suspended
+    deleted
+    loginDisabled
+    settings {
+      id
+      useGravatar
+      singleUserMode
+      singleUserChannel {
+        id
+        name
+      }
+      featureInDirectory
+    }
+    meta {
+      followerCount
+    }
+  }
+`;
 export const ChannelViewStatusFragmentDoc = gql`
   fragment ChannelViewStatus on ChannelStatus {
     id
@@ -233,6 +297,581 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const UpdateFullUserDocument = gql`
+  mutation UpdateFullUser($input: UpdateFullUserInput!) {
+    updateFullUser(input: $input) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type UpdateFullUserMutationFn = Apollo.MutationFunction<
+  Types.UpdateFullUserMutation,
+  Types.UpdateFullUserMutationVariables
+>;
+
+/**
+ * __useUpdateFullUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateFullUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFullUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFullUserMutation, { data, loading, error }] = useUpdateFullUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateFullUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UpdateFullUserMutation,
+    Types.UpdateFullUserMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UpdateFullUserMutation,
+    Types.UpdateFullUserMutationVariables
+  >(UpdateFullUserDocument, options);
+}
+export type UpdateFullUserMutationHookResult = ReturnType<
+  typeof useUpdateFullUserMutation
+>;
+export type UpdateFullUserMutationResult =
+  Apollo.MutationResult<Types.UpdateFullUserMutation>;
+export type UpdateFullUserMutationOptions = Apollo.BaseMutationOptions<
+  Types.UpdateFullUserMutation,
+  Types.UpdateFullUserMutationVariables
+>;
+export const FullUserAdminDocument = gql`
+  query FullUserAdmin($filter: FullUsersFilter, $limit: QueryLimit) {
+    fullUsers(filter: $filter, limit: $limit) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+
+/**
+ * __useFullUserAdminQuery__
+ *
+ * To run a query within a React component, call `useFullUserAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFullUserAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFullUserAdminQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useFullUserAdminQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.FullUserAdminQuery,
+    Types.FullUserAdminQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.FullUserAdminQuery,
+    Types.FullUserAdminQueryVariables
+  >(FullUserAdminDocument, options);
+}
+export function useFullUserAdminLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.FullUserAdminQuery,
+    Types.FullUserAdminQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.FullUserAdminQuery,
+    Types.FullUserAdminQueryVariables
+  >(FullUserAdminDocument, options);
+}
+export type FullUserAdminQueryHookResult = ReturnType<
+  typeof useFullUserAdminQuery
+>;
+export type FullUserAdminLazyQueryHookResult = ReturnType<
+  typeof useFullUserAdminLazyQuery
+>;
+export type FullUserAdminQueryResult = Apollo.QueryResult<
+  Types.FullUserAdminQuery,
+  Types.FullUserAdminQueryVariables
+>;
+export const FullUserAdminCountDocument = gql`
+  query FullUserAdminCount($filter: FullUsersFilter) {
+    fullUserCount(filter: $filter)
+  }
+`;
+
+/**
+ * __useFullUserAdminCountQuery__
+ *
+ * To run a query within a React component, call `useFullUserAdminCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFullUserAdminCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFullUserAdminCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useFullUserAdminCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.FullUserAdminCountQuery,
+    Types.FullUserAdminCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.FullUserAdminCountQuery,
+    Types.FullUserAdminCountQueryVariables
+  >(FullUserAdminCountDocument, options);
+}
+export function useFullUserAdminCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.FullUserAdminCountQuery,
+    Types.FullUserAdminCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.FullUserAdminCountQuery,
+    Types.FullUserAdminCountQueryVariables
+  >(FullUserAdminCountDocument, options);
+}
+export type FullUserAdminCountQueryHookResult = ReturnType<
+  typeof useFullUserAdminCountQuery
+>;
+export type FullUserAdminCountLazyQueryHookResult = ReturnType<
+  typeof useFullUserAdminCountLazyQuery
+>;
+export type FullUserAdminCountQueryResult = Apollo.QueryResult<
+  Types.FullUserAdminCountQuery,
+  Types.FullUserAdminCountQueryVariables
+>;
+export const BulkDeleteUsersDocument = gql`
+  mutation BulkDeleteUsers($ids: [ID]!) {
+    deleteFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkDeleteUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkDeleteUsersMutation,
+  Types.BulkDeleteUsersMutationVariables
+>;
+
+/**
+ * __useBulkDeleteUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkDeleteUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkDeleteUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkDeleteUsersMutation, { data, loading, error }] = useBulkDeleteUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkDeleteUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkDeleteUsersMutation,
+    Types.BulkDeleteUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkDeleteUsersMutation,
+    Types.BulkDeleteUsersMutationVariables
+  >(BulkDeleteUsersDocument, options);
+}
+export type BulkDeleteUsersMutationHookResult = ReturnType<
+  typeof useBulkDeleteUsersMutation
+>;
+export type BulkDeleteUsersMutationResult =
+  Apollo.MutationResult<Types.BulkDeleteUsersMutation>;
+export type BulkDeleteUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkDeleteUsersMutation,
+  Types.BulkDeleteUsersMutationVariables
+>;
+export const BulkRestoreUsersDocument = gql`
+  mutation BulkRestoreUsers($ids: [ID]!) {
+    restoreFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkRestoreUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkRestoreUsersMutation,
+  Types.BulkRestoreUsersMutationVariables
+>;
+
+/**
+ * __useBulkRestoreUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkRestoreUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkRestoreUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkRestoreUsersMutation, { data, loading, error }] = useBulkRestoreUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkRestoreUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkRestoreUsersMutation,
+    Types.BulkRestoreUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkRestoreUsersMutation,
+    Types.BulkRestoreUsersMutationVariables
+  >(BulkRestoreUsersDocument, options);
+}
+export type BulkRestoreUsersMutationHookResult = ReturnType<
+  typeof useBulkRestoreUsersMutation
+>;
+export type BulkRestoreUsersMutationResult =
+  Apollo.MutationResult<Types.BulkRestoreUsersMutation>;
+export type BulkRestoreUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkRestoreUsersMutation,
+  Types.BulkRestoreUsersMutationVariables
+>;
+export const BulkSuspendUsersDocument = gql`
+  mutation BulkSuspendUsers($ids: [ID]!) {
+    suspendFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkSuspendUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkSuspendUsersMutation,
+  Types.BulkSuspendUsersMutationVariables
+>;
+
+/**
+ * __useBulkSuspendUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkSuspendUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkSuspendUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkSuspendUsersMutation, { data, loading, error }] = useBulkSuspendUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkSuspendUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkSuspendUsersMutation,
+    Types.BulkSuspendUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkSuspendUsersMutation,
+    Types.BulkSuspendUsersMutationVariables
+  >(BulkSuspendUsersDocument, options);
+}
+export type BulkSuspendUsersMutationHookResult = ReturnType<
+  typeof useBulkSuspendUsersMutation
+>;
+export type BulkSuspendUsersMutationResult =
+  Apollo.MutationResult<Types.BulkSuspendUsersMutation>;
+export type BulkSuspendUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkSuspendUsersMutation,
+  Types.BulkSuspendUsersMutationVariables
+>;
+export const BulkUnsuspendUsersDocument = gql`
+  mutation BulkUnsuspendUsers($ids: [ID]!) {
+    unsuspendFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkUnsuspendUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkUnsuspendUsersMutation,
+  Types.BulkUnsuspendUsersMutationVariables
+>;
+
+/**
+ * __useBulkUnsuspendUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkUnsuspendUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkUnsuspendUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkUnsuspendUsersMutation, { data, loading, error }] = useBulkUnsuspendUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkUnsuspendUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkUnsuspendUsersMutation,
+    Types.BulkUnsuspendUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkUnsuspendUsersMutation,
+    Types.BulkUnsuspendUsersMutationVariables
+  >(BulkUnsuspendUsersDocument, options);
+}
+export type BulkUnsuspendUsersMutationHookResult = ReturnType<
+  typeof useBulkUnsuspendUsersMutation
+>;
+export type BulkUnsuspendUsersMutationResult =
+  Apollo.MutationResult<Types.BulkUnsuspendUsersMutation>;
+export type BulkUnsuspendUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkUnsuspendUsersMutation,
+  Types.BulkUnsuspendUsersMutationVariables
+>;
+export const BulkDisableLoginsDocument = gql`
+  mutation BulkDisableLogins($ids: [ID]!) {
+    disableFullUsersLogin(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkDisableLoginsMutationFn = Apollo.MutationFunction<
+  Types.BulkDisableLoginsMutation,
+  Types.BulkDisableLoginsMutationVariables
+>;
+
+/**
+ * __useBulkDisableLoginsMutation__
+ *
+ * To run a mutation, you first call `useBulkDisableLoginsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkDisableLoginsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkDisableLoginsMutation, { data, loading, error }] = useBulkDisableLoginsMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkDisableLoginsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkDisableLoginsMutation,
+    Types.BulkDisableLoginsMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkDisableLoginsMutation,
+    Types.BulkDisableLoginsMutationVariables
+  >(BulkDisableLoginsDocument, options);
+}
+export type BulkDisableLoginsMutationHookResult = ReturnType<
+  typeof useBulkDisableLoginsMutation
+>;
+export type BulkDisableLoginsMutationResult =
+  Apollo.MutationResult<Types.BulkDisableLoginsMutation>;
+export type BulkDisableLoginsMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkDisableLoginsMutation,
+  Types.BulkDisableLoginsMutationVariables
+>;
+export const BulkEnableLoginsDocument = gql`
+  mutation BulkEnableLogins($ids: [ID]!) {
+    enableFullUsersLogin(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkEnableLoginsMutationFn = Apollo.MutationFunction<
+  Types.BulkEnableLoginsMutation,
+  Types.BulkEnableLoginsMutationVariables
+>;
+
+/**
+ * __useBulkEnableLoginsMutation__
+ *
+ * To run a mutation, you first call `useBulkEnableLoginsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkEnableLoginsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkEnableLoginsMutation, { data, loading, error }] = useBulkEnableLoginsMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkEnableLoginsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkEnableLoginsMutation,
+    Types.BulkEnableLoginsMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkEnableLoginsMutation,
+    Types.BulkEnableLoginsMutationVariables
+  >(BulkEnableLoginsDocument, options);
+}
+export type BulkEnableLoginsMutationHookResult = ReturnType<
+  typeof useBulkEnableLoginsMutation
+>;
+export type BulkEnableLoginsMutationResult =
+  Apollo.MutationResult<Types.BulkEnableLoginsMutation>;
+export type BulkEnableLoginsMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkEnableLoginsMutation,
+  Types.BulkEnableLoginsMutationVariables
+>;
+export const BulkSilenceUsersDocument = gql`
+  mutation BulkSilenceUsers($ids: [ID]!) {
+    silenceFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkSilenceUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkSilenceUsersMutation,
+  Types.BulkSilenceUsersMutationVariables
+>;
+
+/**
+ * __useBulkSilenceUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkSilenceUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkSilenceUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkSilenceUsersMutation, { data, loading, error }] = useBulkSilenceUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkSilenceUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkSilenceUsersMutation,
+    Types.BulkSilenceUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkSilenceUsersMutation,
+    Types.BulkSilenceUsersMutationVariables
+  >(BulkSilenceUsersDocument, options);
+}
+export type BulkSilenceUsersMutationHookResult = ReturnType<
+  typeof useBulkSilenceUsersMutation
+>;
+export type BulkSilenceUsersMutationResult =
+  Apollo.MutationResult<Types.BulkSilenceUsersMutation>;
+export type BulkSilenceUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkSilenceUsersMutation,
+  Types.BulkSilenceUsersMutationVariables
+>;
+export const BulkUnsilenceUsersDocument = gql`
+  mutation BulkUnsilenceUsers($ids: [ID]!) {
+    unsilenceFullUsers(ids: $ids) {
+      ...AdminFullUser
+    }
+  }
+  ${AdminFullUserFragmentDoc}
+`;
+export type BulkUnsilenceUsersMutationFn = Apollo.MutationFunction<
+  Types.BulkUnsilenceUsersMutation,
+  Types.BulkUnsilenceUsersMutationVariables
+>;
+
+/**
+ * __useBulkUnsilenceUsersMutation__
+ *
+ * To run a mutation, you first call `useBulkUnsilenceUsersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkUnsilenceUsersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkUnsilenceUsersMutation, { data, loading, error }] = useBulkUnsilenceUsersMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkUnsilenceUsersMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkUnsilenceUsersMutation,
+    Types.BulkUnsilenceUsersMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkUnsilenceUsersMutation,
+    Types.BulkUnsilenceUsersMutationVariables
+  >(BulkUnsilenceUsersDocument, options);
+}
+export type BulkUnsilenceUsersMutationHookResult = ReturnType<
+  typeof useBulkUnsilenceUsersMutation
+>;
+export type BulkUnsilenceUsersMutationResult =
+  Apollo.MutationResult<Types.BulkUnsilenceUsersMutation>;
+export type BulkUnsilenceUsersMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkUnsilenceUsersMutation,
+  Types.BulkUnsilenceUsersMutationVariables
+>;
 export const DashboardChannelsDocument = gql`
   query DashboardChannels {
     channels(limit: { limit: 25 }) {
@@ -839,12 +1478,6 @@ export const UserSettingsChannelDocument = gql`
   query UserSettingsChannel($id: ID!) {
     channel(id: $id) {
       ...ChannelFull
-    }
-    selfStreamKeys {
-      id
-      channel {
-        id
-      }
     }
   }
   ${ChannelFullFragmentDoc}

@@ -4,17 +4,19 @@ import {
   GraphQLScalarTypeConfig,
 } from "graphql";
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
-} &
-  { [P in K]-?: NonNullable<T[P]> };
+} & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -29,33 +31,33 @@ export type Scalars = {
 
 export type AccessRights = {
   __typename?: "AccessRights";
-  channels?: Maybe<Array<Maybe<AccessUnit>>>;
-  streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
-  roles?: Maybe<Array<Maybe<AccessUnit>>>;
-  users?: Maybe<Array<Maybe<AccessUnit>>>;
   activities?: Maybe<Array<Maybe<AccessUnit>>>;
+  channels?: Maybe<Array<Maybe<AccessUnit>>>;
+  roles?: Maybe<Array<Maybe<AccessUnit>>>;
+  streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
   userSettings?: Maybe<Array<Maybe<AccessUnit>>>;
+  users?: Maybe<Array<Maybe<AccessUnit>>>;
 };
 
 export type AccessTargets = {
   __typename?: "AccessTargets";
-  rights: AccessRights;
   actions: Actions;
+  rights: AccessRights;
 };
 
 export type AccessTargetsInput = {
-  channels?: Maybe<AccessUnit>;
-  users?: Maybe<AccessUnit>;
-  activities?: Maybe<AccessUnit>;
   actions: ActionsInput;
+  activities?: InputMaybe<AccessUnit>;
+  channels?: InputMaybe<AccessUnit>;
+  users?: InputMaybe<AccessUnit>;
 };
 
 export enum AccessUnit {
   Deny = "DENY",
-  Read = "READ",
-  Write = "WRITE",
-  Self = "SELF",
   Inherit = "INHERIT",
+  Read = "READ",
+  Self = "SELF",
+  Write = "WRITE",
 }
 
 export type Actions = {
@@ -64,34 +66,34 @@ export type Actions = {
 };
 
 export type ActionsInput = {
-  user?: Maybe<UserActionsInput>;
+  user?: InputMaybe<UserActionsInput>;
 };
 
 export type Activity = {
   __typename?: "Activity";
-  id: Scalars["ID"];
   icon?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
   image?: Maybe<Scalars["String"]>;
   name: Scalars["String"];
   verb?: Maybe<Scalars["String"]>;
 };
 
 export type ActivityFilter = {
-  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  icon?: Maybe<Scalars["String"]>;
-  image?: Maybe<Scalars["String"]>;
-  name?: Maybe<Scalars["String"]>;
-  verb?: Maybe<Scalars["String"]>;
+  icon?: InputMaybe<Scalars["String"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  image?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  verb?: InputMaybe<Scalars["String"]>;
 };
 
 export type ActivityLimit = {
-  limit?: Maybe<Scalars["Int"]>;
-  skip?: Maybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  skip?: InputMaybe<Scalars["Int"]>;
 };
 
 export type AuthRightConfig = {
-  unit: AccessUnit;
   subject: Scalars["String"];
+  unit: AccessUnit;
 };
 
 export type ChangePasswordInput = {
@@ -101,15 +103,15 @@ export type ChangePasswordInput = {
 
 export type Channel = {
   __typename?: "Channel";
-  id: Scalars["ID"];
-  user?: Maybe<User>;
   activity?: Maybe<Activity>;
-  slug?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<File>;
-  status?: Maybe<ChannelStatus>;
+  id: Scalars["ID"];
   meta?: Maybe<ChannelMeta>;
+  name: Scalars["String"];
+  slug?: Maybe<Scalars["String"]>;
+  status?: Maybe<ChannelStatus>;
+  thumbnail?: Maybe<File>;
+  user?: Maybe<User>;
 };
 
 export type ChannelMeta = {
@@ -121,287 +123,378 @@ export type ChannelStatus = {
   __typename?: "ChannelStatus";
   id?: Maybe<Scalars["ID"]>;
   isLive?: Maybe<Scalars["Boolean"]>;
-  viewers?: Maybe<Scalars["Int"]>;
   length?: Maybe<Scalars["Int"]>;
+  viewers?: Maybe<Scalars["Int"]>;
 };
 
 export type ChannelsQueryFilter = {
-  id?: Maybe<Scalars["ID"]>;
-  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  userId?: Maybe<Scalars["ID"]>;
-  userIds?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  activityId?: Maybe<Scalars["ID"]>;
-  slug?: Maybe<Scalars["String"]>;
-  name?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-};
-
-export type CommunityPost = {
-  __typename?: "CommunityPost";
-  id: Scalars["ID"];
-  user: User;
-  body: Scalars["String"];
-};
-
-export type CommunityPostInput = {
-  body: Scalars["String"];
-};
-
-export type CommunityPostsFilter = {
-  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  userId?: Maybe<Scalars["ID"]>;
-  body?: Maybe<Scalars["String"]>;
+  activityId?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  name?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  userId?: InputMaybe<Scalars["ID"]>;
+  userIds?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
 };
 
 export type CreateActivityInput = {
-  icon?: Maybe<Scalars["String"]>;
-  image?: Maybe<Scalars["String"]>;
+  icon?: InputMaybe<Scalars["String"]>;
+  image?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
-  verb?: Maybe<Scalars["String"]>;
+  verb?: InputMaybe<Scalars["String"]>;
 };
 
 export type CreateChannelInput = {
-  userId?: Maybe<Scalars["ID"]>;
-  activityId?: Maybe<Scalars["ID"]>;
+  activityId?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
-  slug?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<Scalars["ID"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  thumbnail?: InputMaybe<Scalars["ID"]>;
+  userId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type CreateRoleInput = {
+  access: AccessTargetsInput;
   id: Scalars["ID"];
   name: Scalars["String"];
-  access: AccessTargetsInput;
   parentId: Scalars["ID"];
 };
 
 export type CreateStreamKeyInput = {
-  userId: Scalars["ID"];
   channelId: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  userId: Scalars["ID"];
 };
 
 export type CreateUserInput = {
-  username: Scalars["String"];
-  password: Scalars["String"];
   email: Scalars["String"];
+  password: Scalars["String"];
+  username: Scalars["String"];
 };
 
 export type File = {
   __typename?: "File";
-  filename: Scalars["String"];
-  mimetype: Scalars["String"];
   encoding: Scalars["String"];
+  filename: Scalars["String"];
   id?: Maybe<Scalars["ID"]>;
+  mimetype: Scalars["String"];
+};
+
+export type FullUser = {
+  __typename?: "FullUser";
+  avatar?: Maybe<File>;
+  bio?: Maybe<Scalars["String"]>;
+  channels: Array<Maybe<Channel>>;
+  deleted?: Maybe<Scalars["Boolean"]>;
+  displayName?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  header?: Maybe<File>;
+  id?: Maybe<Scalars["ID"]>;
+  loginDisabled?: Maybe<Scalars["Boolean"]>;
+  meta?: Maybe<UserMeta>;
+  roles: Array<Maybe<Role>>;
+  settings?: Maybe<UserSettings>;
+  silenced?: Maybe<Scalars["Boolean"]>;
+  streamThumbnail?: Maybe<File>;
+  suspended?: Maybe<Scalars["Boolean"]>;
+  username: Scalars["String"];
+};
+
+export type FullUsersFilter = {
+  deleted?: InputMaybe<Scalars["Boolean"]>;
+  displayName?: InputMaybe<Scalars["String"]>;
+  email?: InputMaybe<Scalars["String"]>;
+  loginDisabled?: InputMaybe<Scalars["Boolean"]>;
+  roles?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  silenced?: InputMaybe<Scalars["Boolean"]>;
+  suspended?: InputMaybe<Scalars["Boolean"]>;
+  username?: InputMaybe<Scalars["String"]>;
 };
 
 export type InfoResponse = {
   __typename?: "InfoResponse";
   name: Scalars["String"];
-  version: Scalars["String"];
   packageName: Scalars["String"];
+  version: Scalars["String"];
 };
 
 export type Mutation = {
   __typename?: "Mutation";
-  createActivity: Activity;
-  updateActivity: Activity;
-  createChannel: Channel;
-  updateChannel: Channel;
-  deleteChannel: Scalars["Boolean"];
-  createCommunityPosts: CommunityPost;
-  deleteCommunityPost?: Maybe<Scalars["Boolean"]>;
-  uploadFile: File;
-  createRole: Role;
-  updateRole: Role;
-  deleteRole: Scalars["Boolean"];
-  ping: Scalars["String"];
-  createStreamKey: StreamKey;
-  revokeStreamKeys: Scalars["Boolean"];
-  revokeAllStreamKeys: Scalars["Boolean"];
-  revokeStreamKey: Scalars["Boolean"];
-  subscribe: Subscription;
-  unsubscribe: Scalars["Boolean"];
-  signUp: User;
-  signIn?: Maybe<SessionResponse>;
-  updateUser?: Maybe<User>;
-  updateSelf?: Maybe<User>;
-  revokeSelfSessions?: Maybe<Scalars["Boolean"]>;
-  updateSelfAccount?: Maybe<UserAccountDetails>;
   changeSelfPassword?: Maybe<Scalars["Boolean"]>;
+  createActivity: Activity;
+  createChannel: Channel;
+  createRole: Role;
+  createStreamKey: StreamKey;
+  deleteChannel: Scalars["Boolean"];
+  deleteFullUser: FullUser;
+  deleteFullUsers: Array<Maybe<FullUser>>;
+  deleteRole: Scalars["Boolean"];
+  disableFullUserLogin: FullUser;
+  disableFullUsersLogin: Array<Maybe<FullUser>>;
+  enableFullUserLogin: FullUser;
+  enableFullUsersLogin: Array<Maybe<FullUser>>;
+  ping: Scalars["String"];
+  restoreFullUser: FullUser;
+  restoreFullUsers: Array<Maybe<FullUser>>;
+  revokeAllStreamKeys: Scalars["Boolean"];
+  revokeSelfSessions?: Maybe<Scalars["Boolean"]>;
+  revokeStreamKey: Scalars["Boolean"];
+  revokeStreamKeys: Scalars["Boolean"];
+  signIn?: Maybe<SessionResponse>;
+  signUp: User;
+  silenceFullUser: FullUser;
+  silenceFullUsers: Array<Maybe<FullUser>>;
+  subscribe: Subscription;
+  suspendFullUser: FullUser;
+  suspendFullUsers: Array<Maybe<FullUser>>;
+  unsilenceFullUser: FullUser;
+  unsilenceFullUsers: Array<Maybe<FullUser>>;
+  unsubscribe: Scalars["Boolean"];
+  unsuspendFullUser: FullUser;
+  unsuspendFullUsers: Array<Maybe<FullUser>>;
+  updateActivity: Activity;
+  updateChannel: Channel;
+  updateFullUser: FullUser;
+  updateRole: Role;
+  updateSelf?: Maybe<User>;
+  updateSelfAccount?: Maybe<UserAccountDetails>;
   updateUserSettings?: Maybe<UserSettings>;
+  uploadFile: File;
+};
+
+export type MutationChangeSelfPasswordArgs = {
+  input?: InputMaybe<ChangePasswordInput>;
 };
 
 export type MutationCreateActivityArgs = {
-  input?: Maybe<CreateActivityInput>;
-};
-
-export type MutationUpdateActivityArgs = {
-  input?: Maybe<UpdateActivityInput>;
+  input?: InputMaybe<CreateActivityInput>;
 };
 
 export type MutationCreateChannelArgs = {
-  input?: Maybe<CreateChannelInput>;
-};
-
-export type MutationUpdateChannelArgs = {
-  input?: Maybe<UpdateChannelInput>;
-};
-
-export type MutationDeleteChannelArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationCreateCommunityPostsArgs = {
-  input: CommunityPostInput;
-};
-
-export type MutationDeleteCommunityPostArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationUploadFileArgs = {
-  file: Scalars["Upload"];
+  input?: InputMaybe<CreateChannelInput>;
 };
 
 export type MutationCreateRoleArgs = {
-  input?: Maybe<CreateRoleInput>;
-};
-
-export type MutationUpdateRoleArgs = {
-  input?: Maybe<UpdateRoleInput>;
-};
-
-export type MutationDeleteRoleArgs = {
-  id: Scalars["ID"];
+  input?: InputMaybe<CreateRoleInput>;
 };
 
 export type MutationCreateStreamKeyArgs = {
   input: CreateStreamKeyInput;
 };
 
-export type MutationRevokeStreamKeysArgs = {
-  input: RevokeStreamKeysInput;
+export type MutationDeleteChannelArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDeleteFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDeleteFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationDeleteRoleArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDisableFullUserLoginArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDisableFullUsersLoginArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationEnableFullUserLoginArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEnableFullUsersLoginArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationRestoreFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationRestoreFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
 };
 
 export type MutationRevokeAllStreamKeysArgs = {
   input: RevokeAllStreamKeysInput;
 };
 
+export type MutationRevokeSelfSessionsArgs = {
+  input: Array<InputMaybe<Scalars["String"]>>;
+};
+
 export type MutationRevokeStreamKeyArgs = {
   key: Scalars["ID"];
 };
 
-export type MutationSubscribeArgs = {
-  input: SubscriptionInput;
-};
-
-export type MutationUnsubscribeArgs = {
-  input: SubscriptionInput;
-};
-
-export type MutationSignUpArgs = {
-  input: CreateUserInput;
+export type MutationRevokeStreamKeysArgs = {
+  input: RevokeStreamKeysInput;
 };
 
 export type MutationSignInArgs = {
   input: SignInInput;
 };
 
-export type MutationUpdateUserArgs = {
-  input: UpdateUserInput;
+export type MutationSignUpArgs = {
+  input: CreateUserInput;
+};
+
+export type MutationSilenceFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationSilenceFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationSubscribeArgs = {
+  input: SubscriptionInput;
+};
+
+export type MutationSuspendFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationSuspendFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationUnsilenceFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationUnsilenceFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationUnsubscribeArgs = {
+  input: SubscriptionInput;
+};
+
+export type MutationUnsuspendFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationUnsuspendFullUsersArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationUpdateActivityArgs = {
+  input?: InputMaybe<UpdateActivityInput>;
+};
+
+export type MutationUpdateChannelArgs = {
+  input?: InputMaybe<UpdateChannelInput>;
+};
+
+export type MutationUpdateFullUserArgs = {
+  input?: InputMaybe<UpdateFullUserInput>;
+};
+
+export type MutationUpdateRoleArgs = {
+  input?: InputMaybe<UpdateRoleInput>;
 };
 
 export type MutationUpdateSelfArgs = {
   input: UpdateSelfInput;
 };
 
-export type MutationRevokeSelfSessionsArgs = {
-  input: Array<Maybe<Scalars["String"]>>;
-};
-
 export type MutationUpdateSelfAccountArgs = {
-  input?: Maybe<UpdateUserAccountInput>;
-};
-
-export type MutationChangeSelfPasswordArgs = {
-  input?: Maybe<ChangePasswordInput>;
+  input?: InputMaybe<UpdateUserAccountInput>;
 };
 
 export type MutationUpdateUserSettingsArgs = {
   input: UpdateUserSettingsInput;
 };
 
+export type MutationUploadFileArgs = {
+  file: Scalars["Upload"];
+};
+
 export type Query = {
   __typename?: "Query";
-  activity?: Maybe<Activity>;
   activities: Array<Maybe<Activity>>;
+  activity?: Maybe<Activity>;
   channel?: Maybe<Channel>;
-  channels: Array<Maybe<Channel>>;
-  selfChannels: Array<Maybe<Channel>>;
-  channelSubscriptions: Array<Maybe<Channel>>;
   channelStatus?: Maybe<ChannelStatus>;
-  communityPosts: Array<Maybe<CommunityPost>>;
+  channelSubscriptions: Array<Maybe<Channel>>;
+  channels: Array<Maybe<Channel>>;
   fileInfo?: Maybe<File>;
+  fullUser?: Maybe<FullUser>;
+  fullUserCount?: Maybe<Scalars["Int"]>;
+  fullUsers: Array<Maybe<FullUser>>;
+  info: InfoResponse;
   role?: Maybe<Role>;
   roles: Array<Maybe<Role>>;
-  info: InfoResponse;
-  test: TestResponse;
-  streamKeys: Array<Maybe<StreamKey>>;
-  selfStreamKeys: Array<Maybe<StreamKey>>;
-  streamKeysByChannelId: Array<Maybe<StreamKey>>;
-  subscription?: Maybe<Subscription>;
-  selfSubscriptions: Array<Maybe<Subscription>>;
-  selfSubscribedChannels: Array<Maybe<Channel>>;
-  selfSubscribedUsers: Array<Maybe<User>>;
-  users: Array<Maybe<User>>;
-  userDirectory: Array<Maybe<User>>;
   self: User;
   selfAccount: UserAccountDetails;
+  selfChannels: Array<Maybe<Channel>>;
   selfSessions?: Maybe<Array<Maybe<Session>>>;
+  selfStreamKeys: Array<Maybe<StreamKey>>;
+  selfSubscribedChannels: Array<Maybe<Channel>>;
+  selfSubscribedUsers: Array<Maybe<User>>;
+  selfSubscriptions: Array<Maybe<Subscription>>;
+  streamKeys: Array<Maybe<StreamKey>>;
+  streamKeysByChannelId: Array<Maybe<StreamKey>>;
+  subscription?: Maybe<Subscription>;
+  test: TestResponse;
   user?: Maybe<User>;
+  userDirectory: Array<Maybe<User>>;
   userSettings: UserSettings;
+  users: Array<Maybe<User>>;
+};
+
+export type QueryActivitiesArgs = {
+  filter?: InputMaybe<ActivityFilter>;
+  limit?: InputMaybe<ActivityLimit>;
 };
 
 export type QueryActivityArgs = {
   id: Scalars["ID"];
 };
 
-export type QueryActivitiesArgs = {
-  filter?: Maybe<ActivityFilter>;
-  limit?: Maybe<ActivityLimit>;
-};
-
 export type QueryChannelArgs = {
   id: Scalars["ID"];
-};
-
-export type QueryChannelsArgs = {
-  filter?: Maybe<ChannelsQueryFilter>;
-  limit?: Maybe<QueryLimit>;
-};
-
-export type QuerySelfChannelsArgs = {
-  filter?: Maybe<ChannelsQueryFilter>;
-};
-
-export type QueryChannelSubscriptionsArgs = {
-  filter?: Maybe<ChannelsQueryFilter>;
-  limit?: Maybe<QueryLimit>;
 };
 
 export type QueryChannelStatusArgs = {
   id: Scalars["ID"];
 };
 
-export type QueryCommunityPostsArgs = {
-  filter?: Maybe<CommunityPostsFilter>;
-  limit?: Maybe<QueryLimit>;
+export type QueryChannelSubscriptionsArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QueryChannelsArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
+  limit?: InputMaybe<QueryLimit>;
 };
 
 export type QueryFileInfoArgs = {
-  id?: Maybe<Scalars["ID"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+};
+
+export type QueryFullUserArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryFullUserCountArgs = {
+  filter?: InputMaybe<FullUsersFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QueryFullUsersArgs = {
+  filter?: InputMaybe<FullUsersFilter>;
+  limit?: InputMaybe<QueryLimit>;
 };
 
 export type QueryRoleArgs = {
@@ -409,7 +502,11 @@ export type QueryRoleArgs = {
 };
 
 export type QueryRolesArgs = {
-  filter?: Maybe<UpdateRoleInput>;
+  filter?: InputMaybe<UpdateRoleInput>;
+};
+
+export type QuerySelfChannelsArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
 };
 
 export type QueryStreamKeysByChannelIdArgs = {
@@ -417,25 +514,25 @@ export type QueryStreamKeysByChannelIdArgs = {
 };
 
 export type QuerySubscriptionArgs = {
-  input?: Maybe<SubscriptionByTargetId>;
-};
-
-export type QueryUsersArgs = {
-  filter?: Maybe<UsersFilter>;
-  limit?: Maybe<QueryLimit>;
-};
-
-export type QueryUserDirectoryArgs = {
-  limit?: Maybe<QueryLimit>;
+  input?: InputMaybe<SubscriptionByTargetId>;
 };
 
 export type QueryUserArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryUserDirectoryArgs = {
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QueryUsersArgs = {
+  filter?: InputMaybe<UsersFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
 export type QueryLimit = {
-  limit?: Maybe<Scalars["Int"]>;
-  skip?: Maybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  skip?: InputMaybe<Scalars["Int"]>;
 };
 
 export type RevokeAllStreamKeysInput = {
@@ -443,60 +540,60 @@ export type RevokeAllStreamKeysInput = {
 };
 
 export type RevokeStreamKeysInput = {
-  userId: Scalars["ID"];
   channelId: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  userId: Scalars["ID"];
 };
 
 export type Role = {
   __typename?: "Role";
+  access: AccessTargets;
   id: Scalars["ID"];
   name: Scalars["String"];
-  access: AccessTargets;
   parentId?: Maybe<Scalars["ID"]>;
 };
 
 export type Session = {
   __typename?: "Session";
-  id: Scalars["ID"];
-  user: Scalars["ID"];
   expiresAt: Scalars["DateTime"];
-  lastUsedAt: Scalars["DateTime"];
-  userAgent: Scalars["String"];
+  id: Scalars["ID"];
   ip: Scalars["String"];
   isCurrentSession: Scalars["Boolean"];
+  lastUsedAt: Scalars["DateTime"];
+  user: Scalars["ID"];
+  userAgent: Scalars["String"];
 };
 
 export type SessionResponse = {
   __typename?: "SessionResponse";
-  token: Scalars["ID"];
   expiresAt: Scalars["DateTime"];
+  token: Scalars["ID"];
 };
 
 export type SignInInput = {
-  username: Scalars["String"];
   password: Scalars["String"];
+  username: Scalars["String"];
 };
 
 export type StreamKey = {
   __typename?: "StreamKey";
-  id: Scalars["ID"];
-  user: User;
   channel: Channel;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
+  user: User;
 };
 
 export type Subscription = {
   __typename?: "Subscription";
   id: Scalars["ID"];
+  sourceId: Scalars["ID"];
   target: SubscriptionTarget;
   targetId: Scalars["ID"];
-  sourceId: Scalars["ID"];
 };
 
 export type SubscriptionByTargetId = {
-  targetId: Scalars["ID"];
   target: SubscriptionTarget;
+  targetId: Scalars["ID"];
 };
 
 export type SubscriptionInput = {
@@ -510,9 +607,9 @@ export enum SubscriptionTarget {
 }
 
 export type SubscriptionsFilter = {
-  sourceId?: Maybe<Scalars["ID"]>;
-  targetId?: Maybe<Scalars["ID"]>;
-  target?: Maybe<SubscriptionTarget>;
+  sourceId?: InputMaybe<Scalars["ID"]>;
+  target?: InputMaybe<SubscriptionTarget>;
+  targetId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type TestResponse = {
@@ -521,36 +618,45 @@ export type TestResponse = {
 };
 
 export type UpdateActivityInput = {
+  icon?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
-  icon?: Maybe<Scalars["String"]>;
-  image?: Maybe<Scalars["String"]>;
+  image?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
-  verb?: Maybe<Scalars["String"]>;
+  verb?: InputMaybe<Scalars["String"]>;
 };
 
 export type UpdateChannelInput = {
+  activityId?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
-  activityId?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  slug?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  thumbnail?: Maybe<Scalars["ID"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars["String"]>;
+  thumbnail?: InputMaybe<Scalars["ID"]>;
+};
+
+export type UpdateFullUserInput = {
+  deleted?: InputMaybe<Scalars["Boolean"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  loginDisabled?: InputMaybe<Scalars["Boolean"]>;
+  roles?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  silenced?: InputMaybe<Scalars["Boolean"]>;
+  suspended?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type UpdateRoleInput = {
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  access?: Maybe<AccessTargetsInput>;
-  parentId?: Maybe<Scalars["ID"]>;
+  access?: InputMaybe<AccessTargetsInput>;
+  id?: InputMaybe<Scalars["ID"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  parentId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type UpdateSelfInput = {
-  displayName?: Maybe<Scalars["String"]>;
-  bio?: Maybe<Scalars["String"]>;
-  singleUserMode?: Maybe<Scalars["Boolean"]>;
-  avatar?: Maybe<Scalars["ID"]>;
-  header?: Maybe<Scalars["ID"]>;
-  streamThumbnail?: Maybe<Scalars["ID"]>;
+  avatar?: InputMaybe<Scalars["ID"]>;
+  bio?: InputMaybe<Scalars["String"]>;
+  displayName?: InputMaybe<Scalars["String"]>;
+  header?: InputMaybe<Scalars["ID"]>;
+  singleUserMode?: InputMaybe<Scalars["Boolean"]>;
+  streamThumbnail?: InputMaybe<Scalars["ID"]>;
 };
 
 export type UpdateUserAccountInput = {
@@ -558,56 +664,56 @@ export type UpdateUserAccountInput = {
 };
 
 export type UpdateUserInput = {
-  id?: Maybe<Scalars["ID"]>;
-  displayName?: Maybe<Scalars["String"]>;
-  bio?: Maybe<Scalars["String"]>;
-  singleUserMode?: Maybe<Scalars["Boolean"]>;
-  avatar?: Maybe<Scalars["ID"]>;
-  header?: Maybe<Scalars["ID"]>;
-  streamThumbnail?: Maybe<Scalars["ID"]>;
+  avatar?: InputMaybe<Scalars["ID"]>;
+  bio?: InputMaybe<Scalars["String"]>;
+  displayName?: InputMaybe<Scalars["String"]>;
+  header?: InputMaybe<Scalars["ID"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  singleUserMode?: InputMaybe<Scalars["Boolean"]>;
+  streamThumbnail?: InputMaybe<Scalars["ID"]>;
 };
 
 export type UpdateUserSettingsInput = {
-  singleUserMode?: Maybe<Scalars["Boolean"]>;
-  useGravatar?: Maybe<Scalars["Boolean"]>;
-  singleUserChannel?: Maybe<Scalars["ID"]>;
-  featureInDirectory?: Maybe<Scalars["Boolean"]>;
+  featureInDirectory?: InputMaybe<Scalars["Boolean"]>;
+  singleUserChannel?: InputMaybe<Scalars["ID"]>;
+  singleUserMode?: InputMaybe<Scalars["Boolean"]>;
+  useGravatar?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type User = {
   __typename?: "User";
-  id?: Maybe<Scalars["ID"]>;
-  username: Scalars["String"];
-  displayName?: Maybe<Scalars["String"]>;
-  bio?: Maybe<Scalars["String"]>;
-  emailHash?: Maybe<Scalars["String"]>;
-  roles: Array<Maybe<Role>>;
-  channels: Array<Maybe<Channel>>;
   avatar?: Maybe<File>;
+  bio?: Maybe<Scalars["String"]>;
+  channels: Array<Maybe<Channel>>;
+  displayName?: Maybe<Scalars["String"]>;
+  emailHash?: Maybe<Scalars["String"]>;
   header?: Maybe<File>;
-  streamThumbnail?: Maybe<File>;
-  settings?: Maybe<UserSettings>;
+  id?: Maybe<Scalars["ID"]>;
   meta?: Maybe<UserMeta>;
+  roles: Array<Maybe<Role>>;
+  settings?: Maybe<UserSettings>;
+  streamThumbnail?: Maybe<File>;
+  username: Scalars["String"];
 };
 
 export type UserAccountDetails = {
   __typename?: "UserAccountDetails";
+  email: Scalars["String"];
   id?: Maybe<Scalars["ID"]>;
   username: Scalars["String"];
-  email: Scalars["String"];
 };
 
 export type UserActions = {
   __typename?: "UserActions";
-  silence?: Maybe<Scalars["Boolean"]>;
   ban?: Maybe<Scalars["Boolean"]>;
+  silence?: Maybe<Scalars["Boolean"]>;
   warn?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UserActionsInput = {
-  silence?: Maybe<Scalars["Boolean"]>;
-  ban?: Maybe<Scalars["Boolean"]>;
-  warn?: Maybe<Scalars["Boolean"]>;
+  ban?: InputMaybe<Scalars["Boolean"]>;
+  silence?: InputMaybe<Scalars["Boolean"]>;
+  warn?: InputMaybe<Scalars["Boolean"]>;
 };
 
 export type UserMeta = {
@@ -617,18 +723,18 @@ export type UserMeta = {
 
 export type UserSettings = {
   __typename?: "UserSettings";
-  id?: Maybe<Scalars["ID"]>;
-  useGravatar?: Maybe<Scalars["Boolean"]>;
-  singleUserMode?: Maybe<Scalars["Boolean"]>;
-  singleUserChannel?: Maybe<Channel>;
   featureInDirectory?: Maybe<Scalars["Boolean"]>;
+  id?: Maybe<Scalars["ID"]>;
+  singleUserChannel?: Maybe<Channel>;
+  singleUserMode?: Maybe<Scalars["Boolean"]>;
+  useGravatar?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UsersFilter = {
-  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  username?: Maybe<Scalars["String"]>;
-  displayName?: Maybe<Scalars["String"]>;
-  email?: Maybe<Scalars["String"]>;
+  displayName?: InputMaybe<Scalars["String"]>;
+  email?: InputMaybe<Scalars["String"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  username?: InputMaybe<Scalars["String"]>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -652,7 +758,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -745,21 +851,15 @@ export type ResolversTypes = {
   Actions: ResolverTypeWrapper<Actions>;
   ActionsInput: ActionsInput;
   Activity: ResolverTypeWrapper<Activity>;
-  ID: ResolverTypeWrapper<Scalars["ID"]>;
-  String: ResolverTypeWrapper<Scalars["String"]>;
   ActivityFilter: ActivityFilter;
   ActivityLimit: ActivityLimit;
-  Int: ResolverTypeWrapper<Scalars["Int"]>;
   AuthRightConfig: AuthRightConfig;
+  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   ChangePasswordInput: ChangePasswordInput;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelMeta: ResolverTypeWrapper<ChannelMeta>;
   ChannelStatus: ResolverTypeWrapper<ChannelStatus>;
-  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   ChannelsQueryFilter: ChannelsQueryFilter;
-  CommunityPost: ResolverTypeWrapper<CommunityPost>;
-  CommunityPostInput: CommunityPostInput;
-  CommunityPostsFilter: CommunityPostsFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
@@ -767,7 +867,11 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   File: ResolverTypeWrapper<File>;
+  FullUser: ResolverTypeWrapper<FullUser>;
+  FullUsersFilter: FullUsersFilter;
+  ID: ResolverTypeWrapper<Scalars["ID"]>;
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
+  Int: ResolverTypeWrapper<Scalars["Int"]>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   QueryLimit: QueryLimit;
@@ -778,6 +882,7 @@ export type ResolversTypes = {
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
   SignInInput: SignInInput;
   StreamKey: ResolverTypeWrapper<StreamKey>;
+  String: ResolverTypeWrapper<Scalars["String"]>;
   Subscription: ResolverTypeWrapper<{}>;
   SubscriptionByTargetId: SubscriptionByTargetId;
   SubscriptionInput: SubscriptionInput;
@@ -786,6 +891,7 @@ export type ResolversTypes = {
   TestResponse: ResolverTypeWrapper<TestResponse>;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
+  UpdateFullUserInput: UpdateFullUserInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserAccountInput: UpdateUserAccountInput;
@@ -809,21 +915,15 @@ export type ResolversParentTypes = {
   Actions: Actions;
   ActionsInput: ActionsInput;
   Activity: Activity;
-  ID: Scalars["ID"];
-  String: Scalars["String"];
   ActivityFilter: ActivityFilter;
   ActivityLimit: ActivityLimit;
-  Int: Scalars["Int"];
   AuthRightConfig: AuthRightConfig;
+  Boolean: Scalars["Boolean"];
   ChangePasswordInput: ChangePasswordInput;
   Channel: Channel;
   ChannelMeta: ChannelMeta;
   ChannelStatus: ChannelStatus;
-  Boolean: Scalars["Boolean"];
   ChannelsQueryFilter: ChannelsQueryFilter;
-  CommunityPost: CommunityPost;
-  CommunityPostInput: CommunityPostInput;
-  CommunityPostsFilter: CommunityPostsFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
   CreateRoleInput: CreateRoleInput;
@@ -831,7 +931,11 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   DateTime: Scalars["DateTime"];
   File: File;
+  FullUser: FullUser;
+  FullUsersFilter: FullUsersFilter;
+  ID: Scalars["ID"];
   InfoResponse: InfoResponse;
+  Int: Scalars["Int"];
   Mutation: {};
   Query: {};
   QueryLimit: QueryLimit;
@@ -842,6 +946,7 @@ export type ResolversParentTypes = {
   SessionResponse: SessionResponse;
   SignInInput: SignInInput;
   StreamKey: StreamKey;
+  String: Scalars["String"];
   Subscription: {};
   SubscriptionByTargetId: SubscriptionByTargetId;
   SubscriptionInput: SubscriptionInput;
@@ -849,6 +954,7 @@ export type ResolversParentTypes = {
   TestResponse: TestResponse;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
+  UpdateFullUserInput: UpdateFullUserInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserAccountInput: UpdateUserAccountInput;
@@ -865,8 +971,8 @@ export type ResolversParentTypes = {
 };
 
 export type AuthDirectiveArgs = {
-  roles?: Maybe<Array<Maybe<Scalars["ID"]>>>;
   rights?: Maybe<Array<Maybe<AuthRightConfig>>>;
+  roles?: Maybe<Array<Maybe<Scalars["ID"]>>>;
 };
 
 export type AuthDirectiveResolver<
@@ -880,12 +986,12 @@ export type AccessRightsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["AccessRights"] = ResolversParentTypes["AccessRights"]
 > = {
-  channels?: Resolver<
+  activities?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
-  streamKeys?: Resolver<
+  channels?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
@@ -895,17 +1001,17 @@ export type AccessRightsResolvers<
     ParentType,
     ContextType
   >;
-  users?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
-    ParentType,
-    ContextType
-  >;
-  activities?: Resolver<
+  streamKeys?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
   >;
   userSettings?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
+    ParentType,
+    ContextType
+  >;
+  users?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
@@ -917,8 +1023,8 @@ export type AccessTargetsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["AccessTargets"] = ResolversParentTypes["AccessTargets"]
 > = {
-  rights?: Resolver<ResolversTypes["AccessRights"], ParentType, ContextType>;
   actions?: Resolver<ResolversTypes["Actions"], ParentType, ContextType>;
+  rights?: Resolver<ResolversTypes["AccessRights"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -938,8 +1044,8 @@ export type ActivityResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Activity"] = ResolversParentTypes["Activity"]
 > = {
-  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   icon?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   verb?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
@@ -950,31 +1056,31 @@ export type ChannelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Channel"] = ResolversParentTypes["Channel"]
 > = {
-  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
   activity?: Resolver<
     Maybe<ResolversTypes["Activity"]>,
     ParentType,
     ContextType
   >;
-  slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType
   >;
-  thumbnail?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
-  status?: Resolver<
-    Maybe<ResolversTypes["ChannelStatus"]>,
-    ParentType,
-    ContextType
-  >;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   meta?: Resolver<
     Maybe<ResolversTypes["ChannelMeta"]>,
     ParentType,
     ContextType
   >;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  status?: Resolver<
+    Maybe<ResolversTypes["ChannelStatus"]>,
+    ParentType,
+    ContextType
+  >;
+  thumbnail?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -992,18 +1098,8 @@ export type ChannelStatusResolvers<
 > = {
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   isLive?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  viewers?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   length?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type CommunityPostResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["CommunityPost"] = ResolversParentTypes["CommunityPost"]
-> = {
-  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
-  body?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  viewers?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1016,10 +1112,65 @@ export type FileResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["File"] = ResolversParentTypes["File"]
 > = {
-  filename?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  mimetype?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   encoding?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  filename?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  mimetype?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type FullUserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["FullUser"] = ResolversParentTypes["FullUser"]
+> = {
+  avatar?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  bio?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  channels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType
+  >;
+  deleted?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  displayName?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  email?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  header?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  loginDisabled?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  meta?: Resolver<Maybe<ResolversTypes["UserMeta"]>, ParentType, ContextType>;
+  roles?: Resolver<
+    Array<Maybe<ResolversTypes["Role"]>>,
+    ParentType,
+    ContextType
+  >;
+  settings?: Resolver<
+    Maybe<ResolversTypes["UserSettings"]>,
+    ParentType,
+    ContextType
+  >;
+  silenced?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  streamThumbnail?: Resolver<
+    Maybe<ResolversTypes["File"]>,
+    ParentType,
+    ContextType
+  >;
+  suspended?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1028,8 +1179,8 @@ export type InfoResponseResolvers<
   ParentType extends ResolversParentTypes["InfoResponse"] = ResolversParentTypes["InfoResponse"]
 > = {
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  version?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   packageName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  version?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1037,17 +1188,17 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
 > = {
+  changeSelfPassword?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationChangeSelfPasswordArgs, never>
+  >;
   createActivity?: Resolver<
     ResolversTypes["Activity"],
     ParentType,
     ContextType,
     RequireFields<MutationCreateActivityArgs, never>
-  >;
-  updateActivity?: Resolver<
-    ResolversTypes["Activity"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdateActivityArgs, never>
   >;
   createChannel?: Resolver<
     ResolversTypes["Channel"],
@@ -1055,11 +1206,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateChannelArgs, never>
   >;
-  updateChannel?: Resolver<
-    ResolversTypes["Channel"],
+  createRole?: Resolver<
+    ResolversTypes["Role"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateChannelArgs, never>
+    RequireFields<MutationCreateRoleArgs, never>
+  >;
+  createStreamKey?: Resolver<
+    ResolversTypes["StreamKey"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateStreamKeyArgs, "input">
   >;
   deleteChannel?: Resolver<
     ResolversTypes["Boolean"],
@@ -1067,35 +1224,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteChannelArgs, "id">
   >;
-  createCommunityPosts?: Resolver<
-    ResolversTypes["CommunityPost"],
+  deleteFullUser?: Resolver<
+    ResolversTypes["FullUser"],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateCommunityPostsArgs, "input">
+    RequireFields<MutationDeleteFullUserArgs, "id">
   >;
-  deleteCommunityPost?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
+  deleteFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
     ParentType,
     ContextType,
-    RequireFields<MutationDeleteCommunityPostArgs, "id">
-  >;
-  uploadFile?: Resolver<
-    ResolversTypes["File"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUploadFileArgs, "file">
-  >;
-  createRole?: Resolver<
-    ResolversTypes["Role"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateRoleArgs, never>
-  >;
-  updateRole?: Resolver<
-    ResolversTypes["Role"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdateRoleArgs, never>
+    RequireFields<MutationDeleteFullUsersArgs, "ids">
   >;
   deleteRole?: Resolver<
     ResolversTypes["Boolean"],
@@ -1103,18 +1242,42 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteRoleArgs, "id">
   >;
-  ping?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  createStreamKey?: Resolver<
-    ResolversTypes["StreamKey"],
+  disableFullUserLogin?: Resolver<
+    ResolversTypes["FullUser"],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateStreamKeyArgs, "input">
+    RequireFields<MutationDisableFullUserLoginArgs, "id">
   >;
-  revokeStreamKeys?: Resolver<
-    ResolversTypes["Boolean"],
+  disableFullUsersLogin?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
     ParentType,
     ContextType,
-    RequireFields<MutationRevokeStreamKeysArgs, "input">
+    RequireFields<MutationDisableFullUsersLoginArgs, "ids">
+  >;
+  enableFullUserLogin?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationEnableFullUserLoginArgs, "id">
+  >;
+  enableFullUsersLogin?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEnableFullUsersLoginArgs, "ids">
+  >;
+  ping?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  restoreFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRestoreFullUserArgs, "id">
+  >;
+  restoreFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRestoreFullUsersArgs, "ids">
   >;
   revokeAllStreamKeys?: Resolver<
     ResolversTypes["Boolean"],
@@ -1122,29 +1285,23 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRevokeAllStreamKeysArgs, "input">
   >;
+  revokeSelfSessions?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeSelfSessionsArgs, "input">
+  >;
   revokeStreamKey?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
     ContextType,
     RequireFields<MutationRevokeStreamKeyArgs, "key">
   >;
-  subscribe?: Resolver<
-    ResolversTypes["Subscription"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationSubscribeArgs, "input">
-  >;
-  unsubscribe?: Resolver<
+  revokeStreamKeys?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
     ContextType,
-    RequireFields<MutationUnsubscribeArgs, "input">
-  >;
-  signUp?: Resolver<
-    ResolversTypes["User"],
-    ParentType,
-    ContextType,
-    RequireFields<MutationSignUpArgs, "input">
+    RequireFields<MutationRevokeStreamKeysArgs, "input">
   >;
   signIn?: Resolver<
     Maybe<ResolversTypes["SessionResponse"]>,
@@ -1152,11 +1309,95 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationSignInArgs, "input">
   >;
-  updateUser?: Resolver<
-    Maybe<ResolversTypes["User"]>,
+  signUp?: Resolver<
+    ResolversTypes["User"],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateUserArgs, "input">
+    RequireFields<MutationSignUpArgs, "input">
+  >;
+  silenceFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSilenceFullUserArgs, "id">
+  >;
+  silenceFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSilenceFullUsersArgs, "ids">
+  >;
+  subscribe?: Resolver<
+    ResolversTypes["Subscription"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSubscribeArgs, "input">
+  >;
+  suspendFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSuspendFullUserArgs, "id">
+  >;
+  suspendFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSuspendFullUsersArgs, "ids">
+  >;
+  unsilenceFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsilenceFullUserArgs, "id">
+  >;
+  unsilenceFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsilenceFullUsersArgs, "ids">
+  >;
+  unsubscribe?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsubscribeArgs, "input">
+  >;
+  unsuspendFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsuspendFullUserArgs, "id">
+  >;
+  unsuspendFullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUnsuspendFullUsersArgs, "ids">
+  >;
+  updateActivity?: Resolver<
+    ResolversTypes["Activity"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateActivityArgs, never>
+  >;
+  updateChannel?: Resolver<
+    ResolversTypes["Channel"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateChannelArgs, never>
+  >;
+  updateFullUser?: Resolver<
+    ResolversTypes["FullUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateFullUserArgs, never>
+  >;
+  updateRole?: Resolver<
+    ResolversTypes["Role"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateRoleArgs, never>
   >;
   updateSelf?: Resolver<
     Maybe<ResolversTypes["User"]>,
@@ -1164,23 +1405,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateSelfArgs, "input">
   >;
-  revokeSelfSessions?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationRevokeSelfSessionsArgs, "input">
-  >;
   updateSelfAccount?: Resolver<
     Maybe<ResolversTypes["UserAccountDetails"]>,
     ParentType,
     ContextType,
     RequireFields<MutationUpdateSelfAccountArgs, never>
-  >;
-  changeSelfPassword?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationChangeSelfPasswordArgs, never>
   >;
   updateUserSettings?: Resolver<
     Maybe<ResolversTypes["UserSettings"]>,
@@ -1188,23 +1417,29 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateUserSettingsArgs, "input">
   >;
+  uploadFile?: Resolver<
+    ResolversTypes["File"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUploadFileArgs, "file">
+  >;
 };
 
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
-  activity?: Resolver<
-    Maybe<ResolversTypes["Activity"]>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryActivityArgs, "id">
-  >;
   activities?: Resolver<
     Array<Maybe<ResolversTypes["Activity"]>>,
     ParentType,
     ContextType,
     RequireFields<QueryActivitiesArgs, never>
+  >;
+  activity?: Resolver<
+    Maybe<ResolversTypes["Activity"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryActivityArgs, "id">
   >;
   channel?: Resolver<
     Maybe<ResolversTypes["Channel"]>,
@@ -1212,17 +1447,11 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryChannelArgs, "id">
   >;
-  channels?: Resolver<
-    Array<Maybe<ResolversTypes["Channel"]>>,
+  channelStatus?: Resolver<
+    Maybe<ResolversTypes["ChannelStatus"]>,
     ParentType,
     ContextType,
-    RequireFields<QueryChannelsArgs, never>
-  >;
-  selfChannels?: Resolver<
-    Array<Maybe<ResolversTypes["Channel"]>>,
-    ParentType,
-    ContextType,
-    RequireFields<QuerySelfChannelsArgs, never>
+    RequireFields<QueryChannelStatusArgs, "id">
   >;
   channelSubscriptions?: Resolver<
     Array<Maybe<ResolversTypes["Channel"]>>,
@@ -1230,17 +1459,11 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryChannelSubscriptionsArgs, never>
   >;
-  channelStatus?: Resolver<
-    Maybe<ResolversTypes["ChannelStatus"]>,
+  channels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
     ParentType,
     ContextType,
-    RequireFields<QueryChannelStatusArgs, "id">
-  >;
-  communityPosts?: Resolver<
-    Array<Maybe<ResolversTypes["CommunityPost"]>>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryCommunityPostsArgs, never>
+    RequireFields<QueryChannelsArgs, never>
   >;
   fileInfo?: Resolver<
     Maybe<ResolversTypes["File"]>,
@@ -1248,6 +1471,25 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryFileInfoArgs, never>
   >;
+  fullUser?: Resolver<
+    Maybe<ResolversTypes["FullUser"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFullUserArgs, "id">
+  >;
+  fullUserCount?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFullUserCountArgs, never>
+  >;
+  fullUsers?: Resolver<
+    Array<Maybe<ResolversTypes["FullUser"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFullUsersArgs, never>
+  >;
+  info?: Resolver<ResolversTypes["InfoResponse"], ParentType, ContextType>;
   role?: Resolver<
     Maybe<ResolversTypes["Role"]>,
     ParentType,
@@ -1260,14 +1502,44 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryRolesArgs, never>
   >;
-  info?: Resolver<ResolversTypes["InfoResponse"], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes["TestResponse"], ParentType, ContextType>;
-  streamKeys?: Resolver<
-    Array<Maybe<ResolversTypes["StreamKey"]>>,
+  self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  selfAccount?: Resolver<
+    ResolversTypes["UserAccountDetails"],
+    ParentType,
+    ContextType
+  >;
+  selfChannels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySelfChannelsArgs, never>
+  >;
+  selfSessions?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Session"]>>>,
     ParentType,
     ContextType
   >;
   selfStreamKeys?: Resolver<
+    Array<Maybe<ResolversTypes["StreamKey"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfSubscribedChannels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfSubscribedUsers?: Resolver<
+    Array<Maybe<ResolversTypes["User"]>>,
+    ParentType,
+    ContextType
+  >;
+  selfSubscriptions?: Resolver<
+    Array<Maybe<ResolversTypes["Subscription"]>>,
+    ParentType,
+    ContextType
+  >;
+  streamKeys?: Resolver<
     Array<Maybe<ResolversTypes["StreamKey"]>>,
     ParentType,
     ContextType
@@ -1284,18 +1556,21 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySubscriptionArgs, never>
   >;
-  selfSubscriptions?: Resolver<
-    Array<Maybe<ResolversTypes["Subscription"]>>,
+  test?: Resolver<ResolversTypes["TestResponse"], ParentType, ContextType>;
+  user?: Resolver<
+    Maybe<ResolversTypes["User"]>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QueryUserArgs, "id">
   >;
-  selfSubscribedChannels?: Resolver<
-    Array<Maybe<ResolversTypes["Channel"]>>,
-    ParentType,
-    ContextType
-  >;
-  selfSubscribedUsers?: Resolver<
+  userDirectory?: Resolver<
     Array<Maybe<ResolversTypes["User"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryUserDirectoryArgs, never>
+  >;
+  userSettings?: Resolver<
+    ResolversTypes["UserSettings"],
     ParentType,
     ContextType
   >;
@@ -1305,43 +1580,15 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryUsersArgs, never>
   >;
-  userDirectory?: Resolver<
-    Array<Maybe<ResolversTypes["User"]>>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryUserDirectoryArgs, never>
-  >;
-  self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
-  selfAccount?: Resolver<
-    ResolversTypes["UserAccountDetails"],
-    ParentType,
-    ContextType
-  >;
-  selfSessions?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Session"]>>>,
-    ParentType,
-    ContextType
-  >;
-  user?: Resolver<
-    Maybe<ResolversTypes["User"]>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryUserArgs, "id">
-  >;
-  userSettings?: Resolver<
-    ResolversTypes["UserSettings"],
-    ParentType,
-    ContextType
-  >;
 };
 
 export type RoleResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Role"] = ResolversParentTypes["Role"]
 > = {
+  access?: Resolver<ResolversTypes["AccessTargets"], ParentType, ContextType>;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  access?: Resolver<ResolversTypes["AccessTargets"], ParentType, ContextType>;
   parentId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1350,17 +1597,17 @@ export type SessionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Session"] = ResolversParentTypes["Session"]
 > = {
-  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   expiresAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
-  lastUsedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
-  userAgent?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   ip?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   isCurrentSession?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
     ContextType
   >;
+  lastUsedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  userAgent?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1368,8 +1615,8 @@ export type SessionResponseResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["SessionResponse"] = ResolversParentTypes["SessionResponse"]
 > = {
-  token?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   expiresAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1377,10 +1624,10 @@ export type StreamKeyResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["StreamKey"] = ResolversParentTypes["StreamKey"]
 > = {
-  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   channel?: Resolver<ResolversTypes["Channel"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1394,6 +1641,12 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType
   >;
+  sourceId?: SubscriptionResolver<
+    ResolversTypes["ID"],
+    "sourceId",
+    ParentType,
+    ContextType
+  >;
   target?: SubscriptionResolver<
     ResolversTypes["SubscriptionTarget"],
     "target",
@@ -1403,12 +1656,6 @@ export type SubscriptionResolvers<
   targetId?: SubscriptionResolver<
     ResolversTypes["ID"],
     "targetId",
-    ParentType,
-    ContextType
-  >;
-  sourceId?: SubscriptionResolver<
-    ResolversTypes["ID"],
-    "sourceId",
     ParentType,
     ContextType
   >;
@@ -1431,33 +1678,28 @@ export type UserResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
 > = {
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  displayName?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  avatar?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   bio?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  emailHash?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
-  roles?: Resolver<
-    Array<Maybe<ResolversTypes["Role"]>>,
-    ParentType,
-    ContextType
-  >;
   channels?: Resolver<
     Array<Maybe<ResolversTypes["Channel"]>>,
     ParentType,
     ContextType
   >;
-  avatar?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  displayName?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  emailHash?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
   header?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
-  streamThumbnail?: Resolver<
-    Maybe<ResolversTypes["File"]>,
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  meta?: Resolver<Maybe<ResolversTypes["UserMeta"]>, ParentType, ContextType>;
+  roles?: Resolver<
+    Array<Maybe<ResolversTypes["Role"]>>,
     ParentType,
     ContextType
   >;
@@ -1466,7 +1708,12 @@ export type UserResolvers<
     ParentType,
     ContextType
   >;
-  meta?: Resolver<Maybe<ResolversTypes["UserMeta"]>, ParentType, ContextType>;
+  streamThumbnail?: Resolver<
+    Maybe<ResolversTypes["File"]>,
+    ParentType,
+    ContextType
+  >;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1474,9 +1721,9 @@ export type UserAccountDetailsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["UserAccountDetails"] = ResolversParentTypes["UserAccountDetails"]
 > = {
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1484,8 +1731,8 @@ export type UserActionsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["UserActions"] = ResolversParentTypes["UserActions"]
 > = {
-  silence?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   ban?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  silence?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   warn?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1502,9 +1749,14 @@ export type UserSettingsResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["UserSettings"] = ResolversParentTypes["UserSettings"]
 > = {
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  useGravatar?: Resolver<
+  featureInDirectory?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  singleUserChannel?: Resolver<
+    Maybe<ResolversTypes["Channel"]>,
     ParentType,
     ContextType
   >;
@@ -1513,12 +1765,7 @@ export type UserSettingsResolvers<
     ParentType,
     ContextType
   >;
-  singleUserChannel?: Resolver<
-    Maybe<ResolversTypes["Channel"]>,
-    ParentType,
-    ContextType
-  >;
-  featureInDirectory?: Resolver<
+  useGravatar?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
     ContextType
@@ -1534,9 +1781,9 @@ export type Resolvers<ContextType = any> = {
   Channel?: ChannelResolvers<ContextType>;
   ChannelMeta?: ChannelMetaResolvers<ContextType>;
   ChannelStatus?: ChannelStatusResolvers<ContextType>;
-  CommunityPost?: CommunityPostResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   File?: FileResolvers<ContextType>;
+  FullUser?: FullUserResolvers<ContextType>;
   InfoResponse?: InfoResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
@@ -1558,45 +1805,1373 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
+export type UpdateFullUserMutationVariables = Exact<{
+  input: UpdateFullUserInput;
+}>;
+
+export type UpdateFullUserMutation = {
+  __typename?: "Mutation";
+  updateFullUser: {
+    __typename?: "FullUser";
+    id?: string | null | undefined;
+    username: string;
+    displayName?: string | null | undefined;
+    bio?: string | null | undefined;
+    email?: string | null | undefined;
+    silenced?: boolean | null | undefined;
+    suspended?: boolean | null | undefined;
+    deleted?: boolean | null | undefined;
+    loginDisabled?: boolean | null | undefined;
+    roles: Array<
+      | {
+          __typename?: "Role";
+          id: string;
+          name: string;
+          parentId?: string | null | undefined;
+          access: {
+            __typename?: "AccessTargets";
+            rights: {
+              __typename?: "AccessRights";
+              channels?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              streamKeys?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              roles?: Array<AccessUnit | null | undefined> | null | undefined;
+              users?: Array<AccessUnit | null | undefined> | null | undefined;
+              activities?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              userSettings?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+            };
+            actions: {
+              __typename?: "Actions";
+              user?:
+                | {
+                    __typename?: "UserActions";
+                    silence?: boolean | null | undefined;
+                    ban?: boolean | null | undefined;
+                    warn?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            };
+          };
+        }
+      | null
+      | undefined
+    >;
+    channels: Array<
+      { __typename?: "Channel"; id: string; name: string } | null | undefined
+    >;
+    avatar?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    header?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    streamThumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    settings?:
+      | {
+          __typename?: "UserSettings";
+          id?: string | null | undefined;
+          useGravatar?: boolean | null | undefined;
+          singleUserMode?: boolean | null | undefined;
+          featureInDirectory?: boolean | null | undefined;
+          singleUserChannel?:
+            | { __typename?: "Channel"; id: string; name: string }
+            | null
+            | undefined;
+        }
+      | null
+      | undefined;
+    meta?:
+      | { __typename?: "UserMeta"; followerCount: number }
+      | null
+      | undefined;
+  };
+};
+
+export type AdminFullUserFragment = {
+  __typename?: "FullUser";
+  id?: string | null | undefined;
+  username: string;
+  displayName?: string | null | undefined;
+  bio?: string | null | undefined;
+  email?: string | null | undefined;
+  silenced?: boolean | null | undefined;
+  suspended?: boolean | null | undefined;
+  deleted?: boolean | null | undefined;
+  loginDisabled?: boolean | null | undefined;
+  roles: Array<
+    | {
+        __typename?: "Role";
+        id: string;
+        name: string;
+        parentId?: string | null | undefined;
+        access: {
+          __typename?: "AccessTargets";
+          rights: {
+            __typename?: "AccessRights";
+            channels?: Array<AccessUnit | null | undefined> | null | undefined;
+            streamKeys?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            roles?: Array<AccessUnit | null | undefined> | null | undefined;
+            users?: Array<AccessUnit | null | undefined> | null | undefined;
+            activities?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            userSettings?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+          };
+          actions: {
+            __typename?: "Actions";
+            user?:
+              | {
+                  __typename?: "UserActions";
+                  silence?: boolean | null | undefined;
+                  ban?: boolean | null | undefined;
+                  warn?: boolean | null | undefined;
+                }
+              | null
+              | undefined;
+          };
+        };
+      }
+    | null
+    | undefined
+  >;
+  channels: Array<
+    { __typename?: "Channel"; id: string; name: string } | null | undefined
+  >;
+  avatar?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  header?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  streamThumbnail?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  settings?:
+    | {
+        __typename?: "UserSettings";
+        id?: string | null | undefined;
+        useGravatar?: boolean | null | undefined;
+        singleUserMode?: boolean | null | undefined;
+        featureInDirectory?: boolean | null | undefined;
+        singleUserChannel?:
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+  meta?: { __typename?: "UserMeta"; followerCount: number } | null | undefined;
+};
+
+export type FullUserAdminQueryVariables = Exact<{
+  filter?: InputMaybe<FullUsersFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type FullUserAdminQuery = {
+  __typename?: "Query";
+  fullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type FullUserAdminCountQueryVariables = Exact<{
+  filter?: InputMaybe<FullUsersFilter>;
+}>;
+
+export type FullUserAdminCountQuery = {
+  __typename?: "Query";
+  fullUserCount?: number | null | undefined;
+};
+
+export type BulkDeleteUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkDeleteUsersMutation = {
+  __typename?: "Mutation";
+  deleteFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkRestoreUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkRestoreUsersMutation = {
+  __typename?: "Mutation";
+  restoreFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkSuspendUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkSuspendUsersMutation = {
+  __typename?: "Mutation";
+  suspendFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkUnsuspendUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkUnsuspendUsersMutation = {
+  __typename?: "Mutation";
+  unsuspendFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkDisableLoginsMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkDisableLoginsMutation = {
+  __typename?: "Mutation";
+  disableFullUsersLogin: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkEnableLoginsMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkEnableLoginsMutation = {
+  __typename?: "Mutation";
+  enableFullUsersLogin: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkSilenceUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkSilenceUsersMutation = {
+  __typename?: "Mutation";
+  silenceFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkUnsilenceUsersMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkUnsilenceUsersMutation = {
+  __typename?: "Mutation";
+  unsilenceFullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        email?: string | null | undefined;
+        silenced?: boolean | null | undefined;
+        suspended?: boolean | null | undefined;
+        deleted?: boolean | null | undefined;
+        loginDisabled?: boolean | null | undefined;
+        roles: Array<
+          | {
+              __typename?: "Role";
+              id: string;
+              name: string;
+              parentId?: string | null | undefined;
+              access: {
+                __typename?: "AccessTargets";
+                rights: {
+                  __typename?: "AccessRights";
+                  channels?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  streamKeys?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  roles?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  users?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  activities?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                  userSettings?:
+                    | Array<AccessUnit | null | undefined>
+                    | null
+                    | undefined;
+                };
+                actions: {
+                  __typename?: "Actions";
+                  user?:
+                    | {
+                        __typename?: "UserActions";
+                        silence?: boolean | null | undefined;
+                        ban?: boolean | null | undefined;
+                        warn?: boolean | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                };
+              };
+            }
+          | null
+          | undefined
+        >;
+        channels: Array<
+          | { __typename?: "Channel"; id: string; name: string }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              id?: string | null | undefined;
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              featureInDirectory?: boolean | null | undefined;
+              singleUserChannel?:
+                | { __typename?: "Channel"; id: string; name: string }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
 export type ChannelViewFragment = {
   __typename?: "Channel";
   id: string;
   name: string;
-  description?: Maybe<string>;
-  slug?: Maybe<string>;
-  thumbnail?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-  }>;
-  activity?: Maybe<{
-    __typename?: "Activity";
-    id: string;
-    name: string;
-    verb?: Maybe<string>;
-  }>;
-  user?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    username: string;
-    displayName?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    settings?: Maybe<{
-      __typename?: "UserSettings";
-      singleUserMode?: Maybe<boolean>;
-    }>;
-  }>;
-  meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
+  description?: string | null | undefined;
+  slug?: string | null | undefined;
+  thumbnail?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  activity?:
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+      }
+    | null
+    | undefined;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              singleUserMode?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+  meta?:
+    | { __typename?: "ChannelMeta"; subscriberCount: number }
+    | null
+    | undefined;
 };
 
 export type ChannelViewStatusFragment = {
   __typename?: "ChannelStatus";
-  id?: Maybe<string>;
-  isLive?: Maybe<boolean>;
+  id?: string | null | undefined;
+  isLive?: boolean | null | undefined;
 };
 
 export type DashboardChannelsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1604,45 +3179,65 @@ export type DashboardChannelsQueryVariables = Exact<{ [key: string]: never }>;
 export type DashboardChannelsQuery = {
   __typename?: "Query";
   channels: Array<
-    Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      slug?: Maybe<string>;
-      description?: Maybe<string>;
-      thumbnail?: Maybe<{
-        __typename?: "File";
-        filename: string;
-        id?: Maybe<string>;
-      }>;
-      status?: Maybe<{
-        __typename?: "ChannelStatus";
-        id?: Maybe<string>;
-        isLive?: Maybe<boolean>;
-        viewers?: Maybe<number>;
-      }>;
-      activity?: Maybe<{
-        __typename?: "Activity";
+    | {
+        __typename?: "Channel";
         id: string;
         name: string;
-        verb?: Maybe<string>;
-      }>;
-      user?: Maybe<{
-        __typename?: "User";
-        id?: Maybe<string>;
-        username: string;
-        displayName?: Maybe<string>;
-        avatar?: Maybe<{
-          __typename?: "File";
-          id?: Maybe<string>;
-          filename: string;
-        }>;
-        settings?: Maybe<{
-          __typename?: "UserSettings";
-          singleUserMode?: Maybe<boolean>;
-        }>;
-      }>;
-    }>
+        slug?: string | null | undefined;
+        description?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              filename: string;
+              id?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        status?:
+          | {
+              __typename?: "ChannelStatus";
+              id?: string | null | undefined;
+              isLive?: boolean | null | undefined;
+              viewers?: number | null | undefined;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+              avatar?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              settings?:
+                | {
+                    __typename?: "UserSettings";
+                    singleUserMode?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -1653,62 +3248,88 @@ export type DashboardFollowedChannelsQueryVariables = Exact<{
 export type DashboardFollowedChannelsQuery = {
   __typename?: "Query";
   selfSubscribedChannels: Array<
-    Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      slug?: Maybe<string>;
-      description?: Maybe<string>;
-      thumbnail?: Maybe<{
-        __typename?: "File";
-        filename: string;
-        id?: Maybe<string>;
-      }>;
-      status?: Maybe<{
-        __typename?: "ChannelStatus";
-        id?: Maybe<string>;
-        isLive?: Maybe<boolean>;
-        viewers?: Maybe<number>;
-      }>;
-      activity?: Maybe<{
-        __typename?: "Activity";
+    | {
+        __typename?: "Channel";
         id: string;
         name: string;
-        verb?: Maybe<string>;
-      }>;
-      user?: Maybe<{
-        __typename?: "User";
-        id?: Maybe<string>;
-        username: string;
-        displayName?: Maybe<string>;
-        avatar?: Maybe<{
-          __typename?: "File";
-          id?: Maybe<string>;
-          filename: string;
-        }>;
-        settings?: Maybe<{
-          __typename?: "UserSettings";
-          singleUserMode?: Maybe<boolean>;
-        }>;
-      }>;
-    }>
+        slug?: string | null | undefined;
+        description?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              filename: string;
+              id?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        status?:
+          | {
+              __typename?: "ChannelStatus";
+              id?: string | null | undefined;
+              isLive?: boolean | null | undefined;
+              viewers?: number | null | undefined;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+              avatar?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              settings?:
+                | {
+                    __typename?: "UserSettings";
+                    singleUserMode?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
 };
 
 export type UserDirectoryProfileFragment = {
   __typename?: "User";
-  id?: Maybe<string>;
+  id?: string | null | undefined;
   username: string;
-  displayName?: Maybe<string>;
-  bio?: Maybe<string>;
-  emailHash?: Maybe<string>;
-  avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
-  settings?: Maybe<{
-    __typename?: "UserSettings";
-    useGravatar?: Maybe<boolean>;
-  }>;
+  displayName?: string | null | undefined;
+  bio?: string | null | undefined;
+  emailHash?: string | null | undefined;
+  avatar?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  header?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  meta?: { __typename?: "UserMeta"; followerCount: number } | null | undefined;
+  settings?:
+    | { __typename?: "UserSettings"; useGravatar?: boolean | null | undefined }
+    | null
+    | undefined;
 };
 
 export type UsersDirectoryQueryVariables = Exact<{ [key: string]: never }>;
@@ -1716,152 +3337,222 @@ export type UsersDirectoryQueryVariables = Exact<{ [key: string]: never }>;
 export type UsersDirectoryQuery = {
   __typename?: "Query";
   userDirectory: Array<
-    Maybe<{
-      __typename?: "User";
-      id?: Maybe<string>;
-      username: string;
-      displayName?: Maybe<string>;
-      bio?: Maybe<string>;
-      emailHash?: Maybe<string>;
-      avatar?: Maybe<{
-        __typename?: "File";
-        id?: Maybe<string>;
-        filename: string;
-      }>;
-      header?: Maybe<{
-        __typename?: "File";
-        id?: Maybe<string>;
-        filename: string;
-      }>;
-      meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
-      settings?: Maybe<{
-        __typename?: "UserSettings";
-        useGravatar?: Maybe<boolean>;
-      }>;
-    }>
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        emailHash?: string | null | undefined;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              useGravatar?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
 };
 
 export type UserProfileFragment = {
   __typename?: "User";
-  id?: Maybe<string>;
+  id?: string | null | undefined;
   username: string;
-  displayName?: Maybe<string>;
-  bio?: Maybe<string>;
-  emailHash?: Maybe<string>;
+  displayName?: string | null | undefined;
+  bio?: string | null | undefined;
+  emailHash?: string | null | undefined;
   channels: Array<
-    Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      slug?: Maybe<string>;
-      description?: Maybe<string>;
-      thumbnail?: Maybe<{
-        __typename?: "File";
-        filename: string;
-        id?: Maybe<string>;
-      }>;
-      status?: Maybe<{
-        __typename?: "ChannelStatus";
-        id?: Maybe<string>;
-        isLive?: Maybe<boolean>;
-        viewers?: Maybe<number>;
-      }>;
-      activity?: Maybe<{
-        __typename?: "Activity";
+    | {
+        __typename?: "Channel";
         id: string;
         name: string;
-        verb?: Maybe<string>;
-      }>;
-      user?: Maybe<{
-        __typename?: "User";
-        id?: Maybe<string>;
-        username: string;
-        displayName?: Maybe<string>;
-        avatar?: Maybe<{
-          __typename?: "File";
-          id?: Maybe<string>;
-          filename: string;
-        }>;
-        settings?: Maybe<{
-          __typename?: "UserSettings";
-          singleUserMode?: Maybe<boolean>;
-        }>;
-      }>;
-    }>
+        slug?: string | null | undefined;
+        description?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              filename: string;
+              id?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        status?:
+          | {
+              __typename?: "ChannelStatus";
+              id?: string | null | undefined;
+              isLive?: boolean | null | undefined;
+              viewers?: number | null | undefined;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+              avatar?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              settings?:
+                | {
+                    __typename?: "UserSettings";
+                    singleUserMode?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
-  avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
-  meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
-  settings?: Maybe<{
-    __typename?: "UserSettings";
-    useGravatar?: Maybe<boolean>;
-    singleUserMode?: Maybe<boolean>;
-    singleUserChannel?: Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      description?: Maybe<string>;
-      slug?: Maybe<string>;
-      thumbnail?: Maybe<{
-        __typename?: "File";
-        id?: Maybe<string>;
-        filename: string;
-      }>;
-      activity?: Maybe<{
-        __typename?: "Activity";
-        id: string;
-        name: string;
-        verb?: Maybe<string>;
-      }>;
-      user?: Maybe<{
-        __typename?: "User";
-        id?: Maybe<string>;
-        username: string;
-        displayName?: Maybe<string>;
-        avatar?: Maybe<{
-          __typename?: "File";
-          id?: Maybe<string>;
-          filename: string;
-        }>;
-        settings?: Maybe<{
-          __typename?: "UserSettings";
-          singleUserMode?: Maybe<boolean>;
-        }>;
-      }>;
-      meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
-    }>;
-  }>;
+  avatar?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  header?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  streamThumbnail?:
+    | { __typename?: "File"; filename: string }
+    | null
+    | undefined;
+  meta?: { __typename?: "UserMeta"; followerCount: number } | null | undefined;
+  settings?:
+    | {
+        __typename?: "UserSettings";
+        useGravatar?: boolean | null | undefined;
+        singleUserMode?: boolean | null | undefined;
+        singleUserChannel?:
+          | {
+              __typename?: "Channel";
+              id: string;
+              name: string;
+              description?: string | null | undefined;
+              slug?: string | null | undefined;
+              thumbnail?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              activity?:
+                | {
+                    __typename?: "Activity";
+                    id: string;
+                    name: string;
+                    verb?: string | null | undefined;
+                  }
+                | null
+                | undefined;
+              user?:
+                | {
+                    __typename?: "User";
+                    id?: string | null | undefined;
+                    username: string;
+                    displayName?: string | null | undefined;
+                    avatar?:
+                      | {
+                          __typename?: "File";
+                          id?: string | null | undefined;
+                          filename: string;
+                        }
+                      | null
+                      | undefined;
+                    settings?:
+                      | {
+                          __typename?: "UserSettings";
+                          singleUserMode?: boolean | null | undefined;
+                        }
+                      | null
+                      | undefined;
+                  }
+                | null
+                | undefined;
+              meta?:
+                | { __typename?: "ChannelMeta"; subscriberCount: number }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type SelfSessionsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type SelfSessionsQuery = {
   __typename?: "Query";
-  selfSessions?: Maybe<
-    Array<
-      Maybe<{
-        __typename?: "Session";
-        id: string;
-        expiresAt: any;
-        lastUsedAt: any;
-        userAgent: string;
-        user: string;
-        ip: string;
-        isCurrentSession: boolean;
-      }>
-    >
-  >;
+  selfSessions?:
+    | Array<
+        | {
+            __typename?: "Session";
+            id: string;
+            expiresAt: any;
+            lastUsedAt: any;
+            userAgent: string;
+            user: string;
+            ip: string;
+            isCurrentSession: boolean;
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined;
 };
 
 export type RevokeSelfSessionsMutationVariables = Exact<{
-  input: Array<Maybe<Scalars["String"]>> | Maybe<Scalars["String"]>;
+  input: Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>;
 }>;
 
 export type RevokeSelfSessionsMutation = {
   __typename?: "Mutation";
-  revokeSelfSessions?: Maybe<boolean>;
+  revokeSelfSessions?: boolean | null | undefined;
 };
 
 export type AccountDetailsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1870,42 +3561,45 @@ export type AccountDetailsQuery = {
   __typename?: "Query";
   selfAccount: {
     __typename?: "UserAccountDetails";
-    id?: Maybe<string>;
+    id?: string | null | undefined;
     username: string;
     email: string;
   };
 };
 
 export type ChangeAccountPasswordMutationVariables = Exact<{
-  input?: Maybe<ChangePasswordInput>;
+  input?: InputMaybe<ChangePasswordInput>;
 }>;
 
 export type ChangeAccountPasswordMutation = {
   __typename?: "Mutation";
-  changeSelfPassword?: Maybe<boolean>;
+  changeSelfPassword?: boolean | null | undefined;
 };
 
 export type SettingsUpdateAccountMutationVariables = Exact<{
-  input?: Maybe<UpdateUserAccountInput>;
+  input?: InputMaybe<UpdateUserAccountInput>;
 }>;
 
 export type SettingsUpdateAccountMutation = {
   __typename?: "Mutation";
-  updateSelfAccount?: Maybe<{
-    __typename?: "UserAccountDetails";
-    id?: Maybe<string>;
-    username: string;
-    email: string;
-  }>;
+  updateSelfAccount?:
+    | {
+        __typename?: "UserAccountDetails";
+        id?: string | null | undefined;
+        username: string;
+        email: string;
+      }
+    | null
+    | undefined;
 };
 
 export type SettingsChangePasswordMutationVariables = Exact<{
-  input?: Maybe<ChangePasswordInput>;
+  input?: InputMaybe<ChangePasswordInput>;
 }>;
 
 export type SettingsChangePasswordMutation = {
   __typename?: "Mutation";
-  changeSelfPassword?: Maybe<boolean>;
+  changeSelfPassword?: boolean | null | undefined;
 };
 
 export type SelfStreamKeysQueryVariables = Exact<{ [key: string]: never }>;
@@ -1913,12 +3607,14 @@ export type SelfStreamKeysQueryVariables = Exact<{ [key: string]: never }>;
 export type SelfStreamKeysQuery = {
   __typename?: "Query";
   selfStreamKeys: Array<
-    Maybe<{
-      __typename?: "StreamKey";
-      id: string;
-      name?: Maybe<string>;
-      channel: { __typename?: "Channel"; id: string; name: string };
-    }>
+    | {
+        __typename?: "StreamKey";
+        id: string;
+        name?: string | null | undefined;
+        channel: { __typename?: "Channel"; id: string; name: string };
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -1937,36 +3633,38 @@ export type UserSettingsChannelQueryVariables = Exact<{
 
 export type UserSettingsChannelQuery = {
   __typename?: "Query";
-  channel?: Maybe<{
-    __typename?: "Channel";
-    id: string;
-    name: string;
-    description?: Maybe<string>;
-    slug?: Maybe<string>;
-    thumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    activity?: Maybe<{
-      __typename?: "Activity";
-      id: string;
-      name: string;
-      verb?: Maybe<string>;
-      icon?: Maybe<string>;
-    }>;
-  }>;
-  selfStreamKeys: Array<
-    Maybe<{
-      __typename?: "StreamKey";
-      id: string;
-      channel: { __typename?: "Channel"; id: string };
-    }>
-  >;
+  channel?:
+    | {
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        description?: string | null | undefined;
+        slug?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+              icon?: string | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type EditChannelMutationVariables = Exact<{
-  input?: Maybe<UpdateChannelInput>;
+  input?: InputMaybe<UpdateChannelInput>;
 }>;
 
 export type EditChannelMutation = {
@@ -1975,20 +3673,26 @@ export type EditChannelMutation = {
     __typename?: "Channel";
     id: string;
     name: string;
-    description?: Maybe<string>;
-    slug?: Maybe<string>;
-    thumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    activity?: Maybe<{
-      __typename?: "Activity";
-      id: string;
-      name: string;
-      verb?: Maybe<string>;
-      icon?: Maybe<string>;
-    }>;
+    description?: string | null | undefined;
+    slug?: string | null | undefined;
+    thumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    activity?:
+      | {
+          __typename?: "Activity";
+          id: string;
+          name: string;
+          verb?: string | null | undefined;
+          icon?: string | null | undefined;
+        }
+      | null
+      | undefined;
   };
 };
 
@@ -1999,12 +3703,14 @@ export type UserSettingsChannelKeysQueryVariables = Exact<{
 export type UserSettingsChannelKeysQuery = {
   __typename?: "Query";
   streamKeysByChannelId: Array<
-    Maybe<{
-      __typename?: "StreamKey";
-      id: string;
-      name?: Maybe<string>;
-      channel: { __typename?: "Channel"; id: string; name: string };
-    }>
+    | {
+        __typename?: "StreamKey";
+        id: string;
+        name?: string | null | undefined;
+        channel: { __typename?: "Channel"; id: string; name: string };
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -2028,31 +3734,39 @@ export type UserSettingsRevokeStreamKeyMutation = {
 };
 
 export type UserSettingsChannelsQueryVariables = Exact<{
-  filter?: Maybe<ChannelsQueryFilter>;
+  filter?: InputMaybe<ChannelsQueryFilter>;
 }>;
 
 export type UserSettingsChannelsQuery = {
   __typename?: "Query";
   channels: Array<
-    Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      description?: Maybe<string>;
-      slug?: Maybe<string>;
-      thumbnail?: Maybe<{
-        __typename?: "File";
-        id?: Maybe<string>;
-        filename: string;
-      }>;
-      activity?: Maybe<{
-        __typename?: "Activity";
+    | {
+        __typename?: "Channel";
         id: string;
         name: string;
-        verb?: Maybe<string>;
-        icon?: Maybe<string>;
-      }>;
-    }>
+        description?: string | null | undefined;
+        slug?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+              icon?: string | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -2066,7 +3780,7 @@ export type UserSettingsDeleteChannelMutation = {
 };
 
 export type UserSettingsCreateChannelMutationVariables = Exact<{
-  input?: Maybe<CreateChannelInput>;
+  input?: InputMaybe<CreateChannelInput>;
 }>;
 
 export type UserSettingsCreateChannelMutation = {
@@ -2075,20 +3789,26 @@ export type UserSettingsCreateChannelMutation = {
     __typename?: "Channel";
     id: string;
     name: string;
-    description?: Maybe<string>;
-    slug?: Maybe<string>;
-    thumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    activity?: Maybe<{
-      __typename?: "Activity";
-      id: string;
-      name: string;
-      verb?: Maybe<string>;
-      icon?: Maybe<string>;
-    }>;
+    description?: string | null | undefined;
+    slug?: string | null | undefined;
+    thumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    activity?:
+      | {
+          __typename?: "Activity";
+          id: string;
+          name: string;
+          verb?: string | null | undefined;
+          icon?: string | null | undefined;
+        }
+      | null
+      | undefined;
   };
 };
 
@@ -2101,38 +3821,47 @@ export type UserSettingsCreateChannelKeyMutation = {
   createStreamKey: {
     __typename?: "StreamKey";
     id: string;
-    name?: Maybe<string>;
+    name?: string | null | undefined;
   };
 };
 
 export type UserSettingsProfileFragmentFragment = {
   __typename?: "User";
-  id?: Maybe<string>;
+  id?: string | null | undefined;
   username: string;
-  displayName?: Maybe<string>;
-  emailHash?: Maybe<string>;
-  bio?: Maybe<string>;
-  avatar?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-    encoding: string;
-    mimetype: string;
-  }>;
-  streamThumbnail?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-    encoding: string;
-    mimetype: string;
-  }>;
-  header?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-    encoding: string;
-    mimetype: string;
-  }>;
+  displayName?: string | null | undefined;
+  emailHash?: string | null | undefined;
+  bio?: string | null | undefined;
+  avatar?:
+    | {
+        __typename?: "File";
+        id?: string | null | undefined;
+        filename: string;
+        encoding: string;
+        mimetype: string;
+      }
+    | null
+    | undefined;
+  streamThumbnail?:
+    | {
+        __typename?: "File";
+        id?: string | null | undefined;
+        filename: string;
+        encoding: string;
+        mimetype: string;
+      }
+    | null
+    | undefined;
+  header?:
+    | {
+        __typename?: "File";
+        id?: string | null | undefined;
+        filename: string;
+        encoding: string;
+        mimetype: string;
+      }
+    | null
+    | undefined;
 };
 
 export type UserSettingsProfileQueryVariables = Exact<{ [key: string]: never }>;
@@ -2141,32 +3870,41 @@ export type UserSettingsProfileQuery = {
   __typename?: "Query";
   self: {
     __typename?: "User";
-    id?: Maybe<string>;
+    id?: string | null | undefined;
     username: string;
-    displayName?: Maybe<string>;
-    emailHash?: Maybe<string>;
-    bio?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
-    streamThumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
-    header?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
+    displayName?: string | null | undefined;
+    emailHash?: string | null | undefined;
+    bio?: string | null | undefined;
+    avatar?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+          encoding: string;
+          mimetype: string;
+        }
+      | null
+      | undefined;
+    streamThumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+          encoding: string;
+          mimetype: string;
+        }
+      | null
+      | undefined;
+    header?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+          encoding: string;
+          mimetype: string;
+        }
+      | null
+      | undefined;
   };
 };
 
@@ -2176,35 +3914,47 @@ export type UpdateUserSettingsProfileMutationVariables = Exact<{
 
 export type UpdateUserSettingsProfileMutation = {
   __typename?: "Mutation";
-  updateSelf?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    username: string;
-    displayName?: Maybe<string>;
-    emailHash?: Maybe<string>;
-    bio?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
-    streamThumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
-    header?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-      encoding: string;
-      mimetype: string;
-    }>;
-  }>;
+  updateSelf?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        emailHash?: string | null | undefined;
+        bio?: string | null | undefined;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+              encoding: string;
+              mimetype: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+              encoding: string;
+              mimetype: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+              encoding: string;
+              mimetype: string;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type UserSettingsPreferencesQueryVariables = Exact<{
@@ -2215,11 +3965,14 @@ export type UserSettingsPreferencesQuery = {
   __typename?: "Query";
   userSettings: {
     __typename?: "UserSettings";
-    id?: Maybe<string>;
-    useGravatar?: Maybe<boolean>;
-    singleUserMode?: Maybe<boolean>;
-    featureInDirectory?: Maybe<boolean>;
-    singleUserChannel?: Maybe<{ __typename?: "Channel"; id: string }>;
+    id?: string | null | undefined;
+    useGravatar?: boolean | null | undefined;
+    singleUserMode?: boolean | null | undefined;
+    featureInDirectory?: boolean | null | undefined;
+    singleUserChannel?:
+      | { __typename?: "Channel"; id: string }
+      | null
+      | undefined;
   };
 };
 
@@ -2229,14 +3982,20 @@ export type UpdateUserSettingsPreferencesMutationVariables = Exact<{
 
 export type UpdateUserSettingsPreferencesMutation = {
   __typename?: "Mutation";
-  updateUserSettings?: Maybe<{
-    __typename?: "UserSettings";
-    id?: Maybe<string>;
-    useGravatar?: Maybe<boolean>;
-    singleUserMode?: Maybe<boolean>;
-    featureInDirectory?: Maybe<boolean>;
-    singleUserChannel?: Maybe<{ __typename?: "Channel"; id: string }>;
-  }>;
+  updateUserSettings?:
+    | {
+        __typename?: "UserSettings";
+        id?: string | null | undefined;
+        useGravatar?: boolean | null | undefined;
+        singleUserMode?: boolean | null | undefined;
+        featureInDirectory?: boolean | null | undefined;
+        singleUserChannel?:
+          | { __typename?: "Channel"; id: string }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type GetFileForUploaderQueryVariables = Exact<{
@@ -2245,13 +4004,16 @@ export type GetFileForUploaderQueryVariables = Exact<{
 
 export type GetFileForUploaderQuery = {
   __typename?: "Query";
-  fileInfo?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-    mimetype: string;
-    encoding: string;
-  }>;
+  fileInfo?:
+    | {
+        __typename?: "File";
+        id?: string | null | undefined;
+        filename: string;
+        mimetype: string;
+        encoding: string;
+      }
+    | null
+    | undefined;
 };
 
 export type UploadFileWithUploaderMutationVariables = Exact<{
@@ -2262,7 +4024,7 @@ export type UploadFileWithUploaderMutation = {
   __typename?: "Mutation";
   uploadFile: {
     __typename?: "File";
-    id?: Maybe<string>;
+    id?: string | null | undefined;
     filename: string;
     mimetype: string;
     encoding: string;
@@ -2270,36 +4032,36 @@ export type UploadFileWithUploaderMutation = {
 };
 
 export type ActivitesSelectQueryVariables = Exact<{
-  filter?: Maybe<ActivityFilter>;
-  limit?: Maybe<ActivityLimit>;
+  filter?: InputMaybe<ActivityFilter>;
+  limit?: InputMaybe<ActivityLimit>;
 }>;
 
 export type ActivitesSelectQuery = {
   __typename?: "Query";
   activities: Array<
-    Maybe<{ __typename?: "Activity"; id: string; name: string }>
+    { __typename?: "Activity"; id: string; name: string } | null | undefined
   >;
 };
 
 export type ActivitiesSelectInitialQueryVariables = Exact<{
-  filter?: Maybe<ActivityFilter>;
+  filter?: InputMaybe<ActivityFilter>;
 }>;
 
 export type ActivitiesSelectInitialQuery = {
   __typename?: "Query";
   activities: Array<
-    Maybe<{ __typename?: "Activity"; id: string; name: string }>
+    { __typename?: "Activity"; id: string; name: string } | null | undefined
   >;
 };
 
 export type SelfChannelsSelectQueryVariables = Exact<{
-  filter?: Maybe<ChannelsQueryFilter>;
+  filter?: InputMaybe<ChannelsQueryFilter>;
 }>;
 
 export type SelfChannelsSelectQuery = {
   __typename?: "Query";
   selfChannels: Array<
-    Maybe<{ __typename?: "Channel"; id: string; name: string }>
+    { __typename?: "Channel"; id: string; name: string } | null | undefined
   >;
 };
 
@@ -2309,131 +4071,171 @@ export type UserInfoQueryVariables = Exact<{
 
 export type UserInfoQuery = {
   __typename?: "Query";
-  user?: Maybe<{
-    __typename?: "User";
-    username: string;
-    displayName?: Maybe<string>;
-    avatar?: Maybe<{ __typename?: "File"; filename: string }>;
-  }>;
+  user?:
+    | {
+        __typename?: "User";
+        username: string;
+        displayName?: string | null | undefined;
+        avatar?: { __typename?: "File"; filename: string } | null | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type ChannelCommonFragment = {
   __typename?: "Channel";
   id: string;
   name: string;
-  slug?: Maybe<string>;
-  description?: Maybe<string>;
-  thumbnail?: Maybe<{
-    __typename?: "File";
-    filename: string;
-    id?: Maybe<string>;
-  }>;
-  status?: Maybe<{
-    __typename?: "ChannelStatus";
-    id?: Maybe<string>;
-    isLive?: Maybe<boolean>;
-    viewers?: Maybe<number>;
-  }>;
-  activity?: Maybe<{
-    __typename?: "Activity";
-    id: string;
-    name: string;
-    verb?: Maybe<string>;
-  }>;
-  user?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    username: string;
-    displayName?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    settings?: Maybe<{
-      __typename?: "UserSettings";
-      singleUserMode?: Maybe<boolean>;
-    }>;
-  }>;
+  slug?: string | null | undefined;
+  description?: string | null | undefined;
+  thumbnail?:
+    | { __typename?: "File"; filename: string; id?: string | null | undefined }
+    | null
+    | undefined;
+  status?:
+    | {
+        __typename?: "ChannelStatus";
+        id?: string | null | undefined;
+        isLive?: boolean | null | undefined;
+        viewers?: number | null | undefined;
+      }
+    | null
+    | undefined;
+  activity?:
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+      }
+    | null
+    | undefined;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              singleUserMode?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type ChannelFullFragment = {
   __typename?: "Channel";
   id: string;
   name: string;
-  description?: Maybe<string>;
-  slug?: Maybe<string>;
-  thumbnail?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-  }>;
-  activity?: Maybe<{
-    __typename?: "Activity";
-    id: string;
-    name: string;
-    verb?: Maybe<string>;
-    icon?: Maybe<string>;
-  }>;
+  description?: string | null | undefined;
+  slug?: string | null | undefined;
+  thumbnail?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  activity?:
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+        icon?: string | null | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type CurrentUserFragment = {
   __typename?: "User";
-  id?: Maybe<string>;
+  id?: string | null | undefined;
   username: string;
-  displayName?: Maybe<string>;
-  emailHash?: Maybe<string>;
-  bio?: Maybe<string>;
-  avatar?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  header?: Maybe<{ __typename?: "File"; id?: Maybe<string>; filename: string }>;
-  streamThumbnail?: Maybe<{
-    __typename?: "File";
-    id?: Maybe<string>;
-    filename: string;
-  }>;
+  displayName?: string | null | undefined;
+  emailHash?: string | null | undefined;
+  bio?: string | null | undefined;
+  avatar?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  header?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  streamThumbnail?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
   roles: Array<
-    Maybe<{
-      __typename?: "Role";
-      id: string;
-      parentId?: Maybe<string>;
-      name: string;
-      access: {
-        __typename?: "AccessTargets";
-        rights: {
-          __typename?: "AccessRights";
-          channels?: Maybe<Array<Maybe<AccessUnit>>>;
-          streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
-          users?: Maybe<Array<Maybe<AccessUnit>>>;
-          activities?: Maybe<Array<Maybe<AccessUnit>>>;
+    | {
+        __typename?: "Role";
+        id: string;
+        parentId?: string | null | undefined;
+        name: string;
+        access: {
+          __typename?: "AccessTargets";
+          rights: {
+            __typename?: "AccessRights";
+            channels?: Array<AccessUnit | null | undefined> | null | undefined;
+            streamKeys?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            users?: Array<AccessUnit | null | undefined> | null | undefined;
+            activities?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+          };
+          actions: {
+            __typename?: "Actions";
+            user?:
+              | {
+                  __typename?: "UserActions";
+                  silence?: boolean | null | undefined;
+                  ban?: boolean | null | undefined;
+                  warn?: boolean | null | undefined;
+                }
+              | null
+              | undefined;
+          };
         };
-        actions: {
-          __typename?: "Actions";
-          user?: Maybe<{
-            __typename?: "UserActions";
-            silence?: Maybe<boolean>;
-            ban?: Maybe<boolean>;
-            warn?: Maybe<boolean>;
-          }>;
-        };
-      };
-    }>
+      }
+    | null
+    | undefined
   >;
   channels: Array<
-    Maybe<{
-      __typename?: "Channel";
-      id: string;
-      name: string;
-      slug?: Maybe<string>;
-      description?: Maybe<string>;
-      activity?: Maybe<{
-        __typename?: "Activity";
+    | {
+        __typename?: "Channel";
         id: string;
-        icon?: Maybe<string>;
-        image?: Maybe<string>;
         name: string;
-        verb?: Maybe<string>;
-      }>;
-    }>
+        slug?: string | null | undefined;
+        description?: string | null | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              icon?: string | null | undefined;
+              image?: string | null | undefined;
+              name: string;
+              verb?: string | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
   >;
 };
 
@@ -2443,69 +4245,97 @@ export type CurrentUserFullQuery = {
   __typename?: "Query";
   self: {
     __typename?: "User";
-    id?: Maybe<string>;
+    id?: string | null | undefined;
     username: string;
-    displayName?: Maybe<string>;
-    emailHash?: Maybe<string>;
-    bio?: Maybe<string>;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    header?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    streamThumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
+    displayName?: string | null | undefined;
+    emailHash?: string | null | undefined;
+    bio?: string | null | undefined;
+    avatar?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    header?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    streamThumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
     roles: Array<
-      Maybe<{
-        __typename?: "Role";
-        id: string;
-        parentId?: Maybe<string>;
-        name: string;
-        access: {
-          __typename?: "AccessTargets";
-          rights: {
-            __typename?: "AccessRights";
-            channels?: Maybe<Array<Maybe<AccessUnit>>>;
-            streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
-            users?: Maybe<Array<Maybe<AccessUnit>>>;
-            activities?: Maybe<Array<Maybe<AccessUnit>>>;
+      | {
+          __typename?: "Role";
+          id: string;
+          parentId?: string | null | undefined;
+          name: string;
+          access: {
+            __typename?: "AccessTargets";
+            rights: {
+              __typename?: "AccessRights";
+              channels?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              streamKeys?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              users?: Array<AccessUnit | null | undefined> | null | undefined;
+              activities?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+            };
+            actions: {
+              __typename?: "Actions";
+              user?:
+                | {
+                    __typename?: "UserActions";
+                    silence?: boolean | null | undefined;
+                    ban?: boolean | null | undefined;
+                    warn?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            };
           };
-          actions: {
-            __typename?: "Actions";
-            user?: Maybe<{
-              __typename?: "UserActions";
-              silence?: Maybe<boolean>;
-              ban?: Maybe<boolean>;
-              warn?: Maybe<boolean>;
-            }>;
-          };
-        };
-      }>
+        }
+      | null
+      | undefined
     >;
     channels: Array<
-      Maybe<{
-        __typename?: "Channel";
-        id: string;
-        name: string;
-        slug?: Maybe<string>;
-        description?: Maybe<string>;
-        activity?: Maybe<{
-          __typename?: "Activity";
+      | {
+          __typename?: "Channel";
           id: string;
-          icon?: Maybe<string>;
-          image?: Maybe<string>;
           name: string;
-          verb?: Maybe<string>;
-        }>;
-      }>
+          slug?: string | null | undefined;
+          description?: string | null | undefined;
+          activity?:
+            | {
+                __typename?: "Activity";
+                id: string;
+                icon?: string | null | undefined;
+                image?: string | null | undefined;
+                name: string;
+                verb?: string | null | undefined;
+              }
+            | null
+            | undefined;
+        }
+      | null
+      | undefined
     >;
   };
 };
@@ -2516,10 +4346,13 @@ export type CurrentUserSettingsQuery = {
   __typename?: "Query";
   userSettings: {
     __typename?: "UserSettings";
-    id?: Maybe<string>;
-    useGravatar?: Maybe<boolean>;
-    singleUserMode?: Maybe<boolean>;
-    singleUserChannel?: Maybe<{ __typename?: "Channel"; id: string }>;
+    id?: string | null | undefined;
+    useGravatar?: boolean | null | undefined;
+    singleUserMode?: boolean | null | undefined;
+    singleUserChannel?:
+      | { __typename?: "Channel"; id: string }
+      | null
+      | undefined;
   };
 };
 
@@ -2530,11 +4363,10 @@ export type SignInMutationVariables = Exact<{
 
 export type SignInMutation = {
   __typename?: "Mutation";
-  signIn?: Maybe<{
-    __typename?: "SessionResponse";
-    token: string;
-    expiresAt: any;
-  }>;
+  signIn?:
+    | { __typename?: "SessionResponse"; token: string; expiresAt: any }
+    | null
+    | undefined;
 };
 
 export type SignUpMutationVariables = Exact<{
@@ -2545,7 +4377,11 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = {
   __typename?: "Mutation";
-  signUp: { __typename?: "User"; id?: Maybe<string>; username: string };
+  signUp: {
+    __typename?: "User";
+    id?: string | null | undefined;
+    username: string;
+  };
 };
 
 export type ChannelPageQueryVariables = Exact<{
@@ -2554,40 +4390,61 @@ export type ChannelPageQueryVariables = Exact<{
 
 export type ChannelPageQuery = {
   __typename?: "Query";
-  channel?: Maybe<{
-    __typename?: "Channel";
-    id: string;
-    name: string;
-    description?: Maybe<string>;
-    slug?: Maybe<string>;
-    thumbnail?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    activity?: Maybe<{
-      __typename?: "Activity";
-      id: string;
-      name: string;
-      verb?: Maybe<string>;
-    }>;
-    user?: Maybe<{
-      __typename?: "User";
-      id?: Maybe<string>;
-      username: string;
-      displayName?: Maybe<string>;
-      avatar?: Maybe<{
-        __typename?: "File";
-        id?: Maybe<string>;
-        filename: string;
-      }>;
-      settings?: Maybe<{
-        __typename?: "UserSettings";
-        singleUserMode?: Maybe<boolean>;
-      }>;
-    }>;
-    meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
-  }>;
+  channel?:
+    | {
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        description?: string | null | undefined;
+        slug?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+              avatar?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              settings?:
+                | {
+                    __typename?: "UserSettings";
+                    singleUserMode?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "ChannelMeta"; subscriberCount: number }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type ChannelPageStatusQueryVariables = Exact<{
@@ -2596,14 +4453,20 @@ export type ChannelPageStatusQueryVariables = Exact<{
 
 export type ChannelPageStatusQuery = {
   __typename?: "Query";
-  channel?: Maybe<{
-    __typename?: "Channel";
-    status?: Maybe<{
-      __typename?: "ChannelStatus";
-      id?: Maybe<string>;
-      isLive?: Maybe<boolean>;
-    }>;
-  }>;
+  channel?:
+    | {
+        __typename?: "Channel";
+        status?:
+          | {
+              __typename?: "ChannelStatus";
+              id?: string | null | undefined;
+              isLive?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type SubscribeToChannelMutationVariables = Exact<{
@@ -2630,7 +4493,7 @@ export type ChannelSubscriptionQueryVariables = Exact<{
 
 export type ChannelSubscriptionQuery = {
   __typename?: "Query";
-  subscription?: Maybe<{ __typename?: "Subscription"; id: string }>;
+  subscription?: { __typename?: "Subscription"; id: string } | null | undefined;
 };
 
 export type UserPageQueryVariables = Exact<{
@@ -2639,106 +4502,165 @@ export type UserPageQueryVariables = Exact<{
 
 export type UserPageQuery = {
   __typename?: "Query";
-  user?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    username: string;
-    displayName?: Maybe<string>;
-    bio?: Maybe<string>;
-    emailHash?: Maybe<string>;
-    channels: Array<
-      Maybe<{
-        __typename?: "Channel";
-        id: string;
-        name: string;
-        slug?: Maybe<string>;
-        description?: Maybe<string>;
-        thumbnail?: Maybe<{
-          __typename?: "File";
-          filename: string;
-          id?: Maybe<string>;
-        }>;
-        status?: Maybe<{
-          __typename?: "ChannelStatus";
-          id?: Maybe<string>;
-          isLive?: Maybe<boolean>;
-          viewers?: Maybe<number>;
-        }>;
-        activity?: Maybe<{
-          __typename?: "Activity";
-          id: string;
-          name: string;
-          verb?: Maybe<string>;
-        }>;
-        user?: Maybe<{
-          __typename?: "User";
-          id?: Maybe<string>;
-          username: string;
-          displayName?: Maybe<string>;
-          avatar?: Maybe<{
-            __typename?: "File";
-            id?: Maybe<string>;
-            filename: string;
-          }>;
-          settings?: Maybe<{
-            __typename?: "UserSettings";
-            singleUserMode?: Maybe<boolean>;
-          }>;
-        }>;
-      }>
-    >;
-    avatar?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    header?: Maybe<{
-      __typename?: "File";
-      id?: Maybe<string>;
-      filename: string;
-    }>;
-    streamThumbnail?: Maybe<{ __typename?: "File"; filename: string }>;
-    meta?: Maybe<{ __typename?: "UserMeta"; followerCount: number }>;
-    settings?: Maybe<{
-      __typename?: "UserSettings";
-      useGravatar?: Maybe<boolean>;
-      singleUserMode?: Maybe<boolean>;
-      singleUserChannel?: Maybe<{
-        __typename?: "Channel";
-        id: string;
-        name: string;
-        description?: Maybe<string>;
-        slug?: Maybe<string>;
-        thumbnail?: Maybe<{
-          __typename?: "File";
-          id?: Maybe<string>;
-          filename: string;
-        }>;
-        activity?: Maybe<{
-          __typename?: "Activity";
-          id: string;
-          name: string;
-          verb?: Maybe<string>;
-        }>;
-        user?: Maybe<{
-          __typename?: "User";
-          id?: Maybe<string>;
-          username: string;
-          displayName?: Maybe<string>;
-          avatar?: Maybe<{
-            __typename?: "File";
-            id?: Maybe<string>;
-            filename: string;
-          }>;
-          settings?: Maybe<{
-            __typename?: "UserSettings";
-            singleUserMode?: Maybe<boolean>;
-          }>;
-        }>;
-        meta?: Maybe<{ __typename?: "ChannelMeta"; subscriberCount: number }>;
-      }>;
-    }>;
-  }>;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+        bio?: string | null | undefined;
+        emailHash?: string | null | undefined;
+        channels: Array<
+          | {
+              __typename?: "Channel";
+              id: string;
+              name: string;
+              slug?: string | null | undefined;
+              description?: string | null | undefined;
+              thumbnail?:
+                | {
+                    __typename?: "File";
+                    filename: string;
+                    id?: string | null | undefined;
+                  }
+                | null
+                | undefined;
+              status?:
+                | {
+                    __typename?: "ChannelStatus";
+                    id?: string | null | undefined;
+                    isLive?: boolean | null | undefined;
+                    viewers?: number | null | undefined;
+                  }
+                | null
+                | undefined;
+              activity?:
+                | {
+                    __typename?: "Activity";
+                    id: string;
+                    name: string;
+                    verb?: string | null | undefined;
+                  }
+                | null
+                | undefined;
+              user?:
+                | {
+                    __typename?: "User";
+                    id?: string | null | undefined;
+                    username: string;
+                    displayName?: string | null | undefined;
+                    avatar?:
+                      | {
+                          __typename?: "File";
+                          id?: string | null | undefined;
+                          filename: string;
+                        }
+                      | null
+                      | undefined;
+                    settings?:
+                      | {
+                          __typename?: "UserSettings";
+                          singleUserMode?: boolean | null | undefined;
+                        }
+                      | null
+                      | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined
+        >;
+        avatar?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        header?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        streamThumbnail?:
+          | { __typename?: "File"; filename: string }
+          | null
+          | undefined;
+        meta?:
+          | { __typename?: "UserMeta"; followerCount: number }
+          | null
+          | undefined;
+        settings?:
+          | {
+              __typename?: "UserSettings";
+              useGravatar?: boolean | null | undefined;
+              singleUserMode?: boolean | null | undefined;
+              singleUserChannel?:
+                | {
+                    __typename?: "Channel";
+                    id: string;
+                    name: string;
+                    description?: string | null | undefined;
+                    slug?: string | null | undefined;
+                    thumbnail?:
+                      | {
+                          __typename?: "File";
+                          id?: string | null | undefined;
+                          filename: string;
+                        }
+                      | null
+                      | undefined;
+                    activity?:
+                      | {
+                          __typename?: "Activity";
+                          id: string;
+                          name: string;
+                          verb?: string | null | undefined;
+                        }
+                      | null
+                      | undefined;
+                    user?:
+                      | {
+                          __typename?: "User";
+                          id?: string | null | undefined;
+                          username: string;
+                          displayName?: string | null | undefined;
+                          avatar?:
+                            | {
+                                __typename?: "File";
+                                id?: string | null | undefined;
+                                filename: string;
+                              }
+                            | null
+                            | undefined;
+                          settings?:
+                            | {
+                                __typename?: "UserSettings";
+                                singleUserMode?: boolean | null | undefined;
+                              }
+                            | null
+                            | undefined;
+                        }
+                      | null
+                      | undefined;
+                    meta?:
+                      | { __typename?: "ChannelMeta"; subscriberCount: number }
+                      | null
+                      | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type UserPageChannelStatusQueryVariables = Exact<{
@@ -2747,21 +4669,29 @@ export type UserPageChannelStatusQueryVariables = Exact<{
 
 export type UserPageChannelStatusQuery = {
   __typename?: "Query";
-  user?: Maybe<{
-    __typename?: "User";
-    id?: Maybe<string>;
-    channels: Array<
-      Maybe<{
-        __typename?: "Channel";
-        id: string;
-        status?: Maybe<{
-          __typename?: "ChannelStatus";
-          id?: Maybe<string>;
-          isLive?: Maybe<boolean>;
-        }>;
-      }>
-    >;
-  }>;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        channels: Array<
+          | {
+              __typename?: "Channel";
+              id: string;
+              status?:
+                | {
+                    __typename?: "ChannelStatus";
+                    id?: string | null | undefined;
+                    isLive?: boolean | null | undefined;
+                  }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined
+        >;
+      }
+    | null
+    | undefined;
 };
 
 export type SubscribeToUserMutationVariables = Exact<{
@@ -2788,5 +4718,5 @@ export type UserSubscriptionQueryVariables = Exact<{
 
 export type UserSubscriptionQuery = {
   __typename?: "Query";
-  subscription?: Maybe<{ __typename?: "Subscription"; id: string }>;
+  subscription?: { __typename?: "Subscription"; id: string } | null | undefined;
 };

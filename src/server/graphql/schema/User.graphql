@@ -114,8 +114,6 @@ input ChangePasswordInput {
 extend type Mutation {
   signUp(input: CreateUserInput!): User!
   signIn(input: SignInInput!): SessionResponse
-  updateUser(input: UpdateUserInput!): User
-    @auth(rights: [{ unit: WRITE, subject: "users" }])
   updateSelf(input: UpdateSelfInput!): User
     @auth(rights: [{ unit: SELF, subject: "users" }])
   revokeSelfSessions(input: [String]!): Boolean

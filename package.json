@@ -11,6 +11,7 @@
     "dev:server": "nodemon -e ts,tsx,graphql --ignore src/shared/theme --ignore src/client --ignore src/pages --exec \"ts-node -r tsconfig-paths/register src/server/server.ts\"",
     "run:server": "NODE_ENV=production ts-node -r tsconfig-paths/register src/server/server.ts",
     "run:ctl": "NODE_ENV=production node dist/cli/index.js",
+    "dev:ctl": "ts-node -r tsconfig-paths/register src/cli/index.ts",
     "build:server": "ncc build src/server/server.ts -o ./dist/server",
     "build:client": "next build",
     "build:client:docker": "NODE_ENV=docker next build",

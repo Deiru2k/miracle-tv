@@ -7,10 +7,11 @@ import {
 } from "miracle-tv-client/components/ui/Navigation";
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 import { AdminDashboard } from "miracle-tv-client/AdminPanel/AdminDashboard";
+import { AdminUserList } from "miracle-tv-client/AdminPanel/Users";
 
 const components: NavComponentMap = {
   "/admin": { component: <AdminDashboard />, exact: true },
-  "/admin/users": { component: <>Users lmao</> },
+  "/admin/users": { component: <AdminUserList /> },
 };
 
 const nav: NavConfig = [

@@ -33,9 +33,6 @@ export const userMutations: UserMutationResolvers = {
     }
     return userSettings.updateSettings(input, user.id);
   },
-  async updateUser(_, { input }, { db: { users } }) {
-    return users.updateUser(input) as any;
-  },
   async updateSelfAccount(_, { input }, { db: { users }, user }) {
     return users.updateUserAccount({
       id: user.id,
