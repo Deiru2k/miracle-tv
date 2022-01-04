@@ -1,4 +1,4 @@
-import { checkRight } from "miracle-tv-server/db/acl/roles";
+import { checkRight } from "miracle-tv-shared/acl/utils";
 import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";
 import { IncorrectUserError } from "miracle-tv-server/graphql/errors/users";
 import { AccessUnit, MutationResolvers } from "miracle-tv-shared/graphql";

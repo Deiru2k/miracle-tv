@@ -61,9 +61,9 @@ const nav: NavConfig = [
     : null,
 ].filter(Boolean);
 const components: NavComponentMap = {
-  "/dashboard/home/streams": <Streams />,
-  "/dashboard/home/feed": <Feeds />,
-  "/dashboard/home/directory": <DashboardUserDirectory />,
+  "/dashboard/home/streams": { component: <Streams /> },
+  "/dashboard/home/feed": { component: <Feeds /> },
+  "/dashboard/home/directory": { component: <DashboardUserDirectory /> },
 };
 
 const Dashboard = () => {

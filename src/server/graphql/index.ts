@@ -50,7 +50,7 @@ import {
   activityResolver,
 } from "miracle-tv-server/graphql/resolvers/activities";
 import { RolesModel } from "miracle-tv-server/db/models/Roles";
-import { getCompleteRights } from "miracle-tv-server/db/acl/roles";
+import { getCompleteRights } from "miracle-tv-shared/acl/utils";
 import { roleResolvers } from "miracle-tv-server/graphql/resolvers/roles";
 import config from "miracle-tv-server/config";
 import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
