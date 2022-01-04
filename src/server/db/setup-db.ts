@@ -21,32 +21,6 @@ export const connection = rdb.connect({
   port: config.database?.port || 28015,
 });
 
-const cleanOrphanKeys = async (con: rdb.Connection) => {
-  const streamKeys = await rdb
-    .db(config.database?.db || "miracle-tv")
-    .table("stream-keys")
-    .filter({})
-    .pluck("channelId", "id")
-    .coerceTo("array")
-    .run(con);
-  streamKeys.forEach(async ({ id, channelId }) => {
-    const channel = await rdb
-      .db(config.database?.db || "miracle-tv")
-      .table("channels")
-      .get(channelId)
-      .run(con);
-
-    if (!channel) {
-      await rdb
-        .db(config.database?.db || "miracle-tv")
-        .table("stream-keys")
-        .get(id)
-        .delete()
-        .run(con);
-    }
-  });
-};
-
 export const setupDB = async () => {
   const con = await connection;
   console.info("");
@@ -78,7 +52,6 @@ export const setupDB = async () => {
   );
   console.info(green`- ✔ Table Check Complete!`);
   console.info(green`✔ Database Check Complete!`);
-  await cleanOrphanKeys(con);
   const res = await generateRoles();
   console.info("");
   return res;
