@@ -18,12 +18,6 @@ gql`
     channel(id: $id) {
       ...ChannelFull
     }
-    selfStreamKeys {
-      id
-      channel {
-        id
-      }
-    }
   }
   ${channelFragment}
 `;
@@ -41,7 +35,7 @@ type Props = { id: string };
 
 export const ChannelEdit = ({ id }: Props) => {
   const toast = useToast();
-  const { data: { channel } = {}, error } = useUserSettingsChannelQuery({
+  const { data: { channel } = {} } = useUserSettingsChannelQuery({
     variables: { id },
   });
 
