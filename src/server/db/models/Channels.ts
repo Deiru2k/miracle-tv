@@ -13,6 +13,7 @@ import {
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
 import { DbChannel } from "miracle-tv-server/db/models/types";
+import { StreamKeysModel } from "./StreamKeys";
 
 export class ChanelsModel extends Model {
   table = db.table("channels");
@@ -149,6 +150,8 @@ export class ChanelsModel extends Model {
     if (result.errors !== 0) {
       throw new ServerError("Could not delete any channels");
     }
+    const streamKeys = new StreamKeysModel(this.conn);
+    streamKeys.deleteStreamKeysByChannelId(channel.id);
     return true;
   }
 }
