@@ -1,4 +1,4 @@
-import { getCompleteRights } from "miracle-tv-server/db/acl/roles";
+import { getCompleteRights } from "miracle-tv-shared/acl/utils";
 import { QueryResolvers, RoleResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 

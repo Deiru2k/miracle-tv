@@ -1,6 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
-import { AtSignIcon, ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
+import {
+  AtSignIcon,
+  ChevronDownIcon,
+  InfoIcon,
+  SettingsIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -28,12 +33,17 @@ import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { LiveUpdateSwitch } from "miracle-tv-client/context/liveUpdate";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { hasAdminPanelAccess } from "miracle-tv-shared/acl/utils";
 
 export const Navbar = () => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const { currentUser, isUserCalled, isUserLoading, logout } = useCurrentUser();
   const { currentSettings, isSettingsLoading, refetchSettings } =
     useCurrentUserSettings();
+  const hasAdminAccesss = useMemo(
+    () => hasAdminPanelAccess(currentUser?.roles ?? []),
+    [currentUser]
+  );
 
   useEffect(() => {
     if (currentUser?.id && !currentSettings) refetchSettings();
@@ -110,6 +120,14 @@ export const Navbar = () => {
                     Settings
                   </Link>
                 </MenuItem>
+                {hasAdminAccesss && (
+                  <MenuItem>
+                    <Link href="/admin" w="100%">
+                      <InfoIcon mr={2} />
+                      Admin panel
+                    </Link>
+                  </MenuItem>
+                )}
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
                 </MenuItem>

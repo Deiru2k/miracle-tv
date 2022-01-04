@@ -1,6 +1,11 @@
-import { AccessUnit, Role } from "miracle-tv-shared/graphql";
+import {
+  AccessRights,
+  AccessUnit,
+  Role,
+  UserActions,
+} from "miracle-tv-shared/graphql";
 import { pathOr } from "ramda";
-import { any, lensPath, view } from "ramda";
+import { any, flatten, identity, lensPath, view } from "ramda";
 
 type RowMap = Record<string, Role>;
 
@@ -81,4 +86,53 @@ export const checkRight = (
   return any((right: AccessUnit[]) => {
     return right.includes(unit);
   }, roles.map(view(channelEditRightsLens)));
+};
+
+const adminWritePermissions: Array<keyof AccessRights> = [
+  "channels",
+  "streamKeys",
+  "roles",
+  "users",
+  "activities",
+];
+
+const adminUserActionPermissions: Array<keyof UserActions> = [
+  "silence",
+  "ban",
+  "warn",
+];
+
+export const hasAdminPanelAccess = (userRoles: Role[]) => {
+  return any(
+    identity,
+    userRoles.map((role) => {
+      const hasRequiredPermission = any(
+        identity,
+        flatten(
+          (Object.keys(role.access.rights) as Array<keyof AccessRights>).map(
+            (key) => {
+              return (
+                adminWritePermissions.includes(key) &&
+                role.access.rights[key].includes(AccessUnit.Write)
+              );
+            }
+          )
+        )
+      );
+      const hasRequiredAction = any(
+        identity,
+        flatten(
+          (
+            Object.keys(role.access.actions.user) as Array<keyof UserActions>
+          ).map((key) => {
+            return (
+              adminUserActionPermissions.includes(key) &&
+              role.access.actions.user[key] === true
+            );
+          })
+        )
+      );
+      return hasRequiredPermission || hasRequiredAction;
+    })
+  );
 };

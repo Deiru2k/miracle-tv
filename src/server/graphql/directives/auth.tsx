@@ -2,7 +2,7 @@ import { getDirective, MapperKind, mapSchema } from "@graphql-tools/utils";
 import { defaultFieldResolver, GraphQLFieldConfig } from "graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { any, identity, prop } from "ramda";
-import { checkRight } from "miracle-tv-server/db/acl/roles";
+import { checkRight } from "miracle-tv-shared/acl/utils";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";
 import {
   AuthenticationError,

@@ -19,17 +19,18 @@ export type NavConfigRecord = {
   id: string;
   url: string;
   name: string;
+  exact?: boolean;
 };
 
 export type NavConfig = {
   id: string;
-  title: string;
+  title?: string;
   urls: NavConfigRecord[];
 }[];
 
 export type NavComponentMap = Record<
   string,
-  { [key: string]: React.ReactNode } | React.ReactNode
+  { exact?: boolean; component: React.ReactNode }
 >;
 
 export type NavTabSizes = [number, number];
@@ -51,6 +52,14 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
     ...styles.menu,
     flex: size?.[0] || styles.menu?.flex || 2,
   };
+
+  const isActive = useCallback(
+    (url: string, exact: boolean) => {
+      if (exact) return asPath === url;
+      return asPath.startsWith(url);
+    },
+    [asPath]
+  );
 
   const flexDirection = isMobile ? "column" : "row";
   const menuCollapseStyles = useMemo(
@@ -86,10 +95,19 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
     flex: size?.[1] || styles.content.flex || 10,
   };
 
-  const componentKey = Object.keys(components).find((key) =>
-    asPath.startsWith(key)
-  ) as keyof typeof components;
-  const component = components[componentKey];
+  // Find a component for navigation.
+  const { component } =
+    (useMemo(() => {
+      // First find the key
+      const componentKey = Object.keys(components).find((key) => {
+        const componentConfig = components[key];
+        // If we mark component item as "exact" it must match the path exactly
+        // Otherwise it matches if path is present at the beginning of current url
+        if (componentConfig.exact) return asPath === key;
+        return asPath.startsWith(key);
+      });
+      return components[componentKey] || {};
+    }, [asPath]) as NavComponentMap[keyof NavComponentMap]) || {};
 
   const onMobileClick = useCallback(() => {
     if (isMobile) {
@@ -107,7 +125,7 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
           p={2}
           bgColor={menuStyles.backgroundColor as any}
         >
-          <Heading fontSize="1.5rem">{title}</Heading>
+          {title && <Heading fontSize="1.5rem">{title}</Heading>}
           <IconButton
             variant="ghost"
             aria-label="Open menu"
@@ -131,12 +149,17 @@ export const Navigation = ({ title, components, nav, size }: Props) => {
         )}
         {nav.map((navConfig) => (
           <React.Fragment key={navConfig.id}>
-            <Heading sx={styles.header}>{navConfig.title}</Heading>
+            {navConfig.title && (
+              <Heading sx={styles.header}>{navConfig.title}</Heading>
+            )}
             {navConfig.urls.map((configRecord) => (
               <NavLink
                 href={configRecord.url}
                 key={configRecord.id}
-                isActive={asPath.startsWith(configRecord.url)}
+                isActive={isActive(
+                  configRecord.url,
+                  configRecord?.exact ?? false
+                )}
               >
                 {configRecord.name}
               </NavLink>

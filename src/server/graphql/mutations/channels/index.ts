@@ -1,4 +1,4 @@
-import { checkRight } from "miracle-tv-server/db/acl/roles";
+import { checkRight } from "miracle-tv-shared/acl/utils";
 import {
   AuthenticationError,
   AuthorizationError,

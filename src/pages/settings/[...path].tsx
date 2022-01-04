@@ -15,12 +15,12 @@ import { AccountSessions } from "miracle-tv-client/UserSettings/AccountSessions"
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 
 const components: NavComponentMap = {
-  "/settings/user/profile": <ProfileSettings />,
-  "/settings/user/preferences": <UserPreferences />,
-  "/settings/user/channels": <Channels />,
-  "/settings/security/account": <AccountSettings />,
-  "/settings/security/streamkeys": <AccountStreamKeys />,
-  "/settings/security/sessions": <AccountSessions />,
+  "/settings/user/profile": { component: <ProfileSettings /> },
+  "/settings/user/preferences": { component: <UserPreferences /> },
+  "/settings/user/channels": { component: <Channels /> },
+  "/settings/security/account": { component: <AccountSettings /> },
+  "/settings/security/streamkeys": { component: <AccountStreamKeys /> },
+  "/settings/security/sessions": { component: <AccountSessions /> },
 };
 
 const SettingsPage = () => {
