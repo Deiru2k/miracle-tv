@@ -100,13 +100,9 @@ export const Chat = ({ channelId }: Props) => {
   const chatLogRef = useRef<HTMLDivElement>();
   const { currentUser } = useCurrentUser();
   const [chatLog, setChatLog] = useState<ChatLog[]>([]);
-  const chatLogSorted = useMemo(
-    () => sort((msg) => msg.timestamp, chatLog),
-    [chatLog]
-  );
   const appendToChat = useCallback(
     (msg: ChatResponseType) => {
-      const chatMessages = takeLast(99, chatLogSorted);
+      const chatMessages = takeLast(99, chatLog);
       setChatLog([
         ...chatMessages,
         { username: msg.username, message: msg.data, timestamp: msg.timestamp },
@@ -116,7 +112,7 @@ export const Chat = ({ channelId }: Props) => {
         behavior: "smooth",
       });
     },
-    [chatLogSorted, setChatLog, chatLogRef]
+    [chatLog, setChatLog, chatLogRef]
   );
 
   const chatClient = useMemo(() => {
@@ -171,7 +167,7 @@ export const Chat = ({ channelId }: Props) => {
           height={0}
           ref={chatLogRef}
         >
-          {chatLogSorted.map((msg) => (
+          {chatLog.map((msg) => (
             <ChatMessage
               key={msg.timestamp}
               username={msg.username}
