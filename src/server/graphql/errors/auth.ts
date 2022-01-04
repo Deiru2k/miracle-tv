@@ -8,6 +8,30 @@ export class InputErrorLogin extends ApolloError {
   }
 }
 
+export class DeletedErrorLogin extends ApolloError {
+  constructor() {
+    super("Your account has been deleted", "E_LOGIN");
+
+    Object.defineProperty(this, "code", { value: "E_LOGIN" });
+  }
+}
+
+export class SuspendedErrorLogin extends ApolloError {
+  constructor() {
+    super("Your account has been suspended", "E_LOGIN");
+
+    Object.defineProperty(this, "code", { value: "E_LOGIN" });
+  }
+}
+
+export class DisabledErrorLogin extends ApolloError {
+  constructor() {
+    super("Login for your account has been disabled", "E_LOGIN");
+
+    Object.defineProperty(this, "code", { value: "E_LOGIN" });
+  }
+}
+
 export class AuthenticationError extends ApolloError {
   constructor() {
     super("Unauthenticated", "E_AUTHNETICATED");

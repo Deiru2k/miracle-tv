@@ -9,13 +9,17 @@ import {
 } from "miracle-tv-shared/graphql";
 
 export type DbUser = {
-  channels: [string];
-  roles: [string];
+  channels: string[];
+  roles: string[];
   avatar: string;
   header: string;
   streamThumbnail: string;
   email: string;
   password: string;
+  silenced?: boolean;
+  suspended?: boolean;
+  loginDisabled?: boolean;
+  deleted?: boolean;
 } & Omit<User, "channels" | "roles" | "avatar" | "header" | "streamThumbnail">;
 
 export type DbUserSettings = {

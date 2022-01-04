@@ -3,16 +3,29 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { head } from "ramda";
 import {
   AuthorizationError,
+  DeletedErrorLogin,
+  DisabledErrorLogin,
   InputErrorLogin,
+  SuspendedErrorLogin,
 } from "miracle-tv-server/graphql/errors/auth";
 import { compare } from "bcrypt";
 import { DbUser } from "miracle-tv-server/db/models/types";
 
 export const signInMutation: MutationResolvers<ResolverContext>["signIn"] =
   async (_, { input: { username, password } }, { db: { users, sessions } }) => {
-    const userList = await users.getUsers({ username });
+    const userList = await users.getUsers({ username }, undefined, true);
     const user: DbUser = head<DbUser>(userList);
-    if (await compare(password, user?.password || "")) {
+    const isPasswordValid = await compare(password, user?.password || "");
+    if (user?.loginDisabled) {
+      throw new DisabledErrorLogin();
+    }
+    if (user?.suspended) {
+      throw new SuspendedErrorLogin();
+    }
+    if (user?.deleted) {
+      throw new DeletedErrorLogin();
+    }
+    if (isPasswordValid) {
       return await sessions.createSession(user?.id!);
     }
     throw new InputErrorLogin();

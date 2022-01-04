@@ -21,6 +21,15 @@ import {
 import { hash } from "bcrypt";
 import { DbUser, DbUserSafe } from "miracle-tv-server/db/models/types";
 
+const defaultUser = {
+  roles: ["user"],
+  singleUserMode: false,
+  loginDisabled: false,
+  disabled: false,
+  suspended: false,
+  silenced: false,
+};
+
 export class UsersModel extends Model {
   table = db.table("users");
 
@@ -42,8 +51,7 @@ export class UsersModel extends Model {
       .insert({
         ...input,
         password: hashed,
-        roles: ["user"],
-        singleUserMode: false,
+        ...defaultUser,
       })
       .run(this.conn)
       .then(async (result) => {
@@ -52,8 +60,8 @@ export class UsersModel extends Model {
       })) as User;
   }
 
-  async getUserById(id: string): Promise<DbUser | null> {
-    return (await this.table.get(id).run(this.conn)) as DbUser | null;
+  async getUserById<T extends object = DbUser>(id: string): Promise<T | null> {
+    return this.table.get(id).run(this.conn) as T | null;
   }
 
   async getUsersForDirectory(limit?: QueryLimit): Promise<User[]> {
@@ -97,10 +105,17 @@ export class UsersModel extends Model {
     return this.sanitizeUser(user);
   }
 
-  async getUsers(
-    { ids, username, displayName, ...filter }: UsersFilter = {},
-    limit?: QueryLimit
-  ): Promise<DbUser[]> {
+  userFilter(
+    { ids, username, ...filter }: UsersFilter = {},
+    limit?: QueryLimit,
+    includeDisabled: boolean = false
+  ) {
+    const disabledFilter = !includeDisabled
+      ? {
+          suspended: false,
+          disabled: false,
+        }
+      : {};
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query
       .filter((doc: any) => {
@@ -109,7 +124,7 @@ export class UsersModel extends Model {
         }
         return true;
       })
-      .filter(filter);
+      .filter({ ...filter, ...disabledFilter });
 
     if (limit?.skip) {
       filteredQuery = filteredQuery.skip(limit.skip);
@@ -117,8 +132,25 @@ export class UsersModel extends Model {
     if (limit?.limit) {
       filteredQuery = filteredQuery.limit(limit.limit);
     }
+    return filteredQuery;
+  }
 
-    return (await filteredQuery.coerceTo("array").run(this.conn)) as DbUser[];
+  async getUsers<T = DbUser>(
+    filter: UsersFilter,
+    limit?: QueryLimit,
+    includeDisabled: boolean = false
+  ): Promise<T[]> {
+    const filteredQuery = this.userFilter(filter, limit, includeDisabled);
+    return (await filteredQuery.coerceTo("array").run(this.conn)) as T[];
+  }
+
+  async getUserCount(
+    filter: UsersFilter,
+    limit?: QueryLimit,
+    includeDisabled: boolean = false
+  ): Promise<number> {
+    const filteredQuery = this.userFilter(filter, limit, includeDisabled);
+    return (await filteredQuery.count().run(this.conn)) as number;
   }
 
   async getUsersSafe(filter: UsersFilter = {}): Promise<User[]> {
@@ -173,6 +205,16 @@ export class UsersModel extends Model {
       throw new ServerError("Updating password failed");
     }
 
+    return true;
+  }
+  async bulkUpdate(ids: string[], input: Partial<DbUser>) {
+    const result = await this.table
+      .getAll(...ids)
+      .update(input)
+      .run(this.conn);
+    if (result.errors) {
+      throw new ServerError("Error deleting users");
+    }
     return true;
   }
 }

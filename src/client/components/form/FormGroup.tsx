@@ -12,12 +12,13 @@ export type FormGroupChakraProps = {
   errorProps?: HelpTextProps;
 };
 
-type Props = {
+export type FormGroupProps = {
   name: string;
   label?: string;
   error?: string;
   help?: string | React.ReactNode;
   hideLabel?: boolean;
+  isInline?: boolean;
   children: React.ReactNode | React.ReactNode[];
 } & FormGroupChakraProps &
   FormControlProps;
@@ -29,14 +30,34 @@ export const FormGroup = ({
   children,
   labelProps,
   errorProps,
+  isInline = false,
   help,
   hideLabel = false,
   ...controlProps
-}: Props) => {
+}: FormGroupProps) => {
+  const inlineLabelStyle = isInline
+    ? {
+        display: "inline-block",
+        marginBottom: 0,
+      }
+    : {};
+  const inlineFormControlStyle = isInline
+    ? {
+        display: "inline-flex",
+        justify: "center",
+        align: "center",
+      }
+    : {};
   return (
-    <FormControl id={name} pt={0} mt={0} {...controlProps}>
+    <FormControl
+      id={name}
+      pt={0}
+      mt={0}
+      {...controlProps}
+      {...inlineFormControlStyle}
+    >
       {!!label && !hideLabel && (
-        <FormLabel pt={0} mt={0} mb={1} {...labelProps}>
+        <FormLabel pt={0} mt={0} mb={1} {...labelProps} {...inlineLabelStyle}>
           {label}
         </FormLabel>
       )}

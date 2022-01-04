@@ -1,0 +1,87 @@
+type FullUser {
+  id: ID
+  username: String!
+  displayName: String
+  bio: String
+  email: String
+  roles: [Role]!
+  channels: [Channel]!
+  avatar: File
+  header: File
+  streamThumbnail: File
+  silenced: Boolean
+  suspended: Boolean
+  deleted: Boolean
+  loginDisabled: Boolean
+  settings: UserSettings
+  meta: UserMeta
+}
+
+input FullUsersFilter {
+  username: String
+  displayName: String
+  email: String
+  roles: [String]
+  suspended: Boolean
+  silenced: Boolean
+  loginDisabled: Boolean
+  deleted: Boolean
+}
+
+extend type Query {
+  fullUsers(filter: FullUsersFilter, limit: QueryLimit): [FullUser]!
+    @auth(rights: [{ unit: READ, subject: "users" }])
+  fullUserCount(filter: FullUsersFilter, limit: QueryLimit): Int
+    @auth(rights: [{ unit: READ, subject: "users" }])
+  fullUser(id: ID!): FullUser @auth(rights: [{ unit: READ, subject: "users" }])
+}
+
+input UpdateFullUserInput {
+  id: ID
+  roles: [String]
+  suspended: Boolean
+  silenced: Boolean
+  loginDisabled: Boolean
+  deleted: Boolean
+}
+
+extend type Mutation {
+  updateFullUser(input: UpdateFullUserInput): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  # Delete / Undelete Users
+  deleteFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  deleteFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  restoreFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  restoreFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  # Suspend / Unsuspend Users
+  suspendFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  suspendFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  unsuspendFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  unsuspendFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  # Disable / Enable login
+  disableFullUserLogin(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  disableFullUsersLogin(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  enableFullUserLogin(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  enableFullUsersLogin(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  # Silence / Unsilence Users
+  silenceFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  silenceFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  unsilenceFullUser(id: ID!): FullUser!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+  unsilenceFullUsers(ids: [ID]!): [FullUser]!
+    @auth(rights: [{ unit: WRITE, subject: "users" }])
+}

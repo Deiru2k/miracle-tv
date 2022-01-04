@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { changePassword } from "./commands/change-password";
+import { fixUserFlags } from "./commands/fix-user-flags";
 import { getDbStats } from "./commands/stats";
 
 yargs(hideBin(process.argv))
@@ -15,6 +16,11 @@ yargs(hideBin(process.argv))
     command: "stats",
     describe: "Get statistics for database in use",
     handler: getDbStats,
+  })
+  .command({
+    command: "fix-user-flags",
+    describe: "Fix missing on users",
+    handler: fixUserFlags,
   })
   .demandCommand()
   .help().argv;
