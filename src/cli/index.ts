@@ -2,6 +2,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { changePassword } from "./commands/change-password";
 import { fixUserFlags } from "./commands/fix-user-flags";
+import { makeAdmin } from "./commands/make-admin";
 import { getDbStats } from "./commands/stats";
 
 yargs(hideBin(process.argv))
@@ -11,6 +12,11 @@ yargs(hideBin(process.argv))
     command: "change-password <username> <password>",
     describe: "Change password for a specific user",
     handler: changePassword as any,
+  })
+  .command({
+    command: "make-admin <username>",
+    describe: "Make a specific user an instance-wide admin",
+    handler: makeAdmin as any,
   })
   .command({
     command: "stats",
