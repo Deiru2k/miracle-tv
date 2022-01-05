@@ -3,6 +3,7 @@ import { hideBin } from "yargs/helpers";
 import { changePassword } from "./commands/change-password";
 import { fixUserFlags } from "./commands/fix-user-flags";
 import { makeAdmin } from "./commands/make-admin";
+import { regenerateRoles } from "./commands/regenerate-roles";
 import { getDbStats } from "./commands/stats";
 
 yargs(hideBin(process.argv))
