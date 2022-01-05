@@ -37,9 +37,16 @@ type Role {
   parentId: ID
 }
 
+input RolesFilter {
+  id: ID
+  ids: [ID]
+  name: String
+  parentId: ID
+}
+
 extend type Query {
   role(id: ID!): Role
-  roles(filter: UpdateRoleInput): [Role]!
+  roles(filter: RolesFilter, limit: QueryLimit): [Role]!
 }
 
 extend type Mutation {
@@ -48,6 +55,8 @@ extend type Mutation {
   updateRole(input: UpdateRoleInput): Role!
     @auth(rights: [{ unit: WRITE, subject: "roles" }])
   deleteRole(id: ID!): Boolean!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  bulkDeleteRoles(ids: [ID]!): Boolean!
     @auth(rights: [{ unit: WRITE, subject: "roles" }])
 }
 
@@ -65,23 +74,30 @@ input ActionsInput {
   user: UserActionsInput
 }
 
-input AccessTargetsInput {
-  channels: AccessUnit
-  users: AccessUnit
-  activities: AccessUnit
+input AccessTargetInput {
+  rights: AccessRightsInput!
   actions: ActionsInput!
+}
+
+input AccessRightsInput {
+  channels: [AccessUnit]
+  streamKeys: [AccessUnit]
+  roles: [AccessUnit]
+  users: [AccessUnit]
+  activities: [AccessUnit]
+  userSettings: [AccessUnit]
 }
 
 input CreateRoleInput {
   id: ID!
   name: String!
-  access: AccessTargetsInput!
-  parentId: ID!
+  access: AccessTargetInput!
+  parentId: ID
 }
 
 input UpdateRoleInput {
   id: ID
   name: String
-  access: AccessTargetsInput
+  access: AccessTargetInput
   parentId: ID
 }

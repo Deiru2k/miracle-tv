@@ -39,17 +39,24 @@ export type AccessRights = {
   users?: Maybe<Array<Maybe<AccessUnit>>>;
 };
 
+export type AccessRightsInput = {
+  activities?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  channels?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  roles?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  streamKeys?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  userSettings?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  users?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+};
+
+export type AccessTargetInput = {
+  actions: ActionsInput;
+  rights: AccessRightsInput;
+};
+
 export type AccessTargets = {
   __typename?: "AccessTargets";
   actions: Actions;
   rights: AccessRights;
-};
-
-export type AccessTargetsInput = {
-  actions: ActionsInput;
-  activities?: InputMaybe<AccessUnit>;
-  channels?: InputMaybe<AccessUnit>;
-  users?: InputMaybe<AccessUnit>;
 };
 
 export enum AccessUnit {
@@ -155,10 +162,10 @@ export type CreateChannelInput = {
 };
 
 export type CreateRoleInput = {
-  access: AccessTargetsInput;
+  access: AccessTargetInput;
   id: Scalars["ID"];
   name: Scalars["String"];
-  parentId: Scalars["ID"];
+  parentId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type CreateStreamKeyInput = {
@@ -221,6 +228,7 @@ export type InfoResponse = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  bulkDeleteRoles: Scalars["Boolean"];
   changeSelfPassword?: Maybe<Scalars["Boolean"]>;
   createActivity: Activity;
   createChannel: Channel;
@@ -261,6 +269,10 @@ export type Mutation = {
   updateSelfAccount?: Maybe<UserAccountDetails>;
   updateUserSettings?: Maybe<UserSettings>;
   uploadFile: File;
+};
+
+export type MutationBulkDeleteRolesArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
 };
 
 export type MutationChangeSelfPasswordArgs = {
@@ -502,7 +514,8 @@ export type QueryRoleArgs = {
 };
 
 export type QueryRolesArgs = {
-  filter?: InputMaybe<UpdateRoleInput>;
+  filter?: InputMaybe<RolesFilter>;
+  limit?: InputMaybe<QueryLimit>;
 };
 
 export type QuerySelfChannelsArgs = {
@@ -551,6 +564,13 @@ export type Role = {
   id: Scalars["ID"];
   name: Scalars["String"];
   parentId?: Maybe<Scalars["ID"]>;
+};
+
+export type RolesFilter = {
+  id?: InputMaybe<Scalars["ID"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  name?: InputMaybe<Scalars["String"]>;
+  parentId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type Session = {
@@ -644,7 +664,7 @@ export type UpdateFullUserInput = {
 };
 
 export type UpdateRoleInput = {
-  access?: InputMaybe<AccessTargetsInput>;
+  access?: InputMaybe<AccessTargetInput>;
   id?: InputMaybe<Scalars["ID"]>;
   name?: InputMaybe<Scalars["String"]>;
   parentId?: InputMaybe<Scalars["ID"]>;
@@ -845,8 +865,9 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AccessRights: ResolverTypeWrapper<AccessRights>;
+  AccessRightsInput: AccessRightsInput;
+  AccessTargetInput: AccessTargetInput;
   AccessTargets: ResolverTypeWrapper<AccessTargets>;
-  AccessTargetsInput: AccessTargetsInput;
   AccessUnit: AccessUnit;
   Actions: ResolverTypeWrapper<Actions>;
   ActionsInput: ActionsInput;
@@ -878,6 +899,7 @@ export type ResolversTypes = {
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
+  RolesFilter: RolesFilter;
   Session: ResolverTypeWrapper<Session>;
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
   SignInInput: SignInInput;
@@ -910,8 +932,9 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AccessRights: AccessRights;
+  AccessRightsInput: AccessRightsInput;
+  AccessTargetInput: AccessTargetInput;
   AccessTargets: AccessTargets;
-  AccessTargetsInput: AccessTargetsInput;
   Actions: Actions;
   ActionsInput: ActionsInput;
   Activity: Activity;
@@ -942,6 +965,7 @@ export type ResolversParentTypes = {
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
+  RolesFilter: RolesFilter;
   Session: Session;
   SessionResponse: SessionResponse;
   SignInInput: SignInInput;
@@ -1188,6 +1212,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
 > = {
+  bulkDeleteRoles?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationBulkDeleteRolesArgs, "ids">
+  >;
   changeSelfPassword?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -1803,6 +1833,148 @@ export type Resolvers<ContextType = any> = {
 
 export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
+};
+
+export type AdminRolesQueryVariables = Exact<{
+  filter?: InputMaybe<RolesFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type AdminRolesQuery = {
+  __typename?: "Query";
+  roles: Array<
+    | {
+        __typename?: "Role";
+        id: string;
+        parentId?: string | null | undefined;
+        name: string;
+        access: {
+          __typename?: "AccessTargets";
+          rights: {
+            __typename?: "AccessRights";
+            channels?: Array<AccessUnit | null | undefined> | null | undefined;
+            streamKeys?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            roles?: Array<AccessUnit | null | undefined> | null | undefined;
+            users?: Array<AccessUnit | null | undefined> | null | undefined;
+            activities?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            userSettings?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+          };
+          actions: {
+            __typename?: "Actions";
+            user?:
+              | {
+                  __typename?: "UserActions";
+                  silence?: boolean | null | undefined;
+                  ban?: boolean | null | undefined;
+                  warn?: boolean | null | undefined;
+                }
+              | null
+              | undefined;
+          };
+        };
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type BulkDeleteRolesMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type BulkDeleteRolesMutation = {
+  __typename?: "Mutation";
+  bulkDeleteRoles: boolean;
+};
+
+export type AdminRolePageQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AdminRolePageQuery = {
+  __typename?: "Query";
+  role?:
+    | {
+        __typename?: "Role";
+        id: string;
+        parentId?: string | null | undefined;
+        name: string;
+        access: {
+          __typename?: "AccessTargets";
+          rights: {
+            __typename?: "AccessRights";
+            channels?: Array<AccessUnit | null | undefined> | null | undefined;
+            streamKeys?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            roles?: Array<AccessUnit | null | undefined> | null | undefined;
+            users?: Array<AccessUnit | null | undefined> | null | undefined;
+            activities?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            userSettings?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+          };
+          actions: {
+            __typename?: "Actions";
+            user?:
+              | {
+                  __typename?: "UserActions";
+                  silence?: boolean | null | undefined;
+                  ban?: boolean | null | undefined;
+                  warn?: boolean | null | undefined;
+                }
+              | null
+              | undefined;
+          };
+        };
+      }
+    | null
+    | undefined;
+};
+
+export type AdminRoleFragment = {
+  __typename?: "Role";
+  id: string;
+  parentId?: string | null | undefined;
+  name: string;
+  access: {
+    __typename?: "AccessTargets";
+    rights: {
+      __typename?: "AccessRights";
+      channels?: Array<AccessUnit | null | undefined> | null | undefined;
+      streamKeys?: Array<AccessUnit | null | undefined> | null | undefined;
+      roles?: Array<AccessUnit | null | undefined> | null | undefined;
+      users?: Array<AccessUnit | null | undefined> | null | undefined;
+      activities?: Array<AccessUnit | null | undefined> | null | undefined;
+      userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+    };
+    actions: {
+      __typename?: "Actions";
+      user?:
+        | {
+            __typename?: "UserActions";
+            silence?: boolean | null | undefined;
+            ban?: boolean | null | undefined;
+            warn?: boolean | null | undefined;
+          }
+        | null
+        | undefined;
+    };
+  };
 };
 
 export type UpdateFullUserMutationVariables = Exact<{
@@ -4054,6 +4226,29 @@ export type ActivitiesSelectInitialQuery = {
   >;
 };
 
+export type RolesSelectQueryVariables = Exact<{
+  filter?: InputMaybe<RolesFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type RolesSelectQuery = {
+  __typename?: "Query";
+  roles: Array<
+    { __typename?: "Role"; id: string; name: string } | null | undefined
+  >;
+};
+
+export type RolesSelectInitialQueryVariables = Exact<{
+  filter?: InputMaybe<RolesFilter>;
+}>;
+
+export type RolesSelectInitialQuery = {
+  __typename?: "Query";
+  roles: Array<
+    { __typename?: "Role"; id: string; name: string } | null | undefined
+  >;
+};
+
 export type SelfChannelsSelectQueryVariables = Exact<{
   filter?: InputMaybe<ChannelsQueryFilter>;
 }>;
@@ -4063,6 +4258,44 @@ export type SelfChannelsSelectQuery = {
   selfChannels: Array<
     { __typename?: "Channel"; id: string; name: string } | null | undefined
   >;
+};
+
+export type AdminCreateRoleMutationVariables = Exact<{
+  input?: InputMaybe<CreateRoleInput>;
+}>;
+
+export type AdminCreateRoleMutation = {
+  __typename?: "Mutation";
+  createRole: {
+    __typename?: "Role";
+    id: string;
+    parentId?: string | null | undefined;
+    name: string;
+    access: {
+      __typename?: "AccessTargets";
+      rights: {
+        __typename?: "AccessRights";
+        channels?: Array<AccessUnit | null | undefined> | null | undefined;
+        streamKeys?: Array<AccessUnit | null | undefined> | null | undefined;
+        roles?: Array<AccessUnit | null | undefined> | null | undefined;
+        users?: Array<AccessUnit | null | undefined> | null | undefined;
+        activities?: Array<AccessUnit | null | undefined> | null | undefined;
+        userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+      };
+      actions: {
+        __typename?: "Actions";
+        user?:
+          | {
+              __typename?: "UserActions";
+              silence?: boolean | null | undefined;
+              ban?: boolean | null | undefined;
+              warn?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      };
+    };
+  };
 };
 
 export type UserInfoQueryVariables = Exact<{

@@ -13,8 +13,10 @@ const defaultAdminRole: Role = {
     rights: {
       channels: [AccessUnit.Write],
       streamKeys: [AccessUnit.Write],
-      users: [AccessUnit.Write],
       roles: [AccessUnit.Write],
+      users: [AccessUnit.Write],
+      activities: [AccessUnit.Write],
+      userSettings: [AccessUnit.Write],
     },
     actions: {
       user: {

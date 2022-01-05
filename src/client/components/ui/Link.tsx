@@ -5,13 +5,23 @@ import { useRouter } from "next/dist/client/router";
 
 type Props = {
   isShallow?: boolean;
+  isDisabled?: boolean;
 } & LinkProps;
 
-export const Link = ({ isShallow = true, href, ...props }: Props) => {
+export const Link = ({
+  isShallow = true,
+  isDisabled = false,
+  href,
+  ...props
+}: Props) => {
   const { push } = useRouter();
 
   const onClick = useCallback(
     (e: any) => {
+      if (isDisabled) {
+        e.preventDefault();
+        return;
+      }
       if (!props.target) {
         e.preventDefault();
         push(href, null, { shallow: isShallow });
