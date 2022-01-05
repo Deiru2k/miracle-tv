@@ -9,6 +9,7 @@ import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 import { AdminDashboard } from "miracle-tv-client/AdminPanel/AdminDashboard";
 import { AdminUserList } from "miracle-tv-client/AdminPanel/Users";
 import { AdminRolesPage } from "miracle-tv-client/AdminPanel/Roles";
+import Head from "next/head";
 
 const components: NavComponentMap = {
   "/admin": { component: <AdminDashboard />, exact: true },
@@ -54,6 +55,9 @@ const nav: NavConfig = [
 const AdminPage = () => {
   return (
     <AuthRedirect>
+      <Head>
+        <title>Admin Panel - Miracle TV</title>
+      </Head>
       <Navigation
         title="Instance Admin"
         nav={nav}
