@@ -2,10 +2,14 @@ import { getCompleteRights } from "miracle-tv-shared/acl/utils";
 import { QueryResolvers, RoleResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 
-export const rolesQueryResolver: QueryResolvers<ResolverContext>["roles"] =
-  async (_, { filter }, { db: { roles } }) => {
-    return roles.list(filter);
-  };
+export const rolesQueryresolvers: QueryResolvers<ResolverContext> = {
+  role(_, { id }, { db: { roles } }) {
+    return roles.get(id);
+  },
+  roles(_, { filter, limit }, { db: { roles } }) {
+    return roles.list(filter, limit);
+  },
+};
 
 export const roleResolvers: RoleResolvers = {
   access: async ({ id }, _, { db: { roles } }) => {

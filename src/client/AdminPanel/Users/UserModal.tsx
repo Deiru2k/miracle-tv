@@ -25,6 +25,7 @@ import { getMediaURL } from "miracle-tv-shared/media";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { CloseIcon } from "@chakra-ui/icons";
 import { useUpdateFullUserMutation } from "miracle-tv-shared/hooks";
+import { FormRolesSelect } from "miracle-tv-client/components/form/selects/FormRoleSelect";
 
 type Props = {
   user: AdminFullUserFragment | null;
@@ -39,7 +40,12 @@ gql`
   ${ADMIN_FULL_USER_FRAGMENT}
 `;
 
-type UpdateFields = "deleted" | "silenced" | "suspended" | "loginDisabled";
+type UpdateFields =
+  | "deleted"
+  | "silenced"
+  | "suspended"
+  | "loginDisabled"
+  | "roles";
 
 export const UserModal = ({ user, onClose }: Props) => {
   const toast = useToast();

@@ -24,6 +24,11 @@ yargs(hideBin(process.argv))
     handler: getDbStats,
   })
   .command({
+    command: "regenerate-roles",
+    describe: "Regenerate system roles",
+    handler: regenerateRoles,
+  })
+  .command({
     command: "fix-user-flags",
     describe: "Fix missing on users",
     handler: fixUserFlags,

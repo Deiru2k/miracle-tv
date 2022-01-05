@@ -54,13 +54,8 @@ export const Navbar = () => {
   return (
     <Flex __css={styles.navbar} zIndex={10}>
       <Box>
-        <Link
-          as={(props: any) => (
-            <Heading {...props} size={isMobile ? "md" : undefined} />
-          )}
-          href="/"
-        >
-          Miracle TV
+        <Link href="/">
+          <Heading size={isMobile ? "md" : undefined}>Miracle TV</Heading>
         </Link>
       </Box>
       <HStack>

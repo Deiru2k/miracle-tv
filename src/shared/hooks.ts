@@ -3,6 +3,30 @@ import * as Types from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {};
+export const AdminRoleFragmentDoc = gql`
+  fragment AdminRole on Role {
+    id
+    parentId
+    name
+    access {
+      rights {
+        channels
+        streamKeys
+        roles
+        users
+        activities
+        userSettings
+      }
+      actions {
+        user {
+          silence
+          ban
+          warn
+        }
+      }
+    }
+  }
+`;
 export const AdminFullUserFragmentDoc = gql`
   fragment AdminFullUser on FullUser {
     id
@@ -297,6 +321,171 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const AdminRolesDocument = gql`
+  query AdminRoles($filter: RolesFilter, $limit: QueryLimit) {
+    roles(filter: $filter, limit: $limit) {
+      ...AdminRole
+    }
+  }
+  ${AdminRoleFragmentDoc}
+`;
+
+/**
+ * __useAdminRolesQuery__
+ *
+ * To run a query within a React component, call `useAdminRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminRolesQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAdminRolesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminRolesQuery,
+    Types.AdminRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<Types.AdminRolesQuery, Types.AdminRolesQueryVariables>(
+    AdminRolesDocument,
+    options
+  );
+}
+export function useAdminRolesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminRolesQuery,
+    Types.AdminRolesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminRolesQuery,
+    Types.AdminRolesQueryVariables
+  >(AdminRolesDocument, options);
+}
+export type AdminRolesQueryHookResult = ReturnType<typeof useAdminRolesQuery>;
+export type AdminRolesLazyQueryHookResult = ReturnType<
+  typeof useAdminRolesLazyQuery
+>;
+export type AdminRolesQueryResult = Apollo.QueryResult<
+  Types.AdminRolesQuery,
+  Types.AdminRolesQueryVariables
+>;
+export const BulkDeleteRolesDocument = gql`
+  mutation BulkDeleteRoles($ids: [ID]!) {
+    bulkDeleteRoles(ids: $ids)
+  }
+`;
+export type BulkDeleteRolesMutationFn = Apollo.MutationFunction<
+  Types.BulkDeleteRolesMutation,
+  Types.BulkDeleteRolesMutationVariables
+>;
+
+/**
+ * __useBulkDeleteRolesMutation__
+ *
+ * To run a mutation, you first call `useBulkDeleteRolesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBulkDeleteRolesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bulkDeleteRolesMutation, { data, loading, error }] = useBulkDeleteRolesMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useBulkDeleteRolesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.BulkDeleteRolesMutation,
+    Types.BulkDeleteRolesMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.BulkDeleteRolesMutation,
+    Types.BulkDeleteRolesMutationVariables
+  >(BulkDeleteRolesDocument, options);
+}
+export type BulkDeleteRolesMutationHookResult = ReturnType<
+  typeof useBulkDeleteRolesMutation
+>;
+export type BulkDeleteRolesMutationResult =
+  Apollo.MutationResult<Types.BulkDeleteRolesMutation>;
+export type BulkDeleteRolesMutationOptions = Apollo.BaseMutationOptions<
+  Types.BulkDeleteRolesMutation,
+  Types.BulkDeleteRolesMutationVariables
+>;
+export const AdminRolePageDocument = gql`
+  query AdminRolePage($id: ID!) {
+    role(id: $id) {
+      ...AdminRole
+    }
+  }
+  ${AdminRoleFragmentDoc}
+`;
+
+/**
+ * __useAdminRolePageQuery__
+ *
+ * To run a query within a React component, call `useAdminRolePageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminRolePageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminRolePageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminRolePageQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.AdminRolePageQuery,
+    Types.AdminRolePageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminRolePageQuery,
+    Types.AdminRolePageQueryVariables
+  >(AdminRolePageDocument, options);
+}
+export function useAdminRolePageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminRolePageQuery,
+    Types.AdminRolePageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminRolePageQuery,
+    Types.AdminRolePageQueryVariables
+  >(AdminRolePageDocument, options);
+}
+export type AdminRolePageQueryHookResult = ReturnType<
+  typeof useAdminRolePageQuery
+>;
+export type AdminRolePageLazyQueryHookResult = ReturnType<
+  typeof useAdminRolePageLazyQuery
+>;
+export type AdminRolePageQueryResult = Apollo.QueryResult<
+  Types.AdminRolePageQuery,
+  Types.AdminRolePageQueryVariables
+>;
 export const UpdateFullUserDocument = gql`
   mutation UpdateFullUser($input: UpdateFullUserInput!) {
     updateFullUser(input: $input) {
@@ -2421,6 +2610,123 @@ export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<
   Types.ActivitiesSelectInitialQuery,
   Types.ActivitiesSelectInitialQueryVariables
 >;
+export const RolesSelectDocument = gql`
+  query RolesSelect($filter: RolesFilter, $limit: QueryLimit) {
+    roles(filter: $filter, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useRolesSelectQuery__
+ *
+ * To run a query within a React component, call `useRolesSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRolesSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRolesSelectQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useRolesSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.RolesSelectQuery,
+    Types.RolesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.RolesSelectQuery,
+    Types.RolesSelectQueryVariables
+  >(RolesSelectDocument, options);
+}
+export function useRolesSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.RolesSelectQuery,
+    Types.RolesSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.RolesSelectQuery,
+    Types.RolesSelectQueryVariables
+  >(RolesSelectDocument, options);
+}
+export type RolesSelectQueryHookResult = ReturnType<typeof useRolesSelectQuery>;
+export type RolesSelectLazyQueryHookResult = ReturnType<
+  typeof useRolesSelectLazyQuery
+>;
+export type RolesSelectQueryResult = Apollo.QueryResult<
+  Types.RolesSelectQuery,
+  Types.RolesSelectQueryVariables
+>;
+export const RolesSelectInitialDocument = gql`
+  query RolesSelectInitial($filter: RolesFilter) {
+    roles(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useRolesSelectInitialQuery__
+ *
+ * To run a query within a React component, call `useRolesSelectInitialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRolesSelectInitialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRolesSelectInitialQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useRolesSelectInitialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.RolesSelectInitialQuery,
+    Types.RolesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.RolesSelectInitialQuery,
+    Types.RolesSelectInitialQueryVariables
+  >(RolesSelectInitialDocument, options);
+}
+export function useRolesSelectInitialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.RolesSelectInitialQuery,
+    Types.RolesSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.RolesSelectInitialQuery,
+    Types.RolesSelectInitialQueryVariables
+  >(RolesSelectInitialDocument, options);
+}
+export type RolesSelectInitialQueryHookResult = ReturnType<
+  typeof useRolesSelectInitialQuery
+>;
+export type RolesSelectInitialLazyQueryHookResult = ReturnType<
+  typeof useRolesSelectInitialLazyQuery
+>;
+export type RolesSelectInitialQueryResult = Apollo.QueryResult<
+  Types.RolesSelectInitialQuery,
+  Types.RolesSelectInitialQueryVariables
+>;
 export const SelfChannelsSelectDocument = gql`
   query SelfChannelsSelect($filter: ChannelsQueryFilter) {
     selfChannels(filter: $filter) {
@@ -2479,6 +2785,57 @@ export type SelfChannelsSelectLazyQueryHookResult = ReturnType<
 export type SelfChannelsSelectQueryResult = Apollo.QueryResult<
   Types.SelfChannelsSelectQuery,
   Types.SelfChannelsSelectQueryVariables
+>;
+export const AdminCreateRoleDocument = gql`
+  mutation AdminCreateRole($input: CreateRoleInput) {
+    createRole(input: $input) {
+      ...AdminRole
+    }
+  }
+  ${AdminRoleFragmentDoc}
+`;
+export type AdminCreateRoleMutationFn = Apollo.MutationFunction<
+  Types.AdminCreateRoleMutation,
+  Types.AdminCreateRoleMutationVariables
+>;
+
+/**
+ * __useAdminCreateRoleMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateRoleMutation, { data, loading, error }] = useAdminCreateRoleMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminCreateRoleMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminCreateRoleMutation,
+    Types.AdminCreateRoleMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminCreateRoleMutation,
+    Types.AdminCreateRoleMutationVariables
+  >(AdminCreateRoleDocument, options);
+}
+export type AdminCreateRoleMutationHookResult = ReturnType<
+  typeof useAdminCreateRoleMutation
+>;
+export type AdminCreateRoleMutationResult =
+  Apollo.MutationResult<Types.AdminCreateRoleMutation>;
+export type AdminCreateRoleMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminCreateRoleMutation,
+  Types.AdminCreateRoleMutationVariables
 >;
 export const UserInfoDocument = gql`
   query UserInfo($id: ID!) {

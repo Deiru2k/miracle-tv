@@ -59,6 +59,7 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
     access: {
       rights: {
         users: fetchAccess(rolesById, target, "users"),
+        roles: fetchAccess(rolesById, target, "roles"),
         streamKeys: fetchAccess(rolesById, target, "streamKeys"),
         channels: fetchAccess(rolesById, target, "channels"),
         activities: fetchAccess(rolesById, target, "activities"),
@@ -82,8 +83,10 @@ export const checkRight = (
   unit: AccessUnit,
   subject: string
 ) => {
+  console.log(subject);
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
   return any((right: AccessUnit[]) => {
+    console.log(right);
     return right.includes(unit);
   }, roles.map(view(channelEditRightsLens)));
 };

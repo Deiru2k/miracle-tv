@@ -51,7 +51,10 @@ import {
 } from "miracle-tv-server/graphql/resolvers/activities";
 import { RolesModel } from "miracle-tv-server/db/models/Roles";
 import { getCompleteRights } from "miracle-tv-shared/acl/utils";
-import { roleResolvers } from "miracle-tv-server/graphql/resolvers/roles";
+import {
+  roleResolvers,
+  rolesQueryresolvers,
+} from "miracle-tv-server/graphql/resolvers/roles";
 import config from "miracle-tv-server/config";
 import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import {
@@ -91,6 +94,7 @@ import {
   fullUserResolvers,
 } from "./resolvers/full-users";
 import { fullUserMutations } from "./mutations/full-users";
+import { rolesMutations } from "./mutations/roles";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -132,6 +136,7 @@ let executableSchema = makeExecutableSchema({
       selfSubscribedUsers: selfSubscribedUsersResolver,
       test: userTestQueryResolver,
       subscription: subsciptionByIdResolver,
+      ...rolesQueryresolvers,
       ...fullUserResolvers,
       ...fileResolvers,
     },
@@ -154,6 +159,7 @@ let executableSchema = makeExecutableSchema({
       revokeSelfSessions: revokeSelfSessionsMutation,
       subscribe: subscribeMutaiton,
       unsubscribe: unsubscribeMutation,
+      ...rolesMutations,
       ...fullUserMutations,
     },
     User: userResolver,

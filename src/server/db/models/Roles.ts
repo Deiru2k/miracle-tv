@@ -4,8 +4,12 @@ import {
   NotFoundError,
   ServerError,
 } from "miracle-tv-server/graphql/errors/general";
-import { CreateRoleInput, UpdateRoleInput } from "miracle-tv-shared/graphql";
-import { head } from "ramda";
+import {
+  CreateRoleInput,
+  QueryLimit,
+  RolesFilter,
+  UpdateRoleInput,
+} from "miracle-tv-shared/graphql";
 import { Connection } from "rethinkdb";
 import { DbRole } from "miracle-tv-server/db/models/types";
 
@@ -22,9 +26,7 @@ export class RolesModel extends Model {
     if (result.errors > 0) {
       throw new ServerError(`There was an error creating ${this.name}`);
     }
-    const newItem = await this.table
-      .get(head(result.generated_keys))
-      .run(this.conn);
+    const newItem = await this.table.get(input.id).run(this.conn);
     return newItem as DbRole;
   }
 
@@ -56,8 +58,40 @@ export class RolesModel extends Model {
     return true;
   }
 
-  async list(filter: Partial<UpdateRoleInput> = {}): Promise<DbRole[]> {
-    return this.table.filter(filter).coerceTo("array").run(this.conn);
+  async deleteItems(ids: string[]): Promise<boolean> {
+    const result = await this.table
+      .getAll(...ids)
+      .delete()
+      .run(this.conn);
+    if (result.errors > 0) {
+      throw new ServerError(`There was an error deleting roles`);
+    }
+    return true;
+  }
+
+  roleFilter({ ids, name, ...filter }: RolesFilter = {}, limit?: QueryLimit) {
+    const query = ids ? this.table.getAll(...ids) : this.table;
+    let filteredQuery = query
+      .filter((doc: any) => {
+        if (name) {
+          return doc("name").downcase().match(name.toLowerCase());
+        }
+        return true;
+      })
+      .filter({ ...filter });
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+    return filteredQuery;
+  }
+
+  async list(filter: RolesFilter = {}, limit?: QueryLimit): Promise<DbRole[]> {
+    const filteredQuery = this.roleFilter(filter, limit);
+    return filteredQuery.coerceTo("array").run(this.conn);
   }
 
   async getAll(ids: string[]): Promise<DbRole[]> {
@@ -65,5 +99,9 @@ export class RolesModel extends Model {
       .getAll(...ids)
       .coerceTo("array")
       .run(this.conn);
+  }
+
+  async get(id: string): Promise<DbRole> {
+    return this.table.get(id).run(this.conn) as Promise<DbRole>;
   }
 }
