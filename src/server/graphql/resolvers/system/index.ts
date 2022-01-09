@@ -1,4 +1,4 @@
-import { cpu, mem, drive } from "node-os-utils";
+import { cpu, mem, drive, netstat, NetStatMetrics } from "node-os-utils";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { QueryResolvers } from "miracle-tv-shared/graphql";
 import config from "miracle-tv-server/config";
@@ -30,6 +30,7 @@ export const systemResolvers: QueryResolvers<ResolverContext> = {
     );
     const mediaDirSize = await dirSize(`${config.dataDir}/media`);
     const dbSize = await system.getDbSize();
+    const networkUpDown = (await netstat.inOut()) as NetStatMetrics;
 
     return {
       cpuPercentage,
@@ -41,6 +42,8 @@ export const systemResolvers: QueryResolvers<ResolverContext> = {
       drivePercentage: disk.usedPercentage,
       mediaDirSize: mediaDirSize / (1000 * 1000 * 1000),
       dbSize: dbSize / (1000 * 1000 * 1000),
+      networkDown: networkUpDown.total.inputMb,
+      networkUp: networkUpDown.total.outputMb,
     };
   },
 };

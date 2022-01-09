@@ -685,6 +685,8 @@ export type SystemLoadInfo = {
   drivePercentage: Scalars["Float"];
   mediaDirSize: Scalars["Float"];
   memPercentage: Scalars["Float"];
+  networkDown: Scalars["Float"];
+  networkUp: Scalars["Float"];
   totalDrive: Scalars["Float"];
   totalMem: Scalars["Float"];
   usedDrive: Scalars["Float"];
@@ -1831,6 +1833,8 @@ export type SystemLoadInfoResolvers<
   drivePercentage?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   mediaDirSize?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   memPercentage?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  networkDown?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  networkUp?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   totalDrive?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   totalMem?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   usedDrive?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
@@ -1996,11 +2000,11 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
-export type AdminDashboardSystemLoadQueryVariables = Exact<{
+export type AdminDashboardUserStatsQueryVariables = Exact<{
   [key: string]: never;
 }>;
 
-export type AdminDashboardSystemLoadQuery = {
+export type AdminDashboardUserStatsQuery = {
   __typename?: "Query";
   userStats: {
     __typename?: "UserStatsInfo";
@@ -2009,6 +2013,14 @@ export type AdminDashboardSystemLoadQuery = {
     streamKeyCount: number;
     sessionCount: number;
   };
+};
+
+export type AdminDashboardSystemLoadQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AdminDashboardSystemLoadQuery = {
+  __typename?: "Query";
   systemLoad: {
     __typename?: "SystemLoadInfo";
     cpuPercentage: number;
@@ -2020,6 +2032,8 @@ export type AdminDashboardSystemLoadQuery = {
     drivePercentage: number;
     mediaDirSize: number;
     dbSize: number;
+    networkUp: number;
+    networkDown: number;
   };
 };
 

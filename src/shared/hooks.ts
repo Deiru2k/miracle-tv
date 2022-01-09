@@ -326,14 +326,68 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
-export const AdminDashboardSystemLoadDocument = gql`
-  query AdminDashboardSystemLoad {
+export const AdminDashboardUserStatsDocument = gql`
+  query AdminDashboardUserStats {
     userStats {
       userCount
       channelCount
       streamKeyCount
       sessionCount
     }
+  }
+`;
+
+/**
+ * __useAdminDashboardUserStatsQuery__
+ *
+ * To run a query within a React component, call `useAdminDashboardUserStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDashboardUserStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDashboardUserStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDashboardUserStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminDashboardUserStatsQuery,
+    Types.AdminDashboardUserStatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminDashboardUserStatsQuery,
+    Types.AdminDashboardUserStatsQueryVariables
+  >(AdminDashboardUserStatsDocument, options);
+}
+export function useAdminDashboardUserStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminDashboardUserStatsQuery,
+    Types.AdminDashboardUserStatsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminDashboardUserStatsQuery,
+    Types.AdminDashboardUserStatsQueryVariables
+  >(AdminDashboardUserStatsDocument, options);
+}
+export type AdminDashboardUserStatsQueryHookResult = ReturnType<
+  typeof useAdminDashboardUserStatsQuery
+>;
+export type AdminDashboardUserStatsLazyQueryHookResult = ReturnType<
+  typeof useAdminDashboardUserStatsLazyQuery
+>;
+export type AdminDashboardUserStatsQueryResult = Apollo.QueryResult<
+  Types.AdminDashboardUserStatsQuery,
+  Types.AdminDashboardUserStatsQueryVariables
+>;
+export const AdminDashboardSystemLoadDocument = gql`
+  query AdminDashboardSystemLoad {
     systemLoad {
       cpuPercentage
       totalMem
@@ -344,6 +398,8 @@ export const AdminDashboardSystemLoadDocument = gql`
       drivePercentage
       mediaDirSize
       dbSize
+      networkUp
+      networkDown
     }
   }
 `;
