@@ -44,7 +44,7 @@ export const AdminDashboard = () => {
 
   const { data: { systemLoad, userStats } = {} } =
     useAdminDashboardSystemLoadQuery({
-      fetchPolicy: "no-cache",
+      fetchPolicy: "network-only",
       pollInterval: isLiveUpdate ? 5000 : 0,
     });
 
