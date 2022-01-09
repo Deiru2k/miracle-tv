@@ -25,10 +25,12 @@ const accessRightsOrder: AccessKey[] = [
   "streamKeys",
   "activities",
   "userSettings",
+  "system",
 ];
 
 const accessRightsLabels: Record<AccessKey, string> = {
   users: "Users",
+  system: "System Info",
   channels: "Channels",
   roles: "Roles",
   activities: "Activities",
