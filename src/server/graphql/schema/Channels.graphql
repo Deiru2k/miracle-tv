@@ -28,6 +28,9 @@ input ChannelsQueryFilter {
 extend type Query {
   channel(id: ID!): Channel
   channels(filter: ChannelsQueryFilter, limit: QueryLimit): [Channel]!
+  channelsCount(filter: ChannelsQueryFilter): Int!
+  fullChannels(filter: ChannelsQueryFilter, limit: QueryLimit): [Channel]!
+  fullChannelsCount(filter: ChannelsQueryFilter): Int!
   selfChannels(filter: ChannelsQueryFilter): [Channel]!
   channelSubscriptions(
     filter: ChannelsQueryFilter

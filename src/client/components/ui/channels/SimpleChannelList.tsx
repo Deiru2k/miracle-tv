@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   AspectRatio,
+  Badge,
   Box,
   Flex,
   Heading,
@@ -19,6 +20,7 @@ type Props = {
   channels: ChannelFullFragment[];
   link?: (channel: ChannelFullFragment) => string;
   controls?: (channel: ChannelFullFragment) => React.ReactNode;
+  showUser?: boolean;
   defaultThumbnail?: string;
 };
 
@@ -26,6 +28,7 @@ export const SimpleChannelList = ({
   channels,
   controls,
   defaultThumbnail,
+  showUser = false,
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
@@ -57,9 +60,15 @@ export const SimpleChannelList = ({
             </AspectRatio>
             <Box w="100%" p={4}>
               <Flex width="100%" justify="space-between" align="center" mb={2}>
-                <Heading size="lg" mb={2}>
-                  {channel.name}
-                </Heading>
+                <HStack alignItems="center" mb={2}>
+                  <Heading size="lg">{channel.name}</Heading>
+                  {showUser && (
+                    <Badge ml={4} fontSize="1.1rem" textTransform="none">
+                      By:{" "}
+                      {channel?.user?.displayName || channel?.user?.username}
+                    </Badge>
+                  )}
+                </HStack>
                 {controls && <HStack>{controls(channel)}</HStack>}
               </Flex>
               <Text textTransform="capitalize">

@@ -212,6 +212,7 @@ export type FullUsersFilter = {
   deleted?: InputMaybe<Scalars["Boolean"]>;
   displayName?: InputMaybe<Scalars["String"]>;
   email?: InputMaybe<Scalars["String"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   loginDisabled?: InputMaybe<Scalars["Boolean"]>;
   roles?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   silenced?: InputMaybe<Scalars["Boolean"]>;
@@ -455,7 +456,10 @@ export type Query = {
   channelStatus?: Maybe<ChannelStatus>;
   channelSubscriptions: Array<Maybe<Channel>>;
   channels: Array<Maybe<Channel>>;
+  channelsCount: Scalars["Int"];
   fileInfo?: Maybe<File>;
+  fullChannels: Array<Maybe<Channel>>;
+  fullChannelsCount: Scalars["Int"];
   fullUser?: Maybe<FullUser>;
   fullUserCount?: Maybe<Scalars["Int"]>;
   fullUsers: Array<Maybe<FullUser>>;
@@ -507,8 +511,21 @@ export type QueryChannelsArgs = {
   limit?: InputMaybe<QueryLimit>;
 };
 
+export type QueryChannelsCountArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
+};
+
 export type QueryFileInfoArgs = {
   id?: InputMaybe<Scalars["ID"]>;
+};
+
+export type QueryFullChannelsArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QueryFullChannelsCountArgs = {
+  filter?: InputMaybe<ChannelsQueryFilter>;
 };
 
 export type QueryFullUserArgs = {
@@ -1533,11 +1550,29 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryChannelsArgs, never>
   >;
+  channelsCount?: Resolver<
+    ResolversTypes["Int"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryChannelsCountArgs, never>
+  >;
   fileInfo?: Resolver<
     Maybe<ResolversTypes["File"]>,
     ParentType,
     ContextType,
     RequireFields<QueryFileInfoArgs, never>
+  >;
+  fullChannels?: Resolver<
+    Array<Maybe<ResolversTypes["Channel"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryFullChannelsArgs, never>
+  >;
+  fullChannelsCount?: Resolver<
+    ResolversTypes["Int"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryFullChannelsCountArgs, never>
   >;
   fullUser?: Resolver<
     Maybe<ResolversTypes["FullUser"]>,
@@ -1885,6 +1920,71 @@ export type Resolvers<ContextType = any> = {
 
 export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
+};
+
+export type AdminChannelsCountQueryVariables = Exact<{
+  filter?: InputMaybe<ChannelsQueryFilter>;
+}>;
+
+export type AdminChannelsCountQuery = {
+  __typename?: "Query";
+  fullChannelsCount: number;
+};
+
+export type AdminChannelsQueryVariables = Exact<{
+  filter?: InputMaybe<ChannelsQueryFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type AdminChannelsQuery = {
+  __typename?: "Query";
+  fullChannels: Array<
+    | {
+        __typename?: "Channel";
+        id: string;
+        name: string;
+        description?: string | null | undefined;
+        slug?: string | null | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+            }
+          | null
+          | undefined;
+        thumbnail?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        activity?:
+          | {
+              __typename?: "Activity";
+              id: string;
+              name: string;
+              verb?: string | null | undefined;
+              icon?: string | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type AdminDeleteChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AdminDeleteChannelMutation = {
+  __typename?: "Mutation";
+  deleteChannel: boolean;
 };
 
 export type AdminRolesQueryVariables = Exact<{
@@ -3919,6 +4019,15 @@ export type UserSettingsChannelQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+            }
+          | null
+          | undefined;
         thumbnail?:
           | {
               __typename?: "File";
@@ -3954,6 +4063,15 @@ export type EditChannelMutation = {
     name: string;
     description?: string | null | undefined;
     slug?: string | null | undefined;
+    user?:
+      | {
+          __typename?: "User";
+          id?: string | null | undefined;
+          username: string;
+          displayName?: string | null | undefined;
+        }
+      | null
+      | undefined;
     thumbnail?:
       | {
           __typename?: "File";
@@ -4025,6 +4143,15 @@ export type UserSettingsChannelsQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        user?:
+          | {
+              __typename?: "User";
+              id?: string | null | undefined;
+              username: string;
+              displayName?: string | null | undefined;
+            }
+          | null
+          | undefined;
         thumbnail?:
           | {
               __typename?: "File";
@@ -4070,6 +4197,15 @@ export type UserSettingsCreateChannelMutation = {
     name: string;
     description?: string | null | undefined;
     slug?: string | null | undefined;
+    user?:
+      | {
+          __typename?: "User";
+          id?: string | null | undefined;
+          username: string;
+          displayName?: string | null | undefined;
+        }
+      | null
+      | undefined;
     thumbnail?:
       | {
           __typename?: "File";
@@ -4367,6 +4503,43 @@ export type SelfChannelsSelectQuery = {
   >;
 };
 
+export type UsersSelectQueryVariables = Exact<{
+  filter?: InputMaybe<FullUsersFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type UsersSelectQuery = {
+  __typename?: "Query";
+  fullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        displayName?: string | null | undefined;
+        username: string;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type UsersSelectInitialQueryVariables = Exact<{
+  filter?: InputMaybe<FullUsersFilter>;
+}>;
+
+export type UsersSelectInitialQuery = {
+  __typename?: "Query";
+  fullUsers: Array<
+    | {
+        __typename?: "FullUser";
+        id?: string | null | undefined;
+        displayName?: string | null | undefined;
+        username: string;
+      }
+    | null
+    | undefined
+  >;
+};
+
 export type AdminCreateRoleMutationVariables = Exact<{
   input?: InputMaybe<CreateRoleInput>;
 }>;
@@ -4482,6 +4655,15 @@ export type ChannelFullFragment = {
   name: string;
   description?: string | null | undefined;
   slug?: string | null | undefined;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+      }
+    | null
+    | undefined;
   thumbnail?:
     | { __typename?: "File"; id?: string | null | undefined; filename: string }
     | null

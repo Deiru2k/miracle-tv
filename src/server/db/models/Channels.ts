@@ -63,11 +63,11 @@ export class ChanelsModel extends Model {
     return channel;
   }
 
-  async getChannels(
+  channelsFilter(
     { ids, userIds, name, ...filter }: ChannelsQueryFilter = {},
     limit?: QueryLimit,
     includeDisabled: boolean = false
-  ): Promise<DbChannel[]> {
+  ) {
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query
       .filter((doc: any) => {
@@ -90,9 +90,26 @@ export class ChanelsModel extends Model {
       filteredQuery = filteredQuery.filter({ disabled: false });
     }
 
-    return (await filteredQuery
+    return filteredQuery;
+  }
+
+  async getChannelCount(
+    filter?: ChannelsQueryFilter,
+    includeDisabled: boolean = false
+  ) {
+    return this.channelsFilter(filter, undefined, includeDisabled)
+      .count()
+      .run(this.conn);
+  }
+
+  async getChannels(
+    filter?: ChannelsQueryFilter,
+    limit?: QueryLimit,
+    includeDisabled: boolean = false
+  ): Promise<DbChannel[]> {
+    return this.channelsFilter(filter, limit, includeDisabled)
       .coerceTo("array")
-      .run(this.conn)) as DbChannel[];
+      .run(this.conn);
   }
 
   async updateChannel({
@@ -150,8 +167,13 @@ export class ChanelsModel extends Model {
     if (result.errors !== 0) {
       throw new ServerError("Could not delete any channels");
     }
+    await db
+      .table("user-settings")
+      .filter({ singleUserChannel: id })
+      .update({ singleUserChannel: null })
+      .run(this.conn);
     const streamKeys = new StreamKeysModel(this.conn);
-    streamKeys.deleteStreamKeysByChannelId(channel.id);
+    await streamKeys.deleteStreamKeysByChannelId(channel.id);
     return true;
   }
 }

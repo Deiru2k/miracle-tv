@@ -3,27 +3,38 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
 
-export const channelsQueryResolver: QueryResolvers<ResolverContext>["channels"] =
-  async (_, { filter }, { db: { channels } }) => {
+export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
+  async channels(_, { filter }, { db: { channels } }) {
     return await channels.getChannels(filter, null);
-  };
+  },
 
-export const channelQueryResolver: QueryResolvers<ResolverContext>["channel"] =
-  async (_, { id }, { db: { channels } }) => {
+  async channel(_, { id }, { db: { channels } }) {
     if (uuidValidate(id)) {
       return await channels.getChannelById(id);
     }
     return await channels.getChannelBySlug(id);
-  };
+  },
 
-export const selfChannelQueryResolver: QueryResolvers<ResolverContext>["selfChannels"] =
-  async (_, { filter }, { db: { channels }, user }) => {
+  async channelsCount(_, { filter }, { db: { channels } }) {
+    return await channels.getChannelCount(filter);
+  },
+
+  async fullChannels(_, { filter, limit }, { db: { channels } }) {
+    return await channels.getChannels(filter, limit, true);
+  },
+
+  async fullChannelsCount(_, { filter }, { db: { channels } }) {
+    return await channels.getChannelCount(filter, true);
+  },
+
+  async selfChannels(_, { filter }, { db: { channels }, user }) {
     return await channels.getChannels(
       { ...filter, userId: user.id },
       null,
       true
     );
-  };
+  },
+};
 
 export const channelResolver: ChannelResolvers<ResolverContext> = {
   activity: async (channel, _, { db: { activities } }) => {

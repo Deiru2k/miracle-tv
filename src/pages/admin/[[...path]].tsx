@@ -10,11 +10,13 @@ import { AdminDashboard } from "miracle-tv-client/AdminPanel/AdminDashboard";
 import { AdminUserList } from "miracle-tv-client/AdminPanel/Users";
 import { AdminRolesPage } from "miracle-tv-client/AdminPanel/Roles";
 import Head from "next/head";
+import { AdminChannelsPage } from "miracle-tv-client/AdminPanel/Channels";
 
 const components: NavComponentMap = {
   "/admin": { component: <AdminDashboard />, exact: true },
   "/admin/users": { component: <AdminUserList /> },
   "/admin/roles": { component: <AdminRolesPage /> },
+  "/admin/channels": { component: <AdminChannelsPage /> },
 };
 
 const nav: NavConfig = [

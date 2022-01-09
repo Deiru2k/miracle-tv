@@ -6,6 +6,11 @@ export const channelFragment = gql`
     name
     description
     slug
+    user {
+      id
+      username
+      displayName
+    }
     thumbnail {
       id
       filename

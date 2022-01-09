@@ -18,6 +18,7 @@ type FullUser {
 }
 
 input FullUsersFilter {
+  ids: [ID]
   username: String
   displayName: String
   email: String

@@ -30,10 +30,8 @@ import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
 import {
-  channelQueryResolver,
   channelResolver,
-  channelsQueryResolver,
-  selfChannelQueryResolver,
+  channelsQueryResolvers,
 } from "miracle-tv-server/graphql/resolvers/channels";
 import {
   createChannelMutation,
@@ -104,9 +102,7 @@ const schemaString = glob
   })
   .join("\n");
 
-export const schema = gql`
-  ${schemaString}
-`;
+export const schema = gql(schemaString);
 
 let executableSchema = makeExecutableSchema({
   typeDefs: schema,
@@ -121,15 +117,12 @@ let executableSchema = makeExecutableSchema({
       user: userQueryResolver,
       users: usersQueryResolver,
       userDirectory: userDirectoryQueryResolver,
-      channel: channelQueryResolver,
-      channels: channelsQueryResolver,
       activity: activityQueryResolver,
       activities: activitiesQueryResolver,
       streamKeys: streamKeysQueryResolver,
       streamKeysByChannelId: streamKeysByChannelIdResolver,
       self: userSelfQueryResolver,
       selfAccount: userSelfAccountResolver,
-      selfChannels: selfChannelQueryResolver,
       userSettings: userSettingsQueryResolver,
       selfStreamKeys: selfStreamKeysQueryResolver,
       selfSessions: userSelfSessionsResolver,
@@ -137,6 +130,7 @@ let executableSchema = makeExecutableSchema({
       selfSubscribedUsers: selfSubscribedUsersResolver,
       test: userTestQueryResolver,
       subscription: subsciptionByIdResolver,
+      ...channelsQueryResolvers,
       ...rolesQueryresolvers,
       ...fullUserResolvers,
       ...fileResolvers,

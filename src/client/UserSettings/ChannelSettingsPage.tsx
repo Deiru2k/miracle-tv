@@ -18,6 +18,7 @@ import Head from "next/head";
 
 type Props = {
   tab?: string;
+  baseUrl?: string;
   channelId: string;
 };
 
@@ -26,7 +27,11 @@ const tabs = {
   keys: "Keys",
 };
 
-export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
+export const ChannelSettingsPage = ({
+  channelId,
+  baseUrl = "/settings/user/channels",
+  tab,
+}: Props) => {
   const { push } = useRouter();
   const { data: { channel } = {} } = useUserSettingsChannelQuery({
     variables: { id: channelId },
@@ -38,7 +43,7 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
   useEffect(() => {
     if (tabIndex === -1) {
       const initialTab = head(tabList);
-      push(`/settings/user/channels/${channelId}/${initialTab}`);
+      push(`${baseUrl}/${channelId}/${initialTab}`);
     }
   }, [push, tab]);
 
@@ -56,7 +61,7 @@ export const ChannelSettingsPage = ({ channelId, tab }: Props) => {
             <Tab key={tab} p={0}>
               <Link
                 w="100%"
-                href={`/settings/user/channels/${channelId}/${tab}`}
+                href={`${baseUrl}/${channelId}/${tab}`}
                 py={2}
                 px={3}
               >

@@ -254,6 +254,11 @@ export const ChannelFullFragmentDoc = gql`
     name
     description
     slug
+    user {
+      id
+      username
+      displayName
+    }
     thumbnail {
       id
       filename
@@ -321,6 +326,170 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const AdminChannelsCountDocument = gql`
+  query AdminChannelsCount($filter: ChannelsQueryFilter) {
+    fullChannelsCount(filter: $filter)
+  }
+`;
+
+/**
+ * __useAdminChannelsCountQuery__
+ *
+ * To run a query within a React component, call `useAdminChannelsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminChannelsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminChannelsCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminChannelsCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminChannelsCountQuery,
+    Types.AdminChannelsCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminChannelsCountQuery,
+    Types.AdminChannelsCountQueryVariables
+  >(AdminChannelsCountDocument, options);
+}
+export function useAdminChannelsCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminChannelsCountQuery,
+    Types.AdminChannelsCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminChannelsCountQuery,
+    Types.AdminChannelsCountQueryVariables
+  >(AdminChannelsCountDocument, options);
+}
+export type AdminChannelsCountQueryHookResult = ReturnType<
+  typeof useAdminChannelsCountQuery
+>;
+export type AdminChannelsCountLazyQueryHookResult = ReturnType<
+  typeof useAdminChannelsCountLazyQuery
+>;
+export type AdminChannelsCountQueryResult = Apollo.QueryResult<
+  Types.AdminChannelsCountQuery,
+  Types.AdminChannelsCountQueryVariables
+>;
+export const AdminChannelsDocument = gql`
+  query AdminChannels($filter: ChannelsQueryFilter, $limit: QueryLimit) {
+    fullChannels(filter: $filter, limit: $limit) {
+      ...ChannelFull
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
+
+/**
+ * __useAdminChannelsQuery__
+ *
+ * To run a query within a React component, call `useAdminChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminChannelsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAdminChannelsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminChannelsQuery,
+    Types.AdminChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminChannelsQuery,
+    Types.AdminChannelsQueryVariables
+  >(AdminChannelsDocument, options);
+}
+export function useAdminChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminChannelsQuery,
+    Types.AdminChannelsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminChannelsQuery,
+    Types.AdminChannelsQueryVariables
+  >(AdminChannelsDocument, options);
+}
+export type AdminChannelsQueryHookResult = ReturnType<
+  typeof useAdminChannelsQuery
+>;
+export type AdminChannelsLazyQueryHookResult = ReturnType<
+  typeof useAdminChannelsLazyQuery
+>;
+export type AdminChannelsQueryResult = Apollo.QueryResult<
+  Types.AdminChannelsQuery,
+  Types.AdminChannelsQueryVariables
+>;
+export const AdminDeleteChannelDocument = gql`
+  mutation AdminDeleteChannel($id: ID!) {
+    deleteChannel(id: $id)
+  }
+`;
+export type AdminDeleteChannelMutationFn = Apollo.MutationFunction<
+  Types.AdminDeleteChannelMutation,
+  Types.AdminDeleteChannelMutationVariables
+>;
+
+/**
+ * __useAdminDeleteChannelMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteChannelMutation, { data, loading, error }] = useAdminDeleteChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminDeleteChannelMutation,
+    Types.AdminDeleteChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminDeleteChannelMutation,
+    Types.AdminDeleteChannelMutationVariables
+  >(AdminDeleteChannelDocument, options);
+}
+export type AdminDeleteChannelMutationHookResult = ReturnType<
+  typeof useAdminDeleteChannelMutation
+>;
+export type AdminDeleteChannelMutationResult =
+  Apollo.MutationResult<Types.AdminDeleteChannelMutation>;
+export type AdminDeleteChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminDeleteChannelMutation,
+  Types.AdminDeleteChannelMutationVariables
+>;
 export const AdminRolesDocument = gql`
   query AdminRoles($filter: RolesFilter, $limit: QueryLimit) {
     roles(filter: $filter, limit: $limit) {
@@ -2888,6 +3057,125 @@ export type SelfChannelsSelectLazyQueryHookResult = ReturnType<
 export type SelfChannelsSelectQueryResult = Apollo.QueryResult<
   Types.SelfChannelsSelectQuery,
   Types.SelfChannelsSelectQueryVariables
+>;
+export const UsersSelectDocument = gql`
+  query UsersSelect($filter: FullUsersFilter, $limit: QueryLimit) {
+    fullUsers(filter: $filter, limit: $limit) {
+      id
+      displayName
+      username
+    }
+  }
+`;
+
+/**
+ * __useUsersSelectQuery__
+ *
+ * To run a query within a React component, call `useUsersSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersSelectQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useUsersSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UsersSelectQuery,
+    Types.UsersSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UsersSelectQuery,
+    Types.UsersSelectQueryVariables
+  >(UsersSelectDocument, options);
+}
+export function useUsersSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UsersSelectQuery,
+    Types.UsersSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UsersSelectQuery,
+    Types.UsersSelectQueryVariables
+  >(UsersSelectDocument, options);
+}
+export type UsersSelectQueryHookResult = ReturnType<typeof useUsersSelectQuery>;
+export type UsersSelectLazyQueryHookResult = ReturnType<
+  typeof useUsersSelectLazyQuery
+>;
+export type UsersSelectQueryResult = Apollo.QueryResult<
+  Types.UsersSelectQuery,
+  Types.UsersSelectQueryVariables
+>;
+export const UsersSelectInitialDocument = gql`
+  query UsersSelectInitial($filter: FullUsersFilter) {
+    fullUsers(filter: $filter) {
+      id
+      displayName
+      username
+    }
+  }
+`;
+
+/**
+ * __useUsersSelectInitialQuery__
+ *
+ * To run a query within a React component, call `useUsersSelectInitialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersSelectInitialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersSelectInitialQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useUsersSelectInitialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.UsersSelectInitialQuery,
+    Types.UsersSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.UsersSelectInitialQuery,
+    Types.UsersSelectInitialQueryVariables
+  >(UsersSelectInitialDocument, options);
+}
+export function useUsersSelectInitialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.UsersSelectInitialQuery,
+    Types.UsersSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.UsersSelectInitialQuery,
+    Types.UsersSelectInitialQueryVariables
+  >(UsersSelectInitialDocument, options);
+}
+export type UsersSelectInitialQueryHookResult = ReturnType<
+  typeof useUsersSelectInitialQuery
+>;
+export type UsersSelectInitialLazyQueryHookResult = ReturnType<
+  typeof useUsersSelectInitialLazyQuery
+>;
+export type UsersSelectInitialQueryResult = Apollo.QueryResult<
+  Types.UsersSelectInitialQuery,
+  Types.UsersSelectInitialQueryVariables
 >;
 export const AdminCreateRoleDocument = gql`
   mutation AdminCreateRole($input: CreateRoleInput) {
