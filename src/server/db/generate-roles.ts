@@ -11,12 +11,13 @@ const defaultAdminRole: Role = {
   parentId: "moderator",
   access: {
     rights: {
-      channels: [AccessUnit.Write],
-      streamKeys: [AccessUnit.Write],
-      roles: [AccessUnit.Write],
-      users: [AccessUnit.Write],
-      activities: [AccessUnit.Write],
-      userSettings: [AccessUnit.Write],
+      channels: [AccessUnit.Write, AccessUnit.Read],
+      streamKeys: [AccessUnit.Write, AccessUnit.Read],
+      roles: [AccessUnit.Write, AccessUnit.Read],
+      users: [AccessUnit.Write, AccessUnit.Read],
+      activities: [AccessUnit.Write, AccessUnit.Read],
+      userSettings: [AccessUnit.Write, AccessUnit.Read],
+      system: [AccessUnit.Write, AccessUnit.Read],
     },
     actions: {
       user: {
@@ -66,10 +67,10 @@ const defaultUserRole: Role = {
   access: {
     rights: {
       streamKeys: [AccessUnit.Self],
-      channels: [AccessUnit.Self, AccessUnit.Read],
-      users: [AccessUnit.Self, AccessUnit.Read],
-      activities: [AccessUnit.Self, AccessUnit.Read],
-      roles: [AccessUnit.Self, AccessUnit.Read],
+      channels: [AccessUnit.Self],
+      users: [AccessUnit.Self],
+      activities: [AccessUnit.Self],
+      roles: [AccessUnit.Self],
       userSettings: [AccessUnit.Self],
     },
     actions: {
@@ -117,5 +118,5 @@ export const generateRoles = async () => {
       }
       console.info(green`-- Role [${dr.id}] ${dr.name} Ok!`);
     })
-  );
+  ).then(() => conn.close());
 };

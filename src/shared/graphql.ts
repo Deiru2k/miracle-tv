@@ -35,6 +35,7 @@ export type AccessRights = {
   channels?: Maybe<Array<Maybe<AccessUnit>>>;
   roles?: Maybe<Array<Maybe<AccessUnit>>>;
   streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
+  system?: Maybe<Array<Maybe<AccessUnit>>>;
   userSettings?: Maybe<Array<Maybe<AccessUnit>>>;
   users?: Maybe<Array<Maybe<AccessUnit>>>;
 };
@@ -477,10 +478,12 @@ export type Query = {
   streamKeys: Array<Maybe<StreamKey>>;
   streamKeysByChannelId: Array<Maybe<StreamKey>>;
   subscription?: Maybe<Subscription>;
+  systemLoad: SystemLoadInfo;
   test: TestResponse;
   user?: Maybe<User>;
   userDirectory: Array<Maybe<User>>;
   userSettings: UserSettings;
+  userStats: UserStatsInfo;
   users: Array<Maybe<User>>;
 };
 
@@ -675,6 +678,19 @@ export type SubscriptionsFilter = {
   targetId?: InputMaybe<Scalars["ID"]>;
 };
 
+export type SystemLoadInfo = {
+  __typename?: "SystemLoadInfo";
+  cpuPercentage: Scalars["Float"];
+  dbSize: Scalars["Float"];
+  drivePercentage: Scalars["Float"];
+  mediaDirSize: Scalars["Float"];
+  memPercentage: Scalars["Float"];
+  totalDrive: Scalars["Float"];
+  totalMem: Scalars["Float"];
+  usedDrive: Scalars["Float"];
+  usedMem: Scalars["Float"];
+};
+
 export type TestResponse = {
   __typename?: "TestResponse";
   secret: Scalars["String"];
@@ -791,6 +807,14 @@ export type UserSettings = {
   singleUserChannel?: Maybe<Channel>;
   singleUserMode?: Maybe<Scalars["Boolean"]>;
   useGravatar?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UserStatsInfo = {
+  __typename?: "UserStatsInfo";
+  channelCount: Scalars["Int"];
+  sessionCount: Scalars["Int"];
+  streamKeyCount: Scalars["Int"];
+  userCount: Scalars["Int"];
 };
 
 export type UsersFilter = {
@@ -931,6 +955,7 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   File: ResolverTypeWrapper<File>;
+  Float: ResolverTypeWrapper<Scalars["Float"]>;
   FullUser: ResolverTypeWrapper<FullUser>;
   FullUsersFilter: FullUsersFilter;
   ID: ResolverTypeWrapper<Scalars["ID"]>;
@@ -957,6 +982,7 @@ export type ResolversTypes = {
   SubscriptionInput: SubscriptionInput;
   SubscriptionTarget: SubscriptionTarget;
   SubscriptionsFilter: SubscriptionsFilter;
+  SystemLoadInfo: ResolverTypeWrapper<SystemLoadInfo>;
   TestResponse: ResolverTypeWrapper<TestResponse>;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -973,6 +999,7 @@ export type ResolversTypes = {
   UserActionsInput: UserActionsInput;
   UserMeta: ResolverTypeWrapper<UserMeta>;
   UserSettings: ResolverTypeWrapper<UserSettings>;
+  UserStatsInfo: ResolverTypeWrapper<UserStatsInfo>;
   UsersFilter: UsersFilter;
 };
 
@@ -1001,6 +1028,7 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   DateTime: Scalars["DateTime"];
   File: File;
+  Float: Scalars["Float"];
   FullUser: FullUser;
   FullUsersFilter: FullUsersFilter;
   ID: Scalars["ID"];
@@ -1024,6 +1052,7 @@ export type ResolversParentTypes = {
   SubscriptionByTargetId: SubscriptionByTargetId;
   SubscriptionInput: SubscriptionInput;
   SubscriptionsFilter: SubscriptionsFilter;
+  SystemLoadInfo: SystemLoadInfo;
   TestResponse: TestResponse;
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
@@ -1040,6 +1069,7 @@ export type ResolversParentTypes = {
   UserActionsInput: UserActionsInput;
   UserMeta: UserMeta;
   UserSettings: UserSettings;
+  UserStatsInfo: UserStatsInfo;
   UsersFilter: UsersFilter;
 };
 
@@ -1075,6 +1105,11 @@ export type AccessRightsResolvers<
     ContextType
   >;
   streamKeys?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
+    ParentType,
+    ContextType
+  >;
+  system?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
@@ -1659,6 +1694,11 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySubscriptionArgs, never>
   >;
+  systemLoad?: Resolver<
+    ResolversTypes["SystemLoadInfo"],
+    ParentType,
+    ContextType
+  >;
   test?: Resolver<ResolversTypes["TestResponse"], ParentType, ContextType>;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
@@ -1674,6 +1714,11 @@ export type QueryResolvers<
   >;
   userSettings?: Resolver<
     ResolversTypes["UserSettings"],
+    ParentType,
+    ContextType
+  >;
+  userStats?: Resolver<
+    ResolversTypes["UserStatsInfo"],
     ParentType,
     ContextType
   >;
@@ -1775,6 +1820,22 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType
   >;
+};
+
+export type SystemLoadInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["SystemLoadInfo"] = ResolversParentTypes["SystemLoadInfo"]
+> = {
+  cpuPercentage?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  dbSize?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  drivePercentage?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  mediaDirSize?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  memPercentage?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  totalDrive?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  totalMem?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  usedDrive?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  usedMem?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TestResponseResolvers<
@@ -1889,6 +1950,17 @@ export type UserSettingsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserStatsInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["UserStatsInfo"] = ResolversParentTypes["UserStatsInfo"]
+> = {
+  channelCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  sessionCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  streamKeyCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  userCount?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   AccessRights?: AccessRightsResolvers<ContextType>;
   AccessTargets?: AccessTargetsResolvers<ContextType>;
@@ -1909,6 +1981,7 @@ export type Resolvers<ContextType = any> = {
   SessionResponse?: SessionResponseResolvers<ContextType>;
   StreamKey?: StreamKeyResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  SystemLoadInfo?: SystemLoadInfoResolvers<ContextType>;
   TestResponse?: TestResponseResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
@@ -1916,10 +1989,38 @@ export type Resolvers<ContextType = any> = {
   UserActions?: UserActionsResolvers<ContextType>;
   UserMeta?: UserMetaResolvers<ContextType>;
   UserSettings?: UserSettingsResolvers<ContextType>;
+  UserStatsInfo?: UserStatsInfoResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
+};
+
+export type AdminDashboardSystemLoadQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AdminDashboardSystemLoadQuery = {
+  __typename?: "Query";
+  userStats: {
+    __typename?: "UserStatsInfo";
+    userCount: number;
+    channelCount: number;
+    streamKeyCount: number;
+    sessionCount: number;
+  };
+  systemLoad: {
+    __typename?: "SystemLoadInfo";
+    cpuPercentage: number;
+    totalMem: number;
+    usedMem: number;
+    memPercentage: number;
+    totalDrive: number;
+    usedDrive: number;
+    drivePercentage: number;
+    mediaDirSize: number;
+    dbSize: number;
+  };
 };
 
 export type AdminChannelsCountQueryVariables = Exact<{

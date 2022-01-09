@@ -64,6 +64,7 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
         channels: fetchAccess(rolesById, target, "channels"),
         activities: fetchAccess(rolesById, target, "activities"),
         userSettings: fetchAccess(rolesById, target, "userSettings"),
+        system: fetchAccess(rolesById, target, "system"),
       },
       actions: {
         user: {
@@ -84,9 +85,12 @@ export const checkRight = (
   subject: string
 ) => {
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
-  return any((right: AccessUnit[]) => {
-    return right.includes(unit);
-  }, roles.map(view(channelEditRightsLens)));
+  return any(
+    (right: AccessUnit[]) => {
+      return right.includes(unit);
+    },
+    roles.map((e) => view(channelEditRightsLens, e) ?? [AccessUnit.Deny])
+  );
 };
 
 const adminWritePermissions: Array<keyof AccessRights> = [

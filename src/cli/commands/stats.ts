@@ -6,7 +6,7 @@ import prettyBytes from "pretty-bytes";
 import { readdir, stat } from "fs/promises";
 import path from "path";
 
-const dirSize = async (directory: string) => {
+export const dirSize = async (directory: string) => {
   const files = await readdir(directory);
   const stats = files.map((file) => stat(path.join(directory, file)));
 
@@ -16,13 +16,8 @@ const dirSize = async (directory: string) => {
   );
 };
 
-export const getDbStats = async () => {
-  const conn = await rdb.connect({
-    host: config.database?.host,
-    port: config.database?.port,
-  });
-  const dbSize = await rdb
-    .db("rethinkdb")
+export const getDbSize = (db: rdb.Db) => {
+  return db
     .table("stats")
     .filter(
       rdb
@@ -38,8 +33,15 @@ export const getDbStats = async () => {
     .map((doc) => doc("storage_engine")("disk")("space_usage")("data_bytes"))
     .reduce((left: any, right: any) => {
       return left.add(right);
-    })
-    .run(conn);
+    });
+};
+
+export const getDbStats = async () => {
+  const conn = await rdb.connect({
+    host: config.database?.host,
+    port: config.database?.port,
+  });
+  const dbSize = await getDbSize(rdb.db("rethinkdb")).run(conn);
 
   const userCount = await rdb
     .db(config.database?.db)

@@ -23,6 +23,7 @@ type AccessRights {
   users: [AccessUnit]
   activities: [AccessUnit]
   userSettings: [AccessUnit]
+  system: [AccessUnit]
 }
 
 type AccessTargets {

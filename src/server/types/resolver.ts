@@ -11,6 +11,7 @@ import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 import { UserSettingsModel } from "miracle-tv-server/db/models/UserSettings";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { SubscriptionsModel } from "miracle-tv-server/db/models/Subscriptions";
+import { SystemModel } from "miracle-tv-server/db/models/System";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
@@ -19,6 +20,7 @@ export type ResolverContext = {
   user: DbUser;
   userRoles?: Role[];
   db: {
+    system: SystemModel;
     users: UsersModel;
     userSettings: UserSettingsModel;
     sessions: SessionsModel;

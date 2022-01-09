@@ -326,6 +326,77 @@ export const CurrentUserFragmentDoc = gql`
     }
   }
 `;
+export const AdminDashboardSystemLoadDocument = gql`
+  query AdminDashboardSystemLoad {
+    userStats {
+      userCount
+      channelCount
+      streamKeyCount
+      sessionCount
+    }
+    systemLoad {
+      cpuPercentage
+      totalMem
+      usedMem
+      memPercentage
+      totalDrive
+      usedDrive
+      drivePercentage
+      mediaDirSize
+      dbSize
+    }
+  }
+`;
+
+/**
+ * __useAdminDashboardSystemLoadQuery__
+ *
+ * To run a query within a React component, call `useAdminDashboardSystemLoadQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDashboardSystemLoadQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDashboardSystemLoadQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDashboardSystemLoadQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminDashboardSystemLoadQuery,
+    Types.AdminDashboardSystemLoadQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminDashboardSystemLoadQuery,
+    Types.AdminDashboardSystemLoadQueryVariables
+  >(AdminDashboardSystemLoadDocument, options);
+}
+export function useAdminDashboardSystemLoadLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminDashboardSystemLoadQuery,
+    Types.AdminDashboardSystemLoadQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminDashboardSystemLoadQuery,
+    Types.AdminDashboardSystemLoadQueryVariables
+  >(AdminDashboardSystemLoadDocument, options);
+}
+export type AdminDashboardSystemLoadQueryHookResult = ReturnType<
+  typeof useAdminDashboardSystemLoadQuery
+>;
+export type AdminDashboardSystemLoadLazyQueryHookResult = ReturnType<
+  typeof useAdminDashboardSystemLoadLazyQuery
+>;
+export type AdminDashboardSystemLoadQueryResult = Apollo.QueryResult<
+  Types.AdminDashboardSystemLoadQuery,
+  Types.AdminDashboardSystemLoadQueryVariables
+>;
 export const AdminChannelsCountDocument = gql`
   query AdminChannelsCount($filter: ChannelsQueryFilter) {
     fullChannelsCount(filter: $filter)

@@ -94,6 +94,8 @@ import {
 } from "./resolvers/full-users";
 import { fullUserMutations } from "./mutations/full-users";
 import { rolesMutations } from "./mutations/roles";
+import { systemResolvers } from "./resolvers/system";
+import { SystemModel } from "miracle-tv-server/db/models/System";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -134,6 +136,7 @@ let executableSchema = makeExecutableSchema({
       ...rolesQueryresolvers,
       ...fullUserResolvers,
       ...fileResolvers,
+      ...systemResolvers,
     },
     Mutation: {
       ping: () => {
@@ -186,6 +189,7 @@ export const graphqlEndpoint = new ApolloServer({
   context: async ({ req }) => {
     const con = await connection;
     const db = {
+      system: new SystemModel(con),
       userSettings: new UserSettingsModel(con),
       sessions: new SessionsModel(con),
       users: new UsersModel(con),

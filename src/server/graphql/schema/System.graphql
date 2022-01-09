@@ -1,0 +1,23 @@
+type SystemLoadInfo {
+  cpuPercentage: Float!
+  totalMem: Float!
+  usedMem: Float!
+  memPercentage: Float!
+  totalDrive: Float!
+  usedDrive: Float!
+  drivePercentage: Float!
+  mediaDirSize: Float!
+  dbSize: Float!
+}
+
+type UserStatsInfo {
+  userCount: Int!
+  channelCount: Int!
+  streamKeyCount: Int!
+  sessionCount: Int!
+}
+
+extend type Query {
+  systemLoad: SystemLoadInfo! @auth(rights: [{ unit: READ, subject: "system" }])
+  userStats: UserStatsInfo! @auth(rights: [{ unit: READ, subject: "system" }])
+}
