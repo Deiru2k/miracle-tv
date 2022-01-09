@@ -486,6 +486,109 @@ export type AdminRolePageQueryResult = Apollo.QueryResult<
   Types.AdminRolePageQuery,
   Types.AdminRolePageQueryVariables
 >;
+export const AdminUpdateRoleDocument = gql`
+  mutation AdminUpdateRole($input: UpdateRoleInput) {
+    updateRole(input: $input) {
+      ...AdminRole
+    }
+  }
+  ${AdminRoleFragmentDoc}
+`;
+export type AdminUpdateRoleMutationFn = Apollo.MutationFunction<
+  Types.AdminUpdateRoleMutation,
+  Types.AdminUpdateRoleMutationVariables
+>;
+
+/**
+ * __useAdminUpdateRoleMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateRoleMutation, { data, loading, error }] = useAdminUpdateRoleMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateRoleMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminUpdateRoleMutation,
+    Types.AdminUpdateRoleMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminUpdateRoleMutation,
+    Types.AdminUpdateRoleMutationVariables
+  >(AdminUpdateRoleDocument, options);
+}
+export type AdminUpdateRoleMutationHookResult = ReturnType<
+  typeof useAdminUpdateRoleMutation
+>;
+export type AdminUpdateRoleMutationResult =
+  Apollo.MutationResult<Types.AdminUpdateRoleMutation>;
+export type AdminUpdateRoleMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminUpdateRoleMutation,
+  Types.AdminUpdateRoleMutationVariables
+>;
+export const ResetPasswordDocument = gql`
+  mutation ResetPassword($id: ID!, $input: ResetUserPasswordInput!) {
+    resetUserPassword(id: $id, input: $input) {
+      status
+      data
+    }
+  }
+`;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<
+  Types.ResetPasswordMutation,
+  Types.ResetPasswordMutationVariables
+>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.ResetPasswordMutation,
+    Types.ResetPasswordMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.ResetPasswordMutation,
+    Types.ResetPasswordMutationVariables
+  >(ResetPasswordDocument, options);
+}
+export type ResetPasswordMutationHookResult = ReturnType<
+  typeof useResetPasswordMutation
+>;
+export type ResetPasswordMutationResult =
+  Apollo.MutationResult<Types.ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
+  Types.ResetPasswordMutation,
+  Types.ResetPasswordMutationVariables
+>;
 export const UpdateFullUserDocument = gql`
   mutation UpdateFullUser($input: UpdateFullUserInput!) {
     updateFullUser(input: $input) {

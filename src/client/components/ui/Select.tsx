@@ -199,7 +199,7 @@ export const Select = ({
                 py={1}
                 px={2}
               >
-                {optionsMap[v as keyof typeof optionsMap].label}{" "}
+                {optionsMap[v as keyof typeof optionsMap]?.label}{" "}
                 <CloseIcon
                   h="0.5rem"
                   ml={1}

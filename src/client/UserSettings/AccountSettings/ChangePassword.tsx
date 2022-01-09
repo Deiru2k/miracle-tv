@@ -18,14 +18,20 @@ export const ChangePassword = () => {
   const [changePasswordMutation, { loading: isChanging }] =
     useSettingsChangePasswordMutation({
       onCompleted: () =>
-        toast({ status: "success", title: "Updated user info!" }),
+        toast({
+          status: "success",
+          title: "Successfully changed your password!",
+        }),
       onError: () =>
-        toast({ status: "error", title: "Error updating user info." }),
+        toast({
+          status: "error",
+          title: "There was an error changing your password.",
+        }),
     });
 
   const changePassword = useCallback(
     (values: ChangePasswordInput) => {
-      changePasswordMutation({ variables: { input: values } });
+      return changePasswordMutation({ variables: { input: values } });
     },
     [changePasswordMutation]
   );
@@ -37,14 +43,25 @@ export const ChangePassword = () => {
       </Heading>
       <Panel>
         <Form<ChangePasswordInput> onSubmit={changePassword}>
-          {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
+          {({ handleSubmit, form }) => (
+            <form
+              onSubmit={(e) => {
+                handleSubmit(e).then(() => {
+                  form.reset();
+                });
+              }}
+            >
               <FormInput
                 name="currentPassword"
                 label="Current Password"
+                type="password"
                 mb={4}
               />
-              <FormInput name="newPassword" label="New Password" />
+              <FormInput
+                name="newPassword"
+                label="New Password"
+                type="password"
+              />
               <Flex mt={4}>
                 <Button ml="auto" type="submit" isLoading={isChanging}>
                   Change

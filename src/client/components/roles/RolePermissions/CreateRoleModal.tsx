@@ -73,11 +73,12 @@ export const CreateRoleModal = ({ ...disclosure }: Props) => {
   const onRoleCreate = useCallback(
     (input: CreateRoleInput) => {
       return createRoleMutation({
-        variables: { input: { ...input, parentId: null } },
+        variables: { input: { ...input } },
       });
     },
     [createRoleMutation]
   );
+
   return (
     <Form<CreateRoleInput> onSubmit={onRoleCreate} initialValues={defaultRole}>
       {({ handleSubmit, form, dirty }) => (
@@ -107,7 +108,11 @@ export const CreateRoleModal = ({ ...disclosure }: Props) => {
               </ModalBody>
               <ModalFooter>
                 <Flex w="100%" justify="flex-end">
-                  <Button isDisabled={!dirty} type="submit">
+                  <Button
+                    isDisabled={!dirty || isCreating}
+                    type="submit"
+                    isLoading={isCreating}
+                  >
                     Create role
                   </Button>
                 </Flex>

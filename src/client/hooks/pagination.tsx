@@ -109,7 +109,7 @@ export const Pagination = ({
     return pageSlice;
   }, [pagesOnDisplay, page, pageCount]);
 
-  return (
+  return pageSlice.length > 0 ? (
     <Flex w="100%" justify="center" mt={2}>
       <ButtonGroup size="md" isAttached variant="outline">
         <IconButton
@@ -137,5 +137,5 @@ export const Pagination = ({
         />
       </ButtonGroup>
     </Flex>
-  );
+  ) : null;
 };

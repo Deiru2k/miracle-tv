@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { FormCheckbox } from "miracle-tv-client/components/form/FormCheckbox";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
+import { FormRolesSelect } from "miracle-tv-client/components/form/selects/FormRoleSelect";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
@@ -105,7 +106,7 @@ gql`
 
 const perPage = 6;
 
-const defaultFilter = {};
+const defaultFilter: FullUsersFilter = {};
 
 export const AdminUserList = () => {
   const toast = useToast();
@@ -146,6 +147,7 @@ export const AdminUserList = () => {
   }, [setEditableUserId]);
 
   useEffect(() => {
+    setEditableUserId(null);
     setSelectedUsers([]);
   }, [fullUsers, setSelectedUsers]);
 
@@ -313,42 +315,32 @@ export const AdminUserList = () => {
       <Heading mb={4}>User Management</Heading>
       <Filter<FullUsersFilter>
         onFilter={setFilter}
-        defaultValues={filter}
+        initialValues={filter}
+        defaultValues={defaultFilter}
         refetch={refetch}
       >
         <Heading size="sm">Filter by fields</Heading>
         <HStack mt={2}>
           <FormInput name="username" label="Username" />
           <FormInput name="email" label="E-mail" />
+          <FormRolesSelect
+            name="roles"
+            label="Roles"
+            inputProps={{ multi: true }}
+          />
         </HStack>
         <Heading mt={3} size="sm">
           Filter by states
         </Heading>
         <HStack mt={2}>
-          <FormCheckbox
-            name="suspended"
-            label="Suspended?"
-            w="initial"
-            uncheckUndefined
-          />
-          <FormCheckbox
-            name="silenced"
-            label="Silenced?"
-            w="initial"
-            uncheckUndefined
-          />
+          <FormCheckbox name="suspended" label="Suspended?" w="initial" />
+          <FormCheckbox name="silenced" label="Silenced?" w="initial" />
           <FormCheckbox
             name="loginDisabled"
             label="Login disabled?"
             w="initial"
-            uncheckUndefined
           />
-          <FormCheckbox
-            name="deleted"
-            label="Deleted?"
-            w="initial"
-            uncheckUndefined
-          />
+          <FormCheckbox name="deleted" label="Deleted?" w="initial" />
         </HStack>
       </Filter>
       <Divider mb={4} />

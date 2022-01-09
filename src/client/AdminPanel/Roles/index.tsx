@@ -6,7 +6,6 @@ import { AdminRolePage } from "./RolePage";
 
 export const AdminRolesPage = () => {
   const { query: { path = [] } = {} } = useRouter();
-  console.log(path);
 
   switch (path.length) {
     case 1:

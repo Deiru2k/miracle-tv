@@ -3,6 +3,7 @@ import React from "react";
 import { Form } from "react-final-form";
 
 type Props<T = any> = {
+  initialValues?: Partial<T>;
   defaultValues?: Partial<T>;
   onFilter: (values: T) => void;
   children: React.ReactNode;
@@ -11,12 +12,13 @@ type Props<T = any> = {
 
 export const Filter = <T extends any>({
   onFilter,
+  initialValues,
   defaultValues,
   children,
   refetch,
 }: Props<T>) => {
   return (
-    <Form<T> initialValues={defaultValues} onSubmit={onFilter}>
+    <Form<T> initialValues={initialValues} onSubmit={onFilter}>
       {({ handleSubmit, pristine, form: { reset } }) => (
         <Flex w="100%" mb={2}>
           <form
@@ -33,8 +35,8 @@ export const Filter = <T extends any>({
               <Button
                 colorScheme="red"
                 onClick={() => {
-                  reset({});
-                  handleSubmit({});
+                  reset(defaultValues);
+                  handleSubmit(defaultValues);
                 }}
                 mr={2}
               >

@@ -1,4 +1,8 @@
-import { MutationResolvers } from "miracle-tv-shared/graphql";
+import {
+  MutationResolvers,
+  PasswordResetMethod,
+  PasswordResetStatus,
+} from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { head } from "ramda";
 import {
@@ -8,8 +12,10 @@ import {
   InputErrorLogin,
   SuspendedErrorLogin,
 } from "miracle-tv-server/graphql/errors/auth";
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { DbUser } from "miracle-tv-server/db/models/types";
+import { generatePassword } from "miracle-tv-shared/utils/password";
+import { UserInputError } from "apollo-server-errors";
 
 export const signInMutation: MutationResolvers<ResolverContext>["signIn"] =
   async (_, { input: { username, password } }, { db: { users, sessions } }) => {
@@ -41,4 +47,20 @@ export const revokeSelfSessionsMutation: MutationResolvers<ResolverContext>["rev
       throw new AuthorizationError("Sessions found not belonging to user");
     }
     return sessions.revokeAllSessionsBySessionIds(input);
+  };
+
+export const resetUserPasswordMutation: MutationResolvers<ResolverContext>["resetUserPassword"] =
+  async (_, { id, input }, { db: { users, sessions } }) => {
+    if (input.method === PasswordResetMethod.Echo) {
+      const newPassword = generatePassword(18);
+      const hashed = await hash(newPassword, 11);
+      await users.bulkUpdate([id], { password: hashed });
+      await sessions.revokeAllSessionsByUserId(id);
+      return {
+        status: PasswordResetStatus.Success,
+        data: newPassword,
+      };
+    } else {
+      throw new UserInputError("Reset method not implemented yet");
+    }
   };

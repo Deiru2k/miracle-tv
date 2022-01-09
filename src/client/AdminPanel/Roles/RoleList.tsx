@@ -163,7 +163,7 @@ export const AdminRolesList = () => {
           </Thead>
           <Tbody>
             {roles.map((role: AdminRoleFragment) => (
-              <Tr>
+              <Tr key={role.id}>
                 <Td>
                   <Checkbox
                     isDisabled={!role}

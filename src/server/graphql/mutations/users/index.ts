@@ -1,4 +1,4 @@
-import { MutationResolvers, UpdateUserInput } from "miracle-tv-shared/graphql";
+import { MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { compare } from "bcrypt";
 import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";

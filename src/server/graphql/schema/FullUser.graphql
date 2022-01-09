@@ -45,6 +45,24 @@ input UpdateFullUserInput {
   deleted: Boolean
 }
 
+enum PasswordResetMethod {
+  ECHO
+  EMAIL
+}
+enum PasswordResetStatus {
+  SUCCESS
+  FAIl
+}
+
+input ResetUserPasswordInput {
+  method: PasswordResetMethod!
+}
+
+type ResetUserPasswordReturn {
+  status: PasswordResetStatus
+  data: String
+}
+
 extend type Mutation {
   updateFullUser(input: UpdateFullUserInput): FullUser!
     @auth(rights: [{ unit: WRITE, subject: "users" }])
@@ -84,4 +102,8 @@ extend type Mutation {
     @auth(rights: [{ unit: WRITE, subject: "users" }])
   unsilenceFullUsers(ids: [ID]!): [FullUser]!
     @auth(rights: [{ unit: WRITE, subject: "users" }])
+  resetUserPassword(
+    id: ID!
+    input: ResetUserPasswordInput!
+  ): ResetUserPasswordReturn @auth(rights: [{ unit: WRITE, subject: "users" }])
 }

@@ -2,6 +2,7 @@ import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
 import {
   CreateUserInput,
+  FullUsersFilter,
   QueryLimit,
   UpdateUserAccountInput,
   UpdateUserInput,
@@ -106,7 +107,7 @@ export class UsersModel extends Model {
   }
 
   userFilter(
-    { ids, username, ...filter }: UsersFilter = {},
+    { ids, username, roles, ...filter }: UsersFilter & FullUsersFilter = {},
     limit?: QueryLimit,
     includeDisabled: boolean = false
   ) {
@@ -119,10 +120,14 @@ export class UsersModel extends Model {
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query
       .filter((doc: any) => {
+        let reply: any = doc;
         if (username) {
-          return doc("username").downcase().match(username.toLowerCase());
+          reply = doc("username").downcase().match(username.toLowerCase());
         }
-        return true;
+        if (roles && roles?.length) {
+          reply = reply.and(doc("roles").setIntersection(roles).count().gt(0));
+        }
+        return reply;
       })
       .filter({ ...filter, ...disabledFilter });
 

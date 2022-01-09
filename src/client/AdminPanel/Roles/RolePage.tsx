@@ -1,21 +1,32 @@
 import { gql } from "@apollo/client";
 import { Divider, Heading, Text } from "@chakra-ui/layout";
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
-import { RolePermissions } from "miracle-tv-client/components/roles/RolePermissions/RolePermissions";
-import { ActionPermissions } from "miracle-tv-client/components/roles/RolePermissions/ActionPermissions";
+import { Box, Button, useToast } from "@chakra-ui/react";
 import { RoleForm } from "miracle-tv-client/components/roles/RolePermissions/RoleForm";
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
-import { AdminRoleFragment } from "miracle-tv-shared/graphql";
-import { useAdminRolePageQuery } from "miracle-tv-shared/hooks";
+import { UpdateRoleInput } from "miracle-tv-shared/graphql";
+import {
+  useAdminRolePageQuery,
+  useAdminUpdateRoleMutation,
+} from "miracle-tv-shared/hooks";
 import React, { useCallback } from "react";
 import { Form } from "react-final-form";
 import { ADMIN_ROLE_FRAGMENT } from "./const";
-import { CreateRoleModal } from "miracle-tv-client/components/roles/RolePermissions/CreateRoleModal";
+
+import { omitDeep } from "miracle-tv-shared/utils/object/omit";
 
 gql`
   query AdminRolePage($id: ID!) {
     role(id: $id) {
+      ...AdminRole
+    }
+  }
+  ${ADMIN_ROLE_FRAGMENT}
+`;
+
+gql`
+  mutation AdminUpdateRole($input: UpdateRoleInput) {
+    updateRole(input: $input) {
       ...AdminRole
     }
   }
@@ -27,18 +38,41 @@ type Props = {
 };
 
 export const AdminRolePage = ({ id }: Props) => {
+  const toast = useToast();
   const { data: { role } = {}, loading: isLoading } = useAdminRolePageQuery({
     variables: { id },
     skip: !id,
   });
-  const createDisclosure = useDisclosure();
-  const onCreateDisclosureOpen = useCallback(() => {
-    createDisclosure.onOpen();
-  }, [createDisclosure]);
+
+  const [updateRoleMutation, { loading: isUpdating }] =
+    useAdminUpdateRoleMutation({
+      onCompleted() {
+        toast({
+          status: "success",
+          title: `Role "${role?.name}" successfully updated.`,
+        });
+      },
+      onError() {
+        toast({
+          status: "error",
+          title: `There was an error updating "${role?.name}".`,
+        });
+      },
+    });
+
+  const updateRole = useCallback(
+    (input: UpdateRoleInput) => {
+      updateRoleMutation({ variables: { input } });
+    },
+    [updateRoleMutation]
+  );
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const formData: UpdateRoleInput = omitDeep(role, ["__typename"]);
+
   return role ? (
     <>
       <Heading size="lg" mb={2}>
@@ -51,7 +85,7 @@ export const AdminRolePage = ({ id }: Props) => {
         {role.id}
       </Heading>
       <Divider mb={4} mt={4} />
-      <Form<AdminRoleFragment> onSubmit={() => {}} initialValues={role}>
+      <Form<UpdateRoleInput> onSubmit={updateRole} initialValues={formData}>
         {({ handleSubmit, dirty }) => (
           <>
             <form onSubmit={handleSubmit}>
@@ -62,7 +96,12 @@ export const AdminRolePage = ({ id }: Props) => {
                 float="right"
                 bottom={0}
               >
-                <Button type="submit" mt={6} isDisabled={!dirty}>
+                <Button
+                  type="submit"
+                  mt={6}
+                  isDisabled={!dirty || isUpdating}
+                  isLoading={isUpdating}
+                >
                   Update role
                 </Button>
               </Box>

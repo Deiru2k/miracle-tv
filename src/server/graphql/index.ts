@@ -22,6 +22,7 @@ import {
 } from "miracle-tv-server/graphql/resolvers/users";
 import { userMutations } from "miracle-tv-server/graphql/mutations/users";
 import {
+  resetUserPasswordMutation,
   revokeSelfSessionsMutation,
   signInMutation,
 } from "miracle-tv-server/graphql/mutations/users/auth";
@@ -159,6 +160,7 @@ let executableSchema = makeExecutableSchema({
       revokeSelfSessions: revokeSelfSessionsMutation,
       subscribe: subscribeMutaiton,
       unsubscribe: unsubscribeMutation,
+      resetUserPassword: resetUserPasswordMutation,
       ...rolesMutations,
       ...fullUserMutations,
     },

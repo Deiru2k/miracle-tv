@@ -13,7 +13,7 @@ export type FormSelectProps = {
   error?: string;
   type?: string;
   hideLabel?: boolean;
-  inputProps?: InputProps;
+  inputProps?: Partial<SelectProps>;
   options: SelectProps["options"];
   onSearch?: (query: string) => void;
   isLoading?: boolean;
@@ -45,6 +45,7 @@ export const FormSelect = ({
         placeholder={inputPlaceholder}
         onSearch={onSearch}
         isLoading={isLoading}
+        {...inputProps}
       />
     </FormGroup>
   );

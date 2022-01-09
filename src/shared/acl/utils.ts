@@ -83,10 +83,8 @@ export const checkRight = (
   unit: AccessUnit,
   subject: string
 ) => {
-  console.log(subject);
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
   return any((right: AccessUnit[]) => {
-    console.log(right);
     return right.includes(unit);
   }, roles.map(view(channelEditRightsLens)));
 };

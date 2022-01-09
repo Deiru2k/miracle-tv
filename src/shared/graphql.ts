@@ -243,6 +243,7 @@ export type Mutation = {
   enableFullUserLogin: FullUser;
   enableFullUsersLogin: Array<Maybe<FullUser>>;
   ping: Scalars["String"];
+  resetUserPassword?: Maybe<ResetUserPasswordReturn>;
   restoreFullUser: FullUser;
   restoreFullUsers: Array<Maybe<FullUser>>;
   revokeAllStreamKeys: Scalars["Boolean"];
@@ -325,6 +326,11 @@ export type MutationEnableFullUserLoginArgs = {
 
 export type MutationEnableFullUsersLoginArgs = {
   ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationResetUserPasswordArgs = {
+  id: Scalars["ID"];
+  input: ResetUserPasswordInput;
 };
 
 export type MutationRestoreFullUserArgs = {
@@ -430,6 +436,16 @@ export type MutationUpdateUserSettingsArgs = {
 export type MutationUploadFileArgs = {
   file: Scalars["Upload"];
 };
+
+export enum PasswordResetMethod {
+  Echo = "ECHO",
+  Email = "EMAIL",
+}
+
+export enum PasswordResetStatus {
+  FaIl = "FAIl",
+  Success = "SUCCESS",
+}
 
 export type Query = {
   __typename?: "Query";
@@ -546,6 +562,16 @@ export type QueryUsersArgs = {
 export type QueryLimit = {
   limit?: InputMaybe<Scalars["Int"]>;
   skip?: InputMaybe<Scalars["Int"]>;
+};
+
+export type ResetUserPasswordInput = {
+  method: PasswordResetMethod;
+};
+
+export type ResetUserPasswordReturn = {
+  __typename?: "ResetUserPasswordReturn";
+  data?: Maybe<Scalars["String"]>;
+  status?: Maybe<PasswordResetStatus>;
 };
 
 export type RevokeAllStreamKeysInput = {
@@ -894,8 +920,12 @@ export type ResolversTypes = {
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   Mutation: ResolverTypeWrapper<{}>;
+  PasswordResetMethod: PasswordResetMethod;
+  PasswordResetStatus: PasswordResetStatus;
   Query: ResolverTypeWrapper<{}>;
   QueryLimit: QueryLimit;
+  ResetUserPasswordInput: ResetUserPasswordInput;
+  ResetUserPasswordReturn: ResolverTypeWrapper<ResetUserPasswordReturn>;
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
@@ -962,6 +992,8 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   QueryLimit: QueryLimit;
+  ResetUserPasswordInput: ResetUserPasswordInput;
+  ResetUserPasswordReturn: ResetUserPasswordReturn;
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
@@ -1297,6 +1329,12 @@ export type MutationResolvers<
     RequireFields<MutationEnableFullUsersLoginArgs, "ids">
   >;
   ping?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  resetUserPassword?: Resolver<
+    Maybe<ResolversTypes["ResetUserPasswordReturn"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationResetUserPasswordArgs, "id" | "input">
+  >;
   restoreFullUser?: Resolver<
     ResolversTypes["FullUser"],
     ParentType,
@@ -1612,6 +1650,19 @@ export type QueryResolvers<
   >;
 };
 
+export type ResetUserPasswordReturnResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ResetUserPasswordReturn"] = ResolversParentTypes["ResetUserPasswordReturn"]
+> = {
+  data?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  status?: Resolver<
+    Maybe<ResolversTypes["PasswordResetStatus"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type RoleResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Role"] = ResolversParentTypes["Role"]
@@ -1817,6 +1868,7 @@ export type Resolvers<ContextType = any> = {
   InfoResponse?: InfoResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  ResetUserPasswordReturn?: ResetUserPasswordReturnResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
   SessionResponse?: SessionResponseResolvers<ContextType>;
@@ -1946,6 +1998,44 @@ export type AdminRolePageQuery = {
     | undefined;
 };
 
+export type AdminUpdateRoleMutationVariables = Exact<{
+  input?: InputMaybe<UpdateRoleInput>;
+}>;
+
+export type AdminUpdateRoleMutation = {
+  __typename?: "Mutation";
+  updateRole: {
+    __typename?: "Role";
+    id: string;
+    parentId?: string | null | undefined;
+    name: string;
+    access: {
+      __typename?: "AccessTargets";
+      rights: {
+        __typename?: "AccessRights";
+        channels?: Array<AccessUnit | null | undefined> | null | undefined;
+        streamKeys?: Array<AccessUnit | null | undefined> | null | undefined;
+        roles?: Array<AccessUnit | null | undefined> | null | undefined;
+        users?: Array<AccessUnit | null | undefined> | null | undefined;
+        activities?: Array<AccessUnit | null | undefined> | null | undefined;
+        userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+      };
+      actions: {
+        __typename?: "Actions";
+        user?:
+          | {
+              __typename?: "UserActions";
+              silence?: boolean | null | undefined;
+              ban?: boolean | null | undefined;
+              warn?: boolean | null | undefined;
+            }
+          | null
+          | undefined;
+      };
+    };
+  };
+};
+
 export type AdminRoleFragment = {
   __typename?: "Role";
   id: string;
@@ -1975,6 +2065,23 @@ export type AdminRoleFragment = {
         | undefined;
     };
   };
+};
+
+export type ResetPasswordMutationVariables = Exact<{
+  id: Scalars["ID"];
+  input: ResetUserPasswordInput;
+}>;
+
+export type ResetPasswordMutation = {
+  __typename?: "Mutation";
+  resetUserPassword?:
+    | {
+        __typename?: "ResetUserPasswordReturn";
+        status?: PasswordResetStatus | null | undefined;
+        data?: string | null | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type UpdateFullUserMutationVariables = Exact<{
