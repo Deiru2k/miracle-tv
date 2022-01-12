@@ -33,7 +33,6 @@ export const ActivityForm = () => {
             minW="50px"
             maxH="150px"
             maxW="150px"
-            label="Icon"
           />
         </FormGroup>
 
