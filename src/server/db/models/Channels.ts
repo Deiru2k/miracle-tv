@@ -64,14 +64,20 @@ export class ChanelsModel extends Model {
   }
 
   channelsFilter(
-    { ids, userIds, name, ...filter }: ChannelsQueryFilter = {},
+    {
+      ids,
+      userIds = [],
+      activityIds = [],
+      name,
+      ...filter
+    }: ChannelsQueryFilter = {},
     limit?: QueryLimit,
     includeDisabled: boolean = false
   ) {
     const query = ids ? this.table.getAll(...ids) : this.table;
     let filteredQuery = query
       .filter((doc: any) => {
-        if (userIds) {
+        if (userIds.length > 0) {
           return r.expr(userIds).contains(doc("userId"));
         } else if (name) {
           return doc("name").downcase().match(name.toLowerCase());
@@ -80,14 +86,20 @@ export class ChanelsModel extends Model {
       })
       .filter(filter);
 
+    if (activityIds.length > 0) {
+      filteredQuery = filteredQuery.filter((doc: any) => {
+        return r.expr(activityIds).contains(doc("activityId"));
+      });
+    }
+
+    if (!includeDisabled) {
+      filteredQuery = filteredQuery.filter({ disabled: false });
+    }
     if (limit?.skip) {
       filteredQuery = filteredQuery.skip(limit.skip);
     }
     if (limit?.limit) {
       filteredQuery = filteredQuery.limit(limit.limit);
-    }
-    if (!includeDisabled) {
-      filteredQuery = filteredQuery.filter({ disabled: false });
     }
 
     return filteredQuery;

@@ -312,7 +312,8 @@ export const AdminUserList = () => {
 
   return (
     <>
-      <Heading mb={4}>User Management</Heading>
+      <Heading mb={2}>Users</Heading>
+      <Divider mb={4} />
       <Filter<FullUsersFilter>
         onFilter={setFilter}
         initialValues={filter}

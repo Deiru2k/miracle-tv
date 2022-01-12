@@ -16,7 +16,7 @@ type Props = {
   onConfirm: () => void;
   confirmColorScheme?: string;
   isLoading?: boolean;
-} & UseDisclosureReturn;
+} & Pick<UseDisclosureReturn, "isOpen" | "onClose">;
 
 export const ConfirmDialog = ({
   children,

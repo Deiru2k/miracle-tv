@@ -20,6 +20,7 @@ input ChannelsQueryFilter {
   userId: ID
   userIds: [ID]
   activityId: ID
+  activityIds: [ID]
   slug: String
   name: String
   description: String

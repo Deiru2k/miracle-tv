@@ -39,14 +39,10 @@ import {
   updateChannelMutation,
 } from "miracle-tv-server/graphql/mutations/channels";
 import { ActivitiesModel } from "miracle-tv-server/db/models/Activities";
-import {
-  createActivityMutaiton,
-  updateActivityMutation,
-} from "miracle-tv-server/graphql/mutations/activities";
+import { activitiesMutations } from "miracle-tv-server/graphql/mutations/activities";
 import {
   activitiesQueryResolver,
-  activityQueryResolver,
-  activityResolver,
+  activityEntityResolver,
 } from "miracle-tv-server/graphql/resolvers/activities";
 import { RolesModel } from "miracle-tv-server/db/models/Roles";
 import { getCompleteRights } from "miracle-tv-shared/acl/utils";
@@ -119,8 +115,6 @@ let executableSchema = makeExecutableSchema({
       user: userQueryResolver,
       users: usersQueryResolver,
       userDirectory: userDirectoryQueryResolver,
-      activity: activityQueryResolver,
-      activities: activitiesQueryResolver,
       streamKeys: streamKeysQueryResolver,
       streamKeysByChannelId: streamKeysByChannelIdResolver,
       self: userSelfQueryResolver,
@@ -132,6 +126,7 @@ let executableSchema = makeExecutableSchema({
       selfSubscribedUsers: selfSubscribedUsersResolver,
       test: userTestQueryResolver,
       subscription: subsciptionByIdResolver,
+      ...activitiesQueryResolver,
       ...channelsQueryResolvers,
       ...rolesQueryresolvers,
       ...fullUserResolvers,
@@ -148,8 +143,6 @@ let executableSchema = makeExecutableSchema({
       createChannel: createChannelMutation,
       updateChannel: updateChannelMutation,
       deleteChannel: deleteChannelMutation,
-      createActivity: createActivityMutaiton,
-      updateActivity: updateActivityMutation,
       createStreamKey: createStreamKeyMutation,
       revokeStreamKeys: revokeStreamKeysMutation,
       revokeStreamKey: revokeStreamKeyMutation,
@@ -158,6 +151,7 @@ let executableSchema = makeExecutableSchema({
       subscribe: subscribeMutaiton,
       unsubscribe: unsubscribeMutation,
       resetUserPassword: resetUserPasswordMutation,
+      ...activitiesMutations,
       ...rolesMutations,
       ...fullUserMutations,
     },
@@ -166,7 +160,7 @@ let executableSchema = makeExecutableSchema({
     UserSettings: settingsResolver,
     Session: sessionResolver,
     Channel: channelResolver,
-    Activity: activityResolver,
+    Activity: activityEntityResolver,
     Role: roleResolvers,
     StreamKey: streamKeysResolver,
   },

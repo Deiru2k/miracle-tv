@@ -1,7 +1,7 @@
 type Activity {
   id: ID!
-  icon: String
-  image: String
+  icon: File
+  image: File
   name: String!
   verb: String
 }
@@ -23,8 +23,6 @@ input UpdateActivityInput {
 
 input ActivityFilter {
   ids: [ID]
-  icon: String
-  image: String
   name: String
   verb: String
 }
@@ -37,11 +35,14 @@ input ActivityLimit {
 extend type Query {
   activity(id: ID!): Activity
   activities(filter: ActivityFilter, limit: ActivityLimit): [Activity]!
+  activitiesCount(filter: ActivityFilter): Int!
 }
 
 extend type Mutation {
   createActivity(input: CreateActivityInput): Activity!
     @auth(rights: [{ unit: WRITE, subject: "activities" }])
   updateActivity(input: UpdateActivityInput): Activity!
+    @auth(rights: [{ unit: WRITE, subject: "activities" }])
+  deleteActivity(id: ID!): Boolean!
     @auth(rights: [{ unit: WRITE, subject: "activities" }])
 }

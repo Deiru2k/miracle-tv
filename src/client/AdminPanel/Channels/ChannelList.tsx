@@ -2,8 +2,9 @@ import { gql } from "@apollo/client";
 import { Button, IconButton } from "@chakra-ui/button";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { HStack } from "@chakra-ui/layout";
-import { useDisclosure, useToast } from "@chakra-ui/react";
+import { Divider, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
+import { FormActivitesSelect } from "miracle-tv-client/components/form/selects/FormActivitiesSelect";
 import { FormUsersSelect } from "miracle-tv-client/components/form/selects/FormUserSelect";
 import { channelFragment } from "miracle-tv-client/components/ui/channels/const";
 import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/SimpleChannelList";
@@ -116,6 +117,8 @@ export const AdminChannelList = () => {
 
   return (
     <>
+      <Heading mb={2}>Channels</Heading>
+      <Divider mb={4} />
       <ConfirmDialog
         {...deleteChannelDisclosure}
         onConfirm={onChannelDelete}
@@ -125,15 +128,20 @@ export const AdminChannelList = () => {
         {"Are you sure you want to delete this channel?"}
       </ConfirmDialog>
       <Filter<ChannelsQueryFilter> onFilter={setFilter}>
-        <HStack>
+        <HStack mb={2}>
           <FormInput name="name" label="Channel Name" />
           <FormInput name="slug" label="Channel slug" />
         </HStack>
-        <HStack w="50%">
+        <HStack>
           <FormUsersSelect
             name="userIds"
             label="Users"
-            inputProps={{ multi: true }}
+            inputProps={{ multi: true, placeholder: "Select users..." }}
+          />
+          <FormActivitesSelect
+            name="activityIds"
+            label="Activities"
+            inputProps={{ multi: true, placeholder: "Select activities..." }}
           />
         </HStack>
       </Filter>

@@ -79,17 +79,15 @@ export type ActionsInput = {
 
 export type Activity = {
   __typename?: "Activity";
-  icon?: Maybe<Scalars["String"]>;
+  icon?: Maybe<File>;
   id: Scalars["ID"];
-  image?: Maybe<Scalars["String"]>;
+  image?: Maybe<File>;
   name: Scalars["String"];
   verb?: Maybe<Scalars["String"]>;
 };
 
 export type ActivityFilter = {
-  icon?: InputMaybe<Scalars["String"]>;
   ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  image?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
   verb?: InputMaybe<Scalars["String"]>;
 };
@@ -137,6 +135,7 @@ export type ChannelStatus = {
 
 export type ChannelsQueryFilter = {
   activityId?: InputMaybe<Scalars["ID"]>;
+  activityIds?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["ID"]>;
   ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -236,6 +235,7 @@ export type Mutation = {
   createChannel: Channel;
   createRole: Role;
   createStreamKey: StreamKey;
+  deleteActivity: Scalars["Boolean"];
   deleteChannel: Scalars["Boolean"];
   deleteFullUser: FullUser;
   deleteFullUsers: Array<Maybe<FullUser>>;
@@ -296,6 +296,10 @@ export type MutationCreateRoleArgs = {
 
 export type MutationCreateStreamKeyArgs = {
   input: CreateStreamKeyInput;
+};
+
+export type MutationDeleteActivityArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationDeleteChannelArgs = {
@@ -452,6 +456,7 @@ export enum PasswordResetStatus {
 export type Query = {
   __typename?: "Query";
   activities: Array<Maybe<Activity>>;
+  activitiesCount: Scalars["Int"];
   activity?: Maybe<Activity>;
   channel?: Maybe<Channel>;
   channelStatus?: Maybe<ChannelStatus>;
@@ -490,6 +495,10 @@ export type Query = {
 export type QueryActivitiesArgs = {
   filter?: InputMaybe<ActivityFilter>;
   limit?: InputMaybe<ActivityLimit>;
+};
+
+export type QueryActivitiesCountArgs = {
+  filter?: InputMaybe<ActivityFilter>;
 };
 
 export type QueryActivityArgs = {
@@ -1154,9 +1163,9 @@ export type ActivityResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Activity"] = ResolversParentTypes["Activity"]
 > = {
-  icon?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  icon?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   verb?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1333,6 +1342,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateStreamKeyArgs, "input">
+  >;
+  deleteActivity?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteActivityArgs, "id">
   >;
   deleteChannel?: Resolver<
     ResolversTypes["Boolean"],
@@ -1556,6 +1571,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryActivitiesArgs, never>
+  >;
+  activitiesCount?: Resolver<
+    ResolversTypes["Int"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryActivitiesCountArgs, never>
   >;
   activity?: Resolver<
     Maybe<ResolversTypes["Activity"]>,
@@ -2000,6 +2021,167 @@ export type DirectiveResolvers<ContextType = any> = {
   auth?: AuthDirectiveResolver<any, any, ContextType>;
 };
 
+export type AdminActivityCountQueryVariables = Exact<{
+  filter?: InputMaybe<ActivityFilter>;
+}>;
+
+export type AdminActivityCountQuery = {
+  __typename?: "Query";
+  activitiesCount: number;
+};
+
+export type AdminActivityListQueryVariables = Exact<{
+  filter?: InputMaybe<ActivityFilter>;
+  limit?: InputMaybe<ActivityLimit>;
+}>;
+
+export type AdminActivityListQuery = {
+  __typename?: "Query";
+  activities: Array<
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+        icon?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        image?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type AdminDeleteActivityMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AdminDeleteActivityMutation = {
+  __typename?: "Mutation";
+  deleteActivity: boolean;
+};
+
+export type AdminActivityPageQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AdminActivityPageQuery = {
+  __typename?: "Query";
+  activity?:
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+        icon?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+        image?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
+
+export type AdminUpdateActivityMutationVariables = Exact<{
+  input: UpdateActivityInput;
+}>;
+
+export type AdminUpdateActivityMutation = {
+  __typename?: "Mutation";
+  updateActivity: {
+    __typename?: "Activity";
+    id: string;
+    name: string;
+    verb?: string | null | undefined;
+    icon?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    image?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+  };
+};
+
+export type AdminCreateActivityMutationVariables = Exact<{
+  input?: InputMaybe<CreateActivityInput>;
+}>;
+
+export type AdminCreateActivityMutation = {
+  __typename?: "Mutation";
+  createActivity: {
+    __typename?: "Activity";
+    id: string;
+    name: string;
+    verb?: string | null | undefined;
+    icon?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    image?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+  };
+};
+
+export type AdminActivityFragmentFragment = {
+  __typename?: "Activity";
+  id: string;
+  name: string;
+  verb?: string | null | undefined;
+  icon?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  image?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+};
+
 export type AdminDashboardUserStatsQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -2083,7 +2265,14 @@ export type AdminChannelsQuery = {
               id: string;
               name: string;
               verb?: string | null | undefined;
-              icon?: string | null | undefined;
+              icon?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
             }
           | null
           | undefined;
@@ -4157,7 +4346,14 @@ export type UserSettingsChannelQuery = {
               id: string;
               name: string;
               verb?: string | null | undefined;
-              icon?: string | null | undefined;
+              icon?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
             }
           | null
           | undefined;
@@ -4201,7 +4397,14 @@ export type EditChannelMutation = {
           id: string;
           name: string;
           verb?: string | null | undefined;
-          icon?: string | null | undefined;
+          icon?:
+            | {
+                __typename?: "File";
+                id?: string | null | undefined;
+                filename: string;
+              }
+            | null
+            | undefined;
         }
       | null
       | undefined;
@@ -4281,7 +4484,14 @@ export type UserSettingsChannelsQuery = {
               id: string;
               name: string;
               verb?: string | null | undefined;
-              icon?: string | null | undefined;
+              icon?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
             }
           | null
           | undefined;
@@ -4335,7 +4545,14 @@ export type UserSettingsCreateChannelMutation = {
           id: string;
           name: string;
           verb?: string | null | undefined;
-          icon?: string | null | undefined;
+          icon?:
+            | {
+                __typename?: "File";
+                id?: string | null | undefined;
+                filename: string;
+              }
+            | null
+            | undefined;
         }
       | null
       | undefined;
@@ -4789,7 +5006,14 @@ export type ChannelFullFragment = {
         id: string;
         name: string;
         verb?: string | null | undefined;
-        icon?: string | null | undefined;
+        icon?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
       }
     | null
     | undefined;
@@ -4863,10 +5087,24 @@ export type CurrentUserFragment = {
           | {
               __typename?: "Activity";
               id: string;
-              icon?: string | null | undefined;
-              image?: string | null | undefined;
               name: string;
               verb?: string | null | undefined;
+              icon?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
+              image?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
             }
           | null
           | undefined;
@@ -4963,10 +5201,24 @@ export type CurrentUserFullQuery = {
             | {
                 __typename?: "Activity";
                 id: string;
-                icon?: string | null | undefined;
-                image?: string | null | undefined;
                 name: string;
                 verb?: string | null | undefined;
+                icon?:
+                  | {
+                      __typename?: "File";
+                      id?: string | null | undefined;
+                      filename: string;
+                    }
+                  | null
+                  | undefined;
+                image?:
+                  | {
+                      __typename?: "File";
+                      id?: string | null | undefined;
+                      filename: string;
+                    }
+                  | null
+                  | undefined;
               }
             | null
             | undefined;

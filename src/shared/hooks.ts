@@ -3,6 +3,21 @@ import * as Types from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 const defaultOptions = {};
+export const AdminActivityFragmentFragmentDoc = gql`
+  fragment AdminActivityFragment on Activity {
+    id
+    name
+    verb
+    icon {
+      id
+      filename
+    }
+    image {
+      id
+      filename
+    }
+  }
+`;
 export const AdminRoleFragmentDoc = gql`
   fragment AdminRole on Role {
     id
@@ -267,7 +282,10 @@ export const ChannelFullFragmentDoc = gql`
       id
       name
       verb
-      icon
+      icon {
+        id
+        filename
+      }
     }
   }
 `;
@@ -318,14 +336,345 @@ export const CurrentUserFragmentDoc = gql`
       description
       activity {
         id
-        icon
-        image
+        icon {
+          id
+          filename
+        }
+        image {
+          id
+          filename
+        }
         name
         verb
       }
     }
   }
 `;
+export const AdminActivityCountDocument = gql`
+  query AdminActivityCount($filter: ActivityFilter) {
+    activitiesCount(filter: $filter)
+  }
+`;
+
+/**
+ * __useAdminActivityCountQuery__
+ *
+ * To run a query within a React component, call `useAdminActivityCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminActivityCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminActivityCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminActivityCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminActivityCountQuery,
+    Types.AdminActivityCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminActivityCountQuery,
+    Types.AdminActivityCountQueryVariables
+  >(AdminActivityCountDocument, options);
+}
+export function useAdminActivityCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminActivityCountQuery,
+    Types.AdminActivityCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminActivityCountQuery,
+    Types.AdminActivityCountQueryVariables
+  >(AdminActivityCountDocument, options);
+}
+export type AdminActivityCountQueryHookResult = ReturnType<
+  typeof useAdminActivityCountQuery
+>;
+export type AdminActivityCountLazyQueryHookResult = ReturnType<
+  typeof useAdminActivityCountLazyQuery
+>;
+export type AdminActivityCountQueryResult = Apollo.QueryResult<
+  Types.AdminActivityCountQuery,
+  Types.AdminActivityCountQueryVariables
+>;
+export const AdminActivityListDocument = gql`
+  query AdminActivityList($filter: ActivityFilter, $limit: ActivityLimit) {
+    activities(filter: $filter, limit: $limit) {
+      ...AdminActivityFragment
+    }
+  }
+  ${AdminActivityFragmentFragmentDoc}
+`;
+
+/**
+ * __useAdminActivityListQuery__
+ *
+ * To run a query within a React component, call `useAdminActivityListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminActivityListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminActivityListQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAdminActivityListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminActivityListQuery,
+    Types.AdminActivityListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminActivityListQuery,
+    Types.AdminActivityListQueryVariables
+  >(AdminActivityListDocument, options);
+}
+export function useAdminActivityListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminActivityListQuery,
+    Types.AdminActivityListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminActivityListQuery,
+    Types.AdminActivityListQueryVariables
+  >(AdminActivityListDocument, options);
+}
+export type AdminActivityListQueryHookResult = ReturnType<
+  typeof useAdminActivityListQuery
+>;
+export type AdminActivityListLazyQueryHookResult = ReturnType<
+  typeof useAdminActivityListLazyQuery
+>;
+export type AdminActivityListQueryResult = Apollo.QueryResult<
+  Types.AdminActivityListQuery,
+  Types.AdminActivityListQueryVariables
+>;
+export const AdminDeleteActivityDocument = gql`
+  mutation AdminDeleteActivity($id: ID!) {
+    deleteActivity(id: $id)
+  }
+`;
+export type AdminDeleteActivityMutationFn = Apollo.MutationFunction<
+  Types.AdminDeleteActivityMutation,
+  Types.AdminDeleteActivityMutationVariables
+>;
+
+/**
+ * __useAdminDeleteActivityMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteActivityMutation, { data, loading, error }] = useAdminDeleteActivityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminDeleteActivityMutation,
+    Types.AdminDeleteActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminDeleteActivityMutation,
+    Types.AdminDeleteActivityMutationVariables
+  >(AdminDeleteActivityDocument, options);
+}
+export type AdminDeleteActivityMutationHookResult = ReturnType<
+  typeof useAdminDeleteActivityMutation
+>;
+export type AdminDeleteActivityMutationResult =
+  Apollo.MutationResult<Types.AdminDeleteActivityMutation>;
+export type AdminDeleteActivityMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminDeleteActivityMutation,
+  Types.AdminDeleteActivityMutationVariables
+>;
+export const AdminActivityPageDocument = gql`
+  query AdminActivityPage($id: ID!) {
+    activity(id: $id) {
+      ...AdminActivityFragment
+    }
+  }
+  ${AdminActivityFragmentFragmentDoc}
+`;
+
+/**
+ * __useAdminActivityPageQuery__
+ *
+ * To run a query within a React component, call `useAdminActivityPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminActivityPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminActivityPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminActivityPageQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.AdminActivityPageQuery,
+    Types.AdminActivityPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminActivityPageQuery,
+    Types.AdminActivityPageQueryVariables
+  >(AdminActivityPageDocument, options);
+}
+export function useAdminActivityPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminActivityPageQuery,
+    Types.AdminActivityPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminActivityPageQuery,
+    Types.AdminActivityPageQueryVariables
+  >(AdminActivityPageDocument, options);
+}
+export type AdminActivityPageQueryHookResult = ReturnType<
+  typeof useAdminActivityPageQuery
+>;
+export type AdminActivityPageLazyQueryHookResult = ReturnType<
+  typeof useAdminActivityPageLazyQuery
+>;
+export type AdminActivityPageQueryResult = Apollo.QueryResult<
+  Types.AdminActivityPageQuery,
+  Types.AdminActivityPageQueryVariables
+>;
+export const AdminUpdateActivityDocument = gql`
+  mutation AdminUpdateActivity($input: UpdateActivityInput!) {
+    updateActivity(input: $input) {
+      ...AdminActivityFragment
+    }
+  }
+  ${AdminActivityFragmentFragmentDoc}
+`;
+export type AdminUpdateActivityMutationFn = Apollo.MutationFunction<
+  Types.AdminUpdateActivityMutation,
+  Types.AdminUpdateActivityMutationVariables
+>;
+
+/**
+ * __useAdminUpdateActivityMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateActivityMutation, { data, loading, error }] = useAdminUpdateActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminUpdateActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminUpdateActivityMutation,
+    Types.AdminUpdateActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminUpdateActivityMutation,
+    Types.AdminUpdateActivityMutationVariables
+  >(AdminUpdateActivityDocument, options);
+}
+export type AdminUpdateActivityMutationHookResult = ReturnType<
+  typeof useAdminUpdateActivityMutation
+>;
+export type AdminUpdateActivityMutationResult =
+  Apollo.MutationResult<Types.AdminUpdateActivityMutation>;
+export type AdminUpdateActivityMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminUpdateActivityMutation,
+  Types.AdminUpdateActivityMutationVariables
+>;
+export const AdminCreateActivityDocument = gql`
+  mutation AdminCreateActivity($input: CreateActivityInput) {
+    createActivity(input: $input) {
+      ...AdminActivityFragment
+    }
+  }
+  ${AdminActivityFragmentFragmentDoc}
+`;
+export type AdminCreateActivityMutationFn = Apollo.MutationFunction<
+  Types.AdminCreateActivityMutation,
+  Types.AdminCreateActivityMutationVariables
+>;
+
+/**
+ * __useAdminCreateActivityMutation__
+ *
+ * To run a mutation, you first call `useAdminCreateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminCreateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminCreateActivityMutation, { data, loading, error }] = useAdminCreateActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminCreateActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminCreateActivityMutation,
+    Types.AdminCreateActivityMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminCreateActivityMutation,
+    Types.AdminCreateActivityMutationVariables
+  >(AdminCreateActivityDocument, options);
+}
+export type AdminCreateActivityMutationHookResult = ReturnType<
+  typeof useAdminCreateActivityMutation
+>;
+export type AdminCreateActivityMutationResult =
+  Apollo.MutationResult<Types.AdminCreateActivityMutation>;
+export type AdminCreateActivityMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminCreateActivityMutation,
+  Types.AdminCreateActivityMutationVariables
+>;
 export const AdminDashboardUserStatsDocument = gql`
   query AdminDashboardUserStats {
     userStats {

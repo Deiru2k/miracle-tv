@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
 import { Form } from "react-final-form";
 
@@ -8,7 +8,7 @@ type Props<T = any> = {
   onFilter: (values: T) => void;
   children: React.ReactNode;
   refetch?: () => void;
-};
+} & FlexProps;
 
 export const Filter = <T extends any>({
   onFilter,
@@ -16,11 +16,12 @@ export const Filter = <T extends any>({
   defaultValues,
   children,
   refetch,
+  ...props
 }: Props<T>) => {
   return (
     <Form<T> initialValues={initialValues} onSubmit={onFilter}>
       {({ handleSubmit, pristine, form: { reset } }) => (
-        <Flex w="100%" mb={2}>
+        <Flex w="100%" mb={2} {...props}>
           <form
             onSubmit={(e) => {
               handleSubmit(e);

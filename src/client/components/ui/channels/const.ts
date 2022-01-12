@@ -19,7 +19,10 @@ export const channelFragment = gql`
       id
       name
       verb
-      icon
+      icon {
+        id
+        filename
+      }
     }
   }
 `;

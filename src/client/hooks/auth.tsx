@@ -114,8 +114,14 @@ export const CurrentUserFullFragment = gql`
       description
       activity {
         id
-        icon
-        image
+        icon {
+          id
+          filename
+        }
+        image {
+          id
+          filename
+        }
         name
         verb
       }
