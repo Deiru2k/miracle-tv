@@ -3818,6 +3818,14 @@ export type ChannelViewFragment = {
         id: string;
         name: string;
         verb?: string | null | undefined;
+        icon?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
       }
     | null
     | undefined;
@@ -4167,6 +4175,14 @@ export type UserProfileFragment = {
                     id: string;
                     name: string;
                     verb?: string | null | undefined;
+                    icon?:
+                      | {
+                          __typename?: "File";
+                          id?: string | null | undefined;
+                          filename: string;
+                        }
+                      | null
+                      | undefined;
                   }
                 | null
                 | undefined;
@@ -5300,6 +5316,14 @@ export type ChannelPageQuery = {
               id: string;
               name: string;
               verb?: string | null | undefined;
+              icon?:
+                | {
+                    __typename?: "File";
+                    id?: string | null | undefined;
+                    filename: string;
+                  }
+                | null
+                | undefined;
             }
           | null
           | undefined;
@@ -5510,6 +5534,14 @@ export type UserPageQuery = {
                           id: string;
                           name: string;
                           verb?: string | null | undefined;
+                          icon?:
+                            | {
+                                __typename?: "File";
+                                id?: string | null | undefined;
+                                filename: string;
+                              }
+                            | null
+                            | undefined;
                         }
                       | null
                       | undefined;

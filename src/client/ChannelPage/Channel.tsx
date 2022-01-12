@@ -4,6 +4,7 @@ import {
   Text,
   Box,
   Flex,
+  Image,
   Heading,
   IconButton,
   Divider,
@@ -54,6 +55,10 @@ export const CHANNEL_VIEW_FRAGMENT = gql`
       id
       name
       verb
+      icon {
+        id
+        filename
+      }
     }
     user {
       id
@@ -160,15 +165,30 @@ export const ChannelView = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
       <ChannelPlayerView channel={channel} status={status} />
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
-          <Heading as={Flex} align="center" mb={2}>
-            {status?.isLive && <CircleIcon color="red" mr={2} />}
-            {channel.name}
-          </Heading>
+          <Flex align="center" direction={isMobile ? "column" : "row"}>
+            <Heading as={Flex} align="bottom" mb={2} mr={2}>
+              {status?.isLive && <CircleIcon color="red" mr={2} />}
+              {channel.name}
+            </Heading>
+            <Flex align="center">
+              {channel.activity.icon && (
+                <Image
+                  w="1.7rem"
+                  h="1.7rem"
+                  src={getMediaURL(channel.activity.icon.filename)}
+                />
+              )}
+              <Text>
+                {channel.activity.verb} {channel.activity.name}
+              </Text>
+            </Flex>
+          </Flex>
           <Flex align="center">
             <Flex title="Subscribers:" align="center" mr={2}>
               <PersonIcon aria-label="Subscribers:" mr={1} />

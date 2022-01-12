@@ -183,6 +183,10 @@ export const ChannelViewFragmentDoc = gql`
       id
       name
       verb
+      icon {
+        id
+        filename
+      }
     }
     user {
       id
