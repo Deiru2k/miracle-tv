@@ -7,8 +7,11 @@ import {
 } from "miracle-tv-shared/hooks";
 import { ADMIN_ACTIVITY_FRAGMENT } from "./const";
 import { ActivityGrid } from "miracle-tv-client/components/ui/activities/ActivityGrid";
-import { ActivityFilter } from "miracle-tv-shared/graphql";
-import React, { useCallback, useState } from "react";
+import {
+  ActivityFilter,
+  AdminActivityFragmentFragment,
+} from "miracle-tv-shared/graphql";
+import React, { useCallback, useMemo, useState } from "react";
 import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
@@ -53,6 +56,11 @@ export const AdminActivitiesList = () => {
     fetchPolicy: "network-only",
   });
 
+  const selectedActivity = useMemo<AdminActivityFragmentFragment>(
+    () => activities.find((ac) => ac.id === activityToDelete),
+    [activities, activityToDelete]
+  );
+
   const [deleteActivityMutation] = useAdminDeleteActivityMutation({
     onCompleted() {
       toast({ status: "success", title: "Deleted activity!" });
@@ -90,7 +98,7 @@ export const AdminActivitiesList = () => {
         isOpen={!!activityToDelete}
         onClose={onActivityDeleteClose}
       >
-        {"Are you sure you want to delete this activity?"}
+        {`Are you sure you want to delete "${selectedActivity?.name}" activity?`}
       </ConfirmDialog>
       <Flex mb={2} justify="space-between" align="center">
         <Heading>Activities</Heading>
