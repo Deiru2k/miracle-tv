@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Server version="8">
+  <IP>*</IP>
+  <PrivacyProtection>true</PrivacyProtection>
+  <StunServer>stun.l.google.com:19302</StunServer>
+  <Bind>
+    <Providers>
+      <RTMP>
+        <Port>1935</Port>
+      </RTMP>
+    </Providers>
+    <Publishers>
+      <WebRTC>
+        <Signalling>
+          <Port>3333</Port>
+        </Signalling>
+        <IceCandidates>
+          <TcpRelay>*:3478</TcpRelay>
+          <IceCandidate>*:10000/udp</IceCandidate>
+        </IceCandidates>
+      </WebRTC>
+	  </Publishers>
+  </Bind>
+  <VirtualHosts>
+    <VirtualHost>
+      <Application>
+        <Name>live</Name>
+        <Type>live</Type>
+        <Providers>
+          <RTMP>
+            <BlockDuplicateStreamName>true</BlockDuplicateStreamName>
+          </RTMP>
+        </Providers>
+        <Publishers>
+          <WebRTC>
+            <Timeout>30000</Timeout>
+            <Rtx>false</Rtx>
+            <Ulpfec>false</Ulpfec>
+            <JitterBuffer>false</JitterBuffer>
+          </WebRTC>
+        </Publishers>
+      </Application>
+    </VirtualHost>
+  </VirtualHosts>
+</Server>
