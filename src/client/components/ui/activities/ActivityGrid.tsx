@@ -27,8 +27,10 @@ type ActivityGridItem =
 type Props = {
   activities: ActivityGridItem[];
   actions?: (ac: ActivityGridItem) => React.ReactNode;
-  getHref: (ac: ActivityGridItem) => string;
+  getHref?: (ac: ActivityGridItem) => string;
 } & SimpleGridProps;
+
+const EmtpyWrapper = (props: any) => <React.Fragment {...props} />;
 
 export const ActivityGrid = ({
   activities,
@@ -38,11 +40,17 @@ export const ActivityGrid = ({
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const iconColor = useColorModeValue("primary.500", "primary.200");
+  const Wrapper = getHref ? Link : EmtpyWrapper;
   return (
     <SimpleGrid columns={isMobile ? 2 : 5} spacing={6} {...props}>
       {activities.map((ac) => (
-        <Panel position="relative" p={0} m={0}>
-          <Link key={ac.id} href={getHref(ac)} zIndex={1}>
+        <Panel
+          position="relative"
+          p={0}
+          m={0}
+          _hover={{ borderColor: "primary.200" }}
+        >
+          <Wrapper key={ac.id} href={getHref?.(ac)}>
             <Box>
               <AspectRatio ratio={8 / 12}>
                 <>
@@ -70,7 +78,7 @@ export const ActivityGrid = ({
                 <Text color="white">{ac.name}</Text>
               </Flex>
             </Box>
-          </Link>
+          </Wrapper>
           {actions && (
             <Flex position="absolute" top={0} right={0} zIndex={2}>
               {actions?.(ac)}

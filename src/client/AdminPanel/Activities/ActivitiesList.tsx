@@ -13,9 +13,10 @@ import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { Button, IconButton, useDisclosure, useToast } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
 import { CreateActivityModal } from "./CreateActivityModal";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 gql`
   query AdminActivityCount($filter: ActivityFilter) {
@@ -107,13 +108,22 @@ export const AdminActivitiesList = () => {
         activities={activities}
         getHref={(ac) => `/admin/activities/${ac.id}`}
         actions={(ac) => (
-          <IconButton
-            size="sm"
-            colorScheme="red"
-            aria-label="Delete activity"
-            onClick={() => onActivityDeletePick(ac.id)}
-            icon={<DeleteIcon />}
-          />
+          <HStack spacing={0}>
+            <IconButton
+              size="sm"
+              colorScheme="red"
+              aria-label="Delete activity"
+              onClick={() => onActivityDeletePick(ac.id)}
+              icon={<DeleteIcon />}
+            />
+            <Link href={`/admin/activities/${ac.id}`}>
+              <IconButton
+                size="sm"
+                aria-label="Edit activity"
+                icon={<EditIcon />}
+              />
+            </Link>
+          </HStack>
         )}
       />
       <Pagination {...pagination} />
