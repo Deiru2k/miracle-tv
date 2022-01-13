@@ -177,7 +177,7 @@ export const ChannelView = ({
               {channel.name}
             </Heading>
             <Flex align="center">
-              {channel.activity.icon && (
+              {channel?.activity?.icon && (
                 <Image
                   w="1.7rem"
                   h="1.7rem"
