@@ -115,21 +115,24 @@ export const UserProfile = ({
               <Heading as={Flex} align="bottom" mb={2} mr={2}>
                 {user?.settings?.singleUserChannel?.name}
               </Heading>
-              <Flex align="center">
-                {user?.settings?.singleUserChannel?.activity?.icon && (
-                  <Image
-                    w="1.7rem"
-                    h="1.7rem"
-                    src={getMediaURL(
-                      user?.settings?.singleUserChannel?.activity.icon.filename
-                    )}
-                  />
-                )}
-                <Text>
-                  {user?.settings?.singleUserChannel?.activity.verb}{" "}
-                  {user?.settings?.singleUserChannel?.activity.name}
-                </Text>
-              </Flex>
+              {user?.settings?.singleUserChannel?.activity && (
+                <Flex align="center">
+                  {user?.settings?.singleUserChannel?.activity?.icon && (
+                    <Image
+                      w="1.7rem"
+                      h="1.7rem"
+                      src={getMediaURL(
+                        user?.settings?.singleUserChannel?.activity.icon
+                          .filename
+                      )}
+                    />
+                  )}
+                  <Text>
+                    {user?.settings?.singleUserChannel?.activity?.verb}{" "}
+                    {user?.settings?.singleUserChannel?.activity?.name}
+                  </Text>
+                </Flex>
+              )}
             </Flex>
             {user?.settings?.singleUserChannel?.description && (
               <Box order={isMobile ? 1 : 2}>

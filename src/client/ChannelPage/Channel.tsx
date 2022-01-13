@@ -176,18 +176,20 @@ export const ChannelView = ({
               {status?.isLive && <CircleIcon color="red" mr={2} />}
               {channel.name}
             </Heading>
-            <Flex align="center">
-              {channel?.activity?.icon && (
-                <Image
-                  w="1.7rem"
-                  h="1.7rem"
-                  src={getMediaURL(channel.activity.icon.filename)}
-                />
-              )}
-              <Text>
-                {channel.activity.verb} {channel.activity.name}
-              </Text>
-            </Flex>
+            {channel.activity && (
+              <Flex align="center">
+                {channel?.activity?.icon && (
+                  <Image
+                    w="1.7rem"
+                    h="1.7rem"
+                    src={getMediaURL(channel.activity.icon.filename)}
+                  />
+                )}
+                <Text>
+                  {channel.activity.verb} {channel.activity?.name}
+                </Text>
+              </Flex>
+            )}
           </Flex>
           <Flex align="center">
             <Flex title="Subscribers:" align="center" mr={2}>
