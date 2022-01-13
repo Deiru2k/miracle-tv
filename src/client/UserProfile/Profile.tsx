@@ -116,7 +116,7 @@ export const UserProfile = ({
                 {user?.settings?.singleUserChannel?.name}
               </Heading>
               <Flex align="center">
-                {user?.settings?.singleUserChannel?.activity.icon && (
+                {user?.settings?.singleUserChannel?.activity?.icon && (
                   <Image
                     w="1.7rem"
                     h="1.7rem"
