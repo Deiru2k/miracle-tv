@@ -56,7 +56,9 @@ const roleGuard =
         if (hasRoles && hasRights) {
           return await resolve(source, args, context, info);
         } else {
-          throw new AuthorizationError();
+          throw new AuthorizationError(
+            `Insufficient rights for: ${info.fieldName}`
+          );
         }
       };
       return fieldConfig;

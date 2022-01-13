@@ -25,6 +25,7 @@ const accessRightsOrder: AccessKey[] = [
   "streamKeys",
   "activities",
   "userSettings",
+  "sessions",
   "system",
 ];
 
@@ -36,6 +37,7 @@ const accessRightsLabels: Record<AccessKey, string> = {
   activities: "Activities",
   streamKeys: "Stream keys",
   userSettings: "User Settings",
+  sessions: "Sessions",
 };
 
 export const RolePermissions = () => {

@@ -17,6 +17,7 @@ const defaultAdminRole: Role = {
       users: [AccessUnit.Write, AccessUnit.Read],
       activities: [AccessUnit.Write, AccessUnit.Read],
       userSettings: [AccessUnit.Write, AccessUnit.Read],
+      sessions: [AccessUnit.Write, AccessUnit.Read],
       system: [AccessUnit.Write, AccessUnit.Read],
     },
     actions: {

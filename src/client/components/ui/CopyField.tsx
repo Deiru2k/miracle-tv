@@ -13,12 +13,14 @@ import React, { useCallback, useState } from "react";
 
 type Props = {
   value: string;
+  isDisabled?: boolean;
   hideValue?: boolean;
 } & FlexProps;
 
 export const CopyField = ({
   value,
   hideValue = false,
+  isDisabled = false,
   placeholder,
   ...props
 }: Props) => {
@@ -45,15 +47,20 @@ export const CopyField = ({
       <Input
         value={value}
         readOnly
+        isDisabled={isDisabled}
         type={passwordType}
         borderRightRadius={isMobile ? undefined : 0}
         borderRight={isMobile ? undefined : 0}
         placeholder={placeholder}
         mb={isMobile ? 1 : undefined}
+        _hover={{
+          cursor: isDisabled ? "not-allowed" : undefined,
+        }}
       />
       {hideValue && (
         <IconButton
           aria-label="Show / Hide password"
+          isDisabled={isDisabled}
           icon={<VisibleIcon />}
           onClick={() => setIsVisible(!isVisible)}
           mb={isMobile ? 1 : undefined}
@@ -61,6 +68,7 @@ export const CopyField = ({
       )}
       <IconButton
         aria-label="Copy"
+        isDisabled={isDisabled}
         icon={<CopyIcon />}
         borderLeftWidth="1px"
         borderLeftStyle={isMobile ? undefined : "solid"}

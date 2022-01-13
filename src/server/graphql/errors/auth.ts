@@ -42,7 +42,7 @@ export class AuthenticationError extends ApolloError {
 export class AuthorizationError extends ApolloError {
   constructor(msg?: string) {
     const prompt = "Unauthorized";
-    const message = msg ? `${prompt}: ${msg}` : "${prompt}:";
+    const message = msg ? `${prompt}: ${msg}` : `${prompt}:`;
     super(message, "E_AUTHORIZATION");
 
     Object.defineProperty(this, "name", { value: "E_AUTHORIZATION" });

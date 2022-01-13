@@ -31,6 +31,8 @@ export const AdminRoleFragmentDoc = gql`
         users
         activities
         userSettings
+        system
+        sessions
       }
       actions {
         user {
@@ -321,8 +323,12 @@ export const CurrentUserFragmentDoc = gql`
         rights {
           channels
           streamKeys
+          roles
           users
           activities
+          userSettings
+          system
+          sessions
         }
         actions {
           user {

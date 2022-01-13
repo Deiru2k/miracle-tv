@@ -28,6 +28,7 @@ export const FormSelect = ({
   options,
   onSearch,
   isLoading,
+  isDisabled,
   ...formGroupProps
 }: FormSelectProps) => {
   const { input } = useField(name);
@@ -45,6 +46,7 @@ export const FormSelect = ({
         placeholder={inputPlaceholder}
         onSearch={onSearch}
         isLoading={isLoading}
+        isDisabled={isDisabled}
         {...inputProps}
       />
     </FormGroup>

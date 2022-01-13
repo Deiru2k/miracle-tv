@@ -26,8 +26,10 @@ import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { FormRolesSelect } from "miracle-tv-client/components/form/selects/FormRoleSelect";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
 import {
+  AccessUnit,
   AdminFullUserFragment,
   FullUsersFilter,
 } from "miracle-tv-shared/graphql";
@@ -110,6 +112,7 @@ const defaultFilter: FullUsersFilter = {};
 
 export const AdminUserList = () => {
   const toast = useToast();
+  const { checkRights, checkActions, currentUser } = useCurrentUser();
   const [filter, setFilter] = useState<FullUsersFilter>(defaultFilter);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -310,6 +313,20 @@ export const AdminUserList = () => {
     return fullUsers;
   }, [fullUsers]);
 
+  const canEditUser = useMemo(() => {
+    return checkRights(AccessUnit.Write, "users");
+  }, [checkRights]);
+
+  const actionRights = useMemo(
+    () => ({
+      user: {
+        silence: checkActions("user", "silence"),
+        ban: checkActions("user", "ban"),
+      },
+    }),
+    [checkActions]
+  );
+
   return (
     <>
       <Heading mb={2}>Users</Heading>
@@ -356,17 +373,42 @@ export const AdminUserList = () => {
           Bulk actions
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={onBulkDelete}>Delete</MenuItem>
-          <MenuItem onClick={onBulkRestore}>Restore</MenuItem>
+          <MenuItem isDisabled={!canEditUser} onClick={onBulkDelete}>
+            Delete
+          </MenuItem>
+          <MenuItem isDisabled={!canEditUser} onClick={onBulkRestore}>
+            Restore
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={onBulkSuspend}>Suspend</MenuItem>
-          <MenuItem onClick={onBulkUnsuspend}>Unsuspend</MenuItem>
+          <MenuItem isDisabled={!actionRights.user.ban} onClick={onBulkSuspend}>
+            Suspend
+          </MenuItem>
+          <MenuItem
+            isDisabled={!actionRights.user.ban}
+            onClick={onBulkUnsuspend}
+          >
+            Unsuspend
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={onBulkLoginDisable}>Disable Login</MenuItem>
-          <MenuItem onClick={onBulkLoginEnable}>Enable Login</MenuItem>
+          <MenuItem isDisabled={!canEditUser} onClick={onBulkLoginDisable}>
+            Disable Login
+          </MenuItem>
+          <MenuItem isDisabled={!canEditUser} onClick={onBulkLoginEnable}>
+            Enable Login
+          </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={onBulkSilence}>Silence</MenuItem>
-          <MenuItem onClick={onBulkUnsilence}>Unsilence</MenuItem>
+          <MenuItem
+            isDisabled={!actionRights.user.silence}
+            onClick={onBulkSilence}
+          >
+            Silence
+          </MenuItem>
+          <MenuItem
+            isDisabled={!actionRights.user.silence}
+            onClick={onBulkUnsilence}
+          >
+            Unsilence
+          </MenuItem>
         </MenuList>
       </Menu>
       <UserModal user={editableUser} onClose={onUserModalClose} />

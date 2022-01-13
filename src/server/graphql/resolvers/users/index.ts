@@ -11,6 +11,7 @@ import {
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
+import { getCompleteRights } from "miracle-tv-shared/acl/utils";
 
 export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
   _,
@@ -102,7 +103,12 @@ export const userResolver: UserResolvers<ResolverContext> = {
     const rolesList = await roles.getAll(
       (user.roles as unknown as string[]) || []
     );
-    return rolesList as Role[];
+    const allRoles = await roles.list();
+    const completeRoles = user.roles.map((role) =>
+      getCompleteRights(allRoles, role as unknown as string)
+    );
+    console.log(completeRoles);
+    return completeRoles as Role[];
   },
   avatar: fileResolver("avatar"),
   header: fileResolver("header"),

@@ -4,7 +4,7 @@ import {
   Role,
   UserActions,
 } from "miracle-tv-shared/graphql";
-import { pathOr } from "ramda";
+import { equals, intersection, is, pathOr } from "ramda";
 import { any, flatten, identity, lensPath, view } from "ramda";
 
 type RowMap = Record<string, Role>;
@@ -22,9 +22,9 @@ const fetchAccess = (
     roles
   );
   const parent: keyof RowMap = pathOr(null, currentParentPath, roles);
-  if (access === [AccessUnit.Inherit] && !parent) {
+  if (equals(access, [AccessUnit.Inherit]) && !parent) {
     return [AccessUnit.Deny];
-  } else if (access !== [AccessUnit.Inherit]) {
+  } else if (!equals(access, [AccessUnit.Inherit])) {
     return access;
   }
   return fetchAccess(roles, parent, target);
@@ -64,6 +64,7 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
         channels: fetchAccess(rolesById, target, "channels"),
         activities: fetchAccess(rolesById, target, "activities"),
         userSettings: fetchAccess(rolesById, target, "userSettings"),
+        sessions: fetchAccess(rolesById, target, "sessions"),
         system: fetchAccess(rolesById, target, "system"),
       },
       actions: {
@@ -81,15 +82,35 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
 
 export const checkRight = (
   roles: Role[],
-  unit: AccessUnit,
+  unit: AccessUnit | AccessUnit[],
   subject: string
 ) => {
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
   return any(
     (right: AccessUnit[]) => {
+      if (is(Array, unit)) {
+        return intersection(unit, right).length > 0;
+      }
       return right.includes(unit);
     },
     roles.map((e) => view(channelEditRightsLens, e) ?? [AccessUnit.Deny])
+  );
+};
+
+export const checkActions = (
+  roles: Role[],
+  subject: string,
+  action: string
+) => {
+  const channelEditRightsLens = lensPath([
+    "access",
+    "actions",
+    subject,
+    action,
+  ]);
+  return any(
+    identity,
+    roles.map((e) => view(channelEditRightsLens, e) ?? false)
   );
 };
 

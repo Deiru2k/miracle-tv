@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   userId: string;
+  isDisabled?: boolean;
 } & FlexProps;
 
 gql`
@@ -24,7 +25,11 @@ gql`
   }
 `;
 
-export const ResetPasswordField = ({ userId, ...props }: Props) => {
+export const ResetPasswordField = ({
+  userId,
+  isDisabled = false,
+  ...props
+}: Props) => {
   const toast = useToast();
   const [password, setPassword] = useState<string>("");
 
@@ -66,6 +71,7 @@ export const ResetPasswordField = ({ userId, ...props }: Props) => {
       <CopyField
         value={password}
         w="100%"
+        isDisabled={isDisabled}
         placeholder="New password will appear here."
       />
       <IconButton
@@ -74,7 +80,7 @@ export const ResetPasswordField = ({ userId, ...props }: Props) => {
         icon={<RepeatIcon />}
         onClick={onPasswordReset}
         isLoading={isPasswordResetting}
-        isDisabled={isPasswordResetting}
+        isDisabled={isPasswordResetting || isDisabled}
       >
         Reset password
       </IconButton>

@@ -34,6 +34,7 @@ export type AccessRights = {
   activities?: Maybe<Array<Maybe<AccessUnit>>>;
   channels?: Maybe<Array<Maybe<AccessUnit>>>;
   roles?: Maybe<Array<Maybe<AccessUnit>>>;
+  sessions?: Maybe<Array<Maybe<AccessUnit>>>;
   streamKeys?: Maybe<Array<Maybe<AccessUnit>>>;
   system?: Maybe<Array<Maybe<AccessUnit>>>;
   userSettings?: Maybe<Array<Maybe<AccessUnit>>>;
@@ -44,7 +45,9 @@ export type AccessRightsInput = {
   activities?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
   channels?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
   roles?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  sessions?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
   streamKeys?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
+  system?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
   userSettings?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
   users?: InputMaybe<Array<InputMaybe<AccessUnit>>>;
 };
@@ -1111,6 +1114,11 @@ export type AccessRightsResolvers<
     ContextType
   >;
   roles?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
+    ParentType,
+    ContextType
+  >;
+  sessions?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["AccessUnit"]>>>,
     ParentType,
     ContextType
@@ -2323,6 +2331,8 @@ export type AdminRolesQuery = {
               | Array<AccessUnit | null | undefined>
               | null
               | undefined;
+            system?: Array<AccessUnit | null | undefined> | null | undefined;
+            sessions?: Array<AccessUnit | null | undefined> | null | undefined;
           };
           actions: {
             __typename?: "Actions";
@@ -2383,6 +2393,8 @@ export type AdminRolePageQuery = {
               | Array<AccessUnit | null | undefined>
               | null
               | undefined;
+            system?: Array<AccessUnit | null | undefined> | null | undefined;
+            sessions?: Array<AccessUnit | null | undefined> | null | undefined;
           };
           actions: {
             __typename?: "Actions";
@@ -2423,6 +2435,8 @@ export type AdminUpdateRoleMutation = {
         users?: Array<AccessUnit | null | undefined> | null | undefined;
         activities?: Array<AccessUnit | null | undefined> | null | undefined;
         userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+        system?: Array<AccessUnit | null | undefined> | null | undefined;
+        sessions?: Array<AccessUnit | null | undefined> | null | undefined;
       };
       actions: {
         __typename?: "Actions";
@@ -2455,6 +2469,8 @@ export type AdminRoleFragment = {
       users?: Array<AccessUnit | null | undefined> | null | undefined;
       activities?: Array<AccessUnit | null | undefined> | null | undefined;
       userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+      system?: Array<AccessUnit | null | undefined> | null | undefined;
+      sessions?: Array<AccessUnit | null | undefined> | null | undefined;
     };
     actions: {
       __typename?: "Actions";
@@ -4909,6 +4925,8 @@ export type AdminCreateRoleMutation = {
         users?: Array<AccessUnit | null | undefined> | null | undefined;
         activities?: Array<AccessUnit | null | undefined> | null | undefined;
         userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+        system?: Array<AccessUnit | null | undefined> | null | undefined;
+        sessions?: Array<AccessUnit | null | undefined> | null | undefined;
       };
       actions: {
         __typename?: "Actions";
@@ -5069,11 +5087,18 @@ export type CurrentUserFragment = {
               | Array<AccessUnit | null | undefined>
               | null
               | undefined;
+            roles?: Array<AccessUnit | null | undefined> | null | undefined;
             users?: Array<AccessUnit | null | undefined> | null | undefined;
             activities?:
               | Array<AccessUnit | null | undefined>
               | null
               | undefined;
+            userSettings?:
+              | Array<AccessUnit | null | undefined>
+              | null
+              | undefined;
+            system?: Array<AccessUnit | null | undefined> | null | undefined;
+            sessions?: Array<AccessUnit | null | undefined> | null | undefined;
           };
           actions: {
             __typename?: "Actions";
@@ -5183,8 +5208,18 @@ export type CurrentUserFullQuery = {
                 | Array<AccessUnit | null | undefined>
                 | null
                 | undefined;
+              roles?: Array<AccessUnit | null | undefined> | null | undefined;
               users?: Array<AccessUnit | null | undefined> | null | undefined;
               activities?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              userSettings?:
+                | Array<AccessUnit | null | undefined>
+                | null
+                | undefined;
+              system?: Array<AccessUnit | null | undefined> | null | undefined;
+              sessions?:
                 | Array<AccessUnit | null | undefined>
                 | null
                 | undefined;

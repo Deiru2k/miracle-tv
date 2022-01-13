@@ -14,7 +14,7 @@ export class ServerError extends ApolloError {
 export class NotFoundError extends ApolloError {
   constructor(msg?: string) {
     const prompt = "Not found";
-    const message = msg ? `${prompt}: ${msg}` : "${prompt}:";
+    const message = msg ? `${prompt}: ${msg}` : `${prompt}:`;
     super(message, "E_SERVER");
 
     Object.defineProperty(this, "name", { value: "ServerError" });

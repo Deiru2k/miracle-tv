@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { UseDisclosureReturn } from "@chakra-ui/hooks";
 import {
+  AccessUnit,
   AdminFullUserFragment,
   PasswordResetMethod,
 } from "miracle-tv-shared/graphql";
@@ -23,7 +24,7 @@ import {
   useToast,
   IconButton,
 } from "@chakra-ui/react";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { getMediaURL } from "miracle-tv-shared/media";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { useUpdateFullUserMutation } from "miracle-tv-shared/hooks";
@@ -31,6 +32,7 @@ import { ResetPasswordField } from "./ResetPasswordField";
 import { AdminUserEditForm } from "./AdminUserForm";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 type Props = {
   user: AdminFullUserFragment | null;
@@ -53,14 +55,15 @@ type UpdateFields =
   | "roles";
 
 export const UserModal = ({ user, onClose }: Props) => {
+  const { checkRights, checkActions } = useCurrentUser();
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const toast = useToast();
   const [updateFullUserMutation] = useUpdateFullUserMutation({
     onCompleted() {
       toast({ status: "success", title: "Updated user" });
     },
-    onError() {
-      toast({ status: "error", title: "There was an error updated user" });
+    onError(data: any) {
+      toast({ status: "error", title: "There was an error updating user" });
     },
     refetchQueries: ["FullUserAdmin", "FullUserAdminCount"],
   });
@@ -72,6 +75,20 @@ export const UserModal = ({ user, onClose }: Props) => {
       });
     },
     [updateFullUserMutation, user]
+  );
+
+  const canEditUser = useMemo(() => {
+    return checkRights(AccessUnit.Write, "users");
+  }, [checkRights]);
+
+  const actionRights = useMemo(
+    () => ({
+      user: {
+        silence: checkActions("user", "silence"),
+        ban: checkActions("user", "ban"),
+      },
+    }),
+    [checkActions]
   );
 
   return (
@@ -203,6 +220,7 @@ export const UserModal = ({ user, onClose }: Props) => {
                 <SimpleGrid columns={2} spacing={2}>
                   <Button
                     onClick={() => onUpdate("suspended", !user?.suspended)}
+                    isDisabled={!actionRights.user.ban}
                     colorScheme={!user?.suspended ? "red" : undefined}
                   >
                     {!user?.suspended ? "Suspend" : "Unsuspend"}
@@ -211,17 +229,20 @@ export const UserModal = ({ user, onClose }: Props) => {
                     onClick={() =>
                       onUpdate("loginDisabled", !user?.loginDisabled)
                     }
+                    isDisabled={!canEditUser}
                     colorScheme={!user?.loginDisabled ? "red" : undefined}
                   >
                     {!user?.loginDisabled ? "Disable Login" : "Enable Login"}
                   </Button>
                   <Button
                     onClick={() => onUpdate("deleted", !user?.deleted)}
+                    isDisabled={!canEditUser}
                     colorScheme={!user?.deleted ? "red" : undefined}
                   >
                     {!user?.deleted ? "Delete" : "Restore"}
                   </Button>
                   <Button
+                    isDisabled={!actionRights.user.silence}
                     onClick={() => onUpdate("silenced", !user?.silenced)}
                     colorScheme={!user?.silenced ? "red" : undefined}
                   >
@@ -237,7 +258,11 @@ export const UserModal = ({ user, onClose }: Props) => {
                   <Heading size="md" mb={2} mt={4}>
                     Reset user's password
                   </Heading>
-                  <ResetPasswordField userId={user.id} w="100%" />
+                  <ResetPasswordField
+                    userId={user.id}
+                    w="100%"
+                    isDisabled={!canEditUser}
+                  />
                 </>
               )}
             </Box>

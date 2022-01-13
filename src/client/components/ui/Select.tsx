@@ -27,6 +27,7 @@ export type SelectProps = {
   options: SelectOption[];
   onChange: (v: any | any[]) => void;
   onSearch?: (query: string) => void;
+  isDisabled?: boolean;
   isLoading?: boolean;
   placeholder?: string;
 };
@@ -38,6 +39,7 @@ export const Select = ({
   onChange,
   multi = false,
   placeholder = "Select value...",
+  isDisabled = false,
   isLoading = false,
   onSearch,
 }: SelectProps) => {
@@ -64,15 +66,19 @@ export const Select = ({
   );
 
   const onSelectClick = useCallback(() => {
-    setShowOptions(true);
-    setShowInput(true);
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 10);
+    if (!isDisabled) {
+      setShowOptions(true);
+      setShowInput(true);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 10);
+    }
   }, [setShowOptions, setShowInput, multi, inputRef]);
 
   const onInputFocus = useCallback(() => {
-    setShowOptions(true);
+    if (!isDisabled) {
+      setShowOptions(true);
+    }
   }, [setShowOptions]);
 
   const onInputBlur = useCallback(() => {
@@ -132,7 +138,14 @@ export const Select = ({
 
   return (
     <>
-      <Flex id="selectContainer" flexDirection="column" position="relative">
+      <Flex
+        id="selectContainer"
+        flexDirection="column"
+        position="relative"
+        _hover={{
+          cursor: isDisabled ? "not-allowed" : undefined,
+        }}
+      >
         {showOptions && (
           <Box
             position="fixed"
@@ -175,15 +188,17 @@ export const Select = ({
               justifyContent="space-between"
             >
               {optionsMap[selectValue[0]]?.label}
-              <CloseIcon
-                onClick={(e: any) => {
-                  e.stopPropagation();
-                  onOptionRemove(selectValue[0]);
-                }}
-                height="100%"
-                fontSize="0.8rem"
-                cursor="pointer"
-              />
+              {!isDisabled && (
+                <CloseIcon
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    onOptionRemove(selectValue[0]);
+                  }}
+                  height="100%"
+                  fontSize="0.8rem"
+                  cursor="pointer"
+                />
+              )}
             </Badge>
           )}
           {multi &&
@@ -200,16 +215,18 @@ export const Select = ({
                 px={2}
               >
                 {optionsMap[v as keyof typeof optionsMap]?.label}{" "}
-                <CloseIcon
-                  h="0.5rem"
-                  ml={1}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOptionRemove(v);
-                  }}
-                  cursor="pointer"
-                  zIndex={2}
-                />
+                {!isDisabled && (
+                  <CloseIcon
+                    h="0.5rem"
+                    ml={1}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onOptionRemove(v);
+                    }}
+                    cursor="pointer"
+                    zIndex={2}
+                  />
+                )}
               </Badge>
             ))}
           <Input

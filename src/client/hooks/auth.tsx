@@ -4,11 +4,13 @@ import {
   useCurrentUserSettingsQuery,
 } from "miracle-tv-shared/hooks";
 import {
+  AccessUnit,
   CurrentUserFullQuery,
   CurrentUserSettingsQuery,
 } from "miracle-tv-shared/graphql";
 import { useRouter } from "next/dist/client/router";
-import { Url } from "url";
+import { useCallback } from "react";
+import { checkActions, checkRight } from "miracle-tv-shared/acl/utils";
 
 type CurrentUserInfo = CurrentUserFullQuery["self"];
 type CurrentUserSettings = CurrentUserSettingsQuery["userSettings"];
@@ -16,6 +18,8 @@ type CurrentUserSettings = CurrentUserSettingsQuery["userSettings"];
 type CurrentUserHookReturn = {
   isUserLoading: boolean;
   isUserCalled: boolean;
+  checkRights: (unit: AccessUnit, subject: string) => boolean;
+  checkActions: (subject: string, action: string) => boolean;
   currentUser: CurrentUserInfo;
   logout: () => void;
   refetchUser: () => void;
@@ -37,9 +41,25 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
   } = useCurrentUserFullQuery({});
   const { reload } = useRouter();
 
+  const checkRightsFn = useCallback(
+    (unit: AccessUnit, subject: string) => {
+      return checkRight(self?.roles ?? [], unit, subject);
+    },
+    [self?.roles]
+  );
+
+  const checkActionsFn = useCallback(
+    (subject: string, action: string) => {
+      return checkActions(self?.roles ?? [], subject, action);
+    },
+    [self?.roles]
+  );
+
   return {
     currentUser: self || null,
     isUserLoading: isUserLoading,
+    checkRights: checkRightsFn,
+    checkActions: checkActionsFn,
     isUserCalled,
     refetchUser,
     logout: signOut(reload),
@@ -95,8 +115,12 @@ export const CurrentUserFullFragment = gql`
         rights {
           channels
           streamKeys
+          roles
           users
           activities
+          userSettings
+          system
+          sessions
         }
         actions {
           user {

@@ -13,6 +13,8 @@ export const ADMIN_ROLE_FRAGMENT = gql`
         users
         activities
         userSettings
+        system
+        sessions
       }
       actions {
         user {

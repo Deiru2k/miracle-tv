@@ -24,6 +24,7 @@ type AccessRights {
   activities: [AccessUnit]
   userSettings: [AccessUnit]
   system: [AccessUnit]
+  sessions: [AccessUnit]
 }
 
 type AccessTargets {
@@ -87,6 +88,8 @@ input AccessRightsInput {
   users: [AccessUnit]
   activities: [AccessUnit]
   userSettings: [AccessUnit]
+  system: [AccessUnit]
+  sessions: [AccessUnit]
 }
 
 input CreateRoleInput {
