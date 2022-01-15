@@ -36,7 +36,9 @@ const defaultModeratorRole: Role = {
   parentId: "user",
   access: {
     rights: {
-      activities: [AccessUnit.Write],
+      users: [AccessUnit.Read],
+      channels: [AccessUnit.Read],
+      activities: [AccessUnit.Read, AccessUnit.Write],
     },
     actions: {
       user: {
