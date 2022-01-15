@@ -1,6 +1,10 @@
 import db from "miracle-tv-server/db";
 import { Model } from "miracle-tv-server/db/models";
-import { SessionResponse } from "miracle-tv-shared/graphql";
+import {
+  QueryLimit,
+  SessionResponse,
+  SessionsFilter,
+} from "miracle-tv-shared/graphql";
 import { DateTime } from "luxon";
 import { head } from "ramda";
 import {
@@ -11,6 +15,18 @@ import { DbSession, DbUser } from "miracle-tv-server/db/models/types";
 
 export class SessionsModel extends Model {
   table = db.table("sessions");
+
+  sessionsFilter(filter: SessionsFilter = {}, limit?: QueryLimit) {
+    let filteredQuery = this.table.filter(filter);
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+    return filteredQuery;
+  }
 
   async createSession(userId: string): Promise<SessionResponse> {
     return await this.table
@@ -27,6 +43,19 @@ export class SessionsModel extends Model {
         }
         throw new ServerError("Couldn't create session");
       });
+  }
+
+  async getSessions<T extends object = DbSession>(
+    filter?: SessionsFilter,
+    limit?: QueryLimit
+  ): Promise<T[]> {
+    return (await this.sessionsFilter(filter, limit)
+      .coerceTo("array")
+      .run(this.conn)) as T[];
+  }
+
+  async getSessionCount(filter?: SessionsFilter): Promise<number> {
+    return await this.sessionsFilter(filter).count().run(this.conn);
   }
 
   async getSessionsByUserId(userId: string): Promise<DbSession[]> {

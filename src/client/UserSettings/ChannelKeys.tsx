@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { gql } from "@apollo/client";
 import {
@@ -24,6 +24,7 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { AccessUnit } from "miracle-tv-shared/graphql";
 
 gql`
   query UserSettingsChannelKeys($channelId: ID!) {
@@ -51,12 +52,25 @@ type Props = {
 export const ChannelKeysSettings = ({ id }: Props) => {
   const toast = useToast();
   const generateModalDisclosure = useDisclosure();
-  const { currentUser } = useCurrentUser();
+  const { currentUser, checkRights } = useCurrentUser();
+
+  const canViewKeys = useMemo(
+    () => checkRights(AccessUnit.Read, "streamKeys"),
+    [checkRights]
+  );
+  const canEditKeys = useMemo(
+    () => checkRights(AccessUnit.Write, "streamKeys"),
+    [checkRights]
+  );
+
   const { data: { streamKeysByChannelId: streamKeys = [] } = {}, refetch } =
-    useUserSettingsChannelKeysQuery({ variables: { channelId: id } });
+    useUserSettingsChannelKeysQuery({
+      variables: { channelId: id },
+      skip: !canViewKeys,
+    });
   const isMobile = useMediaQuery(MediaQuery.mobile);
 
-  const isRevokeAllDisabled = streamKeys.length === 0;
+  const isRevokeAllDisabled = streamKeys.length === 0 || !canEditKeys;
 
   const [revokeAllStreamKeys, { loading: isAllRevoking }] =
     useUserSettingsRevokeAllStreamKeysMutation({
@@ -115,7 +129,12 @@ export const ChannelKeysSettings = ({ id }: Props) => {
           >
             Revoke all keys
           </Button>
-          <Button onClick={generateModalDisclosure.onOpen}>Generate</Button>
+          <Button
+            onClick={generateModalDisclosure.onOpen}
+            isDisabled={!canEditKeys}
+          >
+            Generate
+          </Button>
         </Stack>
       </Box>
       <VStack>

@@ -21,6 +21,7 @@ export const FormToggle = ({ name, inputProps, ...formGroupProps }: Props) => {
       <Switch
         {...input}
         {...inputProps}
+        isDisabled={formGroupProps.isDisabled}
         defaultChecked={input.checked}
         isChecked={input.checked}
       />

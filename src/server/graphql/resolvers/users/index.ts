@@ -13,68 +13,52 @@ import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
 import { getCompleteRights } from "miracle-tv-shared/acl/utils";
 
-export const usersQueryResolver: QueryResolvers<ResolverContext>["users"] = (
-  _,
-  _args,
-  { db: { users } }
-): Promise<User[]> => {
-  return users.getUsersSafe();
-};
-
-export const userDirectoryQueryResolver: QueryResolvers<ResolverContext>["userDirectory"] =
-  (_, _args, { db: { users } }): Promise<User[]> => {
+export const userQueryResolvers: QueryResolvers<ResolverContext> = {
+  test(_, _args, { user }) {
+    if (user) {
+      return { secret: "sauce" };
+    }
+    throw new AuthenticationError();
+  },
+  async user(_, args, { db: { users } }) {
+    if (uuidValidate(args.id)) {
+      return users.getUserByIdSafe(args.id) as any;
+    } else {
+      return users.getUserByUsernameSafe(args.id) as any;
+    }
+  },
+  async users(_, _args, { db: { users } }): Promise<User[]> {
+    return users.getUsersSafe();
+  },
+  async userDirectory(_, _args, { db: { users } }): Promise<User[]> {
     return users.getUsersForDirectory() as Promise<User[]>;
-  };
-
-export const userQueryResolver: QueryResolvers<ResolverContext>["user"] = (
-  _,
-  args,
-  { db: { users } }
-) => {
-  if (uuidValidate(args.id)) {
-    return users.getUserByIdSafe(args.id) as any;
-  } else {
-    return users.getUserByUsernameSafe(args.id) as any;
-  }
-};
-
-export const userSelfQueryResolver: QueryResolvers<ResolverContext>["self"] =
-  async (_, _args, { user }) => {
+  },
+  async self(_, _args, { user }) {
     if (user) {
       return user as any;
     }
     throw new AuthenticationError();
-  };
-
-export const userTestQueryResolver: QueryResolvers<ResolverContext>["test"] = (
-  _,
-  _args,
-  { user }
-) => {
-  if (user) {
-    return { secret: "sauce" };
-  }
-  throw new AuthenticationError();
-};
-
-export const userSettingsQueryResolver: QueryResolvers<ResolverContext>["userSettings"] =
-  (_, _args, { db: { userSettings }, user }) => {
-    return userSettings.getUserSettingsById(user.id);
-  };
-
-export const userSelfAccountResolver: QueryResolvers<ResolverContext>["selfAccount"] =
-  (_, _args, { user }) => {
+  },
+  async selfAccount(_, _args, { user }) {
     return {
       id: user.id,
       username: user.username,
       email: user.email,
     };
-  };
-
-export const userSelfSessionsResolver: QueryResolvers<ResolverContext>["selfSessions"] =
-  (_, _args, { db: { sessions }, user }) => {
+  },
+  async userSettings(_, _args, { db: { userSettings }, user }) {
+    return userSettings.getUserSettingsById(user.id);
+  },
+  async selfSessions(_, _args, { db: { sessions }, user }) {
     return sessions.getSessionsByUserId(user.id);
-  };
+  },
+  async sessions(_, { filter, limit }, { db: { sessions } }) {
+    return sessions.getSessions(filter, limit);
+  },
+  async sessionsCount(_, { filter }, { db: { sessions } }) {
+    return sessions.getSessionCount(filter);
+  },
+};
 
 export const sessionResolver: SessionResolvers<ResolverContext> = {
   isCurrentSession: (session, _, { session: currentSession }) => {
@@ -100,14 +84,10 @@ export const userResolver: UserResolvers<ResolverContext> = {
     return await channels.getChannels({ userId: user.id! });
   },
   roles: async (user, _, { db: { roles } }) => {
-    const rolesList = await roles.getAll(
-      (user.roles as unknown as string[]) || []
-    );
     const allRoles = await roles.list();
     const completeRoles = user.roles.map((role) =>
       getCompleteRights(allRoles, role as unknown as string)
     );
-    console.log(completeRoles);
     return completeRoles as Role[];
   },
   avatar: fileResolver("avatar"),

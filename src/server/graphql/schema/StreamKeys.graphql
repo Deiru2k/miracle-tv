@@ -5,8 +5,15 @@ type StreamKey {
   name: String
 }
 
+input StreamKeyFilter {
+  userId: ID
+  channelId: ID
+}
+
 extend type Query {
-  streamKeys: [StreamKey]!
+  streamKeys(filter: StreamKeyFilter, limit: QueryLimit): [StreamKey]!
+    @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
+  streamKeysCount(filter: StreamKeyFilter): Int!
     @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
   selfStreamKeys: [StreamKey]!
     @auth(rights: [{ unit: SELF, subject: "streamKeys" }])
@@ -64,4 +71,6 @@ extend type Mutation {
         { unit: WRITE, subject: "streamKeys" }
       ]
     )
+  bulkRevokeStreamKeys(keys: [ID]!): Boolean!
+    @auth(rights: [{ unit: WRITE, subject: "streamKeys" }])
 }

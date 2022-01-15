@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { Button, IconButton } from "@chakra-ui/button";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import { HStack } from "@chakra-ui/layout";
 import { Divider, Heading, useDisclosure, useToast } from "@chakra-ui/react";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
@@ -11,8 +11,10 @@ import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/Simp
 import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
 import {
+  AccessUnit,
   ChannelFullFragment,
   ChannelsQueryFilter,
 } from "miracle-tv-shared/graphql";
@@ -21,7 +23,7 @@ import {
   useAdminChannelsCountQuery,
   useAdminDeleteChannelMutation,
 } from "miracle-tv-shared/hooks";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 gql`
   query AdminChannelsCount($filter: ChannelsQueryFilter) {
@@ -45,13 +47,23 @@ const perPage = 6;
 
 export const AdminChannelList = () => {
   const toast = useToast();
+  const { checkRights } = useCurrentUser();
   const [filter, setFilter] = useState<ChannelsQueryFilter>({});
   const [channelToDelete, setChannelToDelete] = useState<string | null>(null);
   const deleteChannelDisclosure = useDisclosure();
 
+  const canEditChannels = useMemo(() => {
+    return checkRights(AccessUnit.Write, "channels");
+  }, [checkRights]);
+
+  const canViewChannels = useMemo(() => {
+    return checkRights(AccessUnit.Read, "channels");
+  }, [checkRights]);
+
   const { data: { fullChannelsCount = 0 } = {} } = useAdminChannelsCountQuery({
     variables: { filter },
     fetchPolicy: "no-cache",
+    skip: !canViewChannels,
   });
 
   const pagination = usePagination(fullChannelsCount, perPage);
@@ -64,6 +76,7 @@ export const AdminChannelList = () => {
       },
       skip: !fullChannelsCount || !pagination,
       fetchPolicy: "no-cache",
+      skip: !canViewChannels,
     });
 
   const [deleteChannelMutation, { loading: isDeleting }] =
@@ -101,12 +114,19 @@ export const AdminChannelList = () => {
         <IconButton
           colorScheme="red"
           icon={<DeleteIcon />}
-          aria-label="Delete"
+          aria-label="Delete channel"
+          title="Delete channel"
+          isDisabled={!canEditChannels}
           onClick={() => deleteChannel(ch.id)}
         />
         <Link
           as={(props: any) => (
-            <IconButton {...props} aria-label="edit" icon={<EditIcon />} />
+            <IconButton
+              {...props}
+              aria-label={canEditChannels ? "Edit channel" : "View channel"}
+              title={canEditChannels ? "Edit channel" : "View channel"}
+              icon={canEditChannels ? <EditIcon /> : <InfoIcon />}
+            />
           )}
           href={`/admin/channels/${ch.id}/details`}
         />

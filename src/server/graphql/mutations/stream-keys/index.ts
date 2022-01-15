@@ -6,12 +6,12 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { prop } from "ramda";
 import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
 
-export const createStreamKeyMutation: MutationResolvers<ResolverContext>["createStreamKey"] =
-  async (
+export const streamKeyMutations: MutationResolvers<ResolverContext> = {
+  async createStreamKey(
     _,
     { input: { userId, channelId, name } },
     { user, userRoles, db: { streamKeys, channels } }
-  ) => {
+  ) {
     const isWrite = checkRight(userRoles, AccessUnit.Write, "streamKeys");
     const isSelf = checkRight(userRoles, AccessUnit.Self, "streamKeys");
     const userChannels = await channels.getChannels({ userId: user.id });
@@ -27,10 +27,9 @@ export const createStreamKeyMutation: MutationResolvers<ResolverContext>["create
       return (await streamKeys.createStreamKey(userId, channelId, name)) as any;
     }
     throw new AuthorizationError();
-  };
+  },
 
-export const revokeStreamKeyMutation: MutationResolvers<ResolverContext>["revokeStreamKey"] =
-  async (_, { key }, { user, userRoles, db: { streamKeys } }) => {
+  async revokeStreamKey(_, { key }, { user, userRoles, db: { streamKeys } }) {
     const isWrite = checkRight(userRoles, AccessUnit.Write, "streamKeys");
     const isSelf = checkRight(userRoles, AccessUnit.Self, "streamKeys");
     const streamKey = await streamKeys.getStreamKeyById(key);
@@ -43,14 +42,13 @@ export const revokeStreamKeyMutation: MutationResolvers<ResolverContext>["revoke
       }
       return await streamKeys.deleteStreamKey(key);
     }
-  };
+  },
 
-export const revokeStreamKeysMutation: MutationResolvers<ResolverContext>["revokeStreamKeys"] =
-  async (
+  async revokeStreamKeys(
     _,
     { input: { userId, channelId } },
     { user, userRoles, db: { streamKeys } }
-  ) => {
+  ) {
     const isWrite = checkRight(userRoles, AccessUnit.Write, "streamKeys");
     const isSelf = checkRight(userRoles, AccessUnit.Self, "streamKeys");
     if (isWrite || isSelf) {
@@ -59,10 +57,13 @@ export const revokeStreamKeysMutation: MutationResolvers<ResolverContext>["revok
       }
       return await streamKeys.deleteStreamKeysByPair(userId, channelId);
     }
-  };
+  },
 
-export const revokeAllStreamKeysMutation: MutationResolvers<ResolverContext>["revokeAllStreamKeys"] =
-  async (_, { input: { userId } }, { user, userRoles, db: { streamKeys } }) => {
+  async revokeAllStreamKeys(
+    _,
+    { input: { userId } },
+    { user, userRoles, db: { streamKeys } }
+  ) {
     const isWrite = checkRight(userRoles, AccessUnit.Write, "streamKeys");
     const isSelf = checkRight(userRoles, AccessUnit.Self, "streamKeys");
     if (isWrite || isSelf) {
@@ -71,4 +72,9 @@ export const revokeAllStreamKeysMutation: MutationResolvers<ResolverContext>["re
       }
       return await streamKeys.deleteStreamKeysByUser(userId);
     }
-  };
+  },
+
+  async bulkRevokeStreamKeys(_, { keys }, { db: { streamKeys } }) {
+    return await streamKeys.deleteStreamKeysById(keys);
+  },
+};

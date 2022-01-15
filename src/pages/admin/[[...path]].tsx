@@ -15,6 +15,8 @@ import { AdminActivitiesPage } from "miracle-tv-client/AdminPanel/Activities";
 import { identity } from "ramda";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
+import { AdminStreamKeysPage } from "miracle-tv-client/AdminPanel/StreamKeys";
+import { AdminSessionsPage } from "miracle-tv-client/AdminPanel/Sessions";
 
 const components: NavComponentMap = {
   "/admin": { component: <AdminDashboard />, exact: true },
@@ -22,6 +24,8 @@ const components: NavComponentMap = {
   "/admin/roles": { component: <AdminRolesPage /> },
   "/admin/channels": { component: <AdminChannelsPage /> },
   "/admin/activities": { component: <AdminActivitiesPage /> },
+  "/admin/stream-keys": { component: <AdminStreamKeysPage /> },
+  "/admin/sessions": { component: <AdminSessionsPage /> },
 };
 
 const AdminPage = () => {

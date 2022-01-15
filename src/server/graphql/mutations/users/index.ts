@@ -49,4 +49,7 @@ export const userMutations: UserMutationResolvers = {
       return await sessions.revokeAllSessionsByUserId(user.id);
     }
   },
+  async revokeSessions(_, { ids }, { db: { sessions } }) {
+    return await sessions.revokeAllSessionsBySessionIds(ids);
+  },
 };

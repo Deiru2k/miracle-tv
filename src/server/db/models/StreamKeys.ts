@@ -3,14 +3,27 @@ import { Model } from "miracle-tv-server/db/models";
 import { head } from "ramda";
 import { ServerError } from "miracle-tv-server/graphql/errors/general";
 import { DbStreamKey } from "miracle-tv-server/db/models/types";
-
-type StreamKeyFilter = {
-  userId?: string;
-  streamId?: string;
-};
+import { QueryLimit, StreamKeyFilter } from "miracle-tv-shared/graphql";
 
 export class StreamKeysModel extends Model {
   table = db.table("stream-keys");
+
+  filterKeys(filter?: StreamKeyFilter, limit?: QueryLimit) {
+    let filteredQuery = this.table.filter(filter);
+
+    if (limit?.skip) {
+      filteredQuery = filteredQuery.skip(limit.skip);
+    }
+    if (limit?.limit) {
+      filteredQuery = filteredQuery.limit(limit.limit);
+    }
+
+    return filteredQuery;
+  }
+
+  getStreamKeysCount(filter: StreamKeyFilter): Promise<number> {
+    return this.filterKeys(filter).count().run(this.conn);
+  }
 
   async createStreamKey(
     userId: string,
@@ -45,11 +58,13 @@ export class StreamKeysModel extends Model {
       .run(this.conn)) as DbStreamKey[];
   }
 
-  async getStreamKeys(filter: StreamKeyFilter = {}): Promise<DbStreamKey[]> {
-    return (await this.table
-      .filter(filter)
+  async getStreamKeys<T extends object = DbStreamKey>(
+    filter: StreamKeyFilter = {},
+    limit?: QueryLimit
+  ): Promise<T[]> {
+    return await this.filterKeys(filter, limit)
       .coerceTo("array")
-      .run(this.conn)) as DbStreamKey[];
+      .run(this.conn);
   }
 
   async deleteStreamKeysByPair(
@@ -75,6 +90,14 @@ export class StreamKeysModel extends Model {
 
   async deleteStreamKey(keyId: string): Promise<boolean> {
     const res = await this.table.get(keyId).delete().run(this.conn);
+    return res.errors <= 0;
+  }
+
+  async deleteStreamKeysById(keyIds: string[]): Promise<boolean> {
+    const res = await this.table
+      .getAll(...keyIds)
+      .delete()
+      .run(this.conn);
     return res.errors <= 0;
   }
 }

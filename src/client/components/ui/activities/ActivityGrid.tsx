@@ -45,12 +45,13 @@ export const ActivityGrid = ({
     <SimpleGrid columns={isMobile ? 2 : 5} spacing={6} {...props}>
       {activities.map((ac) => (
         <Panel
+          key={ac.id}
           position="relative"
           p={0}
           m={0}
           _hover={{ borderColor: "primary.200" }}
         >
-          <Wrapper key={ac.id} href={getHref?.(ac)}>
+          <Wrapper href={getHref?.(ac)}>
             <Box>
               <AspectRatio ratio={8 / 12}>
                 <>

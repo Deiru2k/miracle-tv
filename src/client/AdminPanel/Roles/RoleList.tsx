@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import {
   Button,
   Checkbox,
@@ -23,13 +23,14 @@ import {
 } from "@chakra-ui/react";
 import { CreateRoleModal } from "miracle-tv-client/components/roles/RolePermissions/CreateRoleModal";
 import { Link } from "miracle-tv-client/components/ui/Link";
-import { AdminRoleFragment } from "miracle-tv-shared/graphql";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { AccessUnit, AdminRoleFragment } from "miracle-tv-shared/graphql";
 import {
   useAdminRolesQuery,
   useBulkDeleteRolesMutation,
 } from "miracle-tv-shared/hooks";
 import { intersection, uniq, without } from "ramda";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ADMIN_ROLE_FRAGMENT } from "./const";
 
 gql`
@@ -51,7 +52,15 @@ const systemRoles = ["admin", "moderator", "user", "volunteer"];
 
 export const AdminRolesList = () => {
   const toast = useToast();
-  const { data: { roles = [] } = {} } = useAdminRolesQuery();
+
+  const { checkRights } = useCurrentUser();
+
+  const canViewRole = useMemo(() => checkRights(AccessUnit.Read, "roles"), []);
+  const canEditRole = useMemo(() => checkRights(AccessUnit.Write, "roles"), []);
+
+  const { data: { roles = [] } = {} } = useAdminRolesQuery({
+    skip: !canViewRole,
+  });
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
   const createDisclosure = useDisclosure();
@@ -123,7 +132,7 @@ export const AdminRolesList = () => {
         <Menu>
           <MenuButton
             size="sm"
-            isDisabled={selectedRoles.length === 0}
+            isDisabled={selectedRoles.length === 0 || !canEditRole}
             as={Button}
             mb={4}
             rightIcon={<ChevronDownIcon />}
@@ -134,7 +143,11 @@ export const AdminRolesList = () => {
             <MenuItem onClick={onBulkDeleteRoles}>Delete</MenuItem>
           </MenuList>
         </Menu>
-        <Button size="sm" onClick={onCreateDisclosureOpen}>
+        <Button
+          size="sm"
+          onClick={onCreateDisclosureOpen}
+          isDisabled={!canEditRole}
+        >
           Create role
         </Button>
       </Flex>
@@ -142,9 +155,9 @@ export const AdminRolesList = () => {
         <Table variant="simple" size="sm">
           <Thead>
             <Tr>
-              <Th>
+              <Th width="2rem">
                 <Checkbox
-                  isDisabled={roles.length === 0}
+                  isDisabled={roles.length === 0 || !canEditRole}
                   isChecked={
                     selectedRoles.length &&
                     selectedRoles.length === roles.length
@@ -156,7 +169,7 @@ export const AdminRolesList = () => {
                   onChange={toggleAllRoles}
                 />
               </Th>
-              <Th />
+              <Th width="2rem" />
               <Th>ID</Th>
               <Th>Name</Th>
             </Tr>
@@ -166,7 +179,7 @@ export const AdminRolesList = () => {
               <Tr key={role.id}>
                 <Td>
                   <Checkbox
-                    isDisabled={!role}
+                    isDisabled={!role || !canEditRole}
                     isChecked={isChecked(role?.id)}
                     onChange={() => role && toggleRole(role.id)}
                   />
@@ -177,8 +190,8 @@ export const AdminRolesList = () => {
                       p={0}
                       variant="ghost"
                       color="primary.200"
-                      aria-label="Edit role"
-                      icon={<EditIcon />}
+                      aria-label={canEditRole ? "Edit role" : "View Role"}
+                      icon={canEditRole ? <EditIcon /> : <InfoIcon />}
                     />
                   </Link>
                 </Td>

@@ -10,11 +10,13 @@ import {
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { useRouter } from "next/dist/client/router";
 import { head } from "ramda";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
 import { ChannelKeysSettings } from "./ChannelKeys";
 import Head from "next/head";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { AccessUnit } from "miracle-tv-shared/graphql";
 
 type Props = {
   tab?: string;
@@ -32,9 +34,21 @@ export const ChannelSettingsPage = ({
   baseUrl = "/settings/user/channels",
   tab,
 }: Props) => {
+  const { checkRights } = useCurrentUser();
   const { push } = useRouter();
+
+  const canViewChannel = useMemo(
+    () => checkRights(AccessUnit.Read, "channels"),
+    [checkRights]
+  );
+  const canViewKeys = useMemo(
+    () => checkRights(AccessUnit.Read, "streamKeys"),
+    [checkRights]
+  );
+
   const { data: { channel } = {} } = useUserSettingsChannelQuery({
     variables: { id: channelId },
+    skip: !canViewChannel,
   });
 
   const tabList = Object.keys(tabs);
@@ -58,10 +72,12 @@ export const ChannelSettingsPage = ({
       <Tabs index={tabIndex} onChange={() => {}}>
         <TabList>
           {tabList.map((tab) => (
-            <Tab key={tab} p={0}>
+            <Tab key={tab} p={0} isDisabled={!canViewKeys && tab === "keys"}>
               <Link
                 w="100%"
                 href={`${baseUrl}/${channelId}/${tab}`}
+                isDisabled={!canViewKeys && tab === "keys"}
+                title={!canViewKeys ? "Cannot view stream keys" : undefined}
                 py={2}
                 px={3}
               >

@@ -2,7 +2,8 @@ import { gql } from "@apollo/client";
 import { Button } from "@chakra-ui/button";
 import { Box, Heading } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
-import { UpdateActivityInput } from "miracle-tv-shared/graphql";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { AccessUnit, UpdateActivityInput } from "miracle-tv-shared/graphql";
 import {
   useAdminActivityPageQuery,
   useAdminUpdateActivityMutation,
@@ -32,6 +33,12 @@ type Props = {
 
 export const AdminActivityPage = ({ id }: Props) => {
   const toast = useToast();
+  const { checkRights } = useCurrentUser();
+
+  const canEditActivity = useMemo(
+    () => checkRights(AccessUnit.Write, "activities"),
+    [checkRights]
+  );
   const { data: { activity } = {} } = useAdminActivityPageQuery({
     variables: { id },
   });
@@ -75,17 +82,19 @@ export const AdminActivityPage = ({ id }: Props) => {
       >
         {({ handleSubmit, pristine }) => (
           <form onSubmit={handleSubmit}>
-            <ActivityForm />
-            <Box
-              display="inline-block"
-              position="sticky"
-              float="right"
-              bottom={0}
-            >
-              <Button type="submit" mt={6} isDisabled={pristine}>
-                Update profile
-              </Button>
-            </Box>
+            <ActivityForm isDisabled={!canEditActivity} />
+            {canEditActivity && (
+              <Box
+                display="inline-block"
+                position="sticky"
+                float="right"
+                bottom={0}
+              >
+                <Button type="submit" mt={6} isDisabled={pristine}>
+                  Update profile
+                </Button>
+              </Box>
+            )}
           </form>
         )}
       </Form>

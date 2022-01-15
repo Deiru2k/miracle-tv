@@ -1,16 +1,27 @@
-import { ChannelResolvers, QueryResolvers } from "miracle-tv-shared/graphql";
+import {
+  AccessUnit,
+  ChannelResolvers,
+  QueryResolvers,
+} from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
+import { checkRight } from "miracle-tv-shared/acl/utils";
 
 export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
-  async channels(_, { filter }, { db: { channels } }) {
-    return await channels.getChannels(filter, null);
+  async channels(_, { filter }, { db: { channels }, userRoles }) {
+    const hasReadPerms = checkRight(userRoles, AccessUnit.Read, "channels");
+    return await channels.getChannels(filter, null, hasReadPerms);
   },
 
-  async channel(_, { id }, { db: { channels } }) {
+  async channel(_, { id }, { db: { channels }, userRoles }) {
+    const hasReadPermissions = checkRight(
+      userRoles,
+      AccessUnit.Read,
+      "channels"
+    );
     if (uuidValidate(id)) {
-      return await channels.getChannelById(id);
+      return await channels.getChannelById(id, hasReadPermissions);
     }
     return await channels.getChannelBySlug(id);
   },

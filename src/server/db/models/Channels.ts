@@ -75,16 +75,19 @@ export class ChanelsModel extends Model {
     includeDisabled: boolean = false
   ) {
     const query = ids ? this.table.getAll(...ids) : this.table;
-    let filteredQuery = query
-      .filter((doc: any) => {
-        if (userIds.length > 0) {
-          return r.expr(userIds).contains(doc("userId"));
-        } else if (name) {
-          return doc("name").downcase().match(name.toLowerCase());
-        }
-        return true;
-      })
-      .filter(filter);
+    let filteredQuery = query.filter(filter);
+
+    if (name) {
+      filteredQuery = filteredQuery.filter((doc: any) => {
+        console.log(name);
+        return doc("name").downcase().match(name.toLowerCase());
+      });
+    }
+    if (userIds.length > 0) {
+      filteredQuery = filteredQuery.filter((doc: any) => {
+        return r.expr(userIds).contains(doc("userId"));
+      });
+    }
 
     if (activityIds.length > 0) {
       filteredQuery = filteredQuery.filter((doc: any) => {

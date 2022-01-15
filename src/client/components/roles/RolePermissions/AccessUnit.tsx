@@ -7,6 +7,7 @@ type Props = {
   unit: keyof AccessRights;
   unitValue: AccessUnit[];
   onChange: (u: keyof AccessRights, v: AccessUnit[]) => void;
+  isDisabled?: boolean;
 };
 
 const accessUnitOrder: AccessUnit[] = [
@@ -25,7 +26,12 @@ const accessUnitLabels: Record<AccessUnit, string> = {
   [AccessUnit.Write]: "Write",
 };
 
-export const AccessUnitEdit = ({ unit, unitValue, onChange }: Props) => {
+export const AccessUnitEdit = ({
+  unit,
+  unitValue,
+  onChange,
+  isDisabled,
+}: Props) => {
   const [value, setValue] = useState<AccessUnit[]>(unitValue);
 
   const isEnabled = useCallback(
@@ -63,8 +69,12 @@ export const AccessUnitEdit = ({ unit, unitValue, onChange }: Props) => {
         <Box key={u}>
           <Text as="div" fontWeight="bold">
             {accessUnitLabels[u]}
-          </Text>
-          <Switch isChecked={isEnabled(u)} onChange={() => toggleUnit(u)} />
+          </Text>{" "}
+          <Switch
+            isChecked={isEnabled(u)}
+            onChange={() => toggleUnit(u)}
+            isDisabled={isDisabled}
+          />
         </Box>
       ))}
     </HStack>

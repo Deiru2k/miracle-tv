@@ -44,6 +44,36 @@ export const AdminRoleFragmentDoc = gql`
     }
   }
 `;
+export const AdminSessionFragmentDoc = gql`
+  fragment AdminSession on Session {
+    id
+    user
+    userAgent
+    lastUsedAt
+    expiresAt
+    ip
+    isCurrentSession
+  }
+`;
+export const AdminStreamKeyFragmentDoc = gql`
+  fragment AdminStreamKey on StreamKey {
+    id
+    name
+    channel {
+      id
+      name
+    }
+    user {
+      id
+      displayName
+      username
+      avatar {
+        id
+        filename
+      }
+    }
+  }
+`;
 export const AdminFullUserFragmentDoc = gql`
   fragment AdminFullUser on FullUser {
     id
@@ -1192,6 +1222,383 @@ export type AdminUpdateRoleMutationOptions = Apollo.BaseMutationOptions<
   Types.AdminUpdateRoleMutation,
   Types.AdminUpdateRoleMutationVariables
 >;
+export const AdminSessionsListDocument = gql`
+  query AdminSessionsList($filter: SessionsFilter, $limit: QueryLimit) {
+    sessions(filter: $filter, limit: $limit) {
+      ...AdminSession
+    }
+  }
+  ${AdminSessionFragmentDoc}
+`;
+
+/**
+ * __useAdminSessionsListQuery__
+ *
+ * To run a query within a React component, call `useAdminSessionsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminSessionsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminSessionsListQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAdminSessionsListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminSessionsListQuery,
+    Types.AdminSessionsListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminSessionsListQuery,
+    Types.AdminSessionsListQueryVariables
+  >(AdminSessionsListDocument, options);
+}
+export function useAdminSessionsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminSessionsListQuery,
+    Types.AdminSessionsListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminSessionsListQuery,
+    Types.AdminSessionsListQueryVariables
+  >(AdminSessionsListDocument, options);
+}
+export type AdminSessionsListQueryHookResult = ReturnType<
+  typeof useAdminSessionsListQuery
+>;
+export type AdminSessionsListLazyQueryHookResult = ReturnType<
+  typeof useAdminSessionsListLazyQuery
+>;
+export type AdminSessionsListQueryResult = Apollo.QueryResult<
+  Types.AdminSessionsListQuery,
+  Types.AdminSessionsListQueryVariables
+>;
+export const AdminSessionsCountDocument = gql`
+  query AdminSessionsCount($filter: SessionsFilter) {
+    sessionsCount(filter: $filter)
+  }
+`;
+
+/**
+ * __useAdminSessionsCountQuery__
+ *
+ * To run a query within a React component, call `useAdminSessionsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminSessionsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminSessionsCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminSessionsCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminSessionsCountQuery,
+    Types.AdminSessionsCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminSessionsCountQuery,
+    Types.AdminSessionsCountQueryVariables
+  >(AdminSessionsCountDocument, options);
+}
+export function useAdminSessionsCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminSessionsCountQuery,
+    Types.AdminSessionsCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminSessionsCountQuery,
+    Types.AdminSessionsCountQueryVariables
+  >(AdminSessionsCountDocument, options);
+}
+export type AdminSessionsCountQueryHookResult = ReturnType<
+  typeof useAdminSessionsCountQuery
+>;
+export type AdminSessionsCountLazyQueryHookResult = ReturnType<
+  typeof useAdminSessionsCountLazyQuery
+>;
+export type AdminSessionsCountQueryResult = Apollo.QueryResult<
+  Types.AdminSessionsCountQuery,
+  Types.AdminSessionsCountQueryVariables
+>;
+export const AdminRevokeSessionsDocument = gql`
+  mutation AdminRevokeSessions($ids: [ID]!) {
+    revokeSessions(ids: $ids)
+  }
+`;
+export type AdminRevokeSessionsMutationFn = Apollo.MutationFunction<
+  Types.AdminRevokeSessionsMutation,
+  Types.AdminRevokeSessionsMutationVariables
+>;
+
+/**
+ * __useAdminRevokeSessionsMutation__
+ *
+ * To run a mutation, you first call `useAdminRevokeSessionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminRevokeSessionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminRevokeSessionsMutation, { data, loading, error }] = useAdminRevokeSessionsMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useAdminRevokeSessionsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminRevokeSessionsMutation,
+    Types.AdminRevokeSessionsMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminRevokeSessionsMutation,
+    Types.AdminRevokeSessionsMutationVariables
+  >(AdminRevokeSessionsDocument, options);
+}
+export type AdminRevokeSessionsMutationHookResult = ReturnType<
+  typeof useAdminRevokeSessionsMutation
+>;
+export type AdminRevokeSessionsMutationResult =
+  Apollo.MutationResult<Types.AdminRevokeSessionsMutation>;
+export type AdminRevokeSessionsMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminRevokeSessionsMutation,
+  Types.AdminRevokeSessionsMutationVariables
+>;
+export const AdminStreamKeyListDocument = gql`
+  query AdminStreamKeyList($filter: StreamKeyFilter, $limit: QueryLimit) {
+    streamKeys(filter: $filter, limit: $limit) {
+      ...AdminStreamKey
+    }
+  }
+  ${AdminStreamKeyFragmentDoc}
+`;
+
+/**
+ * __useAdminStreamKeyListQuery__
+ *
+ * To run a query within a React component, call `useAdminStreamKeyListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminStreamKeyListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminStreamKeyListQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAdminStreamKeyListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminStreamKeyListQuery,
+    Types.AdminStreamKeyListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminStreamKeyListQuery,
+    Types.AdminStreamKeyListQueryVariables
+  >(AdminStreamKeyListDocument, options);
+}
+export function useAdminStreamKeyListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminStreamKeyListQuery,
+    Types.AdminStreamKeyListQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminStreamKeyListQuery,
+    Types.AdminStreamKeyListQueryVariables
+  >(AdminStreamKeyListDocument, options);
+}
+export type AdminStreamKeyListQueryHookResult = ReturnType<
+  typeof useAdminStreamKeyListQuery
+>;
+export type AdminStreamKeyListLazyQueryHookResult = ReturnType<
+  typeof useAdminStreamKeyListLazyQuery
+>;
+export type AdminStreamKeyListQueryResult = Apollo.QueryResult<
+  Types.AdminStreamKeyListQuery,
+  Types.AdminStreamKeyListQueryVariables
+>;
+export const AdminStreamKeysCountDocument = gql`
+  query AdminStreamKeysCount($filter: StreamKeyFilter) {
+    streamKeysCount(filter: $filter)
+  }
+`;
+
+/**
+ * __useAdminStreamKeysCountQuery__
+ *
+ * To run a query within a React component, call `useAdminStreamKeysCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminStreamKeysCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminStreamKeysCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useAdminStreamKeysCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.AdminStreamKeysCountQuery,
+    Types.AdminStreamKeysCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.AdminStreamKeysCountQuery,
+    Types.AdminStreamKeysCountQueryVariables
+  >(AdminStreamKeysCountDocument, options);
+}
+export function useAdminStreamKeysCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.AdminStreamKeysCountQuery,
+    Types.AdminStreamKeysCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.AdminStreamKeysCountQuery,
+    Types.AdminStreamKeysCountQueryVariables
+  >(AdminStreamKeysCountDocument, options);
+}
+export type AdminStreamKeysCountQueryHookResult = ReturnType<
+  typeof useAdminStreamKeysCountQuery
+>;
+export type AdminStreamKeysCountLazyQueryHookResult = ReturnType<
+  typeof useAdminStreamKeysCountLazyQuery
+>;
+export type AdminStreamKeysCountQueryResult = Apollo.QueryResult<
+  Types.AdminStreamKeysCountQuery,
+  Types.AdminStreamKeysCountQueryVariables
+>;
+export const AdminDeleteStreamKeyDocument = gql`
+  mutation AdminDeleteStreamKey($id: ID!) {
+    revokeStreamKey(key: $id)
+  }
+`;
+export type AdminDeleteStreamKeyMutationFn = Apollo.MutationFunction<
+  Types.AdminDeleteStreamKeyMutation,
+  Types.AdminDeleteStreamKeyMutationVariables
+>;
+
+/**
+ * __useAdminDeleteStreamKeyMutation__
+ *
+ * To run a mutation, you first call `useAdminDeleteStreamKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminDeleteStreamKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminDeleteStreamKeyMutation, { data, loading, error }] = useAdminDeleteStreamKeyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminDeleteStreamKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminDeleteStreamKeyMutation,
+    Types.AdminDeleteStreamKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminDeleteStreamKeyMutation,
+    Types.AdminDeleteStreamKeyMutationVariables
+  >(AdminDeleteStreamKeyDocument, options);
+}
+export type AdminDeleteStreamKeyMutationHookResult = ReturnType<
+  typeof useAdminDeleteStreamKeyMutation
+>;
+export type AdminDeleteStreamKeyMutationResult =
+  Apollo.MutationResult<Types.AdminDeleteStreamKeyMutation>;
+export type AdminDeleteStreamKeyMutationOptions = Apollo.BaseMutationOptions<
+  Types.AdminDeleteStreamKeyMutation,
+  Types.AdminDeleteStreamKeyMutationVariables
+>;
+export const AdminBulkDeleteStreamKeysDocument = gql`
+  mutation AdminBulkDeleteStreamKeys($ids: [ID]!) {
+    bulkRevokeStreamKeys(keys: $ids)
+  }
+`;
+export type AdminBulkDeleteStreamKeysMutationFn = Apollo.MutationFunction<
+  Types.AdminBulkDeleteStreamKeysMutation,
+  Types.AdminBulkDeleteStreamKeysMutationVariables
+>;
+
+/**
+ * __useAdminBulkDeleteStreamKeysMutation__
+ *
+ * To run a mutation, you first call `useAdminBulkDeleteStreamKeysMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminBulkDeleteStreamKeysMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminBulkDeleteStreamKeysMutation, { data, loading, error }] = useAdminBulkDeleteStreamKeysMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useAdminBulkDeleteStreamKeysMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.AdminBulkDeleteStreamKeysMutation,
+    Types.AdminBulkDeleteStreamKeysMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.AdminBulkDeleteStreamKeysMutation,
+    Types.AdminBulkDeleteStreamKeysMutationVariables
+  >(AdminBulkDeleteStreamKeysDocument, options);
+}
+export type AdminBulkDeleteStreamKeysMutationHookResult = ReturnType<
+  typeof useAdminBulkDeleteStreamKeysMutation
+>;
+export type AdminBulkDeleteStreamKeysMutationResult =
+  Apollo.MutationResult<Types.AdminBulkDeleteStreamKeysMutation>;
+export type AdminBulkDeleteStreamKeysMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.AdminBulkDeleteStreamKeysMutation,
+    Types.AdminBulkDeleteStreamKeysMutationVariables
+  >;
 export const ResetPasswordDocument = gql`
   mutation ResetPassword($id: ID!, $input: ResetUserPasswordInput!) {
     resetUserPassword(id: $id, input: $input) {
@@ -3367,6 +3774,125 @@ export type ActivitiesSelectInitialLazyQueryHookResult = ReturnType<
 export type ActivitiesSelectInitialQueryResult = Apollo.QueryResult<
   Types.ActivitiesSelectInitialQuery,
   Types.ActivitiesSelectInitialQueryVariables
+>;
+export const ChannelsSelectDocument = gql`
+  query ChannelsSelect($filter: ChannelsQueryFilter, $limit: QueryLimit) {
+    channels(filter: $filter, limit: $limit) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useChannelsSelectQuery__
+ *
+ * To run a query within a React component, call `useChannelsSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelsSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelsSelectQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useChannelsSelectQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ChannelsSelectQuery,
+    Types.ChannelsSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelsSelectQuery,
+    Types.ChannelsSelectQueryVariables
+  >(ChannelsSelectDocument, options);
+}
+export function useChannelsSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelsSelectQuery,
+    Types.ChannelsSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelsSelectQuery,
+    Types.ChannelsSelectQueryVariables
+  >(ChannelsSelectDocument, options);
+}
+export type ChannelsSelectQueryHookResult = ReturnType<
+  typeof useChannelsSelectQuery
+>;
+export type ChannelsSelectLazyQueryHookResult = ReturnType<
+  typeof useChannelsSelectLazyQuery
+>;
+export type ChannelsSelectQueryResult = Apollo.QueryResult<
+  Types.ChannelsSelectQuery,
+  Types.ChannelsSelectQueryVariables
+>;
+export const ChannelsSelectInitialDocument = gql`
+  query ChannelsSelectInitial($filter: ChannelsQueryFilter) {
+    channels(filter: $filter) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useChannelsSelectInitialQuery__
+ *
+ * To run a query within a React component, call `useChannelsSelectInitialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelsSelectInitialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelsSelectInitialQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useChannelsSelectInitialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ChannelsSelectInitialQuery,
+    Types.ChannelsSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelsSelectInitialQuery,
+    Types.ChannelsSelectInitialQueryVariables
+  >(ChannelsSelectInitialDocument, options);
+}
+export function useChannelsSelectInitialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelsSelectInitialQuery,
+    Types.ChannelsSelectInitialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelsSelectInitialQuery,
+    Types.ChannelsSelectInitialQueryVariables
+  >(ChannelsSelectInitialDocument, options);
+}
+export type ChannelsSelectInitialQueryHookResult = ReturnType<
+  typeof useChannelsSelectInitialQuery
+>;
+export type ChannelsSelectInitialLazyQueryHookResult = ReturnType<
+  typeof useChannelsSelectInitialLazyQuery
+>;
+export type ChannelsSelectInitialQueryResult = Apollo.QueryResult<
+  Types.ChannelsSelectInitialQuery,
+  Types.ChannelsSelectInitialQueryVariables
 >;
 export const RolesSelectDocument = gql`
   query RolesSelect($filter: RolesFilter, $limit: QueryLimit) {

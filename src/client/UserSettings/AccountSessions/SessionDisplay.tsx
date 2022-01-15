@@ -2,10 +2,10 @@ import {
   VStack,
   Text,
   Code,
-  HStack,
   Box,
   Button,
   Badge,
+  StackProps,
 } from "@chakra-ui/react";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { Session } from "miracle-tv-shared/graphql";
@@ -16,13 +16,19 @@ import { MediaQuery } from "miracle-tv-client/utils/const";
 
 type Props = {
   session: Session;
+  showUser?: boolean;
   onRevoke?: (id: string) => void;
-};
+} & StackProps;
 
-export const SessionDisplay = ({ session, onRevoke }: Props) => {
+export const SessionDisplay = ({
+  session,
+  onRevoke,
+  showUser = false,
+  ...stackProps
+}: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
-    <VStack w="100%" align="flex-start">
+    <VStack w="100%" align="flex-start" {...stackProps}>
       <Panel w={isMobile ? "100%" : undefined}>
         <VStack align="flex-start">
           <Box>
@@ -37,6 +43,11 @@ export const SessionDisplay = ({ session, onRevoke }: Props) => {
             <Text>
               Device: <Code>{session.userAgent}</Code>
             </Text>
+            {showUser && (
+              <Text>
+                User Id: <Code>{session.user}</Code>
+              </Text>
+            )}
             <Text>
               Last used:{" "}
               <Code>
@@ -55,7 +66,7 @@ export const SessionDisplay = ({ session, onRevoke }: Props) => {
             <Button
               colorScheme="red"
               size="sm"
-              onClick={() => onRevoke(session.id)}
+              onClick={() => onRevoke?.(session.id)}
             >
               Revoke session
             </Button>

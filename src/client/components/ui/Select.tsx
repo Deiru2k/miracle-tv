@@ -8,7 +8,7 @@ import {
   useMultiStyleConfig,
   VStack,
 } from "@chakra-ui/react";
-import { equals, head, uniq } from "ramda";
+import { equals, head, identity, uniq } from "ramda";
 import React, {
   ChangeEvent,
   useCallback,
@@ -51,9 +51,11 @@ export const Select = ({
   const inputRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
-    let newValue = Array.isArray(value) ? value : [value];
+    let newValue = Array.isArray(value) ? value : [value].filter(identity);
     if (!equals(newValue, selectValue) && value !== "") {
       setValue(newValue);
+    } else if (!equals(newValue, selectValue) && value === "") {
+      setValue([]);
     }
   }, [value, selectValue]);
 
@@ -73,13 +75,13 @@ export const Select = ({
         inputRef.current?.focus();
       }, 10);
     }
-  }, [setShowOptions, setShowInput, multi, inputRef]);
+  }, [setShowOptions, setShowInput, multi, inputRef, isDisabled]);
 
   const onInputFocus = useCallback(() => {
     if (!isDisabled) {
       setShowOptions(true);
     }
-  }, [setShowOptions]);
+  }, [setShowOptions, isDisabled]);
 
   const onInputBlur = useCallback(() => {
     setShowOptions(false);

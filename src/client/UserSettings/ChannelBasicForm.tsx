@@ -9,20 +9,40 @@ import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 
-export const ChannelBasicForm = () => {
+type Props = {
+  isDisabled?: boolean;
+};
+
+export const ChannelBasicForm = ({ isDisabled }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
-      <FormInput label="Channel name" name="name" mb={5} />
-      <FormTextarea label="Channel Description" name="description" mb={5} />
+      <FormInput
+        label="Channel name"
+        name="name"
+        mb={5}
+        isDisabled={isDisabled}
+      />
+      <FormTextarea
+        label="Channel Description"
+        name="description"
+        mb={5}
+        isDisabled={isDisabled}
+      />
       <SimpleGrid columns={2} gap={5}>
         <FormInput
           label="URL Slug"
           name="slug"
           mb={5}
           help="Used for custom channel URL"
+          isDisabled={isDisabled}
         />
-        <FormActivitesSelect label="Activity" name="activityId" mb={5} />
+        <FormActivitesSelect
+          label="Activity"
+          name="activityId"
+          mb={5}
+          isDisabled={isDisabled}
+        />
       </SimpleGrid>
       <Box w={isMobile ? "100%" : "50%"}>
         <FormGroup
@@ -32,7 +52,11 @@ export const ChannelBasicForm = () => {
           w="auto"
           help="Used as player cover when stream is offline as well as in various channel lists"
         >
-          <ImageUploader name="thumbnail" ratio={16 / 9} />
+          <ImageUploader
+            name="thumbnail"
+            ratio={16 / 9}
+            isDisabled={isDisabled}
+          />
         </FormGroup>
       </Box>
     </>

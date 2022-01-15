@@ -233,6 +233,7 @@ export type InfoResponse = {
 export type Mutation = {
   __typename?: "Mutation";
   bulkDeleteRoles: Scalars["Boolean"];
+  bulkRevokeStreamKeys: Scalars["Boolean"];
   changeSelfPassword?: Maybe<Scalars["Boolean"]>;
   createActivity: Activity;
   createChannel: Channel;
@@ -253,6 +254,7 @@ export type Mutation = {
   restoreFullUsers: Array<Maybe<FullUser>>;
   revokeAllStreamKeys: Scalars["Boolean"];
   revokeSelfSessions?: Maybe<Scalars["Boolean"]>;
+  revokeSessions?: Maybe<Scalars["Boolean"]>;
   revokeStreamKey: Scalars["Boolean"];
   revokeStreamKeys: Scalars["Boolean"];
   signIn?: Maybe<SessionResponse>;
@@ -279,6 +281,10 @@ export type Mutation = {
 
 export type MutationBulkDeleteRolesArgs = {
   ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationBulkRevokeStreamKeysArgs = {
+  keys: Array<InputMaybe<Scalars["ID"]>>;
 };
 
 export type MutationChangeSelfPasswordArgs = {
@@ -356,6 +362,10 @@ export type MutationRevokeAllStreamKeysArgs = {
 
 export type MutationRevokeSelfSessionsArgs = {
   input: Array<InputMaybe<Scalars["String"]>>;
+};
+
+export type MutationRevokeSessionsArgs = {
+  ids: Array<InputMaybe<Scalars["ID"]>>;
 };
 
 export type MutationRevokeStreamKeyArgs = {
@@ -483,8 +493,11 @@ export type Query = {
   selfSubscribedChannels: Array<Maybe<Channel>>;
   selfSubscribedUsers: Array<Maybe<User>>;
   selfSubscriptions: Array<Maybe<Subscription>>;
+  sessions: Array<Maybe<Session>>;
+  sessionsCount: Scalars["Int"];
   streamKeys: Array<Maybe<StreamKey>>;
   streamKeysByChannelId: Array<Maybe<StreamKey>>;
+  streamKeysCount: Scalars["Int"];
   subscription?: Maybe<Subscription>;
   systemLoad: SystemLoadInfo;
   test: TestResponse;
@@ -570,8 +583,26 @@ export type QuerySelfChannelsArgs = {
   filter?: InputMaybe<ChannelsQueryFilter>;
 };
 
+export type QuerySessionsArgs = {
+  filter?: InputMaybe<SessionsFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QuerySessionsCountArgs = {
+  filter?: InputMaybe<SessionsFilter>;
+};
+
+export type QueryStreamKeysArgs = {
+  filter?: InputMaybe<StreamKeyFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
 export type QueryStreamKeysByChannelIdArgs = {
   channelId: Scalars["ID"];
+};
+
+export type QueryStreamKeysCountArgs = {
+  filter?: InputMaybe<StreamKeyFilter>;
 };
 
 export type QuerySubscriptionArgs = {
@@ -648,6 +679,10 @@ export type SessionResponse = {
   token: Scalars["ID"];
 };
 
+export type SessionsFilter = {
+  user?: InputMaybe<Scalars["ID"]>;
+};
+
 export type SignInInput = {
   password: Scalars["String"];
   username: Scalars["String"];
@@ -659,6 +694,11 @@ export type StreamKey = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   user: User;
+};
+
+export type StreamKeyFilter = {
+  channelId?: InputMaybe<Scalars["ID"]>;
+  userId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type Subscription = {
@@ -988,8 +1028,10 @@ export type ResolversTypes = {
   RolesFilter: RolesFilter;
   Session: ResolverTypeWrapper<Session>;
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
+  SessionsFilter: SessionsFilter;
   SignInInput: SignInInput;
   StreamKey: ResolverTypeWrapper<StreamKey>;
+  StreamKeyFilter: StreamKeyFilter;
   String: ResolverTypeWrapper<Scalars["String"]>;
   Subscription: ResolverTypeWrapper<{}>;
   SubscriptionByTargetId: SubscriptionByTargetId;
@@ -1059,8 +1101,10 @@ export type ResolversParentTypes = {
   RolesFilter: RolesFilter;
   Session: Session;
   SessionResponse: SessionResponse;
+  SessionsFilter: SessionsFilter;
   SignInInput: SignInInput;
   StreamKey: StreamKey;
+  StreamKeyFilter: StreamKeyFilter;
   String: Scalars["String"];
   Subscription: {};
   SubscriptionByTargetId: SubscriptionByTargetId;
@@ -1321,6 +1365,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationBulkDeleteRolesArgs, "ids">
   >;
+  bulkRevokeStreamKeys?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationBulkRevokeStreamKeysArgs, "keys">
+  >;
   changeSelfPassword?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -1435,6 +1485,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationRevokeSelfSessionsArgs, "input">
+  >;
+  revokeSessions?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRevokeSessionsArgs, "ids">
   >;
   revokeStreamKey?: Resolver<
     ResolversTypes["Boolean"],
@@ -1708,16 +1764,35 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  sessions?: Resolver<
+    Array<Maybe<ResolversTypes["Session"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySessionsArgs, never>
+  >;
+  sessionsCount?: Resolver<
+    ResolversTypes["Int"],
+    ParentType,
+    ContextType,
+    RequireFields<QuerySessionsCountArgs, never>
+  >;
   streamKeys?: Resolver<
     Array<Maybe<ResolversTypes["StreamKey"]>>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QueryStreamKeysArgs, never>
   >;
   streamKeysByChannelId?: Resolver<
     Array<Maybe<ResolversTypes["StreamKey"]>>,
     ParentType,
     ContextType,
     RequireFields<QueryStreamKeysByChannelIdArgs, "channelId">
+  >;
+  streamKeysCount?: Resolver<
+    ResolversTypes["Int"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryStreamKeysCountArgs, never>
   >;
   subscription?: Resolver<
     Maybe<ResolversTypes["Subscription"]>,
@@ -2484,6 +2559,139 @@ export type AdminRoleFragment = {
         | null
         | undefined;
     };
+  };
+};
+
+export type AdminSessionsListQueryVariables = Exact<{
+  filter?: InputMaybe<SessionsFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type AdminSessionsListQuery = {
+  __typename?: "Query";
+  sessions: Array<
+    | {
+        __typename?: "Session";
+        id: string;
+        user: string;
+        userAgent: string;
+        lastUsedAt: any;
+        expiresAt: any;
+        ip: string;
+        isCurrentSession: boolean;
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type AdminSessionsCountQueryVariables = Exact<{
+  filter?: InputMaybe<SessionsFilter>;
+}>;
+
+export type AdminSessionsCountQuery = {
+  __typename?: "Query";
+  sessionsCount: number;
+};
+
+export type AdminRevokeSessionsMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type AdminRevokeSessionsMutation = {
+  __typename?: "Mutation";
+  revokeSessions?: boolean | null | undefined;
+};
+
+export type AdminSessionFragment = {
+  __typename?: "Session";
+  id: string;
+  user: string;
+  userAgent: string;
+  lastUsedAt: any;
+  expiresAt: any;
+  ip: string;
+  isCurrentSession: boolean;
+};
+
+export type AdminStreamKeyListQueryVariables = Exact<{
+  filter?: InputMaybe<StreamKeyFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type AdminStreamKeyListQuery = {
+  __typename?: "Query";
+  streamKeys: Array<
+    | {
+        __typename?: "StreamKey";
+        id: string;
+        name?: string | null | undefined;
+        channel: { __typename?: "Channel"; id: string; name: string };
+        user: {
+          __typename?: "User";
+          id?: string | null | undefined;
+          displayName?: string | null | undefined;
+          username: string;
+          avatar?:
+            | {
+                __typename?: "File";
+                id?: string | null | undefined;
+                filename: string;
+              }
+            | null
+            | undefined;
+        };
+      }
+    | null
+    | undefined
+  >;
+};
+
+export type AdminStreamKeysCountQueryVariables = Exact<{
+  filter?: InputMaybe<StreamKeyFilter>;
+}>;
+
+export type AdminStreamKeysCountQuery = {
+  __typename?: "Query";
+  streamKeysCount: number;
+};
+
+export type AdminDeleteStreamKeyMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type AdminDeleteStreamKeyMutation = {
+  __typename?: "Mutation";
+  revokeStreamKey: boolean;
+};
+
+export type AdminBulkDeleteStreamKeysMutationVariables = Exact<{
+  ids: Array<InputMaybe<Scalars["ID"]>> | InputMaybe<Scalars["ID"]>;
+}>;
+
+export type AdminBulkDeleteStreamKeysMutation = {
+  __typename?: "Mutation";
+  bulkRevokeStreamKeys: boolean;
+};
+
+export type AdminStreamKeyFragment = {
+  __typename?: "StreamKey";
+  id: string;
+  name?: string | null | undefined;
+  channel: { __typename?: "Channel"; id: string; name: string };
+  user: {
+    __typename?: "User";
+    id?: string | null | undefined;
+    displayName?: string | null | undefined;
+    username: string;
+    avatar?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
   };
 };
 
@@ -4830,6 +5038,29 @@ export type ActivitiesSelectInitialQuery = {
   __typename?: "Query";
   activities: Array<
     { __typename?: "Activity"; id: string; name: string } | null | undefined
+  >;
+};
+
+export type ChannelsSelectQueryVariables = Exact<{
+  filter?: InputMaybe<ChannelsQueryFilter>;
+  limit?: InputMaybe<QueryLimit>;
+}>;
+
+export type ChannelsSelectQuery = {
+  __typename?: "Query";
+  channels: Array<
+    { __typename?: "Channel"; id: string; name: string } | null | undefined
+  >;
+};
+
+export type ChannelsSelectInitialQueryVariables = Exact<{
+  filter?: InputMaybe<ChannelsQueryFilter>;
+}>;
+
+export type ChannelsSelectInitialQuery = {
+  __typename?: "Query";
+  channels: Array<
+    { __typename?: "Channel"; id: string; name: string } | null | undefined
   >;
 };
 

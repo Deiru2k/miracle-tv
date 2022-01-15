@@ -53,6 +53,10 @@ input UsersFilter {
   email: String
 }
 
+input SessionsFilter {
+  user: ID
+}
+
 extend type Query {
   users(filter: UsersFilter, limit: QueryLimit): [User]!
   userDirectory(limit: QueryLimit): [User]!
@@ -60,6 +64,9 @@ extend type Query {
   selfAccount: UserAccountDetails!
     @auth(rights: [{ unit: SELF, subject: "users" }])
   selfSessions: [Session] @auth(rights: [{ unit: SELF, subject: "users" }])
+  sessions(filter: SessionsFilter, limit: QueryLimit): [Session]!
+    @auth(rights: [{ unit: READ, subject: "sessions" }])
+  sessionsCount(filter: SessionsFilter): Int!
   user(id: ID!): User
   userSettings: UserSettings!
     @auth(rights: [{ unit: SELF, subject: "userSettings" }])
@@ -118,6 +125,8 @@ extend type Mutation {
     @auth(rights: [{ unit: SELF, subject: "users" }])
   revokeSelfSessions(input: [String]!): Boolean
     @auth(rights: [{ unit: SELF, subject: "users" }])
+  revokeSessions(ids: [ID]!): Boolean
+    @auth(rights: [{ unit: WRITE, subject: "sessions" }])
   updateSelfAccount(input: UpdateUserAccountInput): UserAccountDetails
     @auth(rights: [{ unit: SELF, subject: "users" }])
   changeSelfPassword(input: ChangePasswordInput): Boolean

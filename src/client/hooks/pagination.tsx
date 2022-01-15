@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Button, ButtonGroup, Flex, IconButton } from "@chakra-ui/react";
+import { QueryLimit } from "miracle-tv-shared/graphql";
 import React, { useCallback, useMemo, useState } from "react";
 
 export type UsePaginationReturn = {
@@ -9,6 +10,7 @@ export type UsePaginationReturn = {
   nextPage: () => void;
   prevPage: () => void;
   changePage: (page: number) => void;
+  limit: QueryLimit;
 };
 
 export const usePagination = (
@@ -58,6 +60,14 @@ export const usePagination = (
     [page, pageCount, setPage]
   );
 
+  const queryLimit: QueryLimit = useMemo(
+    () => ({
+      limit: limit,
+      skip: targetSkip,
+    }),
+    [limit, targetSkip]
+  );
+
   return {
     pageCount,
     page,
@@ -65,6 +75,7 @@ export const usePagination = (
     nextPage,
     prevPage,
     changePage,
+    limit: queryLimit,
   };
 };
 

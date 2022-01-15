@@ -13,7 +13,7 @@ import { useField } from "react-final-form";
 import { AccessUnitEdit } from "./AccessUnit";
 
 type Props = {
-  access: AccessTargets;
+  isDisabled?: boolean;
 };
 
 type AccessKey = keyof Omit<AccessRights, "__typename">;
@@ -40,7 +40,7 @@ const accessRightsLabels: Record<AccessKey, string> = {
   sessions: "Sessions",
 };
 
-export const RolePermissions = () => {
+export const RolePermissions = ({ isDisabled }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const { input: rightsField } = useField<AccessRights>("access.rights");
 
@@ -93,6 +93,7 @@ export const RolePermissions = () => {
             >
               <AccessUnitEdit
                 unit={right}
+                isDisabled={isDisabled}
                 unitValue={rightsField.value[right] || []}
                 onChange={onRightsChange}
               />

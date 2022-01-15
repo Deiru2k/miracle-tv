@@ -47,6 +47,7 @@ type Props = {
   ratio?: ResponsiveValue<number>;
   aspectMaxW?: ResponsiveValue<string>;
   aspectMaxH?: ResponsiveValue<string>;
+  isDisabled?: boolean;
 } & FlexProps;
 
 export const ImageUploader = ({
@@ -54,6 +55,7 @@ export const ImageUploader = ({
   ratio = 1,
   aspectMaxW,
   aspectMaxH,
+  isDisabled = false,
   ...flexProps
 }: Props): JSX.Element => {
   const theme = useTheme();
@@ -142,6 +144,7 @@ export const ImageUploader = ({
               variant="link"
               color={color}
               onClick={openUpload}
+              isDisabled={isDisabled}
             >
               <AttachmentIcon size="lg" color={color} mr={1} />
               Select File
@@ -187,6 +190,7 @@ export const ImageUploader = ({
               color="red.300"
               aria-label="Remove Image"
               onClick={clearFile}
+              isDisabled={isDisabled}
               icon={<CloseIcon />}
             />
             <IconButton
@@ -194,6 +198,7 @@ export const ImageUploader = ({
               color={borderColor}
               aria-label="Upload New"
               onClick={openUpload}
+              isDisabled={isDisabled}
               icon={<AttachmentIcon />}
             />
           </Box>

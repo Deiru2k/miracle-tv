@@ -10,15 +10,8 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import {
   sessionResolver,
   settingsResolver,
-  userDirectoryQueryResolver,
-  userQueryResolver,
+  userQueryResolvers,
   userResolver,
-  userSelfAccountResolver,
-  userSelfQueryResolver,
-  userSelfSessionsResolver,
-  userSettingsQueryResolver,
-  usersQueryResolver,
-  userTestQueryResolver,
 } from "miracle-tv-server/graphql/resolvers/users";
 import { userMutations } from "miracle-tv-server/graphql/mutations/users";
 import {
@@ -53,17 +46,10 @@ import {
 import config from "miracle-tv-server/config";
 import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import {
-  selfStreamKeysQueryResolver,
-  streamKeysByChannelIdResolver,
-  streamKeysQueryResolver,
+  streamKeysQueryResolvers,
   streamKeysResolver,
 } from "miracle-tv-server/graphql/resolvers/stream-keys";
-import {
-  createStreamKeyMutation,
-  revokeAllStreamKeysMutation,
-  revokeStreamKeyMutation,
-  revokeStreamKeysMutation,
-} from "miracle-tv-server/graphql/mutations/stream-keys";
+import { streamKeyMutations } from "miracle-tv-server/graphql/mutations/stream-keys";
 import { fileMutations } from "./mutations/file";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { fileResolvers } from "./resolvers/file";
@@ -112,20 +98,11 @@ let executableSchema = makeExecutableSchema({
         version: process.env.npm_package_version || "none",
         packageName: process.env.npm_package_name || "none",
       }),
-      user: userQueryResolver,
-      users: usersQueryResolver,
-      userDirectory: userDirectoryQueryResolver,
-      streamKeys: streamKeysQueryResolver,
-      streamKeysByChannelId: streamKeysByChannelIdResolver,
-      self: userSelfQueryResolver,
-      selfAccount: userSelfAccountResolver,
-      userSettings: userSettingsQueryResolver,
-      selfStreamKeys: selfStreamKeysQueryResolver,
-      selfSessions: userSelfSessionsResolver,
       selfSubscribedChannels: selfSubscribedChannelsResolver,
       selfSubscribedUsers: selfSubscribedUsersResolver,
-      test: userTestQueryResolver,
       subscription: subsciptionByIdResolver,
+      ...userQueryResolvers,
+      ...streamKeysQueryResolvers,
       ...activitiesQueryResolver,
       ...channelsQueryResolvers,
       ...rolesQueryresolvers,
@@ -143,14 +120,11 @@ let executableSchema = makeExecutableSchema({
       createChannel: createChannelMutation,
       updateChannel: updateChannelMutation,
       deleteChannel: deleteChannelMutation,
-      createStreamKey: createStreamKeyMutation,
-      revokeStreamKeys: revokeStreamKeysMutation,
-      revokeStreamKey: revokeStreamKeyMutation,
-      revokeAllStreamKeys: revokeAllStreamKeysMutation,
       revokeSelfSessions: revokeSelfSessionsMutation,
       subscribe: subscribeMutaiton,
       unsubscribe: unsubscribeMutation,
       resetUserPassword: resetUserPasswordMutation,
+      ...streamKeyMutations,
       ...activitiesMutations,
       ...rolesMutations,
       ...fullUserMutations,

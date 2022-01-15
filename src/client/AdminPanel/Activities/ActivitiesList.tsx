@@ -8,6 +8,7 @@ import {
 import { ADMIN_ACTIVITY_FRAGMENT } from "./const";
 import { ActivityGrid } from "miracle-tv-client/components/ui/activities/ActivityGrid";
 import {
+  AccessUnit,
   ActivityFilter,
   AdminActivityFragmentFragment,
 } from "miracle-tv-shared/graphql";
@@ -16,10 +17,11 @@ import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { Button, IconButton, useDisclosure, useToast } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
 import { CreateActivityModal } from "./CreateActivityModal";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 gql`
   query AdminActivityCount($filter: ActivityFilter) {
@@ -43,6 +45,12 @@ export const AdminActivitiesList = () => {
   const createDisclosure = useDisclosure();
   const [filter, setFilter] = useState<ActivityFilter>({});
   const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
+  const { checkRights } = useCurrentUser();
+
+  const canEditActivity = useMemo(
+    () => checkRights(AccessUnit.Write, "activities"),
+    [checkRights]
+  );
 
   const { data: { activitiesCount = 0 } = {} } = useAdminActivityCountQuery({
     variables: { filter },
@@ -102,7 +110,9 @@ export const AdminActivitiesList = () => {
       </ConfirmDialog>
       <Flex mb={2} justify="space-between" align="center">
         <Heading>Activities</Heading>
-        <Button onClick={createDisclosure.onOpen}>Create</Button>
+        <Button onClick={createDisclosure.onOpen} isDisabled={!canEditActivity}>
+          Create
+        </Button>
       </Flex>
       <Divider mb={4} />
       <Filter onFilter={setFilter} mb={4}>
@@ -121,14 +131,15 @@ export const AdminActivitiesList = () => {
               size="sm"
               colorScheme="red"
               aria-label="Delete activity"
+              isDisabled={!canEditActivity}
               onClick={() => onActivityDeletePick(ac.id)}
               icon={<DeleteIcon />}
             />
             <Link href={`/admin/activities/${ac.id}`}>
               <IconButton
                 size="sm"
-                aria-label="Edit activity"
-                icon={<EditIcon />}
+                aria-label={canEditActivity ? "Edit activity" : "View activity"}
+                icon={canEditActivity ? <EditIcon /> : <InfoIcon />}
               />
             </Link>
           </HStack>

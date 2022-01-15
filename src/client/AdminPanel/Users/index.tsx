@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { ChevronDownIcon, EditIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, EditIcon, InfoIcon } from "@chakra-ui/icons";
 import {
   Box,
   Divider,
@@ -461,8 +461,8 @@ export const AdminUserList = () => {
                     p={0}
                     variant="ghost"
                     color="primary.200"
-                    aria-label="Edit user"
-                    icon={<EditIcon />}
+                    aria-label={canEditUser ? "Edit user" : "View user"}
+                    icon={canEditUser ? <EditIcon /> : <InfoIcon />}
                     onClick={() => onUserModalOpen(user?.id)}
                   />
                 </Td>

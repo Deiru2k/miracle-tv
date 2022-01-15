@@ -4,16 +4,17 @@ import { Box, Button, useToast } from "@chakra-ui/react";
 import { RoleForm } from "miracle-tv-client/components/roles/RolePermissions/RoleForm";
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
-import { UpdateRoleInput } from "miracle-tv-shared/graphql";
+import { AccessUnit, UpdateRoleInput } from "miracle-tv-shared/graphql";
 import {
   useAdminRolePageQuery,
   useAdminUpdateRoleMutation,
 } from "miracle-tv-shared/hooks";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Form } from "react-final-form";
 import { ADMIN_ROLE_FRAGMENT } from "./const";
 
 import { omitDeep } from "miracle-tv-shared/utils/object/omit";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 gql`
   query AdminRolePage($id: ID!) {
@@ -39,9 +40,20 @@ type Props = {
 
 export const AdminRolePage = ({ id }: Props) => {
   const toast = useToast();
+  const { checkRights } = useCurrentUser();
+
+  const canViewRole = useMemo(
+    () => checkRights(AccessUnit.Read, "roles"),
+    [checkRights]
+  );
+  const canEditRole = useMemo(
+    () => checkRights(AccessUnit.Write, "roles"),
+    [checkRights]
+  );
+
   const { data: { role } = {}, loading: isLoading } = useAdminRolePageQuery({
     variables: { id },
-    skip: !id,
+    skip: !id || !canViewRole,
   });
 
   const [updateRoleMutation, { loading: isUpdating }] =
@@ -89,22 +101,24 @@ export const AdminRolePage = ({ id }: Props) => {
         {({ handleSubmit, dirty }) => (
           <>
             <form onSubmit={handleSubmit}>
-              <RoleForm />
-              <Box
-                display="inline-block"
-                position="sticky"
-                float="right"
-                bottom={0}
-              >
-                <Button
-                  type="submit"
-                  mt={6}
-                  isDisabled={!dirty || isUpdating}
-                  isLoading={isUpdating}
+              <RoleForm isDisabled={!canEditRole} />
+              {canEditRole && (
+                <Box
+                  display="inline-block"
+                  position="sticky"
+                  float="right"
+                  bottom={0}
                 >
-                  Update role
-                </Button>
-              </Box>
+                  <Button
+                    type="submit"
+                    mt={6}
+                    isDisabled={!dirty || isUpdating}
+                    isLoading={isUpdating}
+                  >
+                    Update role
+                  </Button>
+                </Box>
+              )}
             </form>
           </>
         )}
