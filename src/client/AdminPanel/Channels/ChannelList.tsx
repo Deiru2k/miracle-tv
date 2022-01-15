@@ -76,7 +76,6 @@ export const AdminChannelList = () => {
       },
       skip: !fullChannelsCount || !pagination,
       fetchPolicy: "no-cache",
-      skip: !canViewChannels,
     });
 
   const [deleteChannelMutation, { loading: isDeleting }] =
