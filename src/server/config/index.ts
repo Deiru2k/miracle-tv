@@ -19,6 +19,9 @@ export type Config = {
   pathPrefix?: string;
   server?: ServerConfig;
   database?: DBConfig;
+  omeEnabled?: boolean;
+  omeAPIUrl?: string;
+  publishUrl?: string;
 };
 
 export const getConfig = (configPath?: string): Config => {

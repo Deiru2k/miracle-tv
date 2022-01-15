@@ -14,6 +14,11 @@ export const getOSSRSKey = (queryParam: string) => {
   return (urlParsed as any).key as string;
 };
 
+export const getOMEKey = (url: string) => {
+  const urlParsed = new Url(url, true);
+  return (urlParsed as any).query.key as string;
+};
+
 export const getNginxKey = (req: Request, res: Response) => {
   const { body } = req;
   if (!body || !body.name || !(typeof body.name === "string")) {

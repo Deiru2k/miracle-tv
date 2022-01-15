@@ -493,6 +493,7 @@ export type Query = {
   selfSubscribedChannels: Array<Maybe<Channel>>;
   selfSubscribedUsers: Array<Maybe<User>>;
   selfSubscriptions: Array<Maybe<Subscription>>;
+  serverConfig: ServerConfig;
   sessions: Array<Maybe<Session>>;
   sessionsCount: Scalars["Int"];
   streamKeys: Array<Maybe<StreamKey>>;
@@ -660,6 +661,12 @@ export type RolesFilter = {
   ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   name?: InputMaybe<Scalars["String"]>;
   parentId?: InputMaybe<Scalars["ID"]>;
+};
+
+export type ServerConfig = {
+  __typename?: "ServerConfig";
+  omeEnabled: Scalars["Boolean"];
+  publishURL: Scalars["String"];
 };
 
 export type Session = {
@@ -1026,6 +1033,7 @@ export type ResolversTypes = {
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
   RolesFilter: RolesFilter;
+  ServerConfig: ResolverTypeWrapper<ServerConfig>;
   Session: ResolverTypeWrapper<Session>;
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
   SessionsFilter: SessionsFilter;
@@ -1099,6 +1107,7 @@ export type ResolversParentTypes = {
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
   RolesFilter: RolesFilter;
+  ServerConfig: ServerConfig;
   Session: Session;
   SessionResponse: SessionResponse;
   SessionsFilter: SessionsFilter;
@@ -1764,6 +1773,11 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  serverConfig?: Resolver<
+    ResolversTypes["ServerConfig"],
+    ParentType,
+    ContextType
+  >;
   sessions?: Resolver<
     Array<Maybe<ResolversTypes["Session"]>>,
     ParentType,
@@ -1857,6 +1871,15 @@ export type RoleResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   parentId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ServerConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ServerConfig"] = ResolversParentTypes["ServerConfig"]
+> = {
+  omeEnabled?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  publishURL?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2085,6 +2108,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   ResetUserPasswordReturn?: ResetUserPasswordReturnResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
+  ServerConfig?: ServerConfigResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
   SessionResponse?: SessionResponseResolvers<ContextType>;
   StreamKey?: StreamKeyResolvers<ContextType>;
@@ -5524,6 +5548,17 @@ export type CurrentUserSettingsQuery = {
       | { __typename?: "Channel"; id: string }
       | null
       | undefined;
+  };
+};
+
+export type ServerConfigInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ServerConfigInfoQuery = {
+  __typename?: "Query";
+  serverConfig: {
+    __typename?: "ServerConfig";
+    omeEnabled: boolean;
+    publishURL: string;
   };
 };
 

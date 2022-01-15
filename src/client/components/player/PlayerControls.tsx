@@ -20,7 +20,7 @@ import { FullscreenIcon } from "../icons/FullscreenIcon";
 import { VideoJsPlayer } from "video.js";
 
 type Props = {
-  playerRef: React.MutableRefObject<VideoJsPlayer>;
+  playerRef: React.MutableRefObject<any>;
   videoRef: React.MutableRefObject<HTMLVideoElement>;
   containerRef: React.MutableRefObject<HTMLDivElement>;
   isFullscreen: boolean;
@@ -33,26 +33,25 @@ type Props = {
 
 export const PlayerControls = ({
   playerRef,
-  videoRef,
   containerRef,
   isFullscreen,
   setFullscreen,
   stats,
 }: Props) => {
   const theme = useTheme();
-  const [isPlaying, setIsPlaying] = useState<boolean>(
-    !playerRef.current?.paused
-  );
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(
     Number(localStorage.getItem("volume")) || 1
   );
-  const [isMuted, setIsMuted] = useState<boolean>(playerRef.current?.muted());
+  const [isMuted, setIsMuted] = useState<boolean>(playerRef.current?.getMute());
 
   useEffect(() => {
-    setIsMuted(playerRef.current?.muted());
-  }, [playerRef.current?.muted()]);
+    setIsMuted(playerRef.current?.getMute());
+    setIsPlaying(playerRef.current?.getState() === "playing");
+  }, [playerRef.current]);
+
   useEffect(() => {
-    if (playerRef.current) playerRef.current.volume(volume);
+    if (playerRef.current) playerRef.current.setVolume(volume);
   }, [playerRef.current]);
 
   const onFullScreen = useCallback(() => {
@@ -65,9 +64,9 @@ export const PlayerControls = ({
   }, [isFullscreen, setFullscreen, containerRef]);
 
   const onPlayPause = useCallback(() => {
-    if (playerRef.current?.paused() && videoRef.current) {
-      videoRef.current.currentTime = videoRef.current?.duration - 1;
-      videoRef.current.play();
+    const isPlaying = playerRef.current?.getState() === "playing";
+    if (!isPlaying) {
+      playerRef.current?.play();
       setIsPlaying(true);
     } else {
       playerRef.current?.pause();
@@ -80,8 +79,8 @@ export const PlayerControls = ({
       if (playerRef.current) {
         setVolume(level);
         setIsMuted(false);
-        playerRef.current.muted(false);
-        playerRef.current.volume(level);
+        playerRef.current.setMute(false);
+        playerRef.current.setVolume(level);
         localStorage.setItem("volume", level.toString());
       }
     },
@@ -90,8 +89,8 @@ export const PlayerControls = ({
 
   const handleMute = useCallback(() => {
     if (playerRef.current) {
-      setIsMuted(!playerRef.current.muted());
-      playerRef.current.muted(!playerRef.current.muted());
+      setIsMuted(!playerRef.current.getMute());
+      playerRef.current.setMute(!playerRef.current.getMute());
     }
   }, [playerRef, setIsMuted]);
 
@@ -144,8 +143,8 @@ export const PlayerControls = ({
           <Slider
             aria-label="Volume slider"
             min={0}
-            max={1}
-            step={0.05}
+            max={100}
+            step={5}
             value={volume}
             defaultValue={volume}
             w={24}

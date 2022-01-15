@@ -25,6 +25,8 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { AccessUnit } from "miracle-tv-shared/graphql";
+import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
+import { CopyField } from "miracle-tv-client/components/ui/CopyField";
 
 gql`
   query UserSettingsChannelKeys($channelId: ID!) {
@@ -53,6 +55,7 @@ export const ChannelKeysSettings = ({ id }: Props) => {
   const toast = useToast();
   const generateModalDisclosure = useDisclosure();
   const { currentUser, checkRights } = useCurrentUser();
+  const { publishURL } = useServerConfig();
 
   const canViewKeys = useMemo(
     () => checkRights(AccessUnit.Read, "streamKeys"),
@@ -136,6 +139,10 @@ export const ChannelKeysSettings = ({ id }: Props) => {
             Generate
           </Button>
         </Stack>
+      </Box>
+      <Box mb={2}>
+        <Text>Server URL</Text>
+        <CopyField value={publishURL} />
       </Box>
       <VStack>
         {streamKeys.map((sKey) => (
