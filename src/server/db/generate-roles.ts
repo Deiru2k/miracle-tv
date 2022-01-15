@@ -66,7 +66,7 @@ const defaultVolunteerRole: Role = {
 
 const defaultUserRole: Role = {
   id: "user",
-  name: "user",
+  name: "User",
   access: {
     rights: {
       streamKeys: [AccessUnit.Self],
