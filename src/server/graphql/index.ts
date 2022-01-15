@@ -78,6 +78,7 @@ import { fullUserMutations } from "./mutations/full-users";
 import { rolesMutations } from "./mutations/roles";
 import { systemResolvers } from "./resolvers/system";
 import { SystemModel } from "miracle-tv-server/db/models/System";
+import { serverConfigQueryResolvers } from "./resolvers/server-config";
 
 const schemaString = glob
   .sync(path.resolve(__dirname, "./**/*.graphql"))
@@ -109,6 +110,7 @@ let executableSchema = makeExecutableSchema({
       ...fullUserResolvers,
       ...fileResolvers,
       ...systemResolvers,
+      ...serverConfigQueryResolvers,
     },
     Mutation: {
       ping: () => {

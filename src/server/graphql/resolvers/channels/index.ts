@@ -7,6 +7,8 @@ import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
 import { checkRight } from "miracle-tv-shared/acl/utils";
+import config from "miracle-tv-server/config";
+import superagent from "superagent";
 
 export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
   async channels(_, { filter }, { db: { channels }, userRoles }) {
@@ -56,10 +58,30 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
     return null;
   },
   status: async (channel, _, { db: { channelStatus } }) => {
-    const status = await channelStatus.getStatusById(channel.id);
-    const defaultStatus = { id: channel.id, isLive: false };
+    if (!config.omeEnabled) {
+      const status = await channelStatus.getStatusById(channel.id);
+      const defaultStatus = { id: channel.id, isLive: false };
+      return {
+        ...(status ?? defaultStatus),
+        viewers: 0,
+        length: 0,
+      };
+    }
+    try {
+      const omeRequest = await superagent
+        .get(`${config.omeAPIUrl}/streams/${channel.id}`)
+        .set("Authorization", "Basic b21lLWFjY2Vzcy10b2tlbg==")
+        .send();
+      return {
+        id: channel.id,
+        isLive: true,
+        viewers: omeRequest.body.response.totalConnections,
+        length: 0,
+      };
+    } catch {}
     return {
-      ...(status ?? defaultStatus),
+      id: channel.id,
+      isLive: false,
       viewers: 0,
       length: 0,
     };

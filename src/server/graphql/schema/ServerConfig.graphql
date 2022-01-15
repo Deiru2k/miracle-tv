@@ -1,0 +1,8 @@
+type ServerConfig {
+  omeEnabled: Boolean!
+  publishURL: String!
+}
+
+extend type Query {
+  serverConfig: ServerConfig!
+}

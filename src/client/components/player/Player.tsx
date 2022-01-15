@@ -1,4 +1,5 @@
 import { AspectRatio, Box, Flex, Heading, Image } from "@chakra-ui/react";
+import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
 import React, {
   useCallback,
   useEffect,
@@ -7,8 +8,8 @@ import React, {
   useState,
 } from "react";
 import { VideoJsPlayer } from "video.js";
+import { OvenPlayer } from "./OverPlayer";
 import { PlayerControls } from "./PlayerControls";
-import VideoJS from "./VideoJS";
 
 type Props = {
   channelId: string;
@@ -21,10 +22,6 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
-  const streamSrc = useMemo(
-    () => `/streaming/hls/${channelId}/index.m3u8`,
-    [channelId]
-  );
 
   useEffect(() => {
     document.onfullscreenchange = () => {
@@ -36,17 +33,6 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
       document.onfullscreenchange = undefined;
     };
   }, []);
-
-  const onPlayerReady = useCallback(
-    (player: VideoJsPlayer, video: HTMLVideoElement) => {
-      player.autoplay("any");
-      video.oncanplay = () => {
-        video.currentTime = video.duration - 1;
-        video.oncanplay = undefined;
-      };
-    },
-    [streamSrc]
-  );
 
   return (
     <Box role="group" position="relative" ref={containerRef}>
@@ -79,29 +65,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
               </Heading>
             </Flex>
           </Box>
-          {isLive && (
-            <VideoJS
-              options={{
-                liveui: true,
-                errorDisplay: false,
-                loadingSpinner: false,
-                fill: true,
-                fluid: false,
-                responsive: false,
-                sources: [{ src: streamSrc, type: "application/x-mpegURL" }],
-                html5: {
-                  vhs: {
-                    overrideNative: true,
-                  },
-                  nativeAudioTracks: false,
-                  nativeVideoTracks: false,
-                },
-              } as any}
-              playerRef={playerRef}
-              videoRef={videoRef}
-              onReady={onPlayerReady}
-            />
-          )}
+          {isLive && <OvenPlayer channelId={channelId} playerRef={playerRef} />}
         </>
       </AspectRatio>
       {isLive && (

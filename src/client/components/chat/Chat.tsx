@@ -27,7 +27,7 @@ type ChatMessageProps = {
 
 const ChatMessage = ({ username, message }: ChatMessageProps) => {
   return (
-    <Box display="block" w="100%">
+    <Box display="block" w="100%" wordBreak="break-word">
       {username && (
         <Text as="span" fontWeight="bold">
           {username}:&nbsp;
@@ -108,7 +108,7 @@ export const Chat = ({ channelId }: Props) => {
         { username: msg.username, message: msg.data, timestamp: msg.timestamp },
       ]);
       chatLogRef.current?.scrollTo({
-        top: chatLogRef.current?.getBoundingClientRect().bottom,
+        top: chatLogRef.current?.scrollHeight,
         behavior: "smooth",
       });
     },

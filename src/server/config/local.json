@@ -2,6 +2,9 @@
   "name": "Miracle TV Test",
   "dataDir": "/data/miracle-tv",
   "path": "",
+  "omeEnabled": true,
+  "omeAPIUrl": "http://localhost:8082/v1/stats/current/vhosts/miracle-tv/apps/live",
+  "publishUrl": "rtmp://localhost/live",
   "database": {
     "host": "localhost",
     "port": 28015,

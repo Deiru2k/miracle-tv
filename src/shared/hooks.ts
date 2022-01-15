@@ -4420,6 +4420,64 @@ export type CurrentUserSettingsQueryResult = Apollo.QueryResult<
   Types.CurrentUserSettingsQuery,
   Types.CurrentUserSettingsQueryVariables
 >;
+export const ServerConfigInfoDocument = gql`
+  query ServerConfigInfo {
+    serverConfig {
+      omeEnabled
+      publishURL
+    }
+  }
+`;
+
+/**
+ * __useServerConfigInfoQuery__
+ *
+ * To run a query within a React component, call `useServerConfigInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useServerConfigInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useServerConfigInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useServerConfigInfoQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    Types.ServerConfigInfoQuery,
+    Types.ServerConfigInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ServerConfigInfoQuery,
+    Types.ServerConfigInfoQueryVariables
+  >(ServerConfigInfoDocument, options);
+}
+export function useServerConfigInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ServerConfigInfoQuery,
+    Types.ServerConfigInfoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ServerConfigInfoQuery,
+    Types.ServerConfigInfoQueryVariables
+  >(ServerConfigInfoDocument, options);
+}
+export type ServerConfigInfoQueryHookResult = ReturnType<
+  typeof useServerConfigInfoQuery
+>;
+export type ServerConfigInfoLazyQueryHookResult = ReturnType<
+  typeof useServerConfigInfoLazyQuery
+>;
+export type ServerConfigInfoQueryResult = Apollo.QueryResult<
+  Types.ServerConfigInfoQuery,
+  Types.ServerConfigInfoQueryVariables
+>;
 export const SignInDocument = gql`
   mutation SignIn($username: String!, $password: String!) {
     signIn(input: { username: $username, password: $password }) {
