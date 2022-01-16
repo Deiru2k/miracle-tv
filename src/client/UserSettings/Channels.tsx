@@ -59,6 +59,7 @@ export const SettingsChannelsList = () => {
     },
     skip: !currentUser,
   });
+
   const [deleteChannelMutation, { loading: isDeleting }] =
     useUserSettingsDeleteChannelMutation({
       onCompleted: () => {

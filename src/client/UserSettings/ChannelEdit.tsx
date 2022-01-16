@@ -32,27 +32,25 @@ mutation EditChannel($input: UpdateChannelInput) {
 }
 `;
 
-type Props = { id: string };
+type Props = { id: string; canViewChannel: boolean };
 
-export const ChannelEdit = ({ id }: Props) => {
+export const ChannelEdit = ({ id, canViewChannel }: Props) => {
   const toast = useToast();
 
-  const { checkRights } = useCurrentUser();
-
-  const canViewChannel = useMemo(
-    () => checkRights(AccessUnit.Read, "channels"),
-    [checkRights]
-  );
-
-  const canEditChannel = useMemo(
-    () => checkRights(AccessUnit.Write, "channels"),
-    [checkRights]
-  );
+  const { checkRights, currentUser } = useCurrentUser();
 
   const { data: { channel } = {} } = useUserSettingsChannelQuery({
     variables: { id },
     skip: !canViewChannel,
   });
+
+  const canEditChannel = useMemo(
+    () =>
+      checkRights(AccessUnit.Write, "channels") ||
+      (checkRights(AccessUnit.Self, "channels") &&
+        channel?.user.id === currentUser.id),
+    [checkRights, currentUser]
+  );
 
   const [updateChannelMutation, { loading: isUpdating }] =
     useEditChannelMutation({

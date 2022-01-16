@@ -34,22 +34,36 @@ export const ChannelSettingsPage = ({
   baseUrl = "/settings/user/channels",
   tab,
 }: Props) => {
-  const { checkRights } = useCurrentUser();
+  const { currentUser, checkRights } = useCurrentUser();
   const { push } = useRouter();
-
-  const canViewChannel = useMemo(
-    () => checkRights(AccessUnit.Read, "channels"),
-    [checkRights]
-  );
-  const canViewKeys = useMemo(
-    () => checkRights(AccessUnit.Read, "streamKeys"),
-    [checkRights]
-  );
 
   const { data: { channel } = {} } = useUserSettingsChannelQuery({
     variables: { id: channelId },
-    skip: !canViewChannel,
   });
+
+  const canViewChannel = useMemo(
+    () =>
+      checkRights(AccessUnit.Read, "channels") ||
+      (checkRights(AccessUnit.Self, "channels") &&
+        channel?.user.id === currentUser.id),
+    [checkRights, channel, currentUser]
+  );
+
+  const canViewKeys = useMemo(
+    () =>
+      checkRights(AccessUnit.Read, "streamKeys") ||
+      (checkRights(AccessUnit.Self, "streamKeys") &&
+        channel?.user.id === currentUser.id),
+    [checkRights, channel, currentUser]
+  );
+
+  const canEditKeys = useMemo(
+    () =>
+      checkRights(AccessUnit.Read, "streamKeys") ||
+      (checkRights(AccessUnit.Self, "streamKeys") &&
+        channel?.user.id === currentUser.id),
+    [checkRights, channel, currentUser]
+  );
 
   const tabList = Object.keys(tabs);
   const tabIndex = tabList.indexOf(tab);
@@ -89,10 +103,14 @@ export const ChannelSettingsPage = ({
 
         <TabPanels>
           <TabPanel px={0}>
-            <ChannelEdit id={channelId} />
+            <ChannelEdit id={channelId} canViewChannel={canViewChannel} />
           </TabPanel>
           <TabPanel px={0}>
-            <ChannelKeysSettings id={channelId} />
+            <ChannelKeysSettings
+              id={channelId}
+              canViewKeys={canViewKeys}
+              canEditKeys={canEditKeys}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

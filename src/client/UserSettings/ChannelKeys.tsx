@@ -49,22 +49,19 @@ gql`
 
 type Props = {
   id: string;
+  canViewKeys: boolean;
+  canEditKeys: boolean;
 };
 
-export const ChannelKeysSettings = ({ id }: Props) => {
+export const ChannelKeysSettings = ({
+  id,
+  canViewKeys,
+  canEditKeys,
+}: Props) => {
   const toast = useToast();
   const generateModalDisclosure = useDisclosure();
-  const { currentUser, checkRights } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { publishURL } = useServerConfig();
-
-  const canViewKeys = useMemo(
-    () => checkRights(AccessUnit.Read, "streamKeys"),
-    [checkRights]
-  );
-  const canEditKeys = useMemo(
-    () => checkRights(AccessUnit.Write, "streamKeys"),
-    [checkRights]
-  );
 
   const { data: { streamKeysByChannelId: streamKeys = [] } = {}, refetch } =
     useUserSettingsChannelKeysQuery({
