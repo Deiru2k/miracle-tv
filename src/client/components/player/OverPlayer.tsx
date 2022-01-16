@@ -68,12 +68,14 @@ export const OvenPlayer = ({
         sources,
       });
       if (initialQuality !== 0) {
-        playerRef.current.setCurrentSource(initialQuality);
-        setCurrentSource?.(initialQuality);
-        playerRef.current.stop();
         setTimeout(() => {
-          playerRef.current.play();
-        }, 500);
+          playerRef.current.setCurrentSource(initialQuality);
+          setCurrentSource?.(initialQuality);
+          playerRef.current.stop();
+          setTimeout(() => {
+            playerRef.current.play();
+          }, 500);
+        }, 300);
       }
     }
   }, [channelId, sources, videoRef]);
