@@ -111,9 +111,9 @@ const OBSHelp = () => {
           <Text>
             To obtain a stream key, go to your channel settings, and then to
             "Keys" tab. Generate a stream key by pressing{" "}
-            <Button>Generate</Button> button, giving it a name, and then
-            clicking <Button>Generate</Button> in the modal window. Then, click
-            on <IconButton icon={<CopyIcon />} aria-label="Copy" /> to copy your
+            <Button>Generate</Button> button, giving it a name, and then clic on{" "}
+            <Button>Generate</Button> in the modal window. Then, click on{" "}
+            <IconButton icon={<CopyIcon />} aria-label="Copy" /> to copy your
             new key. Once you've copied your key, go back to OBS and insert the
             key into "Stream Key" field.
           </Text>
