@@ -48,6 +48,7 @@ export const PlayerControls = ({
   const theme = useTheme();
   const qualityDisclosure = useDisclosure();
   const [sourceOptions, setSourceOptions] = useState<any[]>([]);
+  const [currentSource, setCurrentSource] = useState<number>(0);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(
@@ -129,8 +130,9 @@ export const PlayerControls = ({
         playerRef.current?.play(index);
       }, 300);
       setIsPlaying(true);
+      setCurrentSource(index);
     },
-    [playerRef]
+    [playerRef, setIsPlaying, setCurrentSource]
   );
 
   return (
@@ -210,7 +212,13 @@ export const PlayerControls = ({
           <Portal>
             <MenuList>
               {sourceOptions.map((s: any) => (
-                <MenuItem key={s.value} onClick={() => setSource(s.value)}>
+                <MenuItem
+                  backgroundColor={
+                    currentSource === s.value ? "primary.500" : undefined
+                  }
+                  key={s.value}
+                  onClick={() => setSource(s.value)}
+                >
                   {s.label}
                 </MenuItem>
               ))}
