@@ -28,7 +28,9 @@ services:
       - "3478:3478"
       - "8082:8080"
       - "10000:10000/udp"
-    # network_mode: "host"
+    networks:
+      - external
+      - internal
     volumes:
       - ./docker-compose/rtmp-configs/ome/:/opt/ovenmediaengine/bin/origin_conf
       - ./docker-compose/rtmp-configs/ome_edge/:/opt/ovenmediaengine/bin/edge_conf
