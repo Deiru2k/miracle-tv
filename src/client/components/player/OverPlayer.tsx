@@ -71,8 +71,9 @@ export const OvenPlayer = ({
         playerRef.current.setCurrentSource(initialQuality);
         setCurrentSource?.(initialQuality);
         setTimeout(() => {
+          playerRef.current.pause();
           playerRef.current.play();
-        }, 300);
+        }, 1000);
       }
     }
   }, [channelId, sources, videoRef]);
