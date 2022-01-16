@@ -23,6 +23,7 @@ services:
   ome:
     image: "airensoft/ovenmediaengine:0.12.9"
     ports:
+      - "1935:1935"
       - "3333:3333"
       - "3478:3478"
       - "8082:8080"
