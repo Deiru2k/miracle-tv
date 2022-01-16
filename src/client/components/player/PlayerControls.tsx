@@ -23,13 +23,14 @@ import { transparentize } from "@chakra-ui/theme-tools";
 import { VolumeMutedIcon } from "../icons/VolumeMutedIcon";
 import { FullscreenExitIcon } from "../icons/FullscreenExitIcon";
 import { FullscreenIcon } from "../icons/FullscreenIcon";
-import { VideoJsPlayer } from "video.js";
 import { SettingsIcon } from "@chakra-ui/icons";
 
 type Props = {
   playerRef: React.MutableRefObject<any>;
   videoRef: React.MutableRefObject<HTMLVideoElement>;
   containerRef: React.MutableRefObject<HTMLDivElement>;
+  currentSource: number;
+  setCurrentSource: (index: number) => void;
   isFullscreen: boolean;
   setFullscreen: (state: boolean) => void;
   stats: {
@@ -43,12 +44,13 @@ export const PlayerControls = ({
   containerRef,
   isFullscreen,
   setFullscreen,
+  currentSource,
+  setCurrentSource,
   stats,
 }: Props) => {
   const theme = useTheme();
   const qualityDisclosure = useDisclosure();
   const [sourceOptions, setSourceOptions] = useState<any[]>([]);
-  const [currentSource, setCurrentSource] = useState<number>(0);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(
@@ -131,6 +133,7 @@ export const PlayerControls = ({
       }, 300);
       setIsPlaying(true);
       setCurrentSource(index);
+      localStorage.setItem("quality", `${index}`);
     },
     [playerRef, setIsPlaying, setCurrentSource]
   );

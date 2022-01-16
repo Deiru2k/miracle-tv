@@ -23,6 +23,11 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
   const containerRef = useRef<HTMLDivElement>();
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
 
+  const initialQuality = localStorage.getItem("quality");
+  const [currentSource, setCurrentSource] = useState<number>(
+    initialQuality ? Number(initialQuality) : 0
+  );
+
   useEffect(() => {
     document.onfullscreenchange = () => {
       if (!document.fullscreenElement) {
@@ -65,7 +70,14 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
               </Heading>
             </Flex>
           </Box>
-          {isLive && <OvenPlayer channelId={channelId} playerRef={playerRef} />}
+          {isLive && (
+            <OvenPlayer
+              channelId={channelId}
+              playerRef={playerRef}
+              initialQuality={currentSource}
+              setCurrentSource={setCurrentSource}
+            />
+          )}
         </>
       </AspectRatio>
       {isLive && (
@@ -75,6 +87,8 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
           playerRef={playerRef}
           videoRef={videoRef}
           containerRef={containerRef}
+          currentSource={currentSource}
+          setCurrentSource={setCurrentSource}
           stats={{ isLive, viewers: 0 }}
         />
       )}

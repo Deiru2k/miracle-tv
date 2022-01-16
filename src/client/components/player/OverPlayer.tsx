@@ -6,10 +6,17 @@ import Hls from "hls.js";
 
 type Props = {
   channelId: string;
+  initialQuality?: number;
+  setCurrentSource?: (index: number) => void;
   playerRef: React.MutableRefObject<any>;
 };
 
-export const OvenPlayer = ({ channelId, playerRef }: Props) => {
+export const OvenPlayer = ({
+  channelId,
+  playerRef,
+  setCurrentSource,
+  initialQuality,
+}: Props) => {
   const { omeEnabled, isLoading } = useServerConfig();
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -60,6 +67,13 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
         showBigPlayButton: false,
         sources,
       });
+      if (initialQuality !== 0) {
+        playerRef.current.setCurrentSource(initialQuality);
+        setCurrentSource?.(initialQuality);
+        setTimeout(() => {
+          playerRef.current.play();
+        }, 300);
+      }
     }
   }, [channelId, sources, videoRef]);
 
