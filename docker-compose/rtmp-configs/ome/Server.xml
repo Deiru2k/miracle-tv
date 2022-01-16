@@ -19,7 +19,7 @@
   <Bind>
     <Managers>
       <API>
-        <Port>8082</Port>
+        <Port>8080</Port>
       </API>
     </Managers>
     <Providers>
@@ -96,7 +96,7 @@
         </Application>
       </Applications>
       <AdmissionWebhooks>
-        <ControlServerUrl>http://localhost:4000/hook/ome/hook</ControlServerUrl>
+        <ControlServerUrl>http://miracle-backend:4000/api/hook/ome/hook</ControlServerUrl>
         <SecretKey>1234</SecretKey>
         <Timeout>3000</Timeout>
         <Enables>

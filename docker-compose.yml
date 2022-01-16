@@ -6,21 +6,32 @@ networks:
     internal: false
 
 services:
-  nginx:
-    image: "alqutami/rtmp-hls"
+  # nginx:
+  #   image: "alqutami/rtmp-hls"
+  #   ports:
+  #     - "1935:1935"
+  #     - "127.0.0.1:1337:1337"
+  #   volumes:
+  #     - ./docker-compose/rtmp-configs/nginx-rtmp/nginx.conf.template:/etc/nginx/nginx.conf
+  #     - /home/ubuntu/miracle-data/media:/mnt/media
+  #     - /home/ubuntu/miracle-data/streaming/hls:/mnt/hls
+  #   depends_on:
+  #     - miracle-backend
+  #     - miracle-frontend
+  #   networks:
+  #     - external
+  #     - internal
+  ome:
+    image: "airensoft/ovenmediaengine:0.12.9"
     ports:
-      - "1935:1935"
-      - "127.0.0.1:1337:1337"
+      - "3333:3333"
+      - "3478:3478"
+      - "8082:8080"
+      - "10000:10000/udp"
+    # network_mode: "host"
     volumes:
-      - ./docker-compose/rtmp-configs/nginx-rtmp/nginx.conf.template:/etc/nginx/nginx.conf
-      - /home/ubuntu/miracle-data/media:/mnt/media
-      - /home/ubuntu/miracle-data/streaming/hls:/mnt/hls
-    depends_on:
-      - miracle-backend
-      - miracle-frontend
-    networks:
-      - external
-      - internal
+      - ./docker-compose/rtmp-configs/ome/:/opt/ovenmediaengine/bin/origin_conf
+      - ./docker-compose/rtmp-configs/ome_edge/:/opt/ovenmediaengine/bin/edge_conf
   rethinkdb:
     image: "rethinkdb"
     volumes:
