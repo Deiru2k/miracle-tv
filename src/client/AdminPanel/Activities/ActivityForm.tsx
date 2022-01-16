@@ -46,7 +46,7 @@ export const ActivityForm = ({ isDisabled }: Props) => {
           label="Cover Image"
           help={
             <>
-              <Text>1:1 aspect ratio is preferred.</Text>
+              <Text>8:12 aspect ratio is preferred.</Text>
               <Text>{"Used for activity icon in various pages"}</Text>
             </>
           }

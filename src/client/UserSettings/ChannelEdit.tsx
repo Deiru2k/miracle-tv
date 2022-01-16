@@ -49,7 +49,7 @@ export const ChannelEdit = ({ id, canViewChannel }: Props) => {
       checkRights(AccessUnit.Write, "channels") ||
       (checkRights(AccessUnit.Self, "channels") &&
         channel?.user.id === currentUser.id),
-    [checkRights, currentUser]
+    [checkRights, channel, currentUser]
   );
 
   const [updateChannelMutation, { loading: isUpdating }] =
