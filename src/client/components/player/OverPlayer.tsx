@@ -55,6 +55,7 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
   useEffect(() => {
     if (videoRef.current && sources) {
       playerRef.current = ovenplayer.create(videoRef.current, {
+        autoStart: true,
         controls: false,
         showBigPlayButton: false,
         sources,
