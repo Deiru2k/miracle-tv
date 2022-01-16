@@ -57,6 +57,9 @@ export const setupChat = async (io: SocketIO) => {
     socket.on("chat:send", async (msgData: ChatMessageData) => {
       const user = await getWebsocketUser(msgData.token, socket);
       const newUsername = user.displayName || user.username;
+      if (msgData.message === "") {
+        return;
+      }
       if (newUsername !== username) {
         const msgResponse: ChatResponseType = {
           type: "message",
