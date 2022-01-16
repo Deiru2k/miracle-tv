@@ -68,7 +68,7 @@ export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
               backgroundColor="rgba(0, 0, 0, 0.6)"
             >
               <Heading size="sm" color="white">
-                Stream is offline. Check back later, oh hang out in the chat!
+                Stream is offline. Check back later, or hang out in the chat!
               </Heading>
             </Flex>
           </Box>
