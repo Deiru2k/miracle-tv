@@ -209,9 +209,7 @@ export const PlayerControls = ({
             mr={2}
             color="primary.200"
           />
-          <Text as="span" color="primary.200">
-            {stats?.viewers || 0}
-          </Text>
+          <Text as="span">{stats?.viewers || 0}</Text>
         </Flex>
         <Menu
           isOpen={qualityDisclosure.isOpen}
