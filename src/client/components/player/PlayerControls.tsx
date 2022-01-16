@@ -112,11 +112,6 @@ export const PlayerControls = ({
 
   const sliderBgColor = transparentize("primary.500", 0.3)(theme);
 
-  const sourceOptions2 = playerRef.current?.getSources()?.map((s: any) => ({
-    value: s.index,
-    label: s.label,
-  }));
-
   const onMenuOpen = useCallback(() => {
     setSourceOptions(
       playerRef.current?.getSources()?.map((s: any) => ({
