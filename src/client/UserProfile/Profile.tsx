@@ -111,8 +111,13 @@ export const UserProfile = ({
         />
         {user?.settings?.singleUserMode && user?.settings?.singleUserChannel && (
           <Box flex={9} px={4} mt={6} pb={6}>
-            <Flex align="center" direction={isMobile ? "column" : "row"}>
-              <Heading as={Flex} alignItems="center" mb={2} mr={2}>
+            <Flex
+              align="center"
+              direction={isMobile ? "column" : "row"}
+              mb={2}
+              mr={2}
+            >
+              <Heading as={Flex} alignItems="center">
                 {user?.settings?.singleUserChannel?.name}
               </Heading>
               {user?.settings?.singleUserChannel?.activity && (

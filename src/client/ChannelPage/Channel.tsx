@@ -173,8 +173,13 @@ export const ChannelView = ({
       <ChannelPlayerView channel={channel} status={status} />
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
-          <Flex align="center" direction={isMobile ? "column" : "row"}>
-            <Heading as={Flex} alignItems="center" mb={2} mr={2}>
+          <Flex
+            align="center"
+            direction={isMobile ? "column" : "row"}
+            mb={2}
+            mr={2}
+          >
+            <Heading as={Flex} alignItems="center">
               {status?.isLive && <CircleIcon color="red" mr={2} />}
               {channel.name}
             </Heading>
