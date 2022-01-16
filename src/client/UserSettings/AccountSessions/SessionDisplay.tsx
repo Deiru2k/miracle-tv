@@ -26,12 +26,13 @@ export const SessionDisplay = ({
   session,
   onRevoke,
   showUser = false,
+  panelProps,
   ...stackProps
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <VStack w="100%" align="flex-start" {...stackProps}>
-      <Panel w={isMobile ? "100%" : undefined}>
+      <Panel w={isMobile ? "100%" : undefined} {...panelProps}>
         <VStack align="flex-start">
           <Box>
             <Text>
