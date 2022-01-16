@@ -21,6 +21,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
+  const volume = Number(localStorage.getItem("volume")) || 100;
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
 
   const initialQuality = localStorage.getItem("quality");
@@ -75,6 +76,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
               channelId={channelId}
               playerRef={playerRef}
               initialQuality={currentSource}
+              initialVolume={volume}
               setCurrentSource={setCurrentSource}
             />
           )}

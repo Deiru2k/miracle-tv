@@ -7,6 +7,7 @@ import Hls from "hls.js";
 type Props = {
   channelId: string;
   initialQuality?: number;
+  initialVolume?: number;
   setCurrentSource?: (index: number) => void;
   playerRef: React.MutableRefObject<any>;
 };
@@ -15,6 +16,7 @@ export const OvenPlayer = ({
   channelId,
   playerRef,
   setCurrentSource,
+  initialVolume = 100,
   initialQuality,
 }: Props) => {
   const { omeEnabled, isLoading } = useServerConfig();
@@ -62,6 +64,7 @@ export const OvenPlayer = ({
   useEffect(() => {
     if (videoRef.current && sources) {
       playerRef.current = ovenplayer.create(videoRef.current, {
+        volume: initialVolume,
         autoStart: true,
         controls: false,
         showBigPlayButton: false,
