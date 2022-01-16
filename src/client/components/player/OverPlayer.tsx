@@ -34,16 +34,16 @@ export const OvenPlayer = ({
               type: "webrtc",
               file: `wss://${location.hostname}/webrtc/live/${channelId}`,
             },
-            {
-              label: "1080p",
-              type: "webrtc",
-              file: `wss://${location.hostname}/webrtc/live/${channelId}_1080`,
-            },
-            {
-              label: "720p",
-              type: "webrtc",
-              file: `wss://${location.hostname}/webrtc/live/${channelId}_720`,
-            },
+            /* {
+             *   label: "1080p",
+             *   type: "webrtc",
+             *   file: `wss://${location.hostname}/webrtc/live/${channelId}_1080`,
+             * },
+             * {
+             *   label: "720p",
+             *   type: "webrtc",
+             *   file: `wss://${location.hostname}/webrtc/live/${channelId}_720`,
+             * }, */
             {
               label: "360p",
               type: "webrtc",
