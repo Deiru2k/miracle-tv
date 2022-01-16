@@ -67,6 +67,25 @@
           <OutputProfiles>
             <OutputProfile>
               <Name>bypass_stream</Name>
+              <OutputStreamName>${OriginStreamName}_720</OutputStreamName>
+              <Encodes>
+                <Video>
+                  <Width>1280</Width>
+                  <Height>720</Height>
+                  <Bitrate>2000000</Bitrate>
+                  <Framerate>60.0</Framerate>
+                  <Preset>fast</Preset>
+                </Video>
+                <Audio>
+                  <Codec>opus</Codec>
+                  <Bitrate>128000</Bitrate>
+                  <Samplerate>48000</Samplerate>
+                  <Channel>2</Channel>
+                </Audio>
+              </Encodes>
+            </OutputProfile>
+            <OutputProfile>
+              <Name>720_stream</Name>
               <OutputStreamName>${OriginStreamName}</OutputStreamName>
               <Encodes>
                 <Audio>
