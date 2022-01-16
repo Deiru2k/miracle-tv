@@ -201,10 +201,16 @@ export const PlayerControls = ({
         </Flex>
       </Flex>
       {/* Right half */}
-      <Box>
-        <Box mr={2}>
-          <ViewIcon aria-label="viewers" mr={1} /> {stats?.viewers || 0}
-        </Box>
+      <Flex align="center">
+        <Flex mr={2} align="center">
+          <ViewIcon
+            aria-label="Viewers"
+            title="Viewers"
+            mr={1}
+            color="primary.200"
+          />
+          {stats?.viewers || 0}
+        </Flex>
         <Menu
           isOpen={qualityDisclosure.isOpen}
           onClose={qualityDisclosure.onClose}
@@ -241,7 +247,7 @@ export const PlayerControls = ({
           onClick={onFullScreen}
           icon={<FullscreenStateIcon w={5} h={5} color="primary.200" />}
         />
-      </Box>
+      </Flex>
     </Flex>
   );
 };
