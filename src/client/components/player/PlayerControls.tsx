@@ -1,5 +1,5 @@
 import {
-  Box,
+  Text,
   Flex,
   IconButton,
   Menu,
@@ -206,10 +206,12 @@ export const PlayerControls = ({
           <ViewIcon
             aria-label="Viewers"
             title="Viewers"
-            mr={1}
+            mr={2}
             color="primary.200"
           />
-          {stats?.viewers || 0}
+          <Text as="span" color="primary.200">
+            {stats?.viewers || 0}
+          </Text>
         </Flex>
         <Menu
           isOpen={qualityDisclosure.isOpen}
