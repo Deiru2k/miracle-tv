@@ -8,6 +8,7 @@ networks:
 services:
   nginx:
     image: "alqutami/rtmp-hls"
+    restart: always
     ports:
       - "127.0.0.1:1337:1337"
     volumes:
@@ -22,6 +23,7 @@ services:
       - internal
   ome:
     image: "airensoft/ovenmediaengine:0.12.9"
+    restart: always
     ports:
       - "1935:1935"
       - "3333:3333"
@@ -34,15 +36,9 @@ services:
     volumes:
       - ./docker-compose/rtmp-configs/ome/:/opt/ovenmediaengine/bin/origin_conf
       - ./docker-compose/rtmp-configs/ome_edge/:/opt/ovenmediaengine/bin/edge_conf
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: intel
-              count: 1
-              capabilities: [gpu]
   rethinkdb:
     image: "rethinkdb"
+    restart: always
     volumes:
       - /home/ubuntu/miracle-data/db:/data
     networks:
@@ -51,6 +47,7 @@ services:
     build:
       context: "."
       dockerfile: "./backend.Dockerfile"
+    restart: always
     ports:
       - "4000:4000"
     depends_on:
@@ -68,6 +65,7 @@ services:
       dockerfile: "./frontend.Dockerfile"
     networks:
       - internal
+    restart: always
     ports:
       - "3000:3000"
     depends_on:
