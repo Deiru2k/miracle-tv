@@ -24,7 +24,7 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
         ? {
             label: "WebRTC",
             type: "webrtc",
-            file: `ws://localhost:3333/live/${channelId}`,
+            file: `ws://${location.hostname}:3333/live/${channelId}`,
           }
         : {
             label: "HLS",
