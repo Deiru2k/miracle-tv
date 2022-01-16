@@ -25,22 +25,22 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
             {
               label: "Original Quality",
               type: "webrtc",
-              file: `/webrtc/live/${channelId}`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}`,
             },
             {
               label: "1080p",
               type: "webrtc",
-              file: `/webrtc/live/${channelId}_1080`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}_1080`,
             },
             {
               label: "720p",
               type: "webrtc",
-              file: `/webrtc/live/${channelId}_720`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}_720`,
             },
             {
               label: "360p",
               type: "webrtc",
-              file: `/webrtc/live/${channelId}_360`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}_360`,
             },
           ]
         : {
