@@ -1,4 +1,4 @@
-import { ChatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { AtSignIcon, ChatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import {
   Box,
@@ -8,6 +8,8 @@ import {
   VStack,
   IconButton,
   HStack,
+  useDisclosure,
+  Heading,
 } from "@chakra-ui/react";
 import { getIOClient } from "miracle-tv-client/socketio";
 import {
@@ -27,6 +29,8 @@ import React, {
 import { sort, takeLast } from "ramda";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { UserInfo } from "miracle-tv-server/websocket/chat/roster";
+import { Link } from "../ui/Link";
 
 type ChatMessageProps = {
   username: string;
@@ -51,6 +55,8 @@ type ChatControlsProps = {
   channelId: string;
   isPopup?: boolean;
   isDisabled?: boolean;
+  roster: UserInfo[];
+  getRoster: () => void;
 };
 
 const ChatControls = ({
@@ -58,7 +64,10 @@ const ChatControls = ({
   channelId,
   isDisabled = false,
   isPopup = false,
+  getRoster,
+  roster,
 }: ChatControlsProps) => {
+  const rosterDisclosure = useDisclosure();
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +84,16 @@ const ChatControls = ({
     [value, setValue, onSend]
   );
 
+  const onRosterOpen = useCallback(() => {
+    console.log(rosterDisclosure.isOpen);
+    if (!rosterDisclosure.isOpen) {
+      getRoster();
+      rosterDisclosure.onOpen();
+    } else {
+      rosterDisclosure.onClose();
+    }
+  }, [getRoster, rosterDisclosure]);
+
   const onOpenPopup = useCallback(() => {
     const port = location.port !== "" ? `:${location.port}` : "";
     window.open(
@@ -84,9 +103,42 @@ const ChatControls = ({
     );
   }, [channelId]);
 
+  console.log(roster);
+
   return (
-    <form onSubmit={sendMessage}>
-      <Flex mt={2} direction="column">
+    <form onSubmit={sendMessage} style={{ position: "relative" }}>
+      <Flex
+        direction="column"
+        height="20rem"
+        opacity={rosterDisclosure.isOpen ? 1 : 0}
+        pointerEvents={rosterDisclosure.isOpen ? "all" : "none"}
+        position="absolute"
+        top="-20rem"
+        left={0}
+        transition="opacity 0.3s linear"
+        w="100%"
+        borderWidth="1px"
+        borderStyle="solid"
+        borderColor="primary.500"
+        zIndex={5}
+        backgroundColor="secondary.500"
+        justifyContent="flex-start"
+        pt={1}
+      >
+        <Heading w="100%" px={2} mb={2} size="md">
+          Roster:
+        </Heading>
+        <VStack overflow="auto" height="100%">
+          {roster.map((user) => (
+            <Box w="100%" px={2} key={user.username}>
+              <Link href={`/user/${user.username}`} target="_blank">
+                {user.displayName || user.username}
+              </Link>
+            </Box>
+          ))}
+        </VStack>
+      </Flex>
+      <Flex mt={2} direction="column" position="relative">
         <Input
           borderRadius={0}
           p={1}
@@ -106,6 +158,13 @@ const ChatControls = ({
               isDisabled={isDisabled}
             />
           )}
+          <IconButton
+            variant="ghost"
+            aria-label="Open chat in Popup"
+            icon={<AtSignIcon color="primary.200" />}
+            onClick={onRosterOpen}
+            isDisabled={isDisabled}
+          />
           <IconButton
             variant="ghost"
             aria-label="Send message"
@@ -137,6 +196,7 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
   const chatLogRef = useRef<HTMLDivElement>();
   const { currentUser } = useCurrentUser();
   const [chatLog, setChatLog] = useState<ChatLog[]>([]);
+  const [roster, setRoster] = useState<UserInfo[]>([]);
   const appendToChat = useCallback(
     (msg: ChatResponseType) => {
       const chatMessages = takeLast(99, chatLog);
@@ -158,6 +218,27 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
     });
     return client;
   }, []);
+
+  const getRoster = useCallback(() => {
+    chatClient.emit("chat:get-roster");
+  }, [chatClient]);
+
+  const setRosterFromSocket = useCallback(
+    (roster: UserInfo[] = []) => {
+      setRoster(roster);
+    },
+    [setRoster]
+  );
+
+  useEffect(() => {
+    chatClient.off("chat:roster");
+    chatClient.on("chat:roster", setRosterFromSocket);
+  }, [chatClient, setRosterFromSocket]);
+
+  useEffect(() => {
+    chatClient.off("chat:message");
+    chatClient.on("chat:message", appendToChat);
+  }, [chatClient, appendToChat]);
 
   const sendChatMessage = useCallback(
     (message: string) => {
@@ -232,6 +313,8 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
         onSend={sendChatMessage}
         channelId={channelId}
         isPopup={isPopup}
+        roster={roster}
+        getRoster={getRoster}
       />
     </Flex>
   );

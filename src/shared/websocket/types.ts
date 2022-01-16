@@ -20,3 +20,7 @@ export type ChatResponseType = {
   data?: string;
   timestamp: number;
 };
+
+export type ChatJoinRespose = {
+  connectionId: string;
+} & ChatResponseType;
