@@ -8,7 +8,7 @@ export class FilesModel extends Model {
   table = db.table("files");
 
   async createFile<T extends object = DbFile>(input: File): Promise<T> {
-    return await this.table
+    return (await this.table
       .insert(input)
       .run(this.conn)
       .then(async (_) => {
@@ -17,7 +17,7 @@ export class FilesModel extends Model {
           return file;
         }
         throw new ServerError("Couldn't create file");
-      });
+      })) as T;
   }
 
   async getFileById<T extends object = DbFile>(id: string): Promise<T> {
