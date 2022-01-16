@@ -75,7 +75,7 @@
                   <Height>360</Height>
                   <Bitrate>2000000</Bitrate>
                   <Framerate>60.0</Framerate>
-                  <Preset>fast</Preset>
+                  <Preset>veryfast</Preset>
                 </Video>
                 <Audio>
                   <Codec>opus</Codec>
