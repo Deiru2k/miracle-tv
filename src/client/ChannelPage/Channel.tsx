@@ -188,7 +188,7 @@ export const ChannelView = ({
                     src={getMediaURL(channel.activity.icon.filename)}
                   />
                 )}
-                <Text>
+                <Text textTransform="capitalize">
                   {channel.activity.verb} {channel.activity?.name}
                 </Text>
               </Flex>

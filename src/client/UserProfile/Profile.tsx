@@ -128,7 +128,7 @@ export const UserProfile = ({
                       )}
                     />
                   )}
-                  <Text>
+                  <Text textTransform="capitalize">
                     {user?.settings?.singleUserChannel?.activity?.verb}{" "}
                     {user?.settings?.singleUserChannel?.activity?.name}
                   </Text>
