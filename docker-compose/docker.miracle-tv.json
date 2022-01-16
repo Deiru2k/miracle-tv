@@ -2,6 +2,9 @@
   "name": "Miracle TV",
   "dataDir": "/data/miracle-tv",
   "pathPrefix": "api",
+  "omeEnabled": true,
+  "omeAPIUrl": "http://ome:8080/v1/stats/current/vhosts/miracle-tv/apps/live",
+  "publishURL": "rtmp://miracle-tv.live/live",
   "database": {
     "host": "rethinkdb",
     "port": 28015,
