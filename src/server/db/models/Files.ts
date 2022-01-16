@@ -7,7 +7,7 @@ import { DbFile } from "miracle-tv-server/db/models/types";
 export class FilesModel extends Model {
   table = db.table("files");
 
-  async createFile(input: File): Promise<DbFile> {
+  async createFile<T extends object = DbFile>(input: File): Promise<T> {
     return await this.table
       .insert(input)
       .run(this.conn)
@@ -20,7 +20,7 @@ export class FilesModel extends Model {
       });
   }
 
-  async getFileById(id: string): Promise<DbFile> {
-    return (await this.table.get(id).run(this.conn)) as DbFile;
+  async getFileById<T extends object = DbFile>(id: string): Promise<T> {
+    return this.table.get(id).run(this.conn) as Promise<T>;
   }
 }
