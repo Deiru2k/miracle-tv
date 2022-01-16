@@ -80,7 +80,7 @@ const ChatControls = ({
     window.open(
       `${location.protocol}//${location.hostname}${port}/chat/popup?channelId=${channelId}`,
       "miracle-popup-chat",
-      "menubar=0,resizable=1,width=150,height=650"
+      "menubar=0,resizable=1,width=320,height=600"
     );
   }, [channelId]);
 
