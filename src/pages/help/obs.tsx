@@ -13,14 +13,17 @@ import {
 import { CopyField } from "miracle-tv-client/components/ui/CopyField";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
+import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
 
 const OBSHelp = () => {
+  const isMobile = useMediaQuery(MediaQuery.mobile);
   const { publishURL } = useServerConfig();
   return (
     <Box p={2} overflowY="auto" h="100%">
       <Heading mb={2}>Help: Setting up OBS</Heading>
       <Divider mb={4} />
-      <Flex mb={4}>
+      <Flex mb={4} direction={isMobile ? "column" : "row"}>
         <SimpleGrid columns={2} spacing={2} w="100%" flex={1}>
           <AspectRatio ratio={16 / 9} w="100%" h="100%">
             <Link href="/images/guide/obs/00.png" target="_blank">
@@ -43,8 +46,8 @@ const OBSHelp = () => {
           </Text>
         </Box>
       </Flex>
-      <Flex mb={4}>
-        <Box flex={1} p={2}>
+      <Flex mb={4} direction={isMobile ? "column" : "row"}>
+        <Box flex={1} p={2} order={isMobile ? 2 : undefined}>
           <Heading size="md" mb={2}>
             2. Obtain RTMP Server URL and input it into OBS
           </Heading>
@@ -59,7 +62,13 @@ const OBSHelp = () => {
             Then, go back to OBS and input it into "Server" field
           </Text>
         </Box>
-        <SimpleGrid columns={2} spacing={2} w="100%" flex={1}>
+        <SimpleGrid
+          columns={2}
+          spacing={2}
+          w="100%"
+          flex={1}
+          order={isMobile ? 1 : undefined}
+        >
           <AspectRatio ratio={16 / 9} w="100%" h="100%">
             <Link href="/images/guide/obs/02.png" target="_blank">
               <Image src="/images/guide/obs/02.png" />
@@ -72,7 +81,7 @@ const OBSHelp = () => {
           </AspectRatio>
         </SimpleGrid>
       </Flex>
-      <Flex mb={4}>
+      <Flex mb={4} direction={isMobile ? "column" : "row"}>
         <SimpleGrid columns={2} spacing={2} w="100%" flex={1}>
           <AspectRatio ratio={16 / 9} w="100%" h="100%">
             <Link href="/images/guide/obs/04.png" target="_blank">
