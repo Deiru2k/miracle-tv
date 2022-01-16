@@ -5,7 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
 import getConfig from "next/config";
-import { propOr } from "ramda";
+import { any, propOr } from "ramda";
 
 import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
@@ -60,15 +60,14 @@ const client = new ApolloClient({
   link: authLink.concat(uploadLink),
 });
 
-// const noNavbarRoutes = ["/auth/login", "/docs", "/"];
+const noNavbarRoutes = ["/chat/popup"];
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
   const router = useRouter();
-  // const showNavbar = !any(
-  //   (path) => router.asPath.startsWith(path),
-  //   noNavbarRoutes
-  // );
-  const isShowcase = router.asPath.startsWith("/docs");
+  const showNavbar = !any(
+    (path) => router.asPath.startsWith(path),
+    noNavbarRoutes
+  );
   const [isLiveUpdate, setLiveUpdate] = useState<boolean>(false);
   return (
     <>
@@ -91,19 +90,12 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
         <SetIsLiveFromLocalStorage />
         <Chakra cookies={pageProps.cookies}>
           <ApolloProvider client={client}>
-            {!isShowcase && (
-              <Flex h="100%" w="100%" direction="column">
-                <PageWrapper paddingTop="50px">
-                  <Navbar />
-                  <Component {...pageProps} />
-                </PageWrapper>
-              </Flex>
-            )}
-            {isShowcase && (
-              <ShowcaseWrapper>
+            <Flex h="100%" w="100%" direction="column">
+              <PageWrapper paddingTop={showNavbar ? "50px" : undefined}>
+                {showNavbar && <Navbar />}
                 <Component {...pageProps} />
-              </ShowcaseWrapper>
-            )}
+              </PageWrapper>
+            </Flex>
           </ApolloProvider>
         </Chakra>
       </LiveUpdateContext.Provider>

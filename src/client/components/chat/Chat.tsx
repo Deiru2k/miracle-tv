@@ -1,6 +1,14 @@
-import { ChatIcon } from "@chakra-ui/icons";
+import { ChatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
-import { Box, Text, Flex, Input, VStack, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Input,
+  VStack,
+  IconButton,
+  HStack,
+} from "@chakra-ui/react";
 import { getIOClient } from "miracle-tv-client/socketio";
 import {
   ChatJoinData,
@@ -40,10 +48,17 @@ const ChatMessage = ({ username, message }: ChatMessageProps) => {
 
 type ChatControlsProps = {
   onSend: (msg: string) => void;
+  channelId: string;
+  isPopup?: boolean;
   isDisabled?: boolean;
 };
 
-const ChatControls = ({ onSend, isDisabled }: ChatControlsProps) => {
+const ChatControls = ({
+  onSend,
+  channelId,
+  isDisabled = false,
+  isPopup = false,
+}: ChatControlsProps) => {
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +74,19 @@ const ChatControls = ({ onSend, isDisabled }: ChatControlsProps) => {
     },
     [value, setValue, onSend]
   );
+
+  const onOpenPopup = useCallback(() => {
+    const port = location.port !== "" ? `:${location.port}` : "";
+    window.open(
+      `${location.protocol}//${location.hostname}${port}/chat/popup?channelId=${channelId}`,
+      "miracle-popup-chat",
+      "menubar=0,resizable=1,width=150,height=650"
+    );
+  }, [channelId]);
+
   return (
     <form onSubmit={sendMessage}>
-      <Flex mt={2}>
+      <Flex mt={2} direction="column">
         <Input
           borderRadius={0}
           p={1}
@@ -71,15 +96,26 @@ const ChatControls = ({ onSend, isDisabled }: ChatControlsProps) => {
           isDisabled={isDisabled}
           placeholder="Remember to be nice to eachother"
         />
-        <IconButton
-          variant="ghost"
-          aria-label="Send message"
-          icon={<ChatIcon color="primary.200" />}
-          type="submit"
-          isDisabled={isDisabled}
-        >
-          CHAT
-        </IconButton>
+        <HStack justify="flex-end" align="center" spacing={0}>
+          {!isPopup && (
+            <IconButton
+              variant="ghost"
+              aria-label="Open chat in Popup"
+              icon={<ExternalLinkIcon color="primary.200" />}
+              onClick={onOpenPopup}
+              isDisabled={isDisabled}
+            />
+          )}
+          <IconButton
+            variant="ghost"
+            aria-label="Send message"
+            icon={<ChatIcon color="primary.200" />}
+            type="submit"
+            isDisabled={isDisabled}
+          >
+            CHAT
+          </IconButton>
+        </HStack>
       </Flex>
     </form>
   );
@@ -87,6 +123,7 @@ const ChatControls = ({ onSend, isDisabled }: ChatControlsProps) => {
 
 type Props = {
   channelId: string;
+  isPopup?: boolean;
 };
 
 type ChatLog = {
@@ -95,7 +132,7 @@ type ChatLog = {
   timestamp: number;
 };
 
-export const Chat = ({ channelId }: Props) => {
+export const Chat = ({ channelId, isPopup = false }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const chatLogRef = useRef<HTMLDivElement>();
   const { currentUser } = useCurrentUser();
@@ -190,7 +227,12 @@ export const Chat = ({ channelId }: Props) => {
           Please login to use chat
         </Flex>
       )}
-      <ChatControls isDisabled={!currentUser} onSend={sendChatMessage} />
+      <ChatControls
+        isDisabled={!currentUser}
+        onSend={sendChatMessage}
+        channelId={channelId}
+        isPopup={isPopup}
+      />
     </Flex>
   );
 };
