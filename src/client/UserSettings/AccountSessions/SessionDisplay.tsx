@@ -6,6 +6,7 @@ import {
   Button,
   Badge,
   StackProps,
+  BoxProps,
 } from "@chakra-ui/react";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { Session } from "miracle-tv-shared/graphql";
@@ -18,6 +19,7 @@ type Props = {
   session: Session;
   showUser?: boolean;
   onRevoke?: (id: string) => void;
+  panelProps?: BoxProps;
 } & StackProps;
 
 export const SessionDisplay = ({

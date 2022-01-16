@@ -91,6 +91,9 @@ export const AdminSessionsList = () => {
       <SimpleGrid spacing={4} columns={isMobile ? 1 : 3}>
         {sessions.map((s) => (
           <SessionDisplay
+            panelProps={{
+              w: "100%",
+            }}
             key={s.id}
             session={s}
             showUser
