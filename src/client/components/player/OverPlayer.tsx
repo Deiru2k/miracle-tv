@@ -1,6 +1,8 @@
 import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
 import ovenplayer from "ovenplayer";
 import { useEffect, useMemo, useRef } from "react";
+import Hls from "hls.js";
+(window as any).Hls = Hls;
 
 type Props = {
   channelId: string;
@@ -31,7 +33,7 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
           };
     }
     return null;
-  }, [omeEnabled, streamSrc]);
+  }, [omeEnabled, isLoading, streamSrc]);
 
   useEffect(() => {
     if (videoRef.current && sources) {
