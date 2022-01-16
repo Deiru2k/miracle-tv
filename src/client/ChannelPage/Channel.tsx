@@ -82,6 +82,7 @@ export const CHANNEL_VIEW_STATUS_FRAGMENT = gql`
   fragment ChannelViewStatus on ChannelStatus {
     id
     isLive
+    viewers
   }
 `;
 
@@ -140,6 +141,7 @@ export const ChannelPlayerView = ({ channel, status }: Props) => {
         <Player
           channelId={channel.id}
           isLive={status?.isLive}
+          viewers={status?.viewers}
           thumbnail={`${
             channel.thumbnail
               ? getMediaURL(channel.thumbnail?.filename)

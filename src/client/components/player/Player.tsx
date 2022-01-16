@@ -14,10 +14,11 @@ import { PlayerControls } from "./PlayerControls";
 type Props = {
   channelId: string;
   isLive: boolean;
+  viewers?: number;
   thumbnail?: string;
 };
 
-export const Player = ({ channelId, isLive, thumbnail }: Props) => {
+export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
@@ -91,7 +92,7 @@ export const Player = ({ channelId, isLive, thumbnail }: Props) => {
           containerRef={containerRef}
           currentSource={currentSource}
           setCurrentSource={setCurrentSource}
-          stats={{ isLive, viewers: 0 }}
+          stats={{ isLive, viewers }}
         />
       )}
     </Box>

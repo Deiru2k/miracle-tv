@@ -142,6 +142,7 @@ export const ChannelViewStatusFragmentDoc = gql`
   fragment ChannelViewStatus on ChannelStatus {
     id
     isLive
+    viewers
   }
 `;
 export const UserDirectoryProfileFragmentDoc = gql`

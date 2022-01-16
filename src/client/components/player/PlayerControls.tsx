@@ -23,7 +23,7 @@ import { transparentize } from "@chakra-ui/theme-tools";
 import { VolumeMutedIcon } from "../icons/VolumeMutedIcon";
 import { FullscreenExitIcon } from "../icons/FullscreenExitIcon";
 import { FullscreenIcon } from "../icons/FullscreenIcon";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { SettingsIcon, ViewIcon } from "@chakra-ui/icons";
 
 type Props = {
   playerRef: React.MutableRefObject<any>;
@@ -54,7 +54,7 @@ export const PlayerControls = ({
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(
-    Number(localStorage.getItem("volume")) || 1
+    Number(localStorage.getItem("volume")) || 100
   );
   const [isMuted, setIsMuted] = useState<boolean>(playerRef.current?.getMute());
 
@@ -202,6 +202,9 @@ export const PlayerControls = ({
       </Flex>
       {/* Right half */}
       <Box>
+        <Box mr={2}>
+          <ViewIcon aria-label="viewers" mr={1} /> {stats?.viewers || 0}
+        </Box>
         <Menu
           isOpen={qualityDisclosure.isOpen}
           onClose={qualityDisclosure.onClose}
