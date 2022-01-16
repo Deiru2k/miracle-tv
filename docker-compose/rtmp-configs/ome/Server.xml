@@ -96,7 +96,7 @@
         </Application>
       </Applications>
       <AdmissionWebhooks>
-        <ControlServerUrl>http://miracle-backend:4000/api/hook/ome/hook</ControlServerUrl>
+        <ControlServerUrl>http://miracle-tv.live/api/hook/ome/hook</ControlServerUrl>
         <SecretKey>1234</SecretKey>
         <Timeout>3000</Timeout>
         <Enables>
