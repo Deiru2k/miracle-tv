@@ -137,8 +137,8 @@ export const UserProfile = ({
             </Flex>
             {user?.settings?.singleUserChannel?.description && (
               <Box order={isMobile ? 1 : 2}>
-                <Divider />
-                <Text mt={1} mb={6}>
+                <Divider mb={4} />
+                <Text mt={1} mb={6} whiteSpace="pre-wrap">
                   {user?.settings?.singleUserChannel?.description}
                 </Text>
               </Box>

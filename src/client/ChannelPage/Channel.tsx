@@ -225,8 +225,8 @@ export const ChannelView = ({
             {channel.user.displayName || channel.user.username}
           </Link>
         </Box>
-        <Divider />
-        <Text>{channel.description}</Text>
+        <Divider mb={4} />
+        <Text whiteSpace="pre-wrap">{channel.description}</Text>
       </Box>
     </>
   );
