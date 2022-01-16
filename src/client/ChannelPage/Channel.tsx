@@ -174,7 +174,7 @@ export const ChannelView = ({
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
           <Flex align="center" direction={isMobile ? "column" : "row"}>
-            <Heading as={Flex} align="bottom" mb={2} mr={2}>
+            <Heading as={Flex} alignItems="center" mb={2} mr={2}>
               {status?.isLive && <CircleIcon color="red" mr={2} />}
               {channel.name}
             </Heading>
@@ -184,6 +184,7 @@ export const ChannelView = ({
                   <Image
                     w="1.7rem"
                     h="1.7rem"
+                    mr={2}
                     src={getMediaURL(channel.activity.icon.filename)}
                   />
                 )}
