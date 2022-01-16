@@ -70,10 +70,10 @@ export const OvenPlayer = ({
       if (initialQuality !== 0) {
         playerRef.current.setCurrentSource(initialQuality);
         setCurrentSource?.(initialQuality);
+        playerRef.current.stop();
         setTimeout(() => {
-          playerRef.current.pause();
           playerRef.current.play();
-        }, 1000);
+        }, 500);
       }
     }
   }, [channelId, sources, videoRef]);
