@@ -198,7 +198,7 @@ http {
       }
     }
     location /webrtc/ {
-      proxy_pass http://ome:3333;
+      proxy_pass http://ome:3333/;
       client_max_body_size 10M;
       proxy_http_version 1.1;
       proxy_set_header Upgrade $http_upgrade;
