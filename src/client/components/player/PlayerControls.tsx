@@ -135,6 +135,13 @@ export const PlayerControls = ({
     [playerRef, setIsPlaying, setCurrentSource]
   );
 
+  const openStyles = {
+    maxHeight: "100%",
+    overflow: "visible",
+    boxShadow: "0px -35px 22px -14px rgba(0, 0, 0, 0.8) inset;",
+  };
+  const disclosureStyles = qualityDisclosure.isOpen ? openStyles : undefined;
+
   return (
     <Flex
       width="100%"
@@ -145,11 +152,8 @@ export const PlayerControls = ({
       overflow="hidden"
       maxHeight={0}
       id="playercontrols"
-      _groupHover={{
-        maxHeight: "100%",
-        overflow: "visible",
-        boxShadow: "0px -35px 22px -14px rgba(0, 0, 0, 0.8) inset;",
-      }}
+      _groupHover={openStyles}
+      {...disclosureStyles}
       transition="all linear 0.3s"
       zIndex={3}
       px={2}
