@@ -34,6 +34,13 @@ services:
     volumes:
       - ./docker-compose/rtmp-configs/ome/:/opt/ovenmediaengine/bin/origin_conf
       - ./docker-compose/rtmp-configs/ome_edge/:/opt/ovenmediaengine/bin/edge_conf
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: intel
+              count: 1
+              capabilities: [gpu]
   rethinkdb:
     image: "rethinkdb"
     volumes:

@@ -70,7 +70,7 @@
               <OutputStreamName>${OriginStreamName}_360</OutputStreamName>
               <Encodes>
                 <Video>
-                  <Codec>vp8</Codec>
+                  <Codec>h264</Codec>
                   <Width>640</Width>
                   <Height>360</Height>
                   <Bitrate>2000000</Bitrate>
@@ -90,7 +90,7 @@
               <OutputStreamName>${OriginStreamName}_1080</OutputStreamName>
               <Encodes>
                 <Video>
-                  <Codec>vp8</Codec>
+                  <Codec>h264</Codec>
                   <Width>1920</Width>
                   <Height>1080</Height>
                   <Bitrate>2000000</Bitrate>
@@ -110,7 +110,7 @@
               <OutputStreamName>${OriginStreamName}_720</OutputStreamName>
               <Encodes>
                 <Video>
-                  <Codec>vp8</Codec>
+                  <Codec>h264</Codec>
                   <Width>1280</Width>
                   <Height>720</Height>
                   <Bitrate>2000000</Bitrate>
