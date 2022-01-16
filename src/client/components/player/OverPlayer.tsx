@@ -21,11 +21,28 @@ export const OvenPlayer = ({ channelId, playerRef }: Props) => {
   const sources = useMemo(() => {
     if (!isLoading) {
       return omeEnabled
-        ? {
-            label: "WebRTC",
-            type: "webrtc",
-            file: `wss://${location.hostname}/webrtc/live/${channelId}_720`,
-          }
+        ? [
+            {
+              label: "Original Quality",
+              type: "webrtc",
+              file: `/webrtc/live/${channelId}`,
+            },
+            {
+              label: "1080p",
+              type: "webrtc",
+              file: `/webrtc/live/${channelId}_1080`,
+            },
+            {
+              label: "720p",
+              type: "webrtc",
+              file: `/webrtc/live/${channelId}_720`,
+            },
+            {
+              label: "360p",
+              type: "webrtc",
+              file: `/webrtc/live/${channelId}_360`,
+            },
+          ]
         : {
             label: "HLS",
             type: "hls",

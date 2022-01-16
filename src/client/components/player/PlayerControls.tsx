@@ -2,13 +2,19 @@ import {
   Box,
   Flex,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  useDisclosure,
   useTheme,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CircleIcon } from "../icons/CircleIcon";
 import { PauseIcon } from "../icons/PauseIcon";
 import { PlayIcon } from "../icons/PlayIcon";
@@ -18,6 +24,7 @@ import { VolumeMutedIcon } from "../icons/VolumeMutedIcon";
 import { FullscreenExitIcon } from "../icons/FullscreenExitIcon";
 import { FullscreenIcon } from "../icons/FullscreenIcon";
 import { VideoJsPlayer } from "video.js";
+import { SettingsIcon } from "@chakra-ui/icons";
 
 type Props = {
   playerRef: React.MutableRefObject<any>;
@@ -39,6 +46,9 @@ export const PlayerControls = ({
   stats,
 }: Props) => {
   const theme = useTheme();
+  const qualityDisclosure = useDisclosure();
+  const [sourceOptions, setSourceOptions] = useState<any[]>([]);
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(
     Number(localStorage.getItem("volume")) || 1
@@ -102,6 +112,32 @@ export const PlayerControls = ({
 
   const sliderBgColor = transparentize("primary.500", 0.3)(theme);
 
+  const sourceOptions2 = playerRef.current?.getSources()?.map((s: any) => ({
+    value: s.index,
+    label: s.label,
+  }));
+
+  const onMenuOpen = useCallback(() => {
+    setSourceOptions(
+      playerRef.current?.getSources()?.map((s: any) => ({
+        value: s.index,
+        label: s.label,
+      })) ?? []
+    );
+    qualityDisclosure.onOpen();
+  }, [playerRef.current]);
+
+  const setSource = useCallback(
+    (index: number) => {
+      playerRef.current?.setCurrentSource(index);
+      setTimeout(() => {
+        playerRef.current?.play(index);
+      }, 300);
+      setIsPlaying(true);
+    },
+    [playerRef]
+  );
+
   return (
     <Flex
       width="100%"
@@ -162,6 +198,30 @@ export const PlayerControls = ({
       </Flex>
       {/* Right half */}
       <Box>
+        <Menu
+          isOpen={qualityDisclosure.isOpen}
+          onClose={qualityDisclosure.onClose}
+        >
+          <MenuButton
+            as={IconButton}
+            aria-label="Stream quality"
+            variant="ghost"
+            color="primary.200"
+            icon={<SettingsIcon />}
+            onClick={onMenuOpen}
+          >
+            Actions
+          </MenuButton>
+          <Portal>
+            <MenuList>
+              {sourceOptions.map((s: any) => (
+                <MenuItem key={s.value} onClick={() => setSource(s.value)}>
+                  {s.label}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Portal>
+        </Menu>{" "}
         <IconButton
           variant="ghost"
           aria-label="Toggle fullscreen"
