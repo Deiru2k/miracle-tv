@@ -27,7 +27,7 @@ export const Link = ({
         push(href, null, { shallow: isShallow });
       }
     },
-    [push, href, isShallow]
+    [push, href, isShallow, isDisabled, props.target]
   );
 
   return <ChakraLink {...props} href={href} onClick={onClick} />;
