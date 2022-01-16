@@ -4,6 +4,7 @@ import {
   AtSignIcon,
   ChevronDownIcon,
   InfoIcon,
+  QuestionIcon,
   SettingsIcon,
 } from "@chakra-ui/icons";
 import {
@@ -123,6 +124,12 @@ export const Navbar = () => {
                     </Link>
                   </MenuItem>
                 )}
+                <MenuItem>
+                  <Link href="/help/obs" target="_blank" w="100%">
+                    <QuestionIcon mr={2} />
+                    How to setup OBS
+                  </Link>
+                </MenuItem>
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
                 </MenuItem>
