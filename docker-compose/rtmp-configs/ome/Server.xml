@@ -67,7 +67,7 @@
           <OutputProfiles>
             <OutputProfile>
               <Name>bypass_stream</Name>
-              <OutputStreamName>${OriginStreamName}_720</OutputStreamName>
+              <OutputStreamName>${OriginStreamName}</OutputStreamName>
               <Encodes>
                 <Video>
                   <Width>1280</Width>
@@ -86,7 +86,7 @@
             </OutputProfile>
             <OutputProfile>
               <Name>720_stream</Name>
-              <OutputStreamName>${OriginStreamName}</OutputStreamName>
+              <OutputStreamName>${OriginStreamName}_720</OutputStreamName>
               <Encodes>
                 <Audio>
                   <Bypass>true</Bypass>
