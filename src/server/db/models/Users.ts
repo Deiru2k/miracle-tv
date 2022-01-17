@@ -117,14 +117,15 @@ export class UsersModel extends Model {
     limit?: QueryLimit,
     includeDisabled: boolean = false
   ) {
-    const disabledFilter = !includeDisabled
-      ? {
-          suspended: false,
-          deleted: false,
-        }
-      : {};
-    const query = ids ? this.table.getAll(...ids) : this.table;
-    let filteredQuery = query
+    const disabledFilter = {
+      suspended: false,
+      deleted: false,
+    };
+    let filteredQuery = ids ? this.table.getAll(...ids) : this.table;
+    if (!includeDisabled) {
+      filteredQuery = filteredQuery.filter(disabledFilter);
+    }
+    filteredQuery = filteredQuery
       .filter((doc: any) => {
         let reply: any = doc;
         if (username) {
@@ -135,7 +136,7 @@ export class UsersModel extends Model {
         }
         return reply;
       })
-      .filter({ ...filter, ...disabledFilter });
+      .filter({ ...filter });
 
     if (limit?.skip) {
       filteredQuery = filteredQuery.skip(limit.skip);
