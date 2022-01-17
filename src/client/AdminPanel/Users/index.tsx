@@ -111,7 +111,9 @@ gql`
 
 const perPage = 6;
 
-const defaultFilter: FullUsersFilter = {};
+const defaultFilter: FullUsersFilter = {
+  deleted: false,
+};
 
 export const AdminUserList = () => {
   const toast = useToast();
