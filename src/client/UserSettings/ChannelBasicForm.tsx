@@ -9,6 +9,7 @@ import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { FormMarkdown } from "miracle-tv-client/components/form/FormMarkdown";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 type Props = {
   isDisabled?: boolean;
@@ -35,6 +36,18 @@ export const ChannelBasicForm = ({ isDisabled }: Props) => {
         name="description"
         rows={12}
         height="auto"
+        help={
+          <>
+            This field supports{" "}
+            <Link
+              target="_blank"
+              textDecoration="underline"
+              href="https://www.markdownguide.org/basic-syntax/"
+            >
+              markdown
+            </Link>
+          </>
+        }
       />
 
       <SimpleGrid columns={2} gap={5}>

@@ -33,6 +33,7 @@ import { AdminUserEditForm } from "./AdminUserForm";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { Link } from "miracle-tv-client/components/ui/Link";
 
 type Props = {
   user: AdminFullUserFragment | null;
@@ -109,7 +110,7 @@ export const UserModal = ({ user, onClose }: Props) => {
             w="100%"
             direction={isMobile ? "column" : "row"}
           >
-            <Box flex={5}>
+            <Flex flex={5} direction="column">
               <Flex position="relative">
                 <AspectRatio
                   w="100%"
@@ -134,21 +135,23 @@ export const UserModal = ({ user, onClose }: Props) => {
                   bottom="-2rem"
                   position="absolute"
                 >
-                  <Avatar
-                    borderRadius="50%"
-                    username={user?.username}
-                    useGravatar={user?.settings?.useGravatar}
-                    aspectMaxH="70px"
-                    aspectMaxW="70px"
-                    imageId={user?.avatar?.filename}
-                    bgColor="white"
-                    useAspectRatio={false}
-                    borderLeftWidth="1px"
-                    borderRightWidth="1px"
-                    borderTopWidth="1px"
-                    borderStyle="solid"
-                    borderColor="primary.200"
-                  />
+                  <Link target="_blank" href={`/user/${user?.username}`}>
+                    <Avatar
+                      borderRadius="50%"
+                      username={user?.username}
+                      useGravatar={user?.settings?.useGravatar}
+                      aspectMaxH="70px"
+                      aspectMaxW="70px"
+                      imageId={user?.avatar?.filename}
+                      bgColor="white"
+                      useAspectRatio={false}
+                      borderLeftWidth="1px"
+                      borderRightWidth="1px"
+                      borderTopWidth="1px"
+                      borderStyle="solid"
+                      borderColor="primary.200"
+                    />
+                  </Link>
                 </Flex>
               </Flex>
               <Box
@@ -157,6 +160,7 @@ export const UserModal = ({ user, onClose }: Props) => {
                 borderRightWidth="2px"
                 borderStyle="solid"
                 borderColor="primary.500"
+                height="100%"
               >
                 <Heading
                   size="md"
@@ -168,13 +172,11 @@ export const UserModal = ({ user, onClose }: Props) => {
                 >
                   {user?.displayName || user?.username}
                 </Heading>
-                <Flex direction="column" mb={2}>
-                  <Text fontWeight="bold">Username:</Text>
-                  <Text>{user?.bio || "No bio"}</Text>
-                </Flex>
-                <Flex direction="column" mb={2}>
-                  <Text fontWeight="bold">Bio:</Text>
-                  <Text>{user?.bio || "No bio"}</Text>
+                <Flex direction="row" mb={2}>
+                  <Text fontWeight="bold" mr={1}>
+                    Username:
+                  </Text>
+                  <Text>{user?.username}</Text>
                 </Flex>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
@@ -184,6 +186,7 @@ export const UserModal = ({ user, onClose }: Props) => {
                 </Flex>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
+                    {" "}
                     Uses gravatar?:
                   </Text>
                   <Text>{user?.settings?.useGravatar ? "Yes" : "No"}</Text>
@@ -250,11 +253,16 @@ export const UserModal = ({ user, onClose }: Props) => {
                   </Button>
                 </SimpleGrid>
               </Box>
-            </Box>
-            <Box width="100%" flex={7} p={4}>
+            </Flex>
+            <Box
+              width="100%"
+              flex={7}
+              p={4}
+              maxHeight={isMobile ? "100%" : "75vh"}
+              overflowY={isMobile ? undefined : "auto"}
+            >
               {user && (
                 <>
-                  <AdminUserEditForm user={user} />
                   <Heading size="md" mb={2} mt={4}>
                     Reset user's password
                   </Heading>
@@ -262,7 +270,9 @@ export const UserModal = ({ user, onClose }: Props) => {
                     userId={user.id}
                     w="100%"
                     isDisabled={!canEditUser}
+                    mb={2}
                   />
+                  <AdminUserEditForm user={user} />
                 </>
               )}
             </Box>

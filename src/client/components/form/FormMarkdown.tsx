@@ -9,7 +9,7 @@ export const FormMarkdown = ({ label, ...props }: FormTextareaProps) => {
   console.log(input.value);
   return (
     <FormGroup name={props.name} label={label}>
-      <Tabs>
+      <Tabs variant="line">
         <TabList>
           <Tab>Editor</Tab>
           <Tab>Preview</Tab>

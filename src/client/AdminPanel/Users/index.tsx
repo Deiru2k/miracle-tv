@@ -154,7 +154,6 @@ export const AdminUserList = () => {
   }, [setEditableUserId]);
 
   useEffect(() => {
-    setEditableUserId(null);
     setSelectedUsers([]);
   }, [fullUsers, setSelectedUsers]);
 

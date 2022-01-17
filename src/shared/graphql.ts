@@ -787,11 +787,16 @@ export type UpdateChannelInput = {
 };
 
 export type UpdateFullUserInput = {
+  avatar?: InputMaybe<Scalars["ID"]>;
+  bio?: InputMaybe<Scalars["String"]>;
   deleted?: InputMaybe<Scalars["Boolean"]>;
+  displayName?: InputMaybe<Scalars["String"]>;
+  header?: InputMaybe<Scalars["ID"]>;
   id?: InputMaybe<Scalars["ID"]>;
   loginDisabled?: InputMaybe<Scalars["Boolean"]>;
   roles?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   silenced?: InputMaybe<Scalars["Boolean"]>;
+  streamThumbnail?: InputMaybe<Scalars["ID"]>;
   suspended?: InputMaybe<Scalars["Boolean"]>;
 };
 

@@ -15,6 +15,7 @@ import { UserProfileFragment } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
 import { Avatar } from "../Avatar";
+import { Markdown } from "../Markdown";
 
 type Props = {
   user: Omit<UserProfileFragment, "channels">;
@@ -116,7 +117,9 @@ export const UserPanel = ({
         {includeDescription && user?.bio && (
           <>
             <Divider mb={2} mt={2} />
-            <Text whiteSpace="pre-wrap">{user?.bio}</Text>
+            <Text as="div">
+              <Markdown>{user?.bio}</Markdown>
+            </Text>
           </>
         )}
       </Box>

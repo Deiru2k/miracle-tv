@@ -28,6 +28,7 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import Head from "next/head";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { FormMarkdown } from "miracle-tv-client/components/form/FormMarkdown";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -141,11 +142,24 @@ export const ProfileSettings = () => {
                       label="Display Name"
                       mb={4}
                     />
-                    <FormTextarea
+                    <FormMarkdown
                       id="bio"
                       name="bio"
                       label="Bio"
-                      inputProps={{ rows: 10 }}
+                      rows={10}
+                      height="auto"
+                      help={
+                        <>
+                          This field supports{" "}
+                          <Link
+                            target="_blank"
+                            textDecoration="underline"
+                            href="https://www.markdownguide.org/basic-syntax/"
+                          >
+                            markdown
+                          </Link>
+                        </>
+                      }
                     />
                   </Panel>
                 </Box>

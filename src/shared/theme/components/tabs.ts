@@ -25,6 +25,7 @@ export const tabsStyles = {
         },
         tabList: {
           color: lineColor,
+          borderBottomColor: "var(--chakra-colors-primary-500)",
         },
         tab: {
           color: textColor,

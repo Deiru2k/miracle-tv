@@ -8,7 +8,7 @@ export type FormTextareaProps = {
   name: string;
   label?: string;
   error?: string;
-  help?: string;
+  help?: string | React.ReactNode;
   rows?: number;
   inputProps?: TextareaProps;
   parse?: (v: any) => any;

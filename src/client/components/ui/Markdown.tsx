@@ -1,4 +1,5 @@
 import {
+  Divider,
   Heading,
   Image,
   ListItem,
@@ -15,8 +16,18 @@ type Props = {
 };
 
 const components = {
-  h1: (props: any) => <Heading as="h1" {...props} />,
-  h2: (props: any) => <Heading {...props} size="lg" />,
+  h1: (props: any) => (
+    <>
+      <Heading as="h1" {...props} mb={1} />
+      <Divider mb={2} />
+    </>
+  ),
+  h2: (props: any) => (
+    <>
+      <Heading as="h2" size="lg" {...props} mb={1} />
+      <Divider mb={2} />
+    </>
+  ),
   h3: (props: any) => <Heading as="h3" {...props} size="md" />,
   h4: (props: any) => <Heading as="h4" {...props} size="sm" />,
   h5: (props: any) => <Heading as="h5" {...props} size="xs" />,
