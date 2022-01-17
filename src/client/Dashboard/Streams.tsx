@@ -1,4 +1,11 @@
-import { Box, Button, Divider, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Collapse,
+  Divider,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import { gql } from "@apollo/client";
 import React, { useMemo } from "react";
 import {
@@ -51,6 +58,22 @@ export const Streams = () => {
         <title>Streams - Dashboard - Miracle TV</title>
       </Head>
       <Box>
+        <Collapse in={liveChannels?.length > 0}>
+          <Box mb={4}>
+            <Heading size="lg" mt={4}>
+              Live Right now!
+            </Heading>
+            <Divider mb={2} />
+            {!!liveChannels?.length && (
+              <>
+                <ChannelDisplayGrid
+                  columns={isMobile ? 2 : undefined}
+                  channels={liveChannels}
+                />
+              </>
+            )}
+          </Box>
+        </Collapse>
         <Heading size="lg">Your subscriptions</Heading>
         <Divider mb={2} />
         {!!subscriptions?.length && (
@@ -63,21 +86,6 @@ export const Streams = () => {
         )}
         {!subscriptions?.length && (
           <Text>Channels you've subscribed to will appear here.</Text>
-        )}
-        <Heading size="lg" mt={4}>
-          Live Right now!
-        </Heading>
-        <Divider mb={2} />
-        {!!liveChannels?.length && (
-          <>
-            <ChannelDisplayGrid
-              columns={isMobile ? 2 : undefined}
-              channels={liveChannels}
-            />
-          </>
-        )}
-        {!liveChannels?.length && (
-          <Text>No channels are live right now. Come back later?</Text>
         )}
         <Heading size="lg" mt={4}>
           Discover other channels!
