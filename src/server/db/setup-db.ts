@@ -52,6 +52,7 @@ export const setupDB = async () => {
   );
   console.info(green`- ✔ Table Check Complete!`);
   console.info(green`✔ Database Check Complete!`);
+  con.close();
   const res = await generateRoles();
   console.info("");
   return res;

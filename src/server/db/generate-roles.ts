@@ -93,13 +93,11 @@ const defaultRoles = [
   defaultModeratorRole,
   defaultAdminRole,
 ];
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const generateRoles = async () => {
   const conn = await rdb.connect({
     host: config.database?.host,
     port: config.database?.port,
   });
-  await delay(5000);
   const table = rdb.db(config.database?.db || "miracle-tv").table("roles");
   const roles = await table.filter({}).coerceTo("array").run(conn);
   const roleIds = roles.map((role) => role.id);
