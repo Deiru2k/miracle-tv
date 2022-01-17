@@ -33,7 +33,7 @@ export const getNginxKey = (req: Request, res: Response) => {
 
 export const getStreamKey = async (key: string) => {
   // database setup
-  const con = await connection;
+  const con = await connection();
   const streamKeys = new StreamKeysModel(con);
 
   const result = await streamKeys.getStreamKeyById(key);
@@ -45,13 +45,13 @@ export const getStreamKey = async (key: string) => {
 };
 
 export const getUser = async (id: string) => {
-  const con = await connection;
+  const con = await connection();
   const users = new UsersModel(con);
   return await users.getUserById(id);
 };
 
 export const getChannel = async (id: string) => {
-  const con = await connection;
+  const con = await connection();
   const channels = new ChanelsModel(con);
   return await channels.getChannelById(id, true);
 };
@@ -60,7 +60,7 @@ export const updateChannelStatus = async (
   id: string,
   status: Omit<DbChannelStatus, "id">
 ) => {
-  const con = await connection;
+  const con = await connection();
   const statusModel = new ChannelStatusModel(con);
   return await statusModel.upsertStatus({ id, ...status });
 };

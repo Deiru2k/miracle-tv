@@ -16,13 +16,14 @@ const tables: string[] = [
   "files",
 ];
 
-export const connection = rdb.connect({
-  host: config.database?.host || "localhost",
-  port: config.database?.port || 28015,
-});
+export const connection = () =>
+  rdb.connect({
+    host: config.database?.host || "localhost",
+    port: config.database?.port || 28015,
+  });
 
 export const setupDB = async () => {
-  const con = await connection;
+  const con = await connection();
   console.info("");
   console.info(green`[Checking Database Setup]`);
   console.info(

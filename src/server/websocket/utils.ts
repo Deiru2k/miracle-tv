@@ -6,7 +6,7 @@ import { ChatResponseType } from "miracle-tv-shared/websocket/types";
 import { Socket } from "socket.io";
 
 export const getWebsocketUser = async (token: string, socket: Socket) => {
-  const conn = await connection;
+  const conn = await connection();
   const users = new UsersModel(conn);
   const sessions = new SessionsModel(conn);
   const session = await sessions.getSessionById(token);
