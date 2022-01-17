@@ -175,7 +175,7 @@ export const ChannelView = ({
       <ChannelPlayerView channel={channel} status={status} />
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
-          <Flex align="center" direction={isMobile ? "column" : "row"} mb={2}>
+          <Flex justify="center" direction="column" mb={2}>
             <Heading
               as={Flex}
               alignItems="center"
@@ -188,7 +188,6 @@ export const ChannelView = ({
             </Heading>
             {channel.activity && (
               <>
-                <Divider orientation="vertical" mr={2} />
                 <Flex align="center">
                   {channel?.activity?.icon && (
                     <Image
