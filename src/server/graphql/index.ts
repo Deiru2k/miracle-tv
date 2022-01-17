@@ -33,10 +33,7 @@ export const graphqlEndpoint = new ApolloServer({
     return err;
   },
   context: async ({ req }) => {
-    const con = rdb.connect({
-      host: config.database?.host || "localhost",
-      port: config.database?.port || 28015,
-    });
+    const con = await connection();
     const db = createDBContext(con);
 
     const sessionContext = await createSessionContext(
