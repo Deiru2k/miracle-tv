@@ -1,7 +1,8 @@
-import { CloseIcon, SpinnerIcon } from "@chakra-ui/icons";
+import { CloseIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
+  Text,
   Flex,
   Input,
   Spinner,
@@ -189,7 +190,14 @@ export const Select = ({
               w="100%"
               justifyContent="space-between"
             >
-              {optionsMap[selectValue[0]]?.label}
+              <Text
+                as="span"
+                maxW="100%"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
+                {optionsMap[selectValue[0]]?.label}
+              </Text>
               {!isDisabled && (
                 <CloseIcon
                   onClick={(e: any) => {
@@ -213,10 +221,18 @@ export const Select = ({
                 display="flex"
                 alignItems="center"
                 color="white"
+                maxW="100%"
                 py={1}
                 px={2}
               >
-                {optionsMap[v as keyof typeof optionsMap]?.label}{" "}
+                <Text
+                  as="span"
+                  maxW="100%"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {optionsMap[v as keyof typeof optionsMap]?.label}
+                </Text>
                 {!isDisabled && (
                   <CloseIcon
                     h="0.5rem"

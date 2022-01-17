@@ -93,17 +93,19 @@ export const ChannelDisplayGrid = ({
                   {channel.name}
                 </Heading>
               </Flex>
-              <Text textTransform="capitalize" color="white">
+              <Box textTransform="capitalize" color="white" mb={1}>
                 {!channel.activity && <Text>&nbsp;</Text>}
                 {channel.activity && (
-                  <>
-                    {!isMobile && channel.activity.verb}
-                    <Badge colorScheme="primary" ml={1}>
-                      {channel.activity.name}
-                    </Badge>
-                  </>
+                  <Badge
+                    colorScheme="primary"
+                    maxW="100%"
+                    textOverflow="ellipsis"
+                    overflow="hidden"
+                  >
+                    {channel.activity.name}
+                  </Badge>
                 )}
-              </Text>
+              </Box>
             </Box>
           </Flex>
         </Panel>

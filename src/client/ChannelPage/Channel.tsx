@@ -27,6 +27,7 @@ import { MediaQuery } from "miracle-tv-client/utils/const";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
+import { capitalizeFirstLetter } from "miracle-tv-client/utils/text";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -174,26 +175,36 @@ export const ChannelView = ({
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
           <Flex align="center" direction={isMobile ? "column" : "row"} mb={2}>
-            <Heading as={Flex} alignItems="center" mr={2}>
+            <Heading
+              as={Flex}
+              alignItems="center"
+              size="md"
+              textTransform="uppercase"
+              mr={2}
+            >
               {status?.isLive && <CircleIcon color="red" mr={2} />}
               {channel.name}
             </Heading>
             {channel.activity && (
-              <Flex align="center">
-                {channel?.activity?.icon && (
-                  <Image
-                    w="1.7rem"
-                    h="1.7rem"
-                    mr={2}
-                    src={getMediaURL(channel.activity.icon.filename)}
-                  />
-                )}
+              <>
+                <Divider orientation="vertical" mr={2} />
                 <Flex align="center">
-                  <Text textTransform="capitalize">
-                    {channel.activity.verb} {channel.activity?.name}
-                  </Text>
+                  {channel?.activity?.icon && (
+                    <Image
+                      w="1.7rem"
+                      h="1.7rem"
+                      mr={2}
+                      src={getMediaURL(channel.activity.icon.filename)}
+                    />
+                  )}
+                  <Flex align="center">
+                    <Text as="span">
+                      {capitalizeFirstLetter(channel.activity?.verb)}&nbsp;
+                      {channel.activity?.name}
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
+              </>
             )}
           </Flex>
           <Flex align="center">

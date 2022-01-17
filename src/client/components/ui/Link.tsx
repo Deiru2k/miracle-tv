@@ -17,12 +17,12 @@ export const Link = ({
   const { push } = useRouter();
 
   const onClick = useCallback(
-    (e: any) => {
+    (e: React.MouseEvent<HTMLElement>) => {
       if (isDisabled) {
         e.preventDefault();
         return;
       }
-      if (!props.target) {
+      if (!props.target && !e.ctrlKey) {
         e.preventDefault();
         push(href, null, { shallow: isShallow });
       }

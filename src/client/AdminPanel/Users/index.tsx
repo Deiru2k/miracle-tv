@@ -20,6 +20,7 @@ import {
   MenuItem,
   Button,
   MenuDivider,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { FormCheckbox } from "miracle-tv-client/components/form/FormCheckbox";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
@@ -28,6 +29,8 @@ import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { Pagination, usePagination } from "miracle-tv-client/hooks/pagination";
+import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useMediaQuery } from "miracle-tv-client/utils/css";
 import {
   AccessUnit,
   AdminFullUserFragment,
@@ -112,7 +115,8 @@ const defaultFilter: FullUsersFilter = {};
 
 export const AdminUserList = () => {
   const toast = useToast();
-  const { checkRights, checkActions, currentUser } = useCurrentUser();
+  const isMobile = useMediaQuery(MediaQuery.mobile);
+  const { checkRights, checkActions } = useCurrentUser();
   const [filter, setFilter] = useState<FullUsersFilter>(defaultFilter);
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -338,7 +342,7 @@ export const AdminUserList = () => {
         refetch={refetch}
       >
         <Heading size="sm">Filter by fields</Heading>
-        <HStack mt={2}>
+        <SimpleGrid mt={2} columns={isMobile ? 1 : 3} spacing={2}>
           <FormInput name="username" label="Username" />
           <FormInput name="email" label="E-mail" />
           <FormRolesSelect
@@ -346,7 +350,7 @@ export const AdminUserList = () => {
             label="Roles"
             inputProps={{ multi: true }}
           />
-        </HStack>
+        </SimpleGrid>
         <Heading mt={3} size="sm">
           Filter by states
         </Heading>
@@ -412,7 +416,7 @@ export const AdminUserList = () => {
         </MenuList>
       </Menu>
       <UserModal user={editableUser} onClose={onUserModalClose} />
-      <Box position="relative">
+      <Box position="relative" overflowY="auto" maxW="100%">
         {isLoading && (
           <Box position="absolute" w="100%" h="100%" top={0} left={0}>
             <Loading />

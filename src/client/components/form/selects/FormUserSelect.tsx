@@ -7,8 +7,6 @@ import {
   FormSelectProps,
 } from "miracle-tv-client/components/form/FormSelect";
 import {
-  useActivitesSelectQuery,
-  useActivitiesSelectInitialQuery,
   useUsersSelectInitialQuery,
   useUsersSelectQuery,
 } from "miracle-tv-shared/hooks";

@@ -151,13 +151,17 @@ export const AdminChannelList = () => {
           <FormInput name="name" label="Channel Name" />
           <FormInput name="slug" label="Channel slug" />
         </HStack>
-        <HStack>
+        <HStack align="flex-start">
           <FormUsersSelect
+            w="50%"
+            flex={1}
             name="userIds"
             label="Users"
             inputProps={{ multi: true, placeholder: "Select users..." }}
           />
           <FormActivitesSelect
+            w="50%"
+            flex={1}
             name="activityIds"
             label="Activities"
             inputProps={{ multi: true, placeholder: "Select activities..." }}

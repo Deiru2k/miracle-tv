@@ -4,3 +4,7 @@ export const ellipsis = (limit: number, text: string) => {
   }
   return text;
 };
+
+export const capitalizeFirstLetter = (value: string) => {
+  return value.charAt(0).toLocaleUpperCase() + value.slice(1);
+};
