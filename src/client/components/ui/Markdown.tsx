@@ -1,9 +1,10 @@
 import {
   Divider,
   Heading,
-  Img,
+  Image,
   ListItem,
   OrderedList,
+  Spinner,
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
@@ -32,7 +33,7 @@ const components = {
   h4: (props: any) => <Heading as="h4" {...props} size="sm" />,
   h5: (props: any) => <Heading as="h5" {...props} size="xs" />,
   h6: (props: any) => <Text as="h6" {...props} fontWeight="bold" />,
-  img: (props: any) => <Img {...props} />,
+  img: (props: any) => <Image {...props} fallback={<Spinner />} />,
   a: (props: any) => <Link {...props} />,
   ul: (props: any) => <UnorderedList {...props} />,
   ol: (props: any) => <OrderedList {...props} />,
