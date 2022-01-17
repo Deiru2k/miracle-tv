@@ -18,6 +18,7 @@ import React, { useMemo } from "react";
 import getConfig from "next/config";
 import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
 import { getMediaURL } from "miracle-tv-shared/media";
+import { Markdown } from "miracle-tv-client/components/ui/Markdown";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -140,9 +141,11 @@ export const UserProfile = ({
             {user?.settings?.singleUserChannel?.description && (
               <Box order={isMobile ? 1 : 2}>
                 <Divider mb={4} />
-                <Text mt={1} mb={6} whiteSpace="pre-wrap">
-                  {user?.settings?.singleUserChannel?.description}
-                </Text>
+                <Box mt={1} mb={6}>
+                  <Markdown>
+                    {user?.settings?.singleUserChannel?.description}
+                  </Markdown>
+                </Box>
               </Box>
             )}
             {!isMobile && (

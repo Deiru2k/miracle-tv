@@ -2,7 +2,6 @@ import React from "react";
 import { FormControlProps } from "@chakra-ui/form-control";
 import { useField } from "react-final-form";
 import { FormGroup, FormGroupChakraProps } from "./FormGroup";
-import { InputProps } from "@chakra-ui/react";
 import { Select, SelectProps } from "miracle-tv-client/components/ui/Select";
 
 export type FormSelectProps = {

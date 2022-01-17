@@ -28,6 +28,7 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
 import { capitalizeFirstLetter } from "miracle-tv-client/utils/text";
+import { Markdown } from "miracle-tv-client/components/ui/Markdown";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -220,8 +221,8 @@ export const ChannelView = ({
             )}
           </Flex>
         </Flex>
-        <Box mb={2}>
-          Run by{" "}
+        <Flex mb={2} align="center">
+          Run by
           {channel.user.avatar && (
             <Avatar
               username={channel.user.username}
@@ -232,14 +233,15 @@ export const ChannelView = ({
               display="inline-block"
               borderRadius="50%"
               mr={1}
+              ml={1}
             />
           )}
           <Link href={`/user/${channel.user.username}`}>
             {channel.user.displayName || channel.user.username}
           </Link>
-        </Box>
+        </Flex>
         <Divider mb={4} />
-        <Text whiteSpace="pre-wrap">{channel.description}</Text>
+        <Markdown>{channel.description}</Markdown>
       </Box>
     </>
   );

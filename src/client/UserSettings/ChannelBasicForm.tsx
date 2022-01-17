@@ -8,6 +8,7 @@ import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { FormMarkdown } from "miracle-tv-client/components/form/FormMarkdown";
 
 type Props = {
   isDisabled?: boolean;
@@ -23,12 +24,19 @@ export const ChannelBasicForm = ({ isDisabled }: Props) => {
         mb={5}
         isDisabled={isDisabled}
       />
-      <FormTextarea
+      {/* <FormTextarea
         label="Channel Description"
         name="description"
         mb={5}
         isDisabled={isDisabled}
+      /> */}
+      <FormMarkdown
+        label="Channel Description"
+        name="description"
+        rows={12}
+        height="auto"
       />
+
       <SimpleGrid columns={2} gap={5}>
         <FormInput
           label="URL Slug"

@@ -4,11 +4,12 @@ import { FormGroup, FormGroupChakraProps } from "./FormGroup";
 import { Textarea, TextareaProps } from "@chakra-ui/react";
 import { identity } from "ramda";
 
-type Props = {
+export type FormTextareaProps = {
   name: string;
   label?: string;
   error?: string;
   help?: string;
+  rows?: number;
   inputProps?: TextareaProps;
   parse?: (v: any) => any;
 } & FormControlProps &
@@ -18,13 +19,14 @@ export const FormTextarea = ({
   name,
   inputProps,
   parse = identity,
+  rows,
   ...formGroupProps
-}: Props) => {
+}: FormTextareaProps) => {
   const { input } = useField(name, { parse });
 
   return (
     <FormGroup name={name} {...formGroupProps}>
-      <Textarea {...input} {...inputProps} />
+      <Textarea {...input} {...inputProps} rows={rows} />
     </FormGroup>
   );
 };
