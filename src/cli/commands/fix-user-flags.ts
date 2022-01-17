@@ -16,10 +16,14 @@ export const fixUserFlags = async () => {
   await Promise.all(
     users.map(async (user: any) => {
       let update: any = {};
-      if (user.disabled === undefined) update.disabled = false;
-      if (user.suspended === undefined) update.suspended = false;
-      if (user.loginDisabled === undefined) update.loginDisabled = false;
-      if (user.silenced === undefined) update.silenced = false;
+      if (user.deleted === undefined || user.deleted === null)
+        update.disabled = false;
+      if (user.suspended === undefined || user.suspended === null)
+        update.suspended = false;
+      if (user.loginDisabled === undefined || user.loginDisabled === null)
+        update.loginDisabled = false;
+      if (user.silenced === undefined || user.silenced === null)
+        update.silenced = false;
       return rdb
         .db(config.database?.db)
         .table("users")
