@@ -114,9 +114,11 @@ export type Channel = {
   __typename?: "Channel";
   activity?: Maybe<Activity>;
   description?: Maybe<Scalars["String"]>;
+  disabled: Scalars["Boolean"];
   id: Scalars["ID"];
   meta?: Maybe<ChannelMeta>;
   name: Scalars["String"];
+  shelved: Scalars["Boolean"];
   slug?: Maybe<Scalars["String"]>;
   status?: Maybe<ChannelStatus>;
   thumbnail?: Maybe<File>;
@@ -244,8 +246,10 @@ export type Mutation = {
   deleteFullUser: FullUser;
   deleteFullUsers: Array<Maybe<FullUser>>;
   deleteRole: Scalars["Boolean"];
+  disableChannel: Scalars["Boolean"];
   disableFullUserLogin: FullUser;
   disableFullUsersLogin: Array<Maybe<FullUser>>;
+  enableChannel: Scalars["Boolean"];
   enableFullUserLogin: FullUser;
   enableFullUsersLogin: Array<Maybe<FullUser>>;
   ping: Scalars["String"];
@@ -327,12 +331,20 @@ export type MutationDeleteRoleArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationDisableChannelArgs = {
+  id: Scalars["ID"];
+};
+
 export type MutationDisableFullUserLoginArgs = {
   id: Scalars["ID"];
 };
 
 export type MutationDisableFullUsersLoginArgs = {
   ids: Array<InputMaybe<Scalars["ID"]>>;
+};
+
+export type MutationEnableChannelArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationEnableFullUserLoginArgs = {
@@ -1246,6 +1258,7 @@ export type ChannelResolvers<
     ParentType,
     ContextType
   >;
+  disabled?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   meta?: Resolver<
     Maybe<ResolversTypes["ChannelMeta"]>,
@@ -1253,6 +1266,7 @@ export type ChannelResolvers<
     ContextType
   >;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  shelved?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   status?: Resolver<
     Maybe<ResolversTypes["ChannelStatus"]>,
@@ -1440,6 +1454,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteRoleArgs, "id">
   >;
+  disableChannel?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDisableChannelArgs, "id">
+  >;
   disableFullUserLogin?: Resolver<
     ResolversTypes["FullUser"],
     ParentType,
@@ -1451,6 +1471,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDisableFullUsersLoginArgs, "ids">
+  >;
+  enableChannel?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationEnableChannelArgs, "id">
   >;
   enableFullUserLogin?: Resolver<
     ResolversTypes["FullUser"],
@@ -2349,6 +2375,8 @@ export type AdminChannelsQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        disabled: boolean;
+        shelved: boolean;
         user?:
           | {
               __typename?: "User";
@@ -4588,6 +4616,8 @@ export type UserSettingsChannelQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        disabled: boolean;
+        shelved: boolean;
         user?:
           | {
               __typename?: "User";
@@ -4639,6 +4669,8 @@ export type EditChannelMutation = {
     name: string;
     description?: string | null | undefined;
     slug?: string | null | undefined;
+    disabled: boolean;
+    shelved: boolean;
     user?:
       | {
           __typename?: "User";
@@ -4713,6 +4745,24 @@ export type UserSettingsRevokeStreamKeyMutation = {
   revokeStreamKey: boolean;
 };
 
+export type DisableChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type DisableChannelMutation = {
+  __typename?: "Mutation";
+  disableChannel: boolean;
+};
+
+export type EnableChannelMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type EnableChannelMutation = {
+  __typename?: "Mutation";
+  enableChannel: boolean;
+};
+
 export type UserSettingsChannelsQueryVariables = Exact<{
   filter?: InputMaybe<ChannelsQueryFilter>;
 }>;
@@ -4726,6 +4776,8 @@ export type UserSettingsChannelsQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        disabled: boolean;
+        shelved: boolean;
         user?:
           | {
               __typename?: "User";
@@ -4787,6 +4839,8 @@ export type UserSettingsCreateChannelMutation = {
     name: string;
     description?: string | null | undefined;
     slug?: string | null | undefined;
+    disabled: boolean;
+    shelved: boolean;
     user?:
       | {
           __typename?: "User";
@@ -5277,6 +5331,8 @@ export type ChannelFullFragment = {
   name: string;
   description?: string | null | undefined;
   slug?: string | null | undefined;
+  disabled: boolean;
+  shelved: boolean;
   user?:
     | {
         __typename?: "User";

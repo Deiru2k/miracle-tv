@@ -26,6 +26,7 @@ export type DbUserSettings = {
   id: string;
   useGravatar?: boolean;
   singleUserMode?: boolean;
+  singleUserChannel?: string;
 };
 
 export type DbUserSafe = Omit<DbUser, "password">;
@@ -34,10 +35,12 @@ export type DbRole = Role;
 
 export type DbActivity = Activity;
 
-export type DbChannel = {
+export type DbChannel = Omit<Channel, "activity" | "user"> & {
   activityId: string;
   userId: string;
-} & Omit<Channel, "activity", "user">;
+  disabled: boolean;
+  shelved: boolean;
+};
 
 export type DbFile = File;
 

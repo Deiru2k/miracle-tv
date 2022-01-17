@@ -6,6 +6,8 @@ export const channelFragment = gql`
     name
     description
     slug
+    disabled
+    shelved
     user {
       id
       username

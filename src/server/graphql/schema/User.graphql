@@ -63,7 +63,7 @@ extend type Query {
   self: User! @auth(rights: [{ unit: SELF, subject: "users" }])
   selfAccount: UserAccountDetails!
     @auth(rights: [{ unit: SELF, subject: "users" }])
-  selfSessions: [Session] @auth(rights: [{ unit: SELF, subject: "users" }])
+  selfSessions: [Session] @auth(rights: [{ unit: SELF, subject: "sessions" }])
   sessions(filter: SessionsFilter, limit: QueryLimit): [Session]!
     @auth(rights: [{ unit: READ, subject: "sessions" }])
   sessionsCount(filter: SessionsFilter): Int!
@@ -124,7 +124,7 @@ extend type Mutation {
   updateSelf(input: UpdateSelfInput!): User
     @auth(rights: [{ unit: SELF, subject: "users" }])
   revokeSelfSessions(input: [String]!): Boolean
-    @auth(rights: [{ unit: SELF, subject: "users" }])
+    @auth(rights: [{ unit: SELF, subject: "sessions" }])
   revokeSessions(ids: [ID]!): Boolean
     @auth(rights: [{ unit: WRITE, subject: "sessions" }])
   updateSelfAccount(input: UpdateUserAccountInput): UserAccountDetails

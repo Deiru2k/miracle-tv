@@ -63,4 +63,12 @@ export const channelMutationResolvers: MutationResolvers<ResolverContext> = {
     }
     return await channels.deleteChannel(id);
   },
+
+  async disableChannel(_, { id }, { db: { channels } }) {
+    return await channels.toggleChannelDisabled(id, true);
+  },
+
+  async enableChannel(_, { id }, { db: { channels } }) {
+    return await channels.toggleChannelDisabled(id, false);
+  },
 };

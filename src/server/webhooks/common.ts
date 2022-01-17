@@ -53,7 +53,7 @@ export const getUser = async (id: string) => {
 export const getChannel = async (id: string) => {
   const con = await connection;
   const channels = new ChanelsModel(con);
-  return await channels.getChannelById(id);
+  return await channels.getChannelById(id, true);
 };
 
 export const updateChannelStatus = async (
@@ -63,6 +63,14 @@ export const updateChannelStatus = async (
   const con = await connection;
   const statusModel = new ChannelStatusModel(con);
   return await statusModel.upsertStatus({ id, ...status });
+};
+
+export const checkChannel = async (channelId: string) => {
+  const channel = await getChannel(channelId);
+  if (!channel) {
+    return false;
+  }
+  return !channel.disabled;
 };
 
 export interface ReturnedKey {

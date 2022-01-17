@@ -1,8 +1,9 @@
 import { Router } from "express";
 import {
-  getChannel,
+  checkChannel,
   getOSSRSKey,
   getStreamKey,
+  getUser,
   updateChannelStatus,
 } from "./common";
 
@@ -13,7 +14,21 @@ webhooks.post("/on_publish", async (req, res) => {
   const streamKey = await getStreamKey(key);
   // If there's no stream key, deny the stream.
   if (!streamKey) {
-    res.status(403).send("0");
+    res.status(403).send();
+    return undefined;
+  }
+
+  // If user is suspended or not found, deny the stream
+  const user = await getUser(streamKey.userId);
+  if (!user || user?.suspended) {
+    res.status(403).send();
+    return undefined;
+  }
+
+  // If channel is disabled, deny the stream
+  const isChannelEnabled = await checkChannel(streamKey.channelId);
+  if (!isChannelEnabled) {
+    res.status(403).send();
     return undefined;
   }
 

@@ -12,6 +12,8 @@ type Channel {
   thumbnail: File
   status: ChannelStatus
   meta: ChannelMeta
+  disabled: Boolean!
+  shelved: Boolean!
 }
 
 input ChannelsQueryFilter {
@@ -72,6 +74,10 @@ extend type Mutation {
         { unit: SELF, subject: "channels" }
       ]
     )
+  disableChannel(id: ID!): Boolean!
+    @auth(rights: [{ unit: WRITE, subject: "channels" }])
+  enableChannel(id: ID!): Boolean!
+    @auth(rights: [{ unit: WRITE, subject: "channels" }])
   deleteChannel(id: ID!): Boolean!
     @auth(
       rights: [

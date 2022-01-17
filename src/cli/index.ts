@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { changePassword } from "./commands/change-password";
+import { fixShelvedChannels } from "./commands/fix-shelved-channels";
 import { fixUserFlags } from "./commands/fix-user-flags";
 import { makeAdmin } from "./commands/make-admin";
 import { regenerateRoles } from "./commands/regenerate-roles";
@@ -33,6 +34,11 @@ yargs(hideBin(process.argv))
     command: "fix-user-flags",
     describe: "Fix missing on users",
     handler: fixUserFlags,
+  })
+  .command({
+    command: "fix-shelved-channels",
+    describe: "Make all channels unshelved",
+    handler: fixShelvedChannels,
   })
   .demandCommand()
   .help().argv;

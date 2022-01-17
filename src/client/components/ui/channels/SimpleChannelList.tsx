@@ -68,6 +68,16 @@ export const SimpleChannelList = ({
                       {channel?.user?.displayName || channel?.user?.username}
                     </Badge>
                   )}
+                  {channel.disabled && (
+                    <Badge colorScheme="red" ml={4} fontSize="1.1rem">
+                      Disabled
+                    </Badge>
+                  )}
+                  {channel.shelved && (
+                    <Badge colorScheme="yellow" ml={4} fontSize="1.1rem">
+                      Shelved
+                    </Badge>
+                  )}
                 </HStack>
                 {controls && <HStack>{controls(channel)}</HStack>}
               </Flex>

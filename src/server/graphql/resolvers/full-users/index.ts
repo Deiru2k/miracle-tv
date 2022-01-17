@@ -4,6 +4,7 @@ import {
   FullUserResolvers,
   QueryResolvers,
   Role,
+  UserSettings,
 } from "miracle-tv-shared/graphql";
 import { fileResolver } from "../file";
 
@@ -36,7 +37,9 @@ export const fullUserEntityResolver: FullUserResolvers<ResolverContext> = {
   header: fileResolver("header"),
   streamThumbnail: fileResolver("streamThumbnail"),
   settings: async (user, _, { db: { userSettings } }) => {
-    const settings = await userSettings.getUserSettingsById(user.id);
+    const settings = await userSettings.getUserSettingsById<UserSettings>(
+      user.id
+    );
     return settings;
   },
   meta: async (user, _, { db: { subscriptions } }) => {

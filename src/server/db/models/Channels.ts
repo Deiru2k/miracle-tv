@@ -39,20 +39,26 @@ export class ChanelsModel extends Model {
       });
   }
 
-  async getChannelById(
+  async getChannelById<T extends object = DbChannel>(
     id: string,
     includeDisabled: boolean = false
-  ): Promise<DbChannel> {
+  ): Promise<T> {
     const channel = (await this.table
       .get(id)
       .run(this.conn)) as DbChannel | null;
-    if (!channel || (!!channel.disabled && !includeDisabled)) {
+    if (
+      !channel ||
+      ((!!channel.disabled || !!channel.shelved) && !includeDisabled)
+    ) {
       throw new NotFoundError("Channel not found");
     }
-    return channel;
+    return channel as T;
   }
 
-  async getChannelBySlug(slug: string): Promise<DbChannel | null> {
+  async getChannelBySlug(
+    slug: string,
+    includeDisabled: boolean = false
+  ): Promise<DbChannel | null> {
     const channel = head(
       await this.table
         .filter({ slug, disabled: false })
@@ -60,6 +66,12 @@ export class ChanelsModel extends Model {
         .coerceTo("array")
         .run(this.conn)
     ) as DbChannel | null;
+    if (
+      !channel ||
+      ((!!channel.disabled || !!channel.shelved) && !includeDisabled)
+    ) {
+      throw new NotFoundError("Channel not found");
+    }
     return channel;
   }
 
@@ -79,7 +91,6 @@ export class ChanelsModel extends Model {
 
     if (name) {
       filteredQuery = filteredQuery.filter((doc: any) => {
-        console.log(name);
         return doc("name").downcase().match(name.toLowerCase());
       });
     }
@@ -96,7 +107,7 @@ export class ChanelsModel extends Model {
     }
 
     if (!includeDisabled) {
-      filteredQuery = filteredQuery.filter({ disabled: false });
+      filteredQuery = filteredQuery.filter({ disabled: false, shelved: false });
     }
     if (limit?.skip) {
       filteredQuery = filteredQuery.skip(limit.skip);
@@ -127,10 +138,10 @@ export class ChanelsModel extends Model {
       .run(this.conn);
   }
 
-  async updateChannel({
+  async updateChannel<T extends object = DbChannel>({
     id,
     ...input
-  }: UpdateChannelInput): Promise<DbChannel> {
+  }: UpdateChannelInput): Promise<T> {
     const channel = (await this.table.get(id).run(this.conn)) as DbChannel;
     if (!channel) {
       throw new NotFoundError("Chanel not found");
@@ -142,17 +153,17 @@ export class ChanelsModel extends Model {
     if (result.errors !== 0) {
       throw new ServerError("Could not update any chanels");
     }
-    return { ...channel, id, ...input };
+    return { ...channel, id, ...input } as T;
   }
 
   async setChannelAsMain(id: string, userId: string): Promise<boolean> {
     const resultDisable = await this.table
       .filter((doc) => doc("id").ne(id).and(doc("userId").eq(userId)))
-      .update({ disabled: true })
+      .update({ shelved: true })
       .run(this.conn);
     const resultMain = await this.table
       .get(id)
-      .update({ disabled: false })
+      .update({ shelved: false })
       .run(this.conn);
 
     if (resultDisable.errors || resultMain.errors) {
@@ -164,7 +175,7 @@ export class ChanelsModel extends Model {
   async resetMainChannel(userId: string): Promise<boolean> {
     const result = await this.table
       .filter({ userId })
-      .update({ disabled: false })
+      .update({ shelved: false })
       .run(this.conn);
 
     if (result.errors) {
@@ -190,5 +201,12 @@ export class ChanelsModel extends Model {
     const streamKeys = new StreamKeysModel(this.conn);
     await streamKeys.deleteStreamKeysByChannelId(channel.id);
     return true;
+  }
+
+  // "Toggles" disabled state on channel
+  async toggleChannelDisabled(id: string, disabled: boolean): Promise<boolean> {
+    await this.getChannelById(id, true);
+    const res = await this.table.get(id).update({ disabled }).run(this.conn);
+    return res.errors === 0;
   }
 }

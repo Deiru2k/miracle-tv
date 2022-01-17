@@ -10,6 +10,7 @@ import {
   HStack,
   useDisclosure,
   Heading,
+  UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { getIOClient } from "miracle-tv-client/socketio";
 import {
@@ -55,7 +56,7 @@ type ChatControlsProps = {
   channelId: string;
   isPopup?: boolean;
   isDisabled?: boolean;
-  roster: UserInfo[];
+  rosterDisclosure: UseDisclosureReturn;
   getRoster: () => void;
 };
 
@@ -65,9 +66,8 @@ const ChatControls = ({
   isDisabled = false,
   isPopup = false,
   getRoster,
-  roster,
+  rosterDisclosure,
 }: ChatControlsProps) => {
-  const rosterDisclosure = useDisclosure();
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +85,6 @@ const ChatControls = ({
   );
 
   const onRosterOpen = useCallback(() => {
-    console.log(rosterDisclosure.isOpen);
     if (!rosterDisclosure.isOpen) {
       getRoster();
       rosterDisclosure.onOpen();
@@ -103,41 +102,8 @@ const ChatControls = ({
     );
   }, [channelId]);
 
-  console.log(roster);
-
   return (
     <form onSubmit={sendMessage} style={{ position: "relative" }}>
-      <Flex
-        direction="column"
-        height="20rem"
-        opacity={rosterDisclosure.isOpen ? 1 : 0}
-        pointerEvents={rosterDisclosure.isOpen ? "all" : "none"}
-        position="absolute"
-        top="-20rem"
-        left={0}
-        transition="opacity 0.3s linear"
-        w="100%"
-        borderWidth="1px"
-        borderStyle="solid"
-        borderColor="primary.500"
-        zIndex={5}
-        backgroundColor="secondary.500"
-        justifyContent="flex-start"
-        pt={1}
-      >
-        <Heading w="100%" px={2} mb={2} size="md">
-          Roster:
-        </Heading>
-        <VStack overflow="auto" height="100%">
-          {roster.map((user) => (
-            <Box w="100%" px={2} key={user.username}>
-              <Link href={`/user/${user.username}`} target="_blank">
-                {user.displayName || user.username}
-              </Link>
-            </Box>
-          ))}
-        </VStack>
-      </Flex>
       <Flex mt={2} direction="column" position="relative">
         <Input
           borderRadius={0}
@@ -194,6 +160,7 @@ type ChatLog = {
 export const Chat = ({ channelId, isPopup = false }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const chatLogRef = useRef<HTMLDivElement>();
+  const rosterDisclosure = useDisclosure();
   const { currentUser } = useCurrentUser();
   const [chatLog, setChatLog] = useState<ChatLog[]>([]);
   const [roster, setRoster] = useState<UserInfo[]>([]);
@@ -224,8 +191,8 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
   }, [chatClient]);
 
   const setRosterFromSocket = useCallback(
-    (roster: UserInfo[] = []) => {
-      setRoster(roster);
+    (roster?: UserInfo[]) => {
+      setRoster(roster ?? []);
     },
     [setRoster]
   );
@@ -275,7 +242,7 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
   }, [chatClient, appendToChat]);
 
   return (
-    <Flex w="100%" direction="column" height="100%">
+    <Flex w="100%" direction="column" height="100%" position="relative">
       {currentUser && (
         <VStack
           w="100%"
@@ -308,13 +275,45 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
           Please login to use chat
         </Flex>
       )}
+      <Flex
+        direction="column"
+        minHeight="40%"
+        maxHeight="70%"
+        opacity={rosterDisclosure.isOpen ? 1 : 0}
+        pointerEvents={rosterDisclosure.isOpen ? "all" : "none"}
+        position="absolute"
+        left={0}
+        bottom={20}
+        transition="opacity 0.3s linear"
+        w="100%"
+        borderWidth="1px"
+        borderStyle="solid"
+        borderColor="primary.500"
+        zIndex={5}
+        backgroundColor="secondary.500"
+        justifyContent="flex-start"
+        pt={1}
+      >
+        <Heading w="100%" px={2} mb={2} size="md">
+          Roster:
+        </Heading>
+        <VStack overflow="auto" height="100%">
+          {roster?.map((user) => (
+            <Box w="100%" px={2} key={user.username}>
+              <Link href={`/user/${user.username}`} target="_blank">
+                {user.displayName || user.username}
+              </Link>
+            </Box>
+          ))}
+        </VStack>
+      </Flex>
       <ChatControls
         isDisabled={!currentUser}
         onSend={sendChatMessage}
         channelId={channelId}
         isPopup={isPopup}
-        roster={roster}
         getRoster={getRoster}
+        rosterDisclosure={rosterDisclosure}
       />
     </Flex>
   );

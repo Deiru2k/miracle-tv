@@ -306,6 +306,8 @@ export const ChannelFullFragmentDoc = gql`
     name
     description
     slug
+    disabled
+    shelved
     user {
       id
       username
@@ -3101,6 +3103,102 @@ export type UserSettingsRevokeStreamKeyMutationOptions =
     Types.UserSettingsRevokeStreamKeyMutation,
     Types.UserSettingsRevokeStreamKeyMutationVariables
   >;
+export const DisableChannelDocument = gql`
+  mutation DisableChannel($id: ID!) {
+    disableChannel(id: $id)
+  }
+`;
+export type DisableChannelMutationFn = Apollo.MutationFunction<
+  Types.DisableChannelMutation,
+  Types.DisableChannelMutationVariables
+>;
+
+/**
+ * __useDisableChannelMutation__
+ *
+ * To run a mutation, you first call `useDisableChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDisableChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [disableChannelMutation, { data, loading, error }] = useDisableChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDisableChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.DisableChannelMutation,
+    Types.DisableChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.DisableChannelMutation,
+    Types.DisableChannelMutationVariables
+  >(DisableChannelDocument, options);
+}
+export type DisableChannelMutationHookResult = ReturnType<
+  typeof useDisableChannelMutation
+>;
+export type DisableChannelMutationResult =
+  Apollo.MutationResult<Types.DisableChannelMutation>;
+export type DisableChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.DisableChannelMutation,
+  Types.DisableChannelMutationVariables
+>;
+export const EnableChannelDocument = gql`
+  mutation EnableChannel($id: ID!) {
+    enableChannel(id: $id)
+  }
+`;
+export type EnableChannelMutationFn = Apollo.MutationFunction<
+  Types.EnableChannelMutation,
+  Types.EnableChannelMutationVariables
+>;
+
+/**
+ * __useEnableChannelMutation__
+ *
+ * To run a mutation, you first call `useEnableChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEnableChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [enableChannelMutation, { data, loading, error }] = useEnableChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEnableChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.EnableChannelMutation,
+    Types.EnableChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.EnableChannelMutation,
+    Types.EnableChannelMutationVariables
+  >(EnableChannelDocument, options);
+}
+export type EnableChannelMutationHookResult = ReturnType<
+  typeof useEnableChannelMutation
+>;
+export type EnableChannelMutationResult =
+  Apollo.MutationResult<Types.EnableChannelMutation>;
+export type EnableChannelMutationOptions = Apollo.BaseMutationOptions<
+  Types.EnableChannelMutation,
+  Types.EnableChannelMutationVariables
+>;
 export const UserSettingsChannelsDocument = gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
     channels(filter: $filter) {

@@ -9,7 +9,7 @@ in mkShell {
   shellHook = ''
     export PATH=$PATH:$(pwd)/node_modules/.bin
     export node_modules=$(pwd)/node_modules
-    export API_URL=http://localhost:4000/graphql
+    export API_URL=http://localhost:4000
     yarn
   '';
   buildInputs = [

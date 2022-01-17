@@ -6,6 +6,7 @@ import {
   SessionResolvers,
   User,
   UserResolvers,
+  UserSettings,
   UserSettingsResolvers,
 } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
@@ -70,7 +71,8 @@ export const settingsResolver: UserSettingsResolvers<ResolverContext> = {
   singleUserChannel: async (settings, _, { db: { channels } }) => {
     return settings.singleUserChannel
       ? await channels.getChannelById(
-          settings.singleUserChannel as unknown as string
+          settings.singleUserChannel as unknown as string,
+          true
         )
       : null;
   },
@@ -94,7 +96,9 @@ export const userResolver: UserResolvers<ResolverContext> = {
   header: fileResolver("header"),
   streamThumbnail: fileResolver("streamThumbnail"),
   settings: async (user, _, { db: { userSettings } }) => {
-    const settings = await userSettings.getUserSettingsById(user.id);
+    const settings = await userSettings.getUserSettingsById<UserSettings>(
+      user.id
+    );
     return settings;
   },
   meta: async (user, _, { db: { subscriptions } }) => {

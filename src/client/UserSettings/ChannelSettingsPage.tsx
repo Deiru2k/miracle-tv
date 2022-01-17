@@ -1,22 +1,39 @@
 import {
   Box,
+  Button,
+  Collapse,
+  Fade,
+  Flex,
   Heading,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Tag,
+  useToast,
 } from "@chakra-ui/react";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { useRouter } from "next/dist/client/router";
 import { head } from "ramda";
-import React, { useEffect, useMemo } from "react";
-import { useUserSettingsChannelQuery } from "miracle-tv-shared/hooks";
+import React, { useCallback, useEffect, useMemo } from "react";
+import {
+  useDisableChannelMutation,
+  useEnableChannelMutation,
+  useUserSettingsChannelQuery,
+} from "miracle-tv-shared/hooks";
 import { ChannelEdit } from "./ChannelEdit";
 import { ChannelKeysSettings } from "./ChannelKeys";
 import Head from "next/head";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
+import { gql } from "@apollo/client";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type Props = {
   tab?: string;
@@ -29,11 +46,21 @@ const tabs = {
   keys: "Keys",
 };
 
+gql`
+  mutation DisableChannel($id: ID!) {
+    disableChannel(id: $id)
+  }
+  mutation EnableChannel($id: ID!) {
+    enableChannel(id: $id)
+  }
+`;
+
 export const ChannelSettingsPage = ({
   channelId,
   baseUrl = "/settings/user/channels",
   tab,
 }: Props) => {
+  const toast = useToast();
   const { currentUser, checkRights } = useCurrentUser();
   const { push } = useRouter();
 
@@ -65,8 +92,46 @@ export const ChannelSettingsPage = ({
     [checkRights, channel, currentUser]
   );
 
+  const canEditChannel = useMemo(
+    () => checkRights(AccessUnit.Write, "channels"),
+    [checkRights]
+  );
+
+  const [disableChannelMutation] = useDisableChannelMutation({
+    onCompleted() {
+      toast({ status: "success", title: "Disabled channel" });
+    },
+    onError(e) {
+      toast({
+        status: "error",
+        title: `There was an error disabling channel: ${e.message}`,
+      });
+    },
+    refetchQueries: ["UserSettingsChannel"],
+  });
+  const [enableChannelMutation] = useEnableChannelMutation({
+    onCompleted() {
+      toast({ status: "success", title: "Enabled channel" });
+    },
+    onError(e) {
+      toast({
+        status: "error",
+        title: `There was an error enabling channel: ${e.message}`,
+      });
+    },
+    refetchQueries: ["UserSettingsChannel"],
+  });
+
   const tabList = Object.keys(tabs);
   const tabIndex = tabList.indexOf(tab);
+
+  const toggleChannel = useCallback(() => {
+    if (channel.disabled) {
+      enableChannelMutation({ variables: { id: channel.id } });
+    } else {
+      disableChannelMutation({ variables: { id: channel.id } });
+    }
+  }, [channel, disableChannelMutation, enableChannelMutation]);
 
   useEffect(() => {
     if (tabIndex === -1) {
@@ -80,9 +145,23 @@ export const ChannelSettingsPage = ({
       <Head>
         <title>Channel settings for {channel?.name} - Miracle TV</title>
       </Head>
-      <Heading size="lg" mb={5}>
-        Channel settings for "{channel?.name}"
-      </Heading>
+      <Flex align="center" justify="space-between" mb={5}>
+        <Heading size="lg">Channel settings for "{channel?.name}"</Heading>
+        <Flex align="center">
+          {canEditChannel && (
+            <Menu>
+              <MenuButton size="sm" as={Button} rightIcon={<ChevronDownIcon />}>
+                Actions
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={toggleChannel}>
+                  {channel?.disabled ? "Enable" : "Disable"}
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </Flex>
+      </Flex>
       <Tabs index={tabIndex} onChange={() => {}}>
         <TabList>
           {tabList.map((tab) => (
@@ -100,6 +179,27 @@ export const ChannelSettingsPage = ({
             </Tab>
           ))}
         </TabList>
+        <Fade in={channel?.disabled || channel?.shelved}>
+          <HStack mt={4}>
+            {channel?.disabled && (
+              <Tag colorScheme="red" textTransform="uppercase" size="lg">
+                Disabled
+              </Tag>
+            )}
+            {channel?.shelved && (
+              <Tag colorScheme="yellow" textTransform="uppercase" size="lg">
+                Shelved
+              </Tag>
+            )}
+            <Tag
+              backgroundColor="transparent"
+              textTransform="uppercase"
+              size="lg"
+            >
+              &nbsp;
+            </Tag>
+          </HStack>
+        </Fade>
 
         <TabPanels>
           <TabPanel px={0}>

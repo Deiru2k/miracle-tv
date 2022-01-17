@@ -6,13 +6,18 @@ import {
   Navigation,
 } from "miracle-tv-client/components/ui/Navigation";
 import { ProfileSettings } from "miracle-tv-client/UserSettings/Profile";
-import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
+import {
+  useCurrentUser,
+  useCurrentUserSettings,
+} from "miracle-tv-client/hooks/auth";
 import { UserPreferences } from "miracle-tv-client/UserSettings/UserPreferences";
 import { Channels } from "miracle-tv-client/UserSettings/Channels";
 import { AccountSettings } from "miracle-tv-client/UserSettings/AccountSettings";
 import { AccountStreamKeys } from "miracle-tv-client/UserSettings/AccountStreamKeys";
 import { AccountSessions } from "miracle-tv-client/UserSettings/AccountSessions";
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
+import { AccessUnit } from "miracle-tv-shared/graphql";
+import { identity } from "ramda";
 
 const components: NavComponentMap = {
   "/settings/user/profile": { component: <ProfileSettings /> },
@@ -24,7 +29,29 @@ const components: NavComponentMap = {
 };
 
 const SettingsPage = () => {
+  const { checkRights } = useCurrentUser();
   const { currentSettings } = useCurrentUserSettings();
+
+  const canViewStreamKeys = useMemo(
+    () => checkRights(AccessUnit.Self, "streamKeys"),
+    [checkRights]
+  );
+  const canViewChannels = useMemo(
+    () => checkRights(AccessUnit.Self, "channels"),
+    [checkRights]
+  );
+  const canViewSessions = useMemo(
+    () => checkRights(AccessUnit.Self, "sessions"),
+    [checkRights]
+  );
+  const canViewSettings = useMemo(
+    () => checkRights(AccessUnit.Self, "userSettings"),
+    [checkRights]
+  );
+  const canViewProfile = useMemo(
+    () => checkRights(AccessUnit.Self, "users"),
+    [checkRights]
+  );
 
   const nav: NavConfig = useMemo(
     () => [
@@ -32,13 +59,17 @@ const SettingsPage = () => {
         id: "user",
         title: "User",
         urls: [
-          { id: "profile", name: "Profile", url: "/settings/user/profile" },
-          {
+          canViewProfile && {
+            id: "profile",
+            name: "Profile",
+            url: "/settings/user/profile",
+          },
+          canViewSettings && {
             id: "preferences",
             name: "Preferences",
             url: "/settings/user/preferences",
           },
-          {
+          canViewChannels && {
             id: "channels",
             name: currentSettings?.singleUserMode ? "Channel" : "Channels",
             url:
@@ -47,24 +78,28 @@ const SettingsPage = () => {
                 ? `/settings/user/channels/${currentSettings?.singleUserChannel?.id}/details`
                 : "/settings/user/channels",
           },
-        ],
+        ].filter(identity),
       },
       {
         id: "security",
         title: "Security",
         urls: [
-          { id: "account", name: "Account", url: "/settings/security/account" },
-          {
+          canViewProfile && {
+            id: "account",
+            name: "Account",
+            url: "/settings/security/account",
+          },
+          canViewStreamKeys && {
             id: "streamkeys",
             name: "Stream keys",
             url: "/settings/security/streamkeys",
           },
-          {
+          canViewSessions && {
             id: "sessions",
             name: "Sessions",
             url: "/settings/security/sessions",
           },
-        ],
+        ].filter(identity),
       },
     ],
     [currentSettings, currentSettings?.singleUserChannel?.id]

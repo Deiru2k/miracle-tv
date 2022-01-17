@@ -11,21 +11,8 @@ import config from "miracle-tv-server/config";
 import superagent from "superagent";
 
 export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
-  async channels(_, { filter }, { db: { channels }, userRoles }) {
-    const hasReadPerms = checkRight(userRoles, AccessUnit.Read, "channels");
-    return await channels.getChannels(filter, null, hasReadPerms);
-  },
-
-  async channel(_, { id }, { db: { channels }, userRoles }) {
-    const hasReadPermissions = checkRight(
-      userRoles,
-      AccessUnit.Read,
-      "channels"
-    );
-    if (uuidValidate(id)) {
-      return await channels.getChannelById(id, hasReadPermissions);
-    }
-    return await channels.getChannelBySlug(id);
+  async channels(_, { filter }, { db: { channels } }) {
+    return await channels.getChannels(filter, null);
   },
 
   async channelsCount(_, { filter }, { db: { channels } }) {
@@ -38,6 +25,18 @@ export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
 
   async fullChannelsCount(_, { filter }, { db: { channels } }) {
     return await channels.getChannelCount(filter, true);
+  },
+
+  async channel(_, { id }, { db: { channels }, userRoles }) {
+    const hasReadPermissions = checkRight(
+      userRoles,
+      AccessUnit.Read,
+      "channels"
+    );
+    if (uuidValidate(id)) {
+      return await channels.getChannelById(id, hasReadPermissions);
+    }
+    return await channels.getChannelBySlug(id, hasReadPermissions);
   },
 
   async selfChannels(_, { filter }, { db: { channels }, user }) {

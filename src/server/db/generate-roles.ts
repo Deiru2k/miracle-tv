@@ -74,6 +74,7 @@ const defaultUserRole: Role = {
       users: [AccessUnit.Self],
       activities: [AccessUnit.Self],
       roles: [AccessUnit.Self],
+      sessions: [AccessUnit.Self],
       userSettings: [AccessUnit.Self],
     },
     actions: {

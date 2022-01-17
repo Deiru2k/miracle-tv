@@ -128,10 +128,12 @@ export const UserProfile = ({
                       )}
                     />
                   )}
-                  <Text textTransform="capitalize">
-                    {user?.settings?.singleUserChannel?.activity?.verb}{" "}
-                    {user?.settings?.singleUserChannel?.activity?.name}
-                  </Text>
+                  <Flex align="center">
+                    <Text textTransform="capitalize">
+                      {user?.settings?.singleUserChannel?.activity?.verb}{" "}
+                      {user?.settings?.singleUserChannel?.activity?.name}
+                    </Text>
+                  </Flex>
                 </Flex>
               )}
             </Flex>

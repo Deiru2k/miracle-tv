@@ -20,10 +20,10 @@ export class UserSettingsModel extends Model {
     return (await this.table.get(userId).run(this.conn)) as DbUserSettings;
   }
 
-  async updateSettings(
+  async updateSettings<T extends object = DbUserSettings>(
     input: UpdateUserSettingsInput,
     userId: string
-  ): Promise<DbUserSettings> {
+  ): Promise<T> {
     const settings = await this.getRawUserSettingsById(userId);
 
     if (settings) {
@@ -34,21 +34,21 @@ export class UserSettingsModel extends Model {
       if (errors) {
         throw new ServerError("Couldn't update settings");
       }
-      return { id: userId, ...settings, ...input };
+      return { id: userId, ...settings, ...input } as T;
     } else {
-      return await this.createSettings(input, userId);
+      return (await this.createSettings(input, userId)) as T;
     }
   }
 
-  async getUserSettingsById(id: string): Promise<DbUserSettings> {
+  async getUserSettingsById<T extends object = DbUserSettings>(
+    id: string
+  ): Promise<T> {
     const dbSettings = await this.getRawUserSettingsById(id);
-    return (
-      dbSettings || {
-        id,
-        useGravatar: false,
-        singleUserMode: false,
-      }
-    );
+    return (dbSettings || {
+      id,
+      useGravatar: false,
+      singleUserMode: false,
+    }) as T;
   }
 
   async getRawUserSettingsById(id: string): Promise<DbUserSettings | null> {

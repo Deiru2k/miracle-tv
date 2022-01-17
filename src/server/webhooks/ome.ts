@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
+  checkChannel,
   getNginxKey,
   getOMEKey,
   getStreamKey,
+  getUser,
   updateChannelStatus,
 } from "./common";
 
@@ -28,24 +30,39 @@ type OMEResponse = {
   reason: string;
 };
 
+const unathorizedResponse: OMEResponse = {
+  allowed: false,
+  reason: "Unauthorized",
+};
+const allowedResponse: OMEResponse = {
+  allowed: true,
+  reason: "Allowed",
+};
+
 webhooks.post("/hook", async (req, res) => {
   const key = getOMEKey((req.body as OMERequest).request.url);
   const streamKey = await getStreamKey(key);
   // If there's no stream key, deny the stream.
   if (!streamKey) {
-    const response: OMEResponse = {
-      allowed: false,
-      reason: "Unauthorized",
-    };
-    res.status(200).send(response);
+    res.status(200).send(unathorizedResponse);
     return undefined;
   }
 
-  const response: OMEResponse = {
-    allowed: true,
-    reason: "Allowed",
-  };
-  res.status(200).send(response);
+  // If user is suspended or not found, deny the stream
+  const user = await getUser(streamKey.userId);
+  if (!user || user?.suspended) {
+    res.status(200).send(unathorizedResponse);
+    return undefined;
+  }
+
+  // If channel is disabled, deny the stream
+  const isChannelEnabled = await checkChannel(streamKey.channelId);
+  if (!isChannelEnabled) {
+    res.status(200).send(unathorizedResponse);
+    return undefined;
+  }
+
+  res.status(200).send(allowedResponse);
 });
 
 export default webhooks;

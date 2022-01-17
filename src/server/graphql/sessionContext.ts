@@ -11,7 +11,7 @@ export const createSessionContext = async (
   ip: string,
   db: DBContext
 ) => {
-  const isSessionTooLong = token.length > 127;
+  const isSessionTooLong = token?.length > 127;
 
   const session = isSessionTooLong
     ? null

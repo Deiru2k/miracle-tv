@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { getNginxKey, getStreamKey, updateChannelStatus } from "./common";
+import {
+  checkChannel,
+  getNginxKey,
+  getStreamKey,
+  getUser,
+  updateChannelStatus,
+} from "./common";
 
 const webhooks = Router();
 
@@ -12,15 +18,25 @@ webhooks.post("/on_publish", async (req, res) => {
     return undefined;
   }
 
-  // const user = getUser(streamKey.userId)
-  //const channel = await getChannel(streamKey.channelId)
+  // If user is suspended or not found, deny the stream
+  const user = await getUser(streamKey.userId);
+  if (!user || user?.suspended) {
+    res.status(403).send();
+    return undefined;
+  }
+
+  // If channel is disabled, deny the stream
+  const isChannelEnabled = await checkChannel(streamKey.channelId);
+  if (!isChannelEnabled) {
+    res.status(403).send();
+    return undefined;
+  }
+
   setTimeout(async () => {
     await updateChannelStatus(streamKey.channelId, { isLive: true });
   }, 5000);
 
-  // We need to redirect the stream to a location that doesn't include the stream
-  // key. This may not be the right way to do it; TODO: ensure the stream still works
-  res.header("Location", streamKey.channelId).status(300).send();
+  res.status(200).send();
 });
 
 webhooks.post("/on_publish_done", async (req, res) => {

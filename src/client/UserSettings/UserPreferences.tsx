@@ -8,10 +8,11 @@ import {
 } from "miracle-tv-shared/hooks";
 import { Box, Button, Heading, useToast } from "@chakra-ui/react";
 import { Form } from "react-final-form";
-import { UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
+import { AccessUnit, UpdateUserSettingsInput } from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { FormSelfChannelSelect } from "miracle-tv-client/components/form/selects/FormSelfChannelSelect";
 import Head from "next/head";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 gql`
   query UserSettingsPreferences {
@@ -40,6 +41,12 @@ gql`
 
 export const UserPreferences = () => {
   const toast = useToast();
+  const { checkRights } = useCurrentUser();
+
+  const canViewChannels = useMemo(
+    () => checkRights(AccessUnit.Self, "channels"),
+    [checkRights]
+  );
 
   const { data } = useUserSettingsPreferencesQuery();
   const [updateSettingsMutation, { loading: isUpdating }] =
@@ -85,18 +92,22 @@ export const UserPreferences = () => {
         {({ handleSubmit, values, dirty }) => (
           <form onSubmit={handleSubmit}>
             <Panel>
-              <FormToggle
-                name="singleUserMode"
-                label="Single User Mode"
-                help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels."
-                mb={4}
-              />
-              {values.singleUserMode && (
-                <FormSelfChannelSelect
-                  name="singleUserChannel"
-                  help="Select channel that you would like to use."
-                  mb={4}
-                />
+              {canViewChannels && (
+                <>
+                  <FormToggle
+                    name="singleUserMode"
+                    label="Single User Mode"
+                    help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels."
+                    mb={4}
+                  />
+                  {values.singleUserMode && (
+                    <FormSelfChannelSelect
+                      name="singleUserChannel"
+                      help="Select channel that you would like to use."
+                      mb={4}
+                    />
+                  )}
+                </>
               )}
               <FormToggle
                 name="useGravatar"
