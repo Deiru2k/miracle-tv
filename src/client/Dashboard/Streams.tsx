@@ -59,10 +59,8 @@ export const Streams = () => {
       </Head>
       <Box>
         <Collapse in={liveChannels?.length > 0}>
-          <Box mb={4}>
-            <Heading size="lg" mt={4}>
-              Live Right now!
-            </Heading>
+          <Box mb={4} mt={2}>
+            <Heading size="lg">Live Right now!</Heading>
             <Divider mb={2} />
             {!!liveChannels?.length && (
               <>
