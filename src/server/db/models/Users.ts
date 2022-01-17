@@ -98,7 +98,7 @@ export class UsersModel extends Model {
     if (!user) {
       throw new NotFoundError("User not found");
     }
-    if (user.deleted && !includeDisabled) {
+    if ((user.deleted || user.suspended) && !includeDisabled) {
       throw new NotFoundError("User not found");
     }
     return this.sanitizeUser(user);
