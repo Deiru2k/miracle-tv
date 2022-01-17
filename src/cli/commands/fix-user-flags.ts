@@ -17,7 +17,7 @@ export const fixUserFlags = async () => {
     users.map(async (user: any) => {
       let update: any = {};
       if (user.deleted === undefined || user.deleted === null)
-        update.disabled = false;
+        update.deleted = false;
       if (user.suspended === undefined || user.suspended === null)
         update.suspended = false;
       if (user.loginDisabled === undefined || user.loginDisabled === null)

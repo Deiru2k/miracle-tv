@@ -26,7 +26,7 @@ const defaultUser = {
   roles: ["user"],
   singleUserMode: false,
   loginDisabled: false,
-  disabled: false,
+  deleted: false,
   suspended: false,
   silenced: false,
 };
