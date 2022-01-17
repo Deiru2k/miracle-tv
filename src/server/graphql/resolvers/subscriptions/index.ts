@@ -6,14 +6,16 @@ import {
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { uniq } from "ramda";
 
-export const subsciptionByIdResolver: QueryResolvers<ResolverContext>["subscription"] =
-  async (_, { input }, { user, db: { subscriptions } }) => {
+export const subscriptionQueryResolvers: QueryResolvers<ResolverContext> = {
+  async subscription(_, { input }, { user, db: { subscriptions } }) {
     const sub = await subscriptions.getSubscriptionByTargetId(user.id, input);
     return sub;
-  };
-
-export const selfSubscribedChannelsResolver: QueryResolvers<ResolverContext>["selfSubscribedChannels"] =
-  async (_, _args, { user, db: { subscriptions, channels } }) => {
+  },
+  async selfSubscribedChannels(
+    _,
+    _args,
+    { user, db: { subscriptions, channels } }
+  ) {
     const subTargets = await subscriptions.getSubscriptions({
       sourceId: user.id,
       target: SubscriptionTarget.Channel,
@@ -29,10 +31,8 @@ export const selfSubscribedChannelsResolver: QueryResolvers<ResolverContext>["se
       ids: subTargets.map((sub) => sub.targetId),
     });
     return uniq([...subbedChannels, ...subbedUserChannels]);
-  };
-
-export const selfSubscribedUsersResolver: QueryResolvers<ResolverContext>["selfSubscribedUsers"] =
-  async (_, _args, { user, db: { subscriptions, users } }) => {
+  },
+  async selfSubscribedUsers(_, _args, { user, db: { subscriptions, users } }) {
     const subTargets = await subscriptions.getSubscriptions({
       sourceId: user.id,
       target: SubscriptionTarget.User,
@@ -40,4 +40,5 @@ export const selfSubscribedUsersResolver: QueryResolvers<ResolverContext>["selfS
     return users.getUsers({
       ids: subTargets.map((sub) => sub.targetId),
     }) as any as Promise<User>[];
-  };
+  },
+};

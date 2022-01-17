@@ -8,8 +8,8 @@ import { AccessUnit, MutationResolvers } from "miracle-tv-shared/graphql";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
 import { UserInputError } from "apollo-server-express";
 
-export const createChannelMutation: MutationResolvers<ResolverContext>["createChannel"] =
-  async (_, { input }, { user, db: { channels } }) => {
+export const channelMutationResolvers: MutationResolvers<ResolverContext> = {
+  async createChannel(_, { input }, { user, db: { channels } }) {
     if (!user) {
       throw new AuthenticationError();
     }
@@ -20,10 +20,9 @@ export const createChannelMutation: MutationResolvers<ResolverContext>["createCh
       }
     }
     return await channels.createChannel(input, user.id!);
-  };
+  },
 
-export const updateChannelMutation: MutationResolvers<ResolverContext>["updateChannel"] =
-  async (_, { input }, { user, userRoles, db: { channels } }) => {
+  async updateChannel(_, { input }, { user, userRoles, db: { channels } }) {
     const channel = await channels.getChannelById(input.id);
     const channelRights =
       (user?.id === ((channel as any).userId as string) &&
@@ -45,10 +44,9 @@ export const updateChannelMutation: MutationResolvers<ResolverContext>["updateCh
       }
     }
     return await channels.updateChannel(input);
-  };
+  },
 
-export const deleteChannelMutation: MutationResolvers<ResolverContext>["deleteChannel"] =
-  async (_, { id }, { user, userRoles, db: { channels } }) => {
+  async deleteChannel(_, { id }, { user, userRoles, db: { channels } }) {
     const channel = await channels.getChannelById(id);
     const channelRights =
       (user?.id === ((channel as any).userId as string) &&
@@ -64,4 +62,5 @@ export const deleteChannelMutation: MutationResolvers<ResolverContext>["deleteCh
       throw new AuthorizationError();
     }
     return await channels.deleteChannel(id);
-  };
+  },
+};

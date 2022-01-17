@@ -17,8 +17,12 @@ import { DbUser } from "miracle-tv-server/db/models/types";
 import { generatePassword } from "miracle-tv-shared/utils/password";
 import { UserInputError } from "apollo-server-errors";
 
-export const signInMutation: MutationResolvers<ResolverContext>["signIn"] =
-  async (_, { input: { username, password } }, { db: { users, sessions } }) => {
+export const authMutationResolvers: MutationResolvers<ResolverContext> = {
+  async signIn(
+    _,
+    { input: { username, password } },
+    { db: { users, sessions } }
+  ) {
     const userList = await users.getUsers({ username }, undefined, true);
     const user: DbUser = head<DbUser>(userList);
     const isPasswordValid = await compare(password, user?.password || "");
@@ -35,10 +39,8 @@ export const signInMutation: MutationResolvers<ResolverContext>["signIn"] =
       return await sessions.createSession(user?.id!);
     }
     throw new InputErrorLogin();
-  };
-
-export const revokeSelfSessionsMutation: MutationResolvers<ResolverContext>["revokeSelfSessions"] =
-  async (_, { input }, { db: { sessions }, user }) => {
+  },
+  async revokeSelfSessions(_, { input }, { db: { sessions }, user }) {
     const sessionsToRevoke = await sessions.getSessionsByIds(input);
     const sessionsNotBelongingToUser = sessionsToRevoke.filter(
       (session) => session.user !== user.id
@@ -47,10 +49,8 @@ export const revokeSelfSessionsMutation: MutationResolvers<ResolverContext>["rev
       throw new AuthorizationError("Sessions found not belonging to user");
     }
     return sessions.revokeAllSessionsBySessionIds(input);
-  };
-
-export const resetUserPasswordMutation: MutationResolvers<ResolverContext>["resetUserPassword"] =
-  async (_, { id, input }, { db: { users, sessions } }) => {
+  },
+  async resetUserPassword(_, { id, input }, { db: { users, sessions } }) {
     if (input.method === PasswordResetMethod.Echo) {
       const newPassword = generatePassword(18);
       const hashed = await hash(newPassword, 11);
@@ -63,4 +63,5 @@ export const resetUserPasswordMutation: MutationResolvers<ResolverContext>["rese
     } else {
       throw new UserInputError("Reset method not implemented yet");
     }
-  };
+  },
+};
