@@ -79,7 +79,7 @@ export const Streams = () => {
         {!!subscriptions?.length && (
           <>
             <ChannelDisplayGrid
-              columns={isMobile ? 2 : 4}
+              columns={isMobile ? 3 : 5}
               channels={subscriptions}
             />
           </>
@@ -92,7 +92,7 @@ export const Streams = () => {
         </Heading>
         <Divider mb={2} />
         {!!channels?.length && (
-          <ChannelDisplayGrid columns={isMobile ? 2 : 4} channels={channels} />
+          <ChannelDisplayGrid columns={isMobile ? 3 : 5} channels={channels} />
         )}
         {!channels?.length && (
           <Text>
