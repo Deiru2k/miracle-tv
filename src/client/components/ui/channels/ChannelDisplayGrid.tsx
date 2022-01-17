@@ -84,6 +84,7 @@ export const ChannelDisplayGrid = ({
                   overflow="hidden"
                   textOverflow="ellipsis"
                   py={1}
+                  title={channel.name}
                 >
                   {getChannelLive(channel) && (
                     <Text fontSize="1.6rem" color="red" display="inline" mr={2}>
@@ -101,6 +102,7 @@ export const ChannelDisplayGrid = ({
                     maxW="100%"
                     textOverflow="ellipsis"
                     overflow="hidden"
+                    title={channel.activity.name}
                   >
                     {channel.activity.name}
                   </Badge>
