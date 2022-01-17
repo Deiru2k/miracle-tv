@@ -90,9 +90,15 @@ export class UsersModel extends Model {
     ) as DbUser | null;
   }
 
-  async getUserByIdSafe(id: string): Promise<DbUserSafe> {
+  async getUserByIdSafe(
+    id: string,
+    includeDisabled: boolean = false
+  ): Promise<DbUserSafe> {
     const user = await this.getUserById(id);
     if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    if (user.deleted && !includeDisabled) {
       throw new NotFoundError("User not found");
     }
     return this.sanitizeUser(user);
@@ -114,7 +120,7 @@ export class UsersModel extends Model {
     const disabledFilter = !includeDisabled
       ? {
           suspended: false,
-          disabled: false,
+          deleted: false,
         }
       : {};
     const query = ids ? this.table.getAll(...ids) : this.table;
