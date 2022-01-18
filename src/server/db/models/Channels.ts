@@ -26,6 +26,7 @@ export class ChanelsModel extends Model {
       .insert({
         ...input,
         disabled: false,
+        shelved: false,
         userId,
       })
       .run(this.conn)
