@@ -60,7 +60,8 @@ const client = new ApolloClient({
   link: authLink.concat(uploadLink),
 });
 
-const noNavbarRoutes = ["/chat/popup"];
+const noNavbarRoutes = ["/chat/popup", "/overlay"];
+const noWrapperRoutes = ["/overlay/chat"];
 
 function MyApp({ Component, pageProps }: any): JSX.Element {
   const router = useRouter();
@@ -68,6 +69,11 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
     (path) => router.asPath.startsWith(path),
     noNavbarRoutes
   );
+  const showWrapper = !any(
+    (path) => router.asPath.startsWith(path),
+    noWrapperRoutes
+  );
+  const Wrapper = showWrapper ? PageWrapper : (React.Fragment as any);
   const [isLiveUpdate, setLiveUpdate] = useState<boolean>(false);
   return (
     <>
@@ -91,10 +97,10 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
         <Chakra cookies={pageProps.cookies}>
           <ApolloProvider client={client}>
             <Flex h="100%" w="100%" direction="column">
-              <PageWrapper paddingTop={showNavbar ? "50px" : undefined}>
+              <Wrapper paddingTop={showNavbar ? "50px" : undefined}>
                 {showNavbar && <Navbar />}
                 <Component {...pageProps} />
-              </PageWrapper>
+              </Wrapper>
             </Flex>
           </ApolloProvider>
         </Chakra>

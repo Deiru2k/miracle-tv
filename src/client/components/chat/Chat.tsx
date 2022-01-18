@@ -27,7 +27,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { sort, takeLast } from "ramda";
+import { takeLast } from "ramda";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { UserInfo } from "miracle-tv-server/websocket/chat/roster";
@@ -36,17 +36,33 @@ import { Link } from "../ui/Link";
 type ChatMessageProps = {
   username: string;
   message: string;
+  textStroke?: boolean;
 };
 
-const ChatMessage = ({ username, message }: ChatMessageProps) => {
+const ChatMessage = ({ username, message, textStroke }: ChatMessageProps) => {
+  const textStrokeStyle = useMemo(
+    () =>
+      textStroke
+        ? {
+            "font-size": "1.4rem",
+            "font-family": "sans-serif",
+            "text-shadow":
+              "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black",
+          }
+        : {},
+    [textStroke]
+  );
+
   return (
     <Box display="block" w="100%" wordBreak="break-word">
       {username && (
-        <Text as="span" fontWeight="bold">
+        <Text as="span" fontWeight="bold" css={textStrokeStyle}>
           {username}:&nbsp;
         </Text>
       )}
-      <Text as="span">{message}</Text>
+      <Text as="span" css={textStrokeStyle}>
+        {message}
+      </Text>
     </Box>
   );
 };
@@ -56,6 +72,7 @@ type ChatControlsProps = {
   channelId: string;
   isPopup?: boolean;
   isDisabled?: boolean;
+  isUnauthenticated?: boolean;
   rosterDisclosure: UseDisclosureReturn;
   getRoster: () => void;
 };
@@ -64,6 +81,7 @@ const ChatControls = ({
   onSend,
   channelId,
   isDisabled = false,
+  isUnauthenticated = false,
   isPopup = false,
   getRoster,
   rosterDisclosure,
@@ -112,7 +130,11 @@ const ChatControls = ({
           value={value}
           onChange={onChange}
           isDisabled={isDisabled}
-          placeholder="Remember to be nice to eachother"
+          placeholder={
+            isUnauthenticated
+              ? "Please login to use chat"
+              : "Remember to be nice to eachother"
+          }
         />
         <HStack justify="flex-end" align="center" spacing={0}>
           {!isPopup && (
@@ -149,6 +171,9 @@ const ChatControls = ({
 type Props = {
   channelId: string;
   isPopup?: boolean;
+  hideControls?: boolean;
+  textStroke?: boolean;
+  hideScrollbar?: boolean;
 };
 
 type ChatLog = {
@@ -157,7 +182,13 @@ type ChatLog = {
   timestamp: number;
 };
 
-export const Chat = ({ channelId, isPopup = false }: Props) => {
+export const Chat = ({
+  channelId,
+  isPopup = false,
+  hideControls,
+  textStroke,
+  hideScrollbar,
+}: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const chatLogRef = useRef<HTMLDivElement>();
   const rosterDisclosure = useDisclosure();
@@ -220,15 +251,16 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
   );
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const joinData: ChatJoinData = {
-      token: localStorage.getItem("token"),
+      token,
       channel: channelId,
     };
     chatClient.emit("chat:join", joinData);
 
     return () => {
       const leaveData: ChatLeaveData = {
-        token: localStorage.getItem("token"),
+        token: token,
         channel: channelId,
       };
       chatClient.emit("chat:leave", leaveData);
@@ -243,38 +275,24 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
 
   return (
     <Flex w="100%" direction="column" height="100%" position="relative">
-      {currentUser && (
-        <VStack
-          w="100%"
-          overflowY="auto"
-          direction="column"
-          flexGrow={1}
-          flexBasis={isMobile ? "50vh" : undefined}
-          height={0}
-          ref={chatLogRef}
-        >
-          {chatLog.map((msg) => (
-            <ChatMessage
-              key={msg.timestamp}
-              username={msg.username}
-              message={msg.message}
-            />
-          ))}
-        </VStack>
-      )}
-      {!currentUser && (
-        <Flex
-          w="100%"
-          overflowY="auto"
-          direction="column"
-          flexGrow={1}
-          height={0}
-          justify="center"
-          align="center"
-        >
-          Please login to use chat
-        </Flex>
-      )}
+      <VStack
+        w="100%"
+        overflowY={hideScrollbar ? "hidden" : "auto"}
+        direction="column"
+        flexGrow={1}
+        flexBasis={isMobile ? "50vh" : undefined}
+        height={0}
+        ref={chatLogRef}
+      >
+        {chatLog.map((msg) => (
+          <ChatMessage
+            key={msg.timestamp}
+            username={msg.username}
+            message={msg.message}
+            textStroke={textStroke}
+          />
+        ))}
+      </VStack>
       <Flex
         direction="column"
         minHeight="40%"
@@ -307,14 +325,17 @@ export const Chat = ({ channelId, isPopup = false }: Props) => {
           ))}
         </VStack>
       </Flex>
-      <ChatControls
-        isDisabled={!currentUser}
-        onSend={sendChatMessage}
-        channelId={channelId}
-        isPopup={isPopup}
-        getRoster={getRoster}
-        rosterDisclosure={rosterDisclosure}
-      />
+      {!hideControls && (
+        <ChatControls
+          isDisabled={!currentUser}
+          isUnauthenticated={!currentUser}
+          onSend={sendChatMessage}
+          channelId={channelId}
+          isPopup={isPopup}
+          getRoster={getRoster}
+          rosterDisclosure={rosterDisclosure}
+        />
+      )}
     </Flex>
   );
 };

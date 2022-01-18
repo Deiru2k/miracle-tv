@@ -34,6 +34,8 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import ChatOverlay from "src/pages/overlay/chat/[channelId]";
+import { ChatOverlaySettings } from "./ChannelOverlay";
 
 type Props = {
   tab?: string;
@@ -44,6 +46,7 @@ type Props = {
 const tabs = {
   details: "Details",
   keys: "Keys",
+  overlay: "Overlay",
 };
 
 gql`
@@ -191,13 +194,6 @@ export const ChannelSettingsPage = ({
                 Shelved
               </Tag>
             )}
-            <Tag
-              backgroundColor="transparent"
-              textTransform="uppercase"
-              size="lg"
-            >
-              &nbsp;
-            </Tag>
           </HStack>
         </Fade>
 
@@ -211,6 +207,9 @@ export const ChannelSettingsPage = ({
               canViewKeys={canViewKeys}
               canEditKeys={canEditKeys}
             />
+          </TabPanel>
+          <TabPanel px={0}>
+            <ChatOverlaySettings channelId={channelId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

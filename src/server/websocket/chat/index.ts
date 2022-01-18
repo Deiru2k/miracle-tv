@@ -2,7 +2,6 @@ import { Server as SocketIO, Socket } from "socket.io";
 
 import {
   ChatJoinData,
-  ChatJoinRespose,
   ChatLeaveData,
   ChatMessageData,
   ChatResponseType,
@@ -23,39 +22,44 @@ export const setupChat = async (io: SocketIO) => {
     let room: Roster | null;
 
     socket.on("chat:join", async (data: ChatJoinData) => {
+      socket.join(`chat:${data.channel}`);
       const user = await getWebsocketUser(data.token, socket);
-      userId = user.id;
-      username = user.displayName || user.username;
-      channel = data.channel;
-      RosterManager.addRoom(data.channel);
-      room = RosterManager.addRoom(data.channel);
-      connectionId = uuid4();
-      room.addUser({
-        id: user.id,
-        username: user.username,
-        displayName: user.displayName,
-        connectionId,
-      });
-      const userSession = room.getUser(user.id);
-      const joinResponseSender: ChatResponseType = {
-        type: "message",
-        data: `You have joined the chat!`,
-        timestamp: DateTime.now().toMillis(),
-      };
-      if (userSession.connections.length === 1) {
-        const joinResponse: ChatResponseType = {
+      if (user) {
+        userId = user.id;
+        username = user.displayName || user.username;
+        channel = data.channel;
+        RosterManager.addRoom(data.channel);
+        room = RosterManager.addRoom(data.channel);
+        connectionId = uuid4();
+        room.addUser({
+          id: user.id,
+          username: user.username,
+          displayName: user.displayName,
+          connectionId,
+        });
+        const userSession = room.getUser(user.id);
+        const joinResponseSender: ChatResponseType = {
           type: "message",
-          data: `${user.displayName || user.username} joined the chat!`,
+          data: `You have joined the chat!`,
           timestamp: DateTime.now().toMillis(),
         };
-        socket.to(`chat:${data.channel}`).emit("chat:message", joinResponse);
-        socket.emit("chat:roster", room.roster);
+        if (userSession.connections.length === 1) {
+          const joinResponse: ChatResponseType = {
+            type: "message",
+            data: `${user.displayName || user.username} joined the chat!`,
+            timestamp: DateTime.now().toMillis(),
+          };
+          socket.to(`chat:${data.channel}`).emit("chat:message", joinResponse);
+          socket.emit("chat:roster", room.roster);
+          socket.emit("chat:message", joinResponseSender);
+        }
       }
-      socket.join(`chat:${data.channel}`);
-      socket.emit("chat:message", joinResponseSender);
     });
     socket.on("chat:send", async (msgData: ChatMessageData) => {
       const user = await getWebsocketUser(msgData.token, socket);
+      if (!user) {
+        return;
+      }
       const newUsername = user.displayName || user.username;
       if (msgData.message === "") {
         return;
@@ -89,6 +93,9 @@ export const setupChat = async (io: SocketIO) => {
     });
     socket.on("chat:leave", async (msgData: ChatLeaveData) => {
       const user = await getWebsocketUser(msgData.token, socket);
+      if (!user) {
+        return null;
+      }
       room?.removeUser(user.id, connectionId);
       const userSession = room?.getUser(user.id);
       if (!userSession) {
@@ -107,16 +114,18 @@ export const setupChat = async (io: SocketIO) => {
       socket.emit("chat:roster", room?.roster);
     });
     socket.on("disconnect", async () => {
-      room?.removeUser(userId, connectionId);
-      const userSession = room?.getUser(userId);
-      if (!userSession) {
-        const leaveResponse: ChatResponseType = {
-          type: "message",
-          data: `${username} left the chat!`,
-          timestamp: DateTime.now().toMillis(),
-        };
-        socket.to(`chat:${channel}`).emit("chat:message", leaveResponse);
-        socket.emit("chat:roster", room?.roster);
+      if (userId && connectionId) {
+        room?.removeUser(userId, connectionId);
+        const userSession = room?.getUser(userId);
+        if (!userSession) {
+          const leaveResponse: ChatResponseType = {
+            type: "message",
+            data: `${username} left the chat!`,
+            timestamp: DateTime.now().toMillis(),
+          };
+          socket.to(`chat:${channel}`).emit("chat:message", leaveResponse);
+          socket.emit("chat:roster", room?.roster);
+        }
       }
     });
   });

@@ -8,6 +8,9 @@ import { uniq } from "ramda";
 
 export const subscriptionQueryResolvers: QueryResolvers<ResolverContext> = {
   async subscription(_, { input }, { user, db: { subscriptions } }) {
+    if (!user) {
+      return null;
+    }
     const sub = await subscriptions.getSubscriptionByTargetId(user.id, input);
     return sub;
   },
