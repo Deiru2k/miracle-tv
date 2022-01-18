@@ -68,6 +68,10 @@ export const OvenPlayer = ({
         autoStart: true,
         controls: false,
         showBigPlayButton: false,
+        webrtcConfig: {
+          timeoutMaxRetry: 10,
+          connectionTimeout: 5000,
+        },
         sources,
       });
       if (initialQuality !== 0) {
