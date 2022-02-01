@@ -29,7 +29,7 @@ export const getOMEToken = (url: string) => {
 export const getOMEChannel = (url: string) => {
   const urlParsed = new Url(url, true);
   return head(
-    last((urlParsed as any).query.pathname.split("/")).split("_")
+    last((urlParsed as any).pathname.split("/")).split("_")
   ) as string;
 };
 

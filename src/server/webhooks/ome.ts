@@ -75,7 +75,6 @@ const handleOutgoing = async (
   req: Request,
   res: Response
 ): Promise<undefined> => {
-  console.log((req.body as OMERequest).request.url);
   const token = getOMEToken((req.body as OMERequest).request.url);
   const channelId = getOMEChannel((req.body as OMERequest).request.url);
   const channel = await getChannel(channelId);
