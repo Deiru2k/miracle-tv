@@ -21,7 +21,10 @@ export class ChannelAccessKeysModel extends Model {
     return channelAccessKey as ChannelAccessKey;
   }
 
-  async checkAccessKey(id: string): Promise<boolean> {
+  async checkAccessKey(id: string | undefined): Promise<boolean> {
+    if (!id) {
+      return false;
+    }
     const key = (await this.table.get(id).run(this.conn)) as ChannelAccessKey;
     if (!key) {
       return false;

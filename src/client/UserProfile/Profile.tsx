@@ -137,6 +137,7 @@ export const UserProfile = ({
     <>
       {user?.settings?.singleUserMode && user?.settings?.singleUserChannel && (
         <ChannelPlayerView
+          accessToken={accessKey}
           channel={user?.settings?.singleUserChannel}
           status={statusesMap[user?.settings?.singleUserChannel?.id]}
         />

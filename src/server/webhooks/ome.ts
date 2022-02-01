@@ -79,8 +79,8 @@ const handleOutgoing = async (
   const channelId = getOMEChannel((req.body as OMERequest).request.url);
   const channel = await getChannel(channelId);
 
-  if (token && channel?.passwordProtected) {
-    const hasAccess = checkChannelAccess(token);
+  if (channel?.passwordProtected) {
+    const hasAccess = checkChannelAccess(token ?? "");
     if (hasAccess) {
       res.status(200).send(allowedResponse);
       return;

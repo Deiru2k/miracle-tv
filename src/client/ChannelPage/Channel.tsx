@@ -101,6 +101,7 @@ export const CHANNEL_VIEW_STATUS_FRAGMENT = gql`
 type Props = {
   channel: ChannelViewFragment;
   status?: ChannelViewStatusFragment;
+  accessToken?: string;
   isSubscribed?: boolean;
   onSubscribe?: () => void;
   onUnsubscribe?: () => void;
@@ -140,7 +141,7 @@ const ChatViewControls = ({ isChatOpen, onChatOpenClick }: ControlProps) => {
   );
 };
 
-export const ChannelPlayerView = ({ channel, status }: Props) => {
+export const ChannelPlayerView = ({ channel, status, accessToken }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const [isChatOpen, setChatOpen] = useState<boolean>(true);
   const onChatOpenClick = useCallback(
@@ -154,6 +155,7 @@ export const ChannelPlayerView = ({ channel, status }: Props) => {
           channelId={channel.id}
           isLive={status?.isLive}
           viewers={status?.viewers}
+          accessToken={accessToken}
           thumbnail={`${
             channel.thumbnail
               ? getMediaURL(channel.thumbnail?.filename)
@@ -210,7 +212,11 @@ export const ChannelView = ({
 
   return (
     <>
-      <ChannelPlayerView channel={channel} status={status} />
+      <ChannelPlayerView
+        channel={channel}
+        status={status}
+        accessToken={accessKey}
+      />
       <Box mx={2} my={2}>
         <Flex direction="row" justify="space-between">
           <Flex justify="center" direction="column" mb={2}>
