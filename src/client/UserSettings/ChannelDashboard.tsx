@@ -106,7 +106,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
             </Flex>
           </Panel>
         </Box>
-        <Box flex={4} minH="50vh">
+        <Box flex={4}>
           <Heading size="md" mb={2}>
             Chat
           </Heading>
