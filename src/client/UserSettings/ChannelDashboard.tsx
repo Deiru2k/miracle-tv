@@ -56,7 +56,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
       return prettyBytes(channelStatus.transferred);
     }
     return `0B`;
-  }, [channelStatus?.createdAt]);
+  }, [channelStatus]);
 
   return (
     <>
