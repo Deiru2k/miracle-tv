@@ -46,7 +46,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
 
   const createdAt: DateTime | null = useMemo(() => {
     if (channelStatus?.createdAt) {
-      return DateTime.fromJSDate(channelStatus.createdAt);
+      return DateTime.fromISO(channelStatus.createdAt);
     }
     return null;
   }, [channelStatus]);
