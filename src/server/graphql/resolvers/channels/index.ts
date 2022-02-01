@@ -56,6 +56,18 @@ export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
       true
     );
   },
+  async channelStatus(_, { id }, { db: { channelStatus } }) {
+    if (!config.omeEnabled) {
+      const status = await channelStatus.getStatusById(id);
+      const defaultStatus = { id: id, isLive: false };
+      return {
+        ...(status ?? defaultStatus),
+        viewers: 0,
+        length: 0,
+      };
+    }
+    return await getOmeStatus(id);
+  },
 };
 
 export const channelResolver: ChannelResolvers<ResolverContext> = {
@@ -76,7 +88,7 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
         length: 0,
       };
     }
-    getOmeStatus(channel.id);
+    return await getOmeStatus(channel.id);
   },
   thumbnail: fileResolver("thumbnail"),
   user: async (channel, _, { db: { users } }) => {
