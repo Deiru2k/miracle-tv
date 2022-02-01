@@ -51,7 +51,7 @@ export class ChannelAccessKeysModel extends Model {
 
   async deleteAccessKeysByChannelId(id: string): Promise<Boolean> {
     const result = await this.table
-      .filter({ channelId: id })
+      .filter({ channel: id })
       .delete()
       .run(this.conn);
     return result.errors === 0;
