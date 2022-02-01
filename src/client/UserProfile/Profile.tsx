@@ -21,6 +21,8 @@ import { getMediaURL } from "miracle-tv-shared/media";
 import { Markdown } from "miracle-tv-client/components/ui/Markdown";
 import { AgeGate } from "miracle-tv-client/components/ui/AgeGate";
 import { useAgeGate } from "miracle-tv-client/hooks/ageGate";
+import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
+import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -91,16 +93,33 @@ export const UserProfile = ({
   const [checkMature, setCheckMature] = useAgeGate(
     user.settings.singleUserChannel?.id
   );
+  const [accessKey, setAccessKey] = useChannelAccess(
+    user.settings.singleUserChannel?.id
+  );
   const onAgeSet = useCallback(() => {
     setCheckMature(true);
   }, [setCheckMature]);
+  const onPasswordCheck = useCallback(
+    (password: string) => {
+      setAccessKey(password);
+    },
+    [setAccessKey]
+  );
 
-  return user.settings.singleUserChannel?.mature && !checkMature ? (
-    <AgeGate
-      description={user.settings.singleUserChannel?.matureDescription}
-      onAgeSet={onAgeSet}
-    />
-  ) : (
+  if (user.settings.singleUserChannel?.mature && !checkMature) {
+    return (
+      <AgeGate
+        description={user.settings.singleUserChannel?.matureDescription}
+        onAgeSet={onAgeSet}
+      />
+    );
+  }
+
+  if (user.settings.singleUserChannel?.passwordProtected && !accessKey) {
+    return <ChannelPassword onPasswordCheck={onPasswordCheck} />;
+  }
+
+  return (
     <>
       {user?.settings?.singleUserMode && user?.settings?.singleUserChannel && (
         <ChannelPlayerView
