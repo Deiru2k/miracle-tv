@@ -58,13 +58,15 @@ export const useChannelAccess = (channelId: string): UseChannelAccessReturn => {
     },
   });
   const [checkAccessKeyMutation] = useCheckChannelAccessMutation({
-    onError() {
-      setKey(undefined);
-      toast({
-        status: "warning",
-        title:
-          "Your access to this channel is invalid or expired. Please, re-enter channel password",
-      });
+    onCompleted({ checkAccessKey }) {
+      if (!checkAccessKey) {
+        setKey(undefined);
+        toast({
+          status: "warning",
+          title:
+            "Your access to this channel is invalid or expired. Please, re-enter channel password",
+        });
+      }
     },
   });
 
