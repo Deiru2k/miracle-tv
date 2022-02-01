@@ -49,7 +49,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
       return DateTime.fromJSDate(channelStatus.createdAt);
     }
     return null;
-  }, [channelStatus?.createdAt]);
+  }, [channelStatus]);
 
   const traffic: string = useMemo(() => {
     if (channelStatus?.transferred) {
