@@ -8,6 +8,8 @@ import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { DbChannelStatus } from "miracle-tv-server/db/models/types";
 import Url from "url-parse";
 import { head, last } from "ramda";
+import { Session } from "inspector";
+import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 
 export const getOSSRSKey = (queryParam: string) => {
   // Needed for url-parse to parse our query params
@@ -23,7 +25,12 @@ export const getOMEKey = (url: string) => {
 
 export const getOMEToken = (url: string) => {
   const urlParsed = new Url(url, true);
-  return (urlParsed as any).query.token as string;
+  return (urlParsed as any).query.token as string | undefined;
+};
+
+export const getOMESession = (url: string) => {
+  const urlParsed = new Url(url, true);
+  return (urlParsed as any).query.session as string | undefined;
 };
 
 export const getOMEChannel = (url: string) => {
@@ -76,6 +83,12 @@ export const getChannel = async (id: string) => {
   const con = await connection();
   const channels = new ChanelsModel(con);
   return await channels.getChannelById(id, true);
+};
+
+export const getSession = async (id: string) => {
+  const con = await connection();
+  const channels = new SessionsModel(con);
+  return await channels.getSessionById(id);
 };
 
 export const updateChannelStatus = async (

@@ -11,6 +11,7 @@ type Props = {
   setCurrentSource?: (index: number) => void;
   playerRef: React.MutableRefObject<any>;
   accessToken?: string;
+  sessionId?: string;
   muted?: boolean;
 };
 
@@ -22,6 +23,7 @@ export const OvenPlayer = ({
   initialQuality,
   accessToken,
   muted = false,
+  sessionId,
 }: Props) => {
   const { omeEnabled, isLoading } = useServerConfig();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,6 +38,10 @@ export const OvenPlayer = ({
       let accessParam = "";
       if (accessToken) {
         accessParam = `?token=${accessToken}`;
+      }
+      if (sessionId) {
+        const symbol = accessToken ? "&" : "?";
+        accessParam = `${accessParam}${symbol}session=${sessionId}`;
       }
       return omeEnabled
         ? [

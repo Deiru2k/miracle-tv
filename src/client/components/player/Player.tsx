@@ -17,6 +17,7 @@ type Props = {
   viewers?: number;
   thumbnail?: string;
   accessToken?: string;
+  sessionId?: string;
   muted?: boolean;
   maxH?: string;
 };
@@ -27,6 +28,7 @@ export const Player = ({
   viewers,
   thumbnail,
   accessToken,
+  sessionId,
   muted,
   maxH = "90vh",
 }: Props) => {
@@ -91,6 +93,7 @@ export const Player = ({
               initialVolume={volume}
               setCurrentSource={setCurrentSource}
               accessToken={accessToken}
+              sessionId={sessionId}
               muted={muted}
             />
           )}

@@ -5,7 +5,9 @@ import {
   getChannel,
   getOMEChannel,
   getOMEKey,
+  getOMESession,
   getOMEToken,
+  getSession,
   getStreamKey,
   getUser,
 } from "./common";
@@ -76,16 +78,23 @@ const handleOutgoing = async (
   res: Response
 ): Promise<undefined> => {
   const token = getOMEToken((req.body as OMERequest).request.url);
+  const sessionId = getOMESession((req.body as OMERequest).request.url);
   const channelId = getOMEChannel((req.body as OMERequest).request.url);
   const channel = await getChannel(channelId);
 
   if (channel?.passwordProtected) {
+    const session = await getSession(sessionId);
+    if (session && session.user === channel.userId) {
+      res.status(200).send(allowedResponse);
+      return;
+    }
     const hasAccess = checkChannelAccess(token ?? "");
     if (hasAccess) {
       res.status(200).send(allowedResponse);
       return;
     } else {
       res.status(200).send(unathorizedResponse);
+      return;
     }
   }
   res.status(200).send(allowedResponse);
