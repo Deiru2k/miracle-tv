@@ -85,7 +85,8 @@ export const ChannelDashboard = ({ channelId }: Props) => {
                 <Text as="span" fontWeight="bold" mr={1}>
                   Duration:
                 </Text>
-                <ChannelLiveTimer createdAt={createdAt} />
+                {createdAt && <ChannelLiveTimer createdAt={createdAt} />}
+                {!createdAt && "00:00:00:00"}
               </Box>
               <Box mb={2}>
                 <Text as="span" fontWeight="bold" mr={1}>

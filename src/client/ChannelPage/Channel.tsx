@@ -244,7 +244,7 @@ export const ChannelView = ({
                 </Flex>
               </>
             )}
-            {status?.isLive && (
+            {status?.isLive && createdAt && (
               <Flex align="center">
                 <ChannelLiveTimer createdAt={createdAt} />
               </Flex>

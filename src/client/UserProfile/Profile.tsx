@@ -184,7 +184,7 @@ export const UserProfile = ({
                   </Flex>
                 </Flex>
               )}
-              {singleUserStatus?.isLive && (
+              {singleUserStatus?.isLive && createdAt && (
                 <Flex align="center">
                   <ChannelLiveTimer createdAt={createdAt} />
                 </Flex>
