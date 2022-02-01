@@ -75,6 +75,7 @@ const handleOutgoing = async (
   req: Request,
   res: Response
 ): Promise<undefined> => {
+  console.log((req.body as OMERequest).request.url);
   const token = getOMEToken((req.body as OMERequest).request.url);
   const channelId = getOMEChannel((req.body as OMERequest).request.url);
   const channel = await getChannel(channelId);
@@ -94,9 +95,9 @@ const handleOutgoing = async (
 webhooks.post("/hook", async (req, res) => {
   const body = req.body as OMERequest;
   if (body.request.direction === "incoming") {
-    return await handleIncoming(req, res);
+    await handleIncoming(req, res);
   } else if (body.request.direction === "outgoing") {
-    return await handleOutgoing(req, res);
+    await handleOutgoing(req, res);
   }
 });
 

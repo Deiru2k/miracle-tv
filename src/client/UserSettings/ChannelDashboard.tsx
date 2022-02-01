@@ -51,6 +51,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
     return null;
   }, [channelStatus]);
 
+  console.log(createdAt);
   const traffic: string = useMemo(() => {
     if (channelStatus?.transferred) {
       return prettyBytes(channelStatus.transferred);
