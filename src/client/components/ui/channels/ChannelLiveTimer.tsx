@@ -34,7 +34,7 @@ export const ChannelLiveTimer = ({ createdAt }: Props) => {
       setDuration("00:00:00:00");
       clearInterval(interval);
     };
-  }, [createdAt, setDuration, updateDuration]);
+  }, []);
 
   return <Text as="span">{duration}</Text>;
 };

@@ -13,7 +13,7 @@ export const getOmeStatus = async (channelId: string) => {
       viewers: omeRequest.body.response.totalConnections,
       length: 0,
       createdAt: omeRequest.body.response.createdTime,
-      transferred: omeRequest.body.response.bytesIn,
+      transferred: omeRequest.body.response.totalBytesIn,
     };
   } catch {}
   return {
