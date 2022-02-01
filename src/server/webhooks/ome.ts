@@ -96,8 +96,9 @@ const handleOutgoing = async (
       res.status(200).send(unathorizedResponse);
       return;
     }
+  } else {
+    res.status(200).send(allowedResponse);
   }
-  res.status(200).send(allowedResponse);
 };
 
 webhooks.post("/hook", async (req, res) => {
