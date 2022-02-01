@@ -14,6 +14,7 @@ import {
 } from "miracle-tv-server/graphql/errors/general";
 import { DbChannel } from "miracle-tv-server/db/models/types";
 import { StreamKeysModel } from "./StreamKeys";
+import { ChannelAccessKeysModel } from "./ChannelAccesKeys";
 
 export class ChanelsModel extends Model {
   table = db.table("channels");
@@ -148,6 +149,10 @@ export class ChanelsModel extends Model {
     const channel = (await this.table.get(id).run(this.conn)) as DbChannel;
     if (!channel) {
       throw new NotFoundError("Chanel not found");
+    }
+    if (channel.password !== input.password) {
+      const channelAccess = new ChannelAccessKeysModel(this.conn);
+      await channelAccess.deleteAccessKeysByChannelId(id);
     }
     const result = await this.table
       .get(channel.id!)
