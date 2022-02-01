@@ -13,6 +13,7 @@ import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { SubscriptionsModel } from "miracle-tv-server/db/models/Subscriptions";
 import { SystemModel } from "miracle-tv-server/db/models/System";
+import { ChannelAccessKeysModel } from "./models/ChannelAccesKeys";
 
 const db = rethinkdb.db(config.database?.db || "miracle-tv");
 
@@ -28,6 +29,7 @@ export const createDBContext = (con: Connection): DBContext => ({
   streamKeys: new StreamKeysModel(con),
   roles: new RolesModel(con),
   files: new FilesModel(con),
+  channelAccessKeys: new ChannelAccessKeysModel(con),
 });
 
 export default db;

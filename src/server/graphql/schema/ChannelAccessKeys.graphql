@@ -1,0 +1,16 @@
+type ChannelAccessKey {
+  id: ID!
+  channel: ID!
+  expiresAt: DateTime
+  createdAt: DateTime
+}
+
+input AuthorizeChannelAccessInput {
+  channelId: ID!
+  password: String!
+}
+
+extend type Mutation {
+  authorizeChannelAccess(input: AuthorizeChannelAccessInput): ChannelAccessKey!
+  checkAccessKey(id: ID!): Boolean!
+}

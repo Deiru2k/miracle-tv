@@ -14,6 +14,27 @@ type Channel {
   meta: ChannelMeta
   disabled: Boolean!
   shelved: Boolean!
+  mature: Boolean!
+  matureDescription: String
+  passwordProtected: Boolean!
+}
+
+type SelfChannel {
+  id: ID!
+  user: User
+  activity: Activity
+  slug: String
+  name: String!
+  description: String
+  thumbnail: File
+  status: ChannelStatus
+  meta: ChannelMeta
+  disabled: Boolean!
+  shelved: Boolean!
+  mature: Boolean!
+  matureDescription: String
+  passwordProtected: Boolean!
+  password: String
 }
 
 input ChannelsQueryFilter {
@@ -26,6 +47,7 @@ input ChannelsQueryFilter {
   slug: String
   name: String
   description: String
+  mature: Boolean
 }
 
 extend type Query {
@@ -34,6 +56,8 @@ extend type Query {
   channelsCount(filter: ChannelsQueryFilter): Int!
   fullChannels(filter: ChannelsQueryFilter, limit: QueryLimit): [Channel]!
   fullChannelsCount(filter: ChannelsQueryFilter): Int!
+  selfChannel(id: ID!): SelfChannel
+    @auth(rights: [{ unit: SELF, subject: "channels" }])
   selfChannels(filter: ChannelsQueryFilter): [Channel]!
   channelSubscriptions(
     filter: ChannelsQueryFilter
@@ -48,6 +72,10 @@ input CreateChannelInput {
   slug: String
   description: String
   thumbnail: ID
+  mature: Boolean!
+  passwordProtected: Boolean!
+  matureDescription: String
+  password: String
 }
 
 input UpdateChannelInput {
@@ -57,6 +85,10 @@ input UpdateChannelInput {
   slug: String
   description: String
   thumbnail: ID
+  mature: Boolean
+  matureDescription: String
+  passwordProtected: Boolean!
+  password: String
 }
 
 extend type Mutation {

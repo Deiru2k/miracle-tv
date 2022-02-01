@@ -23,7 +23,7 @@ import Head from "next/head";
 
 gql`
   query DashboardChannels {
-    channels(limit: { limit: 25 }) {
+    channels(filter: { mature: false }, limit: { limit: 25 }) {
       ...ChannelCommon
     }
   }

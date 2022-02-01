@@ -16,9 +16,20 @@ type Props = {
   isLive: boolean;
   viewers?: number;
   thumbnail?: string;
+  accessToken?: string;
+  muted?: boolean;
+  maxH?: string;
 };
 
-export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
+export const Player = ({
+  channelId,
+  isLive,
+  viewers,
+  thumbnail,
+  accessToken,
+  muted,
+  maxH = "90vh",
+}: Props) => {
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
@@ -42,11 +53,11 @@ export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
   }, []);
 
   return (
-    <Box role="group" position="relative" ref={containerRef}>
+    <Box role="group" position="relative" ref={containerRef} height="100%">
       <AspectRatio
         ratio={16 / 9}
         maxW="100%"
-        maxH={isFullscreen ? "100%" : "90vh"}
+        maxH={isFullscreen ? "100%" : maxH}
         zIndex={1}
       >
         <>
@@ -79,6 +90,8 @@ export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
               initialQuality={currentSource}
               initialVolume={volume}
               setCurrentSource={setCurrentSource}
+              accessToken={accessToken}
+              muted={muted}
             />
           )}
         </>
@@ -100,9 +113,3 @@ export const Player = ({ channelId, isLive, viewers, thumbnail }: Props) => {
 };
 
 export default Player;
-
-// src={streamUrl}
-// hlsConfig={{
-//   startPosition: 10000,
-//   manifestLoadingMaxRetry: 10,
-// }}

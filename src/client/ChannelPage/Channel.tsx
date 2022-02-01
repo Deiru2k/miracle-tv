@@ -29,6 +29,10 @@ import { Avatar } from "miracle-tv-client/components/ui/Avatar";
 import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
 import { capitalizeFirstLetter } from "miracle-tv-client/utils/text";
 import { Markdown } from "miracle-tv-client/components/ui/Markdown";
+import { AgeGate } from "miracle-tv-client/components/ui/AgeGate";
+import { useAgeGate } from "miracle-tv-client/hooks/ageGate";
+import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
+import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -49,6 +53,9 @@ export const CHANNEL_VIEW_FRAGMENT = gql`
     name
     description
     slug
+    mature
+    matureDescription
+    passwordProtected
     thumbnail {
       id
       filename
@@ -169,7 +176,28 @@ export const ChannelView = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
-  const isMobile = useMediaQuery(MediaQuery.mobile);
+  const [checkMature, setCheckMature] = useAgeGate(channel.id);
+  const [accessKey, setAccessKey] = useChannelAccess(channel.id);
+  const onAgeSet = useCallback(() => {
+    setCheckMature(true);
+  }, [setCheckMature]);
+  const onPasswordCheck = useCallback(
+    (password: string) => {
+      setAccessKey(password);
+    },
+    [setAccessKey]
+  );
+
+  if (channel.mature && !checkMature) {
+    return (
+      <AgeGate description={channel.matureDescription} onAgeSet={onAgeSet} />
+    );
+  }
+
+  if (channel.passwordProtected && !accessKey) {
+    return <ChannelPassword onPasswordCheck={onPasswordCheck} />;
+  }
+
   return (
     <>
       <ChannelPlayerView channel={channel} status={status} />

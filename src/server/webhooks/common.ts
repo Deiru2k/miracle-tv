@@ -3,9 +3,11 @@ import { StreamKeysModel } from "miracle-tv-server/db/models/StreamKeys";
 import { UsersModel } from "miracle-tv-server/db/models/Users";
 import { connection } from "miracle-tv-server/db/setup-db";
 import { ChanelsModel } from "miracle-tv-server/db/models/Channels";
+import { ChannelAccessKeysModel } from "miracle-tv-server/db/models/ChannelAccesKeys";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { DbChannelStatus } from "miracle-tv-server/db/models/types";
 import Url from "url-parse";
+import { head, last } from "ramda";
 
 export const getOSSRSKey = (queryParam: string) => {
   // Needed for url-parse to parse our query params
@@ -17,6 +19,26 @@ export const getOSSRSKey = (queryParam: string) => {
 export const getOMEKey = (url: string) => {
   const urlParsed = new Url(url, true);
   return (urlParsed as any).query.key as string;
+};
+
+export const getOMEToken = (url: string) => {
+  const urlParsed = new Url(url, true);
+  return (urlParsed as any).query.token as string;
+};
+
+export const getOMEChannel = (url: string) => {
+  const urlParsed = new Url(url, true);
+  return head(
+    last((urlParsed as any).query.pathname.split("/")).split("_")
+  ) as string;
+};
+
+export const checkChannelAccess = async (key: string) => {
+  const con = await connection();
+  const accessKeys = new ChannelAccessKeysModel(con);
+
+  const hasAccessToChannel = accessKeys.checkAccessKey(key);
+  return hasAccessToChannel;
 };
 
 export const getNginxKey = (req: Request, res: Response) => {

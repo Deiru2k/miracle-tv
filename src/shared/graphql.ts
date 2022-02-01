@@ -105,6 +105,11 @@ export type AuthRightConfig = {
   unit: AccessUnit;
 };
 
+export type AuthorizeChannelAccessInput = {
+  channelId: Scalars["ID"];
+  password: Scalars["String"];
+};
+
 export type ChangePasswordInput = {
   currentPassword: Scalars["String"];
   newPassword: Scalars["String"];
@@ -116,13 +121,24 @@ export type Channel = {
   description?: Maybe<Scalars["String"]>;
   disabled: Scalars["Boolean"];
   id: Scalars["ID"];
+  mature: Scalars["Boolean"];
+  matureDescription?: Maybe<Scalars["String"]>;
   meta?: Maybe<ChannelMeta>;
   name: Scalars["String"];
+  passwordProtected: Scalars["Boolean"];
   shelved: Scalars["Boolean"];
   slug?: Maybe<Scalars["String"]>;
   status?: Maybe<ChannelStatus>;
   thumbnail?: Maybe<File>;
   user?: Maybe<User>;
+};
+
+export type ChannelAccessKey = {
+  __typename?: "ChannelAccessKey";
+  channel: Scalars["ID"];
+  createdAt?: Maybe<Scalars["DateTime"]>;
+  expiresAt?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
 };
 
 export type ChannelMeta = {
@@ -132,9 +148,10 @@ export type ChannelMeta = {
 
 export type ChannelStatus = {
   __typename?: "ChannelStatus";
+  createdAt?: Maybe<Scalars["DateTime"]>;
   id?: Maybe<Scalars["ID"]>;
   isLive?: Maybe<Scalars["Boolean"]>;
-  length?: Maybe<Scalars["Int"]>;
+  transferred?: Maybe<Scalars["Int"]>;
   viewers?: Maybe<Scalars["Int"]>;
 };
 
@@ -144,6 +161,7 @@ export type ChannelsQueryFilter = {
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["ID"]>;
   ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  mature?: InputMaybe<Scalars["Boolean"]>;
   name?: InputMaybe<Scalars["String"]>;
   slug?: InputMaybe<Scalars["String"]>;
   userId?: InputMaybe<Scalars["ID"]>;
@@ -160,7 +178,11 @@ export type CreateActivityInput = {
 export type CreateChannelInput = {
   activityId?: InputMaybe<Scalars["ID"]>;
   description?: InputMaybe<Scalars["String"]>;
+  mature: Scalars["Boolean"];
+  matureDescription?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
+  password?: InputMaybe<Scalars["String"]>;
+  passwordProtected: Scalars["Boolean"];
   slug?: InputMaybe<Scalars["String"]>;
   thumbnail?: InputMaybe<Scalars["ID"]>;
   userId?: InputMaybe<Scalars["ID"]>;
@@ -234,9 +256,11 @@ export type InfoResponse = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  authorizeChannelAccess: ChannelAccessKey;
   bulkDeleteRoles: Scalars["Boolean"];
   bulkRevokeStreamKeys: Scalars["Boolean"];
   changeSelfPassword?: Maybe<Scalars["Boolean"]>;
+  checkAccessKey: Scalars["Boolean"];
   createActivity: Activity;
   createChannel: Channel;
   createRole: Role;
@@ -283,6 +307,10 @@ export type Mutation = {
   uploadFile: File;
 };
 
+export type MutationAuthorizeChannelAccessArgs = {
+  input?: InputMaybe<AuthorizeChannelAccessInput>;
+};
+
 export type MutationBulkDeleteRolesArgs = {
   ids: Array<InputMaybe<Scalars["ID"]>>;
 };
@@ -293,6 +321,10 @@ export type MutationBulkRevokeStreamKeysArgs = {
 
 export type MutationChangeSelfPasswordArgs = {
   input?: InputMaybe<ChangePasswordInput>;
+};
+
+export type MutationCheckAccessKeyArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationCreateActivityArgs = {
@@ -499,6 +531,7 @@ export type Query = {
   roles: Array<Maybe<Role>>;
   self: User;
   selfAccount: UserAccountDetails;
+  selfChannel?: Maybe<SelfChannel>;
   selfChannels: Array<Maybe<Channel>>;
   selfSessions?: Maybe<Array<Maybe<Session>>>;
   selfStreamKeys: Array<Maybe<StreamKey>>;
@@ -592,6 +625,10 @@ export type QueryRolesArgs = {
   limit?: InputMaybe<QueryLimit>;
 };
 
+export type QuerySelfChannelArgs = {
+  id: Scalars["ID"];
+};
+
 export type QuerySelfChannelsArgs = {
   filter?: InputMaybe<ChannelsQueryFilter>;
 };
@@ -673,6 +710,25 @@ export type RolesFilter = {
   ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   name?: InputMaybe<Scalars["String"]>;
   parentId?: InputMaybe<Scalars["ID"]>;
+};
+
+export type SelfChannel = {
+  __typename?: "SelfChannel";
+  activity?: Maybe<Activity>;
+  description?: Maybe<Scalars["String"]>;
+  disabled: Scalars["Boolean"];
+  id: Scalars["ID"];
+  mature: Scalars["Boolean"];
+  matureDescription?: Maybe<Scalars["String"]>;
+  meta?: Maybe<ChannelMeta>;
+  name: Scalars["String"];
+  password?: Maybe<Scalars["String"]>;
+  passwordProtected: Scalars["Boolean"];
+  shelved: Scalars["Boolean"];
+  slug?: Maybe<Scalars["String"]>;
+  status?: Maybe<ChannelStatus>;
+  thumbnail?: Maybe<File>;
+  user?: Maybe<User>;
 };
 
 export type ServerConfig = {
@@ -781,7 +837,11 @@ export type UpdateChannelInput = {
   activityId?: InputMaybe<Scalars["ID"]>;
   description?: InputMaybe<Scalars["String"]>;
   id: Scalars["ID"];
+  mature?: InputMaybe<Scalars["Boolean"]>;
+  matureDescription?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
+  password?: InputMaybe<Scalars["String"]>;
+  passwordProtected: Scalars["Boolean"];
   slug?: InputMaybe<Scalars["String"]>;
   thumbnail?: InputMaybe<Scalars["ID"]>;
 };
@@ -1020,9 +1080,11 @@ export type ResolversTypes = {
   ActivityFilter: ActivityFilter;
   ActivityLimit: ActivityLimit;
   AuthRightConfig: AuthRightConfig;
+  AuthorizeChannelAccessInput: AuthorizeChannelAccessInput;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   ChangePasswordInput: ChangePasswordInput;
   Channel: ResolverTypeWrapper<Channel>;
+  ChannelAccessKey: ResolverTypeWrapper<ChannelAccessKey>;
   ChannelMeta: ResolverTypeWrapper<ChannelMeta>;
   ChannelStatus: ResolverTypeWrapper<ChannelStatus>;
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -1050,6 +1112,7 @@ export type ResolversTypes = {
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
   RolesFilter: RolesFilter;
+  SelfChannel: ResolverTypeWrapper<SelfChannel>;
   ServerConfig: ResolverTypeWrapper<ServerConfig>;
   Session: ResolverTypeWrapper<Session>;
   SessionResponse: ResolverTypeWrapper<SessionResponse>;
@@ -1096,9 +1159,11 @@ export type ResolversParentTypes = {
   ActivityFilter: ActivityFilter;
   ActivityLimit: ActivityLimit;
   AuthRightConfig: AuthRightConfig;
+  AuthorizeChannelAccessInput: AuthorizeChannelAccessInput;
   Boolean: Scalars["Boolean"];
   ChangePasswordInput: ChangePasswordInput;
   Channel: Channel;
+  ChannelAccessKey: ChannelAccessKey;
   ChannelMeta: ChannelMeta;
   ChannelStatus: ChannelStatus;
   ChannelsQueryFilter: ChannelsQueryFilter;
@@ -1124,6 +1189,7 @@ export type ResolversParentTypes = {
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
   RolesFilter: RolesFilter;
+  SelfChannel: SelfChannel;
   ServerConfig: ServerConfig;
   Session: Session;
   SessionResponse: SessionResponse;
@@ -1265,12 +1331,23 @@ export type ChannelResolvers<
   >;
   disabled?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  mature?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  matureDescription?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
   meta?: Resolver<
     Maybe<ResolversTypes["ChannelMeta"]>,
     ParentType,
     ContextType
   >;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  passwordProtected?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType
+  >;
   shelved?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   status?: Resolver<
@@ -1280,6 +1357,25 @@ export type ChannelResolvers<
   >;
   thumbnail?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ChannelAccessKeyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ChannelAccessKey"] = ResolversParentTypes["ChannelAccessKey"]
+> = {
+  channel?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  createdAt?: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
+  expiresAt?: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1295,9 +1391,14 @@ export type ChannelStatusResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["ChannelStatus"] = ResolversParentTypes["ChannelStatus"]
 > = {
+  createdAt?: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   isLive?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  length?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  transferred?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   viewers?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1387,6 +1488,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
 > = {
+  authorizeChannelAccess?: Resolver<
+    ResolversTypes["ChannelAccessKey"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAuthorizeChannelAccessArgs, never>
+  >;
   bulkDeleteRoles?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
@@ -1404,6 +1511,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationChangeSelfPasswordArgs, never>
+  >;
+  checkAccessKey?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCheckAccessKeyArgs, "id">
   >;
   createActivity?: Resolver<
     ResolversTypes["Activity"],
@@ -1773,6 +1886,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  selfChannel?: Resolver<
+    Maybe<ResolversTypes["SelfChannel"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySelfChannelArgs, "id">
+  >;
   selfChannels?: Resolver<
     Array<Maybe<ResolversTypes["Channel"]>>,
     ParentType,
@@ -1902,6 +2021,52 @@ export type RoleResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   parentId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SelfChannelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["SelfChannel"] = ResolversParentTypes["SelfChannel"]
+> = {
+  activity?: Resolver<
+    Maybe<ResolversTypes["Activity"]>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  disabled?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  mature?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  matureDescription?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  meta?: Resolver<
+    Maybe<ResolversTypes["ChannelMeta"]>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  password?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  passwordProtected?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType
+  >;
+  shelved?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  status?: Resolver<
+    Maybe<ResolversTypes["ChannelStatus"]>,
+    ParentType,
+    ContextType
+  >;
+  thumbnail?: Resolver<Maybe<ResolversTypes["File"]>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2129,6 +2294,7 @@ export type Resolvers<ContextType = any> = {
   Actions?: ActionsResolvers<ContextType>;
   Activity?: ActivityResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
+  ChannelAccessKey?: ChannelAccessKeyResolvers<ContextType>;
   ChannelMeta?: ChannelMetaResolvers<ContextType>;
   ChannelStatus?: ChannelStatusResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -2139,6 +2305,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   ResetUserPasswordReturn?: ResetUserPasswordReturnResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
+  SelfChannel?: SelfChannelResolvers<ContextType>;
   ServerConfig?: ServerConfigResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
   SessionResponse?: SessionResponseResolvers<ContextType>;
@@ -2382,6 +2549,9 @@ export type AdminChannelsQuery = {
         slug?: string | null | undefined;
         disabled: boolean;
         shelved: boolean;
+        mature: boolean;
+        passwordProtected: boolean;
+        matureDescription?: string | null | undefined;
         user?:
           | {
               __typename?: "User";
@@ -4089,6 +4259,9 @@ export type ChannelViewFragment = {
   name: string;
   description?: string | null | undefined;
   slug?: string | null | undefined;
+  mature: boolean;
+  matureDescription?: string | null | undefined;
+  passwordProtected: boolean;
   thumbnail?:
     | { __typename?: "File"; id?: string | null | undefined; filename: string }
     | null
@@ -4443,6 +4616,9 @@ export type UserProfileFragment = {
               name: string;
               description?: string | null | undefined;
               slug?: string | null | undefined;
+              mature: boolean;
+              matureDescription?: string | null | undefined;
+              passwordProtected: boolean;
               thumbnail?:
                 | {
                     __typename?: "File";
@@ -4608,21 +4784,44 @@ export type RevokeSelfStreamKeysMutation = {
   revokeAllStreamKeys: boolean;
 };
 
+export type ChannelDashboardStatusQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type ChannelDashboardStatusQuery = {
+  __typename?: "Query";
+  channelStatus?:
+    | {
+        __typename?: "ChannelStatus";
+        id?: string | null | undefined;
+        isLive?: boolean | null | undefined;
+        viewers?: number | null | undefined;
+        createdAt?: any | null | undefined;
+        transferred?: number | null | undefined;
+      }
+    | null
+    | undefined;
+};
+
 export type UserSettingsChannelQueryVariables = Exact<{
   id: Scalars["ID"];
 }>;
 
 export type UserSettingsChannelQuery = {
   __typename?: "Query";
-  channel?:
+  selfChannel?:
     | {
-        __typename?: "Channel";
+        __typename?: "SelfChannel";
         id: string;
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
         disabled: boolean;
         shelved: boolean;
+        mature: boolean;
+        matureDescription?: string | null | undefined;
+        passwordProtected: boolean;
+        password?: string | null | undefined;
         user?:
           | {
               __typename?: "User";
@@ -4676,6 +4875,9 @@ export type EditChannelMutation = {
     slug?: string | null | undefined;
     disabled: boolean;
     shelved: boolean;
+    mature: boolean;
+    passwordProtected: boolean;
+    matureDescription?: string | null | undefined;
     user?:
       | {
           __typename?: "User";
@@ -4783,6 +4985,9 @@ export type UserSettingsChannelsQuery = {
         slug?: string | null | undefined;
         disabled: boolean;
         shelved: boolean;
+        mature: boolean;
+        passwordProtected: boolean;
+        matureDescription?: string | null | undefined;
         user?:
           | {
               __typename?: "User";
@@ -4846,6 +5051,9 @@ export type UserSettingsCreateChannelMutation = {
     slug?: string | null | undefined;
     disabled: boolean;
     shelved: boolean;
+    mature: boolean;
+    passwordProtected: boolean;
+    matureDescription?: string | null | undefined;
     user?:
       | {
           __typename?: "User";
@@ -5330,6 +5538,50 @@ export type ChannelCommonFragment = {
     | undefined;
 };
 
+export type SelfChannelFullFragment = {
+  __typename?: "SelfChannel";
+  id: string;
+  name: string;
+  description?: string | null | undefined;
+  slug?: string | null | undefined;
+  disabled: boolean;
+  shelved: boolean;
+  mature: boolean;
+  matureDescription?: string | null | undefined;
+  passwordProtected: boolean;
+  password?: string | null | undefined;
+  user?:
+    | {
+        __typename?: "User";
+        id?: string | null | undefined;
+        username: string;
+        displayName?: string | null | undefined;
+      }
+    | null
+    | undefined;
+  thumbnail?:
+    | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  activity?:
+    | {
+        __typename?: "Activity";
+        id: string;
+        name: string;
+        verb?: string | null | undefined;
+        icon?:
+          | {
+              __typename?: "File";
+              id?: string | null | undefined;
+              filename: string;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
+
 export type ChannelFullFragment = {
   __typename?: "Channel";
   id: string;
@@ -5338,6 +5590,9 @@ export type ChannelFullFragment = {
   slug?: string | null | undefined;
   disabled: boolean;
   shelved: boolean;
+  mature: boolean;
+  passwordProtected: boolean;
+  matureDescription?: string | null | undefined;
   user?:
     | {
         __typename?: "User";
@@ -5613,6 +5868,30 @@ export type CurrentUserSettingsQuery = {
   };
 };
 
+export type CheckChannelAccessMutationVariables = Exact<{
+  token: Scalars["ID"];
+}>;
+
+export type CheckChannelAccessMutation = {
+  __typename?: "Mutation";
+  checkAccessKey: boolean;
+};
+
+export type GetAccessKeyMutationVariables = Exact<{
+  channelId: Scalars["ID"];
+  password: Scalars["String"];
+}>;
+
+export type GetAccessKeyMutation = {
+  __typename?: "Mutation";
+  authorizeChannelAccess: {
+    __typename?: "ChannelAccessKey";
+    id: string;
+    channel: string;
+    expiresAt?: any | null | undefined;
+  };
+};
+
 export type ServerConfigInfoQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ServerConfigInfoQuery = {
@@ -5665,6 +5944,9 @@ export type ChannelPageQuery = {
         name: string;
         description?: string | null | undefined;
         slug?: string | null | undefined;
+        mature: boolean;
+        matureDescription?: string | null | undefined;
+        passwordProtected: boolean;
         thumbnail?:
           | {
               __typename?: "File";
@@ -5884,6 +6166,9 @@ export type UserPageQuery = {
                     name: string;
                     description?: string | null | undefined;
                     slug?: string | null | undefined;
+                    mature: boolean;
+                    matureDescription?: string | null | undefined;
+                    passwordProtected: boolean;
                     thumbnail?:
                       | {
                           __typename?: "File";

@@ -1,12 +1,15 @@
 import { Router } from "express";
 import {
   checkChannel,
-  getNginxKey,
+  checkChannelAccess,
+  getChannel,
+  getOMEChannel,
   getOMEKey,
+  getOMEToken,
   getStreamKey,
   getUser,
-  updateChannelStatus,
 } from "./common";
+import { Request, Response } from "express";
 
 const webhooks = Router();
 
@@ -16,7 +19,7 @@ type OMERequest = {
     port: number;
   };
   request: {
-    direction: "incoming | outgoing";
+    direction: "incoming" | "outgoing";
     protocol: "webrtc" | "rtmp" | "srt" | "hls" | "dash" | "lldash";
     url: string;
     time: string;
@@ -39,7 +42,10 @@ const allowedResponse: OMEResponse = {
   reason: "Allowed",
 };
 
-webhooks.post("/hook", async (req, res) => {
+const handleIncoming = async (
+  req: Request,
+  res: Response
+): Promise<undefined> => {
   const key = getOMEKey((req.body as OMERequest).request.url);
   const streamKey = await getStreamKey(key);
   // If there's no stream key, deny the stream.
@@ -63,6 +69,35 @@ webhooks.post("/hook", async (req, res) => {
   }
 
   res.status(200).send(allowedResponse);
+};
+
+const handleOutgoing = async (
+  req: Request,
+  res: Response
+): Promise<undefined> => {
+  const token = getOMEToken((req.body as OMERequest).request.url);
+  const channelId = getOMEChannel((req.body as OMERequest).request.url);
+  const channel = await getChannel(channelId);
+
+  if (token && channel?.passwordProtected) {
+    const hasAccess = checkChannelAccess(token);
+    if (hasAccess) {
+      res.status(200).send(allowedResponse);
+      return;
+    } else {
+      res.status(200).send(unathorizedResponse);
+    }
+  }
+  res.status(200).send(allowedResponse);
+};
+
+webhooks.post("/hook", async (req, res) => {
+  const body = req.body as OMERequest;
+  if (body.request.direction === "incoming") {
+    return await handleIncoming(req, res);
+  } else if (body.request.direction === "outgoing") {
+    return await handleOutgoing(req, res);
+  }
 });
 
 export default webhooks;

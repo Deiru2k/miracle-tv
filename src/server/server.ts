@@ -17,7 +17,7 @@ const main = async () => {
   app.use(Express.urlencoded());
 
   const prefix = pathPrefix ? `/${pathPrefix}/` : "/";
-  app.set('trust proxy', true)
+  app.set("trust proxy", true);
   app.use(Express.json());
   app.use(graphqlUploadExpress());
   app.use(`${prefix}media/`, Express.static(`${dataDir}/media`));

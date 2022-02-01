@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
-import { FormTextarea } from "miracle-tv-client/components/form/FormTextarea";
 import { FormActivitesSelect } from "miracle-tv-client/components/form/selects/FormActivitiesSelect";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { FormGroup } from "miracle-tv-client/components/form/FormGroup";

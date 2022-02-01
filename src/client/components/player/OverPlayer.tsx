@@ -10,6 +10,8 @@ type Props = {
   initialVolume?: number;
   setCurrentSource?: (index: number) => void;
   playerRef: React.MutableRefObject<any>;
+  accessToken?: string;
+  muted?: boolean;
 };
 
 export const OvenPlayer = ({
@@ -18,6 +20,8 @@ export const OvenPlayer = ({
   setCurrentSource,
   initialVolume = 100,
   initialQuality,
+  accessToken,
+  muted = false,
 }: Props) => {
   const { omeEnabled, isLoading } = useServerConfig();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -29,12 +33,16 @@ export const OvenPlayer = ({
 
   const sources = useMemo(() => {
     if (!isLoading) {
+      let accessParam = "";
+      if (accessToken) {
+        accessParam = `?token=${accessToken}`;
+      }
       return omeEnabled
         ? [
             {
               label: "Original Quality",
               type: "webrtc",
-              file: `wss://${location.hostname}/webrtc/live/${channelId}`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}${accessParam}`,
             },
             /* {
              *   label: "1080p",
@@ -49,7 +57,7 @@ export const OvenPlayer = ({
             {
               label: "360p",
               type: "webrtc",
-              file: `wss://${location.hostname}/webrtc/live/${channelId}_360`,
+              file: `wss://${location.hostname}/webrtc/live/${channelId}_360${accessParam}`,
             },
           ]
         : {
@@ -59,7 +67,7 @@ export const OvenPlayer = ({
           };
     }
     return null;
-  }, [omeEnabled, isLoading, streamSrc]);
+  }, [omeEnabled, isLoading, streamSrc, accessToken]);
 
   useEffect(() => {
     if (videoRef.current && sources) {
@@ -68,6 +76,7 @@ export const OvenPlayer = ({
         autoStart: true,
         controls: false,
         showBigPlayButton: false,
+        muted: muted,
         webrtcConfig: {
           timeoutMaxRetry: 10,
           connectionTimeout: 5000,

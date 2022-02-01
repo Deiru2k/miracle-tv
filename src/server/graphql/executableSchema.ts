@@ -42,6 +42,8 @@ import {
   userResolver,
 } from "./resolvers/users";
 import { DocumentNode, GraphQLSchema } from "graphql";
+import { channelAccessMutations } from "./mutations/channel-access";
+import { channelAccessKeyResolver } from "./resolvers/channel-access";
 
 export const createExecutableSchema = (schema: DocumentNode): GraphQLSchema => {
   let executableSchema = makeExecutableSchema({
@@ -78,15 +80,18 @@ export const createExecutableSchema = (schema: DocumentNode): GraphQLSchema => {
         ...activitiesMutations,
         ...rolesMutations,
         ...fullUserMutations,
+        ...channelAccessMutations,
       },
       User: userResolver,
       FullUser: fullUserEntityResolver,
       UserSettings: settingsResolver,
       Session: sessionResolver,
       Channel: channelResolver,
+      SelfChannel: channelResolver,
       Activity: activityEntityResolver,
       Role: roleResolvers,
       StreamKey: streamKeysResolver,
+      ChannelAccessKey: channelAccessKeyResolver,
     },
   });
 

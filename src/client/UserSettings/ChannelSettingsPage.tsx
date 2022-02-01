@@ -1,7 +1,5 @@
 import {
-  Box,
   Button,
-  Collapse,
   Fade,
   Flex,
   Heading,
@@ -34,8 +32,8 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import ChatOverlay from "src/pages/overlay/chat/[channelId]";
 import { ChatOverlaySettings } from "./ChannelOverlay";
+import { ChannelDashboard } from "./ChannelDashboard";
 
 type Props = {
   tab?: string;
@@ -47,6 +45,7 @@ const tabs = {
   details: "Details",
   keys: "Keys",
   overlay: "Overlay",
+  dashboard: "Dashboard",
 };
 
 gql`
@@ -67,7 +66,7 @@ export const ChannelSettingsPage = ({
   const { currentUser, checkRights } = useCurrentUser();
   const { push } = useRouter();
 
-  const { data: { channel } = {} } = useUserSettingsChannelQuery({
+  const { data: { selfChannel: channel } = {} } = useUserSettingsChannelQuery({
     variables: { id: channelId },
   });
 
@@ -210,6 +209,9 @@ export const ChannelSettingsPage = ({
           </TabPanel>
           <TabPanel px={0}>
             <ChatOverlaySettings channelId={channelId} />
+          </TabPanel>
+          <TabPanel px={0}>
+            <ChannelDashboard channelId={channelId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

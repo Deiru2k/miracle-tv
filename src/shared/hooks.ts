@@ -208,6 +208,9 @@ export const ChannelViewFragmentDoc = gql`
     name
     description
     slug
+    mature
+    matureDescription
+    passwordProtected
     thumbnail {
       id
       filename
@@ -300,6 +303,38 @@ export const UserSettingsProfileFragmentFragmentDoc = gql`
     }
   }
 `;
+export const SelfChannelFullFragmentDoc = gql`
+  fragment SelfChannelFull on SelfChannel {
+    id
+    name
+    description
+    slug
+    disabled
+    shelved
+    mature
+    matureDescription
+    passwordProtected
+    password
+    user {
+      id
+      username
+      displayName
+    }
+    thumbnail {
+      id
+      filename
+    }
+    activity {
+      id
+      name
+      verb
+      icon {
+        id
+        filename
+      }
+    }
+  }
+`;
 export const ChannelFullFragmentDoc = gql`
   fragment ChannelFull on Channel {
     id
@@ -308,6 +343,9 @@ export const ChannelFullFragmentDoc = gql`
     slug
     disabled
     shelved
+    mature
+    passwordProtected
+    matureDescription
     user {
       id
       username
@@ -2231,7 +2269,7 @@ export type BulkUnsilenceUsersMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const DashboardChannelsDocument = gql`
   query DashboardChannels {
-    channels(limit: { limit: 25 }) {
+    channels(filter: { mature: false }, limit: { limit: 25 }) {
       ...ChannelCommon
     }
   }
@@ -2831,13 +2869,75 @@ export type RevokeSelfStreamKeysMutationOptions = Apollo.BaseMutationOptions<
   Types.RevokeSelfStreamKeysMutation,
   Types.RevokeSelfStreamKeysMutationVariables
 >;
-export const UserSettingsChannelDocument = gql`
-  query UserSettingsChannel($id: ID!) {
-    channel(id: $id) {
-      ...ChannelFull
+export const ChannelDashboardStatusDocument = gql`
+  query ChannelDashboardStatus($id: ID!) {
+    channelStatus(id: $id) {
+      id
+      isLive
+      viewers
+      createdAt
+      transferred
     }
   }
-  ${ChannelFullFragmentDoc}
+`;
+
+/**
+ * __useChannelDashboardStatusQuery__
+ *
+ * To run a query within a React component, call `useChannelDashboardStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelDashboardStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelDashboardStatusQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useChannelDashboardStatusQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    Types.ChannelDashboardStatusQuery,
+    Types.ChannelDashboardStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    Types.ChannelDashboardStatusQuery,
+    Types.ChannelDashboardStatusQueryVariables
+  >(ChannelDashboardStatusDocument, options);
+}
+export function useChannelDashboardStatusLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    Types.ChannelDashboardStatusQuery,
+    Types.ChannelDashboardStatusQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    Types.ChannelDashboardStatusQuery,
+    Types.ChannelDashboardStatusQueryVariables
+  >(ChannelDashboardStatusDocument, options);
+}
+export type ChannelDashboardStatusQueryHookResult = ReturnType<
+  typeof useChannelDashboardStatusQuery
+>;
+export type ChannelDashboardStatusLazyQueryHookResult = ReturnType<
+  typeof useChannelDashboardStatusLazyQuery
+>;
+export type ChannelDashboardStatusQueryResult = Apollo.QueryResult<
+  Types.ChannelDashboardStatusQuery,
+  Types.ChannelDashboardStatusQueryVariables
+>;
+export const UserSettingsChannelDocument = gql`
+  query UserSettingsChannel($id: ID!) {
+    selfChannel(id: $id) {
+      ...SelfChannelFull
+    }
+  }
+  ${SelfChannelFullFragmentDoc}
 `;
 
 /**
@@ -4518,6 +4618,109 @@ export type CurrentUserSettingsLazyQueryHookResult = ReturnType<
 export type CurrentUserSettingsQueryResult = Apollo.QueryResult<
   Types.CurrentUserSettingsQuery,
   Types.CurrentUserSettingsQueryVariables
+>;
+export const CheckChannelAccessDocument = gql`
+  mutation CheckChannelAccess($token: ID!) {
+    checkAccessKey(id: $token)
+  }
+`;
+export type CheckChannelAccessMutationFn = Apollo.MutationFunction<
+  Types.CheckChannelAccessMutation,
+  Types.CheckChannelAccessMutationVariables
+>;
+
+/**
+ * __useCheckChannelAccessMutation__
+ *
+ * To run a mutation, you first call `useCheckChannelAccessMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckChannelAccessMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkChannelAccessMutation, { data, loading, error }] = useCheckChannelAccessMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useCheckChannelAccessMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.CheckChannelAccessMutation,
+    Types.CheckChannelAccessMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.CheckChannelAccessMutation,
+    Types.CheckChannelAccessMutationVariables
+  >(CheckChannelAccessDocument, options);
+}
+export type CheckChannelAccessMutationHookResult = ReturnType<
+  typeof useCheckChannelAccessMutation
+>;
+export type CheckChannelAccessMutationResult =
+  Apollo.MutationResult<Types.CheckChannelAccessMutation>;
+export type CheckChannelAccessMutationOptions = Apollo.BaseMutationOptions<
+  Types.CheckChannelAccessMutation,
+  Types.CheckChannelAccessMutationVariables
+>;
+export const GetAccessKeyDocument = gql`
+  mutation GetAccessKey($channelId: ID!, $password: String!) {
+    authorizeChannelAccess(
+      input: { channelId: $channelId, password: $password }
+    ) {
+      id
+      channel
+      expiresAt
+    }
+  }
+`;
+export type GetAccessKeyMutationFn = Apollo.MutationFunction<
+  Types.GetAccessKeyMutation,
+  Types.GetAccessKeyMutationVariables
+>;
+
+/**
+ * __useGetAccessKeyMutation__
+ *
+ * To run a mutation, you first call `useGetAccessKeyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetAccessKeyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getAccessKeyMutation, { data, loading, error }] = useGetAccessKeyMutation({
+ *   variables: {
+ *      channelId: // value for 'channelId'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useGetAccessKeyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.GetAccessKeyMutation,
+    Types.GetAccessKeyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.GetAccessKeyMutation,
+    Types.GetAccessKeyMutationVariables
+  >(GetAccessKeyDocument, options);
+}
+export type GetAccessKeyMutationHookResult = ReturnType<
+  typeof useGetAccessKeyMutation
+>;
+export type GetAccessKeyMutationResult =
+  Apollo.MutationResult<Types.GetAccessKeyMutation>;
+export type GetAccessKeyMutationOptions = Apollo.BaseMutationOptions<
+  Types.GetAccessKeyMutation,
+  Types.GetAccessKeyMutationVariables
 >;
 export const ServerConfigInfoDocument = gql`
   query ServerConfigInfo {

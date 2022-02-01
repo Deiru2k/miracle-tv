@@ -1,6 +1,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { changePassword } from "./commands/change-password";
+import { fixMatureChannels } from "./commands/fix-mature-channels";
 import { fixShelvedChannels } from "./commands/fix-shelved-channels";
 import { fixUserFlags } from "./commands/fix-user-flags";
 import { makeAdmin } from "./commands/make-admin";
@@ -39,6 +40,16 @@ yargs(hideBin(process.argv))
     command: "fix-shelved-channels",
     describe: "Make all channels unshelved",
     handler: fixShelvedChannels,
+  })
+  .command({
+    command: "fix-mature-channels",
+    describe: "Make all channels unmarked as mature",
+    handler: fixMatureChannels,
+  })
+  .command({
+    command: "fix-password-protection",
+    describe: "Remove password protection from all channels",
+    handler: fixMatureChannels,
   })
   .demandCommand()
   .help().argv;

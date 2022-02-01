@@ -40,6 +40,7 @@ export type DbChannel = Omit<Channel, "activity" | "user"> & {
   userId: string;
   disabled: boolean;
   shelved: boolean;
+  password?: string;
 };
 
 export type DbFile = File;

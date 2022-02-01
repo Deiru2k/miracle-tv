@@ -14,6 +14,7 @@ const tables: string[] = [
   "subscriptions",
   "roles",
   "files",
+  "channel-access-keys",
 ];
 
 export const connection = () =>

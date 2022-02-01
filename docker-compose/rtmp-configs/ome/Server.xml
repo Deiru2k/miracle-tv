@@ -152,6 +152,7 @@
         <Timeout>3000</Timeout>
         <Enables>
           <Providers>rtmp</Providers>
+          <Publishers>webrtc</Publishers>
         </Enables>
       </AdmissionWebhooks>
     </VirtualHost>

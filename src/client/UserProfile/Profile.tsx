@@ -13,12 +13,14 @@ import {
   ChannelViewStatusFragment,
   UserProfileFragment,
 } from "miracle-tv-shared/graphql";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import getConfig from "next/config";
 import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
 import { getMediaURL } from "miracle-tv-shared/media";
 import { Markdown } from "miracle-tv-client/components/ui/Markdown";
+import { AgeGate } from "miracle-tv-client/components/ui/AgeGate";
+import { useAgeGate } from "miracle-tv-client/hooks/ageGate";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -86,7 +88,19 @@ export const UserProfile = ({
     [statuses]
   );
 
-  return (
+  const [checkMature, setCheckMature] = useAgeGate(
+    user.settings.singleUserChannel?.id
+  );
+  const onAgeSet = useCallback(() => {
+    setCheckMature(true);
+  }, [setCheckMature]);
+
+  return user.settings.singleUserChannel?.mature && !checkMature ? (
+    <AgeGate
+      description={user.settings.singleUserChannel?.matureDescription}
+      onAgeSet={onAgeSet}
+    />
+  ) : (
     <>
       {user?.settings?.singleUserMode && user?.settings?.singleUserChannel && (
         <ChannelPlayerView
