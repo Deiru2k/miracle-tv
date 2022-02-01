@@ -44,7 +44,7 @@ export const checkChannelAccess = async (key: string) => {
   const con = await connection();
   const accessKeys = new ChannelAccessKeysModel(con);
 
-  const hasAccessToChannel = accessKeys.checkAccessKey(key);
+  const hasAccessToChannel = await accessKeys.checkAccessKey(key);
   return hasAccessToChannel;
 };
 
