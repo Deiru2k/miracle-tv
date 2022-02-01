@@ -23,6 +23,8 @@ import { AgeGate } from "miracle-tv-client/components/ui/AgeGate";
 import { useAgeGate } from "miracle-tv-client/hooks/ageGate";
 import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
 import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
+import { DateTime } from "luxon";
+import { ChannelLiveTimer } from "miracle-tv-client/components/ui/channels/ChannelLiveTimer";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -106,6 +108,18 @@ export const UserProfile = ({
     [setAccessKey]
   );
 
+  const singleUserStatus: ChannelViewStatusFragment | null = useMemo(
+    () => statusesMap[user?.settings?.singleUserChannel?.id],
+    [user?.settings?.singleUserChannel, statusesMap]
+  );
+
+  const createdAt: DateTime | null = useMemo(() => {
+    if (singleUserStatus?.createdAt) {
+      return DateTime.fromISO(singleUserStatus?.createdAt);
+    }
+    return null;
+  }, [singleUserStatus]);
+
   if (user.settings.singleUserChannel?.mature && !checkMature) {
     return (
       <AgeGate
@@ -162,12 +176,17 @@ export const UserProfile = ({
                       )}
                     />
                   )}
-                  <Flex align="center">
+                  <Flex align="center" mr={2}>
                     <Text textTransform="capitalize">
                       {user?.settings?.singleUserChannel?.activity?.verb}{" "}
                       {user?.settings?.singleUserChannel?.activity?.name}
                     </Text>
                   </Flex>
+                </Flex>
+              )}
+              {singleUserStatus?.isLive && (
+                <Flex align="center">
+                  <ChannelLiveTimer createdAt={createdAt} />
                 </Flex>
               )}
             </Flex>

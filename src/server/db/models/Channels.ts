@@ -27,6 +27,8 @@ export class ChanelsModel extends Model {
         ...input,
         disabled: false,
         shelved: false,
+        mature: false,
+        passwordProtected: false,
         userId,
       })
       .run(this.conn)

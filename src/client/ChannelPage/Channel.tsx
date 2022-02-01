@@ -15,7 +15,7 @@ import {
   ChannelViewFragment,
   ChannelViewStatusFragment,
 } from "miracle-tv-shared/graphql";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { getMediaURL } from "miracle-tv-shared/media";
 import {
@@ -33,6 +33,8 @@ import { AgeGate } from "miracle-tv-client/components/ui/AgeGate";
 import { useAgeGate } from "miracle-tv-client/hooks/ageGate";
 import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
 import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
+import { DateTime } from "luxon";
+import { ChannelLiveTimer } from "miracle-tv-client/components/ui/channels/ChannelLiveTimer";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -92,6 +94,7 @@ export const CHANNEL_VIEW_STATUS_FRAGMENT = gql`
     id
     isLive
     viewers
+    createdAt
   }
 `;
 
@@ -188,6 +191,13 @@ export const ChannelView = ({
     [setAccessKey]
   );
 
+  const createdAt = useMemo(() => {
+    if (status?.createdAt) {
+      return DateTime.fromISO(status?.createdAt);
+    }
+    return null;
+  }, [status]);
+
   if (channel.mature && !checkMature) {
     return (
       <AgeGate description={channel.matureDescription} onAgeSet={onAgeSet} />
@@ -216,7 +226,7 @@ export const ChannelView = ({
             </Heading>
             {channel.activity && (
               <>
-                <Flex align="center">
+                <Flex align="center" mr={2}>
                   {channel?.activity?.icon && (
                     <Image
                       w="1.7rem"
@@ -233,6 +243,11 @@ export const ChannelView = ({
                   </Flex>
                 </Flex>
               </>
+            )}
+            {status?.isLive && (
+              <Flex align="center">
+                <ChannelLiveTimer createdAt={createdAt} />
+              </Flex>
             )}
           </Flex>
           <Flex align="center">

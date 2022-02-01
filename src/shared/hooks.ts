@@ -143,6 +143,7 @@ export const ChannelViewStatusFragmentDoc = gql`
     id
     isLive
     viewers
+    createdAt
   }
 `;
 export const UserDirectoryProfileFragmentDoc = gql`

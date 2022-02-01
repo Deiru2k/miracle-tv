@@ -4318,6 +4318,7 @@ export type ChannelViewStatusFragment = {
   id?: string | null | undefined;
   isLive?: boolean | null | undefined;
   viewers?: number | null | undefined;
+  createdAt?: any | null | undefined;
 };
 
 export type DashboardChannelsQueryVariables = Exact<{ [key: string]: never }>;
@@ -6020,6 +6021,7 @@ export type ChannelPageStatusQuery = {
               id?: string | null | undefined;
               isLive?: boolean | null | undefined;
               viewers?: number | null | undefined;
+              createdAt?: any | null | undefined;
             }
           | null
           | undefined;
@@ -6253,6 +6255,7 @@ export type UserPageChannelStatusQuery = {
                     id?: string | null | undefined;
                     isLive?: boolean | null | undefined;
                     viewers?: number | null | undefined;
+                    createdAt?: any | null | undefined;
                   }
                 | null
                 | undefined;
