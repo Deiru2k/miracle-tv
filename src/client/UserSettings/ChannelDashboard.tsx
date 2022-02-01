@@ -100,7 +100,6 @@ export const ChannelDashboard = ({ channelId }: Props) => {
                 </Heading>
                 <Player
                   isLive={channelStatus?.isLive}
-                  sessionId={localStorage.getItem("token")}
                   channelId={channelId}
                   muted
                 />
