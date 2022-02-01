@@ -89,7 +89,7 @@ const handleOutgoing = async (
       res.status(200).send(allowedResponse);
       return;
     }
-    const hasAccess = checkChannelAccess(token ?? "");
+    const hasAccess = await checkChannelAccess(token ?? "");
     if (hasAccess) {
       res.status(200).send(allowedResponse);
       return;
