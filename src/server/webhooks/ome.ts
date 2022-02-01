@@ -81,7 +81,6 @@ const handleOutgoing = async (
   const sessionId = getOMESession((req.body as OMERequest).request.url);
   const channelId = getOMEChannel((req.body as OMERequest).request.url);
   const channel = await getChannel(channelId);
-  console.log(channel);
 
   if (channel?.passwordProtected) {
     const session = await getSession(sessionId ?? "");
