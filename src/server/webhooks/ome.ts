@@ -84,7 +84,7 @@ const handleOutgoing = async (
   console.log(channel);
 
   if (channel?.passwordProtected) {
-    const session = await getSession(sessionId);
+    const session = await getSession(sessionId ?? "");
     if (session && session.user === channel.userId) {
       res.status(200).send(allowedResponse);
       return;
