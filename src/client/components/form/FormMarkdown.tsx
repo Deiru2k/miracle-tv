@@ -6,7 +6,6 @@ import { FormTextarea, FormTextareaProps } from "./FormTextarea";
 
 export const FormMarkdown = ({ label, ...props }: FormTextareaProps) => {
   const { input } = useField(props.name);
-  console.log(input.value);
   return (
     <FormGroup name={props.name} label={label}>
       <Tabs variant="line">

@@ -25,9 +25,6 @@ export const AgeGate = ({ onAgeSet, description }: Props) => {
         `${values.year}-${values.month}-${values.day}`,
         "yyyy-M-d"
       );
-      console.log(date);
-      console.log(date.isValid);
-      console.log(Math.abs(date.diffNow("years").years));
       if (date.isValid && Math.abs(date.diffNow("years").years) >= 18) {
         onAgeSet();
       } else {

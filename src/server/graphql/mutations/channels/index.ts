@@ -43,7 +43,6 @@ export const channelMutationResolvers: MutationResolvers<ResolverContext> = {
         throw new UserInputError("This slug is already taken");
       }
     }
-    console.log(input);
     return await channels.updateChannel(input);
   },
 
