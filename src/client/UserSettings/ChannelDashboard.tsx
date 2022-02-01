@@ -97,7 +97,11 @@ export const ChannelDashboard = ({ channelId }: Props) => {
                 <Heading size="sm" mb={2}>
                   Preview
                 </Heading>
-                <Player isLive={channelStatus?.isLive} channelId={channelId} />
+                <Player
+                  isLive={channelStatus?.isLive}
+                  channelId={channelId}
+                  muted
+                />
               </Box>
             </Flex>
           </Panel>
