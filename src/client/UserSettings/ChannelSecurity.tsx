@@ -1,13 +1,10 @@
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { FormToggle } from "miracle-tv-client/components/form/FormToggle";
-import {
-  CreateChannelInput,
-  UpdateChannelInput,
-} from "miracle-tv-shared/graphql";
+import { UpdateChannelInput } from "miracle-tv-shared/graphql";
 
 type Props = {
   isDisabled?: boolean;
-  values: UpdateChannelInput | CreateChannelInput;
+  values: UpdateChannelInput;
 };
 
 export const ChannelSecurityForm = ({ isDisabled, values }: Props) => {
