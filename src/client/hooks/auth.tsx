@@ -4,6 +4,7 @@ import {
   useCurrentUserSettingsQuery,
 } from "miracle-tv-shared/hooks";
 import {
+  AccessRights,
   AccessUnit,
   CurrentUserFullQuery,
   CurrentUserSettingsQuery,
@@ -42,7 +43,7 @@ export const useCurrentUser = (): CurrentUserHookReturn => {
   const { reload } = useRouter();
 
   const checkRightsFn = useCallback(
-    (unit: AccessUnit, subject: string) => {
+    (unit: AccessUnit, subject: keyof AccessRights) => {
       return checkRight(self?.roles ?? [], unit, subject);
     },
     [self?.roles]
