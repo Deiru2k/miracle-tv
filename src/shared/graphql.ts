@@ -4984,7 +4984,7 @@ export type UserSettingsChannelsQueryVariables = Exact<{
 
 export type UserSettingsChannelsQuery = {
   __typename?: "Query";
-  channels: Array<
+  selfChannels: Array<
     | {
         __typename?: "Channel";
         id: string;

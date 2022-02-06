@@ -33,7 +33,7 @@ import Head from "next/head";
 
 gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
-    channels(filter: $filter) {
+    selfChannels(filter: $filter) {
       ...ChannelFull
     }
   }

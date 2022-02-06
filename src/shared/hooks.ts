@@ -3302,7 +3302,7 @@ export type EnableChannelMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const UserSettingsChannelsDocument = gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
-    channels(filter: $filter) {
+    selfChannels(filter: $filter) {
       ...ChannelFull
     }
   }
