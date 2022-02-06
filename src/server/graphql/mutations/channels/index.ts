@@ -24,18 +24,22 @@ export const channelMutationResolvers: MutationResolvers<ResolverContext> = {
 
   async updateChannel(_, { input }, { user, userRoles, db: { channels } }) {
     const channel = await channels.getChannelById(input.id);
-    const channelRights =
-      (user?.id === ((channel as any).userId as string) &&
-        checkRight(userRoles, AccessUnit.Self, "channels")) ||
-      checkRight(userRoles, AccessUnit.Write, "channels");
+    const hasSelfRights =
+      user?.id === ((channel as any).userId as string) &&
+      checkRight(userRoles, AccessUnit.Self, "channels");
+    const hasWriteRights = checkRight(userRoles, AccessUnit.Write, "channels");
+    let cleanInput = { ...input };
     if (!user) {
       throw new AuthenticationError();
     }
     if (!channel) {
       throw new NotFoundError("Channel not found");
     }
-    if (!channelRights) {
+    if (!hasSelfRights && !hasWriteRights) {
       throw new AuthorizationError();
+    }
+    if (!hasSelfRights && hasWriteRights) {
+      delete cleanInput.password;
     }
     if (input.slug) {
       const targetChannel = await channels.getChannelBySlug(input.slug);

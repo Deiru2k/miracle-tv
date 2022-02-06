@@ -13,7 +13,11 @@ import {
 } from "miracle-tv-client/components/ui/channels/const";
 import { ChannelBasicForm } from "./ChannelBasicForm";
 import { Box, Button, Heading, useToast } from "@chakra-ui/react";
-import { AccessUnit, UpdateChannelInput } from "miracle-tv-shared/graphql";
+import {
+  AccessUnit,
+  SelfChannelFullFragment,
+  UpdateChannelInput,
+} from "miracle-tv-shared/graphql";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { ChannelSecurityForm } from "./ChannelSecurity";
@@ -36,17 +40,15 @@ mutation EditChannel($input: UpdateChannelInput) {
 }
 `;
 
-type Props = { id: string; canViewChannel: boolean };
+type Props = {
+  id: string;
+  selfChannel: SelfChannelFullFragment;
+};
 
-export const ChannelEdit = ({ id, canViewChannel }: Props) => {
+export const ChannelEdit = ({ id, selfChannel }: Props) => {
   const toast = useToast();
 
   const { checkRights, currentUser } = useCurrentUser();
-
-  const { data: { selfChannel } = {} } = useUserSettingsChannelQuery({
-    variables: { id },
-    skip: !canViewChannel,
-  });
 
   const canEditChannel = useMemo(
     () =>

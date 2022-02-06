@@ -56,6 +56,8 @@ extend type Query {
   channelsCount(filter: ChannelsQueryFilter): Int!
   fullChannels(filter: ChannelsQueryFilter, limit: QueryLimit): [Channel]!
   fullChannelsCount(filter: ChannelsQueryFilter): Int!
+  adminChannel(id: ID!): Channel
+    @auth(rights: [{ unit: READ, subject: "channels" }])
   selfChannel(id: ID!): SelfChannel
     @auth(rights: [{ unit: SELF, subject: "channels" }])
   selfChannels(filter: ChannelsQueryFilter): [Channel]!
@@ -72,10 +74,6 @@ input CreateChannelInput {
   slug: String
   description: String
   thumbnail: ID
-  mature: Boolean!
-  passwordProtected: Boolean!
-  matureDescription: String
-  password: String
 }
 
 input UpdateChannelInput {

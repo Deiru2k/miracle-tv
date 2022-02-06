@@ -34,6 +34,10 @@ import { gql } from "@apollo/client";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatOverlaySettings } from "./ChannelOverlay";
 import { ChannelDashboard } from "./ChannelDashboard";
+import {
+  channelFragment,
+  selfChannelFragment,
+} from "miracle-tv-client/components/ui/channels/const";
 
 type Props = {
   tab?: string;
@@ -49,12 +53,19 @@ const tabs = {
 };
 
 gql`
+  query UserSettingsChannel($id: ID!) {
+    selfChannel(id: $id) {
+      ...SelfChannelFull
+    }
+  }
   mutation DisableChannel($id: ID!) {
     disableChannel(id: $id)
   }
   mutation EnableChannel($id: ID!) {
     enableChannel(id: $id)
   }
+  ${channelFragment}
+  ${selfChannelFragment}
 `;
 
 export const ChannelSettingsPage = ({
@@ -69,14 +80,6 @@ export const ChannelSettingsPage = ({
   const { data: { selfChannel: channel } = {} } = useUserSettingsChannelQuery({
     variables: { id: channelId },
   });
-
-  const canViewChannel = useMemo(
-    () =>
-      checkRights(AccessUnit.Read, "channels") ||
-      (checkRights(AccessUnit.Self, "channels") &&
-        channel?.user.id === currentUser.id),
-    [checkRights, channel, currentUser]
-  );
 
   const canViewKeys = useMemo(
     () =>
@@ -198,7 +201,7 @@ export const ChannelSettingsPage = ({
 
         <TabPanels>
           <TabPanel px={0}>
-            <ChannelEdit id={channelId} canViewChannel={canViewChannel} />
+            <ChannelEdit id={channelId} selfChannel={channel} />
           </TabPanel>
           <TabPanel px={0}>
             <ChannelKeysSettings

@@ -1,6 +1,5 @@
 import {
   AccessUnit,
-  Channel,
   ChannelResolvers,
   QueryResolvers,
   SelfChannel,
@@ -10,7 +9,6 @@ import { fileResolver } from "miracle-tv-server/graphql/resolvers/file";
 import { validate as uuidValidate } from "uuid";
 import { checkRight } from "miracle-tv-shared/acl/utils";
 import config from "miracle-tv-server/config";
-import superagent from "superagent";
 import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";
 import { getOmeStatus } from "miracle-tv-server/utils/ome";
 
@@ -42,10 +40,17 @@ export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
     }
     return await channels.getChannelBySlug(id, hasReadPermissions);
   },
-  async selfChannel(_, { id }, { db: { channels }, user }) {
-    const channel = await channels.getChannelById(id);
-    if (channel.userId !== user.id) {
+  async selfChannel(_, { id }, { db: { channels }, user, userRoles }) {
+    let channel = { ...(await channels.getChannelById(id, true)) };
+    const hasSelfAccess =
+      checkRight(userRoles, AccessUnit.Self, "channels") &&
+      channel.userId === user.id;
+    const hasAdminAccess = checkRight(userRoles, AccessUnit.Read, "channels");
+    if (!hasSelfAccess && !hasAdminAccess) {
       throw new AuthorizationError("Channel does not belong to this user");
+    }
+    if (!hasSelfAccess && hasAdminAccess) {
+      channel.password = "*********";
     }
     return channel as unknown as SelfChannel;
   },

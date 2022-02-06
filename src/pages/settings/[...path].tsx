@@ -32,24 +32,14 @@ const SettingsPage = () => {
   const { checkRights } = useCurrentUser();
   const { currentSettings } = useCurrentUserSettings();
 
-  const canViewStreamKeys = useMemo(
-    () => checkRights(AccessUnit.Self, "streamKeys"),
-    [checkRights]
-  );
-  const canViewChannels = useMemo(
-    () => checkRights(AccessUnit.Self, "channels"),
-    [checkRights]
-  );
-  const canViewSessions = useMemo(
-    () => checkRights(AccessUnit.Self, "sessions"),
-    [checkRights]
-  );
-  const canViewSettings = useMemo(
-    () => checkRights(AccessUnit.Self, "userSettings"),
-    [checkRights]
-  );
-  const canViewProfile = useMemo(
-    () => checkRights(AccessUnit.Self, "users"),
+  const permissions = useMemo(
+    () => ({
+      canViewStreamKeys: checkRights(AccessUnit.Self, "streamKeys"),
+      canViewChannels: checkRights(AccessUnit.Self, "channels"),
+      canViewSessions: checkRights(AccessUnit.Self, "sessions"),
+      canViewSettings: checkRights(AccessUnit.Self, "userSettings"),
+      canViewProfile: checkRights(AccessUnit.Self, "users"),
+    }),
     [checkRights]
   );
 
@@ -59,17 +49,17 @@ const SettingsPage = () => {
         id: "user",
         title: "User",
         urls: [
-          canViewProfile && {
+          permissions.canViewProfile && {
             id: "profile",
             name: "Profile",
             url: "/settings/user/profile",
           },
-          canViewSettings && {
+          permissions.canViewSettings && {
             id: "preferences",
             name: "Preferences",
             url: "/settings/user/preferences",
           },
-          canViewChannels && {
+          permissions.canViewChannels && {
             id: "channels",
             name: currentSettings?.singleUserMode ? "Channel" : "Channels",
             url:
@@ -84,17 +74,17 @@ const SettingsPage = () => {
         id: "security",
         title: "Security",
         urls: [
-          canViewProfile && {
+          permissions.canViewProfile && {
             id: "account",
             name: "Account",
             url: "/settings/security/account",
           },
-          canViewStreamKeys && {
+          permissions.canViewStreamKeys && {
             id: "streamkeys",
             name: "Stream keys",
             url: "/settings/security/streamkeys",
           },
-          canViewSessions && {
+          permissions.canViewSessions && {
             id: "sessions",
             name: "Sessions",
             url: "/settings/security/sessions",
@@ -102,7 +92,7 @@ const SettingsPage = () => {
         ].filter(identity),
       },
     ],
-    [currentSettings, currentSettings?.singleUserChannel?.id]
+    [currentSettings, currentSettings?.singleUserChannel?.id, permissions]
   );
   return (
     <AuthRedirect>

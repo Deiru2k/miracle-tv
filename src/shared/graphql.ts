@@ -178,11 +178,7 @@ export type CreateActivityInput = {
 export type CreateChannelInput = {
   activityId?: InputMaybe<Scalars["ID"]>;
   description?: InputMaybe<Scalars["String"]>;
-  mature: Scalars["Boolean"];
-  matureDescription?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
-  password?: InputMaybe<Scalars["String"]>;
-  passwordProtected: Scalars["Boolean"];
   slug?: InputMaybe<Scalars["String"]>;
   thumbnail?: InputMaybe<Scalars["ID"]>;
   userId?: InputMaybe<Scalars["ID"]>;
@@ -515,6 +511,7 @@ export type Query = {
   activities: Array<Maybe<Activity>>;
   activitiesCount: Scalars["Int"];
   activity?: Maybe<Activity>;
+  adminChannel?: Maybe<Channel>;
   channel?: Maybe<Channel>;
   channelStatus?: Maybe<ChannelStatus>;
   channelSubscriptions: Array<Maybe<Channel>>;
@@ -564,6 +561,10 @@ export type QueryActivitiesCountArgs = {
 };
 
 export type QueryActivityArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryAdminChannelArgs = {
   id: Scalars["ID"];
 };
 
@@ -1800,6 +1801,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryActivityArgs, "id">
+  >;
+  adminChannel?: Resolver<
+    Maybe<ResolversTypes["Channel"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAdminChannelArgs, "id">
   >;
   channel?: Resolver<
     Maybe<ResolversTypes["Channel"]>,

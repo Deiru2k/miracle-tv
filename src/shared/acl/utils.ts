@@ -83,7 +83,7 @@ export const getCompleteRights = (roles: Role[], target: Role["id"]): Role => {
 export const checkRight = (
   roles: Role[],
   unit: AccessUnit | AccessUnit[],
-  subject: string
+  subject: keyof Role["access"]["rights"]
 ) => {
   const channelEditRightsLens = lensPath(["access", "rights", subject]);
   return any(
