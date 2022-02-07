@@ -1,5 +1,6 @@
 import {
   AccessUnit,
+  Channel,
   ChannelResolvers,
   QueryResolvers,
   SelfChannel,
@@ -11,6 +12,7 @@ import { checkRight } from "miracle-tv-shared/acl/utils";
 import config from "miracle-tv-server/config";
 import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";
 import { getOmeStatus } from "miracle-tv-server/utils/ome";
+import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
 
 export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
   async channels(_, { filter }, { db: { channels } }) {
@@ -35,13 +37,23 @@ export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
       AccessUnit.Read,
       "channels"
     );
+    let channel: Channel | null = null;
     if (uuidValidate(id)) {
-      return await channels.getChannelById(id, hasReadPermissions);
+      channel = await channels.getChannelById(id, hasReadPermissions);
+    } else {
+      channel = await channels.getChannelBySlug(id, hasReadPermissions);
     }
-    return await channels.getChannelBySlug(id, hasReadPermissions);
+    if (!channel) {
+      throw new NotFoundError("Channel not found");
+    }
+    return channel;
   },
   async selfChannel(_, { id }, { db: { channels }, user, userRoles }) {
-    let channel = { ...(await channels.getChannelById(id, true)) };
+    const dbChannel = await channels.getChannelById(id, true);
+    if (!dbChannel) {
+      throw new NotFoundError("Channel not found");
+    }
+    let channel = { ...dbChannel };
     const hasSelfAccess =
       checkRight(userRoles, AccessUnit.Self, "channels") &&
       channel.userId === user.id;

@@ -46,7 +46,7 @@ export class ChanelsModel extends Model {
   async getChannelById<T extends object = DbChannel>(
     id: string,
     includeDisabled: boolean = false
-  ): Promise<T> {
+  ): Promise<T | null> {
     const channel = (await this.table
       .get(id)
       .run(this.conn)) as DbChannel | null;
@@ -54,15 +54,15 @@ export class ChanelsModel extends Model {
       !channel ||
       ((!!channel.disabled || !!channel.shelved) && !includeDisabled)
     ) {
-      throw new NotFoundError("Channel not found");
+      return null;
     }
     return channel as T;
   }
 
-  async getChannelBySlug(
+  async getChannelBySlug<T extends object = DbChannel>(
     slug: string,
     includeDisabled: boolean = false
-  ): Promise<DbChannel | null> {
+  ): Promise<T | null> {
     const channel = head(
       await this.table
         .filter({ slug, disabled: false })
@@ -74,9 +74,9 @@ export class ChanelsModel extends Model {
       !channel ||
       ((!!channel.disabled || !!channel.shelved) && !includeDisabled)
     ) {
-      throw new NotFoundError("Channel not found");
+      return null;
     }
-    return channel;
+    return channel as T;
   }
 
   channelsFilter(
@@ -213,7 +213,10 @@ export class ChanelsModel extends Model {
 
   // "Toggles" disabled state on channel
   async toggleChannelDisabled(id: string, disabled: boolean): Promise<boolean> {
-    await this.getChannelById(id, true);
+    const channel = await this.getChannelById(id, true);
+    if (channel) {
+      throw new NotFoundError("Channel not found");
+    }
     const res = await this.table.get(id).update({ disabled }).run(this.conn);
     return res.errors === 0;
   }
