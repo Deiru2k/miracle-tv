@@ -51,14 +51,15 @@ export const SettingsChannelsList = () => {
   const deleteChannelDisclosure = useDisclosure();
   const [channelToDelete, setChannelToDelete] = useState<string | null>();
 
-  const { data: { channels } = {}, refetch } = useUserSettingsChannelsQuery({
-    variables: {
-      filter: {
-        userId: currentUser?.id,
+  const { data: { selfChannels: channels = [] } = {}, refetch } =
+    useUserSettingsChannelsQuery({
+      variables: {
+        filter: {
+          userId: currentUser?.id,
+        },
       },
-    },
-    skip: !currentUser,
-  });
+      skip: !currentUser,
+    });
 
   const [deleteChannelMutation, { loading: isDeleting }] =
     useUserSettingsDeleteChannelMutation({
