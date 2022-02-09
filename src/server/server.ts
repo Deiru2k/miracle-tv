@@ -9,7 +9,7 @@ import http from "http";
 import { websocketEntry } from "./websocket";
 
 const { pathPrefix, dataDir } = config;
-import { doUp } from "miracle-migrate";
+import { doUp } from "miracle-migrate/dist/src/lib/up";
 
 const main = async () => {
   // await setupDB();
