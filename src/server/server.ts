@@ -1,6 +1,6 @@
 import Express from "express";
 import { graphqlEndpoint } from "miracle-tv-server/graphql";
-import { setupDB } from "miracle-tv-server/db/setup-db";
+import { conOptions } from "miracle-tv-server/db/setup-db";
 import { graphqlUploadExpress } from "graphql-upload";
 import config from "miracle-tv-server/config";
 import { green } from "chalk";
@@ -9,13 +9,14 @@ import http from "http";
 import { websocketEntry } from "./websocket";
 
 const { pathPrefix, dataDir } = config;
+import { doUp } from "miracle-migrate";
 
 const main = async () => {
-  await setupDB();
+  // await setupDB();
+  doUp(config?.database?.db ?? "miracle-tv", conOptions);
   await graphqlEndpoint.start();
   const app = Express();
   app.use(Express.urlencoded());
-
   const prefix = pathPrefix ? `/${pathPrefix}/` : "/";
   app.set("trust proxy", true);
   app.use(Express.json());

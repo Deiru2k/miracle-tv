@@ -17,11 +17,12 @@ const tables: string[] = [
   "channel-access-keys",
 ];
 
-export const connection = () =>
-  rdb.connect({
-    host: config.database?.host || "localhost",
-    port: config.database?.port || 28015,
-  });
+export const conOptions = {
+  host: config.database?.host || "localhost",
+  port: config.database?.port || 28015,
+};
+
+export const connection = () => rdb.connect(conOptions);
 
 export const setupDB = async () => {
   const con = await connection();

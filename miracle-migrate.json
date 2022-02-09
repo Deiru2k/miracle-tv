@@ -1,0 +1,8 @@
+{
+  "migrationDir": "./migrations",
+  "connection": {
+    "host": "localhost",
+    "port": 28015,
+    "database": "miracle-tv"
+  }
+}
