@@ -15,6 +15,7 @@ import { PlayerControls } from "./PlayerControls";
 type Props = {
   channelId: string;
   isLive: boolean;
+  isPreview?: boolean;
   viewers?: number;
   thumbnail?: string;
   accessToken?: string;
@@ -32,13 +33,14 @@ export const Player = ({
   sessionId,
   muted,
   maxH = "90vh",
+  isPreview = false,
 }: Props) => {
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
   const volume = Number(localStorage.getItem("volume")) || 100;
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(!isPreview);
 
   const initialQuality = localStorage.getItem("quality");
   const [currentSource, setCurrentSource] = useState<number>(

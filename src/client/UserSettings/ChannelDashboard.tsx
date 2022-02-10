@@ -103,6 +103,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
                   sessionId={localStorage.getItem("token")}
                   channelId={channelId}
                   muted
+                  isPreview
                 />
               </Box>
             </Flex>
