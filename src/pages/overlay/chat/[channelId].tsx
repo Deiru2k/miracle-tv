@@ -18,6 +18,7 @@ const ChatOverlay = () => {
         hideControls
         textStroke
         hideScrollbar
+        fading
       />
     </>
   );

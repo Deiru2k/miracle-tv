@@ -1,4 +1,5 @@
 import { AtSignIcon, ChatIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { v4 as uuidv4 } from "uuid";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import {
   Box,
@@ -37,9 +38,15 @@ type ChatMessageProps = {
   username: string;
   message: string;
   textStroke?: boolean;
+  onTimeOut?: () => void;
 };
 
-const ChatMessage = ({ username, message, textStroke }: ChatMessageProps) => {
+const ChatMessage = ({
+  username,
+  message,
+  textStroke,
+  onTimeOut,
+}: ChatMessageProps) => {
   const textStrokeStyle = useMemo(
     () =>
       textStroke
@@ -52,6 +59,16 @@ const ChatMessage = ({ username, message, textStroke }: ChatMessageProps) => {
         : {},
     [textStroke]
   );
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (onTimeOut) {
+      timeout = setTimeout(onTimeOut, 6000);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <Box display="block" w="100%" wordBreak="break-word">
@@ -174,9 +191,11 @@ type Props = {
   hideControls?: boolean;
   textStroke?: boolean;
   hideScrollbar?: boolean;
+  fading?: boolean;
 };
 
 type ChatLog = {
+  id: string;
   username?: string;
   message: string;
   timestamp: number;
@@ -188,6 +207,7 @@ export const Chat = ({
   hideControls,
   textStroke,
   hideScrollbar,
+  fading = false,
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const chatLogRef = useRef<HTMLDivElement>();
@@ -200,7 +220,12 @@ export const Chat = ({
       const chatMessages = takeLast(99, chatLog);
       setChatLog([
         ...chatMessages,
-        { username: msg.username, message: msg.data, timestamp: msg.timestamp },
+        {
+          username: msg.username,
+          message: msg.data,
+          timestamp: msg.timestamp,
+          id: uuidv4(),
+        },
       ]);
       chatLogRef.current?.scrollTo({
         top: chatLogRef.current?.scrollHeight,
@@ -273,6 +298,13 @@ export const Chat = ({
     chatClient.on("chat:message", appendToChat);
   }, [chatClient, appendToChat]);
 
+  const clearChatMessage = useCallback(
+    (msgId: string) => () => {
+      setChatLog(chatLog.filter(({ id }) => id !== msgId));
+    },
+    [setChatLog, chatLog]
+  );
+
   return (
     <Flex w="100%" direction="column" height="100%" position="relative">
       <VStack
@@ -290,6 +322,7 @@ export const Chat = ({
             username={msg.username}
             message={msg.message}
             textStroke={textStroke}
+            onTimeOut={fading ? clearChatMessage(msg.id) : undefined}
           />
         ))}
       </VStack>

@@ -80,6 +80,7 @@ export const OvenPlayer = ({
       playerRef.current = ovenplayer.create(videoRef.current, {
         volume: initialVolume,
         controls: false,
+        autoStart: true,
         showBigPlayButton: false,
         mute: muted,
         webrtcConfig: {

@@ -47,7 +47,6 @@ export const Player = ({
 
   const startPlayback = useCallback(() => {
     setIsPlaying(true);
-    playerRef.current?.play();
   }, [setIsPlaying, playerRef]);
 
   useEffect(() => {
