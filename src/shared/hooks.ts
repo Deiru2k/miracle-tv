@@ -161,6 +161,10 @@ export const UserDirectoryProfileFragmentDoc = gql`
       id
       filename
     }
+    roles {
+      id
+      name
+    }
     meta {
       followerCount
     }

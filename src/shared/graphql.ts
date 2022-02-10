@@ -4480,6 +4480,9 @@ export type UserDirectoryProfileFragment = {
     | { __typename?: "File"; id?: string | null | undefined; filename: string }
     | null
     | undefined;
+  roles: Array<
+    { __typename?: "Role"; id: string; name: string } | null | undefined
+  >;
   meta?: { __typename?: "UserMeta"; followerCount: number } | null | undefined;
   settings?:
     | { __typename?: "UserSettings"; useGravatar?: boolean | null | undefined }
@@ -4515,6 +4518,9 @@ export type UsersDirectoryQuery = {
             }
           | null
           | undefined;
+        roles: Array<
+          { __typename?: "Role"; id: string; name: string } | null | undefined
+        >;
         meta?:
           | { __typename?: "UserMeta"; followerCount: number }
           | null

@@ -25,6 +25,10 @@ export const USER_DIRECTORY_FRAGMENT = gql`
       id
       filename
     }
+    roles {
+      id
+      name
+    }
     meta {
       followerCount
     }
