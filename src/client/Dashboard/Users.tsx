@@ -4,6 +4,7 @@ import { Button } from "@chakra-ui/react";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { UserPanel } from "miracle-tv-client/components/ui/users/UserPanel";
+import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { useUsersDirectoryQuery } from "miracle-tv-shared/hooks";
@@ -49,6 +50,7 @@ gql`
 
 export const DashboardUserDirectory = (): any => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
+  const { currentSettings } = useCurrentUserSettings();
   const { data: { userDirectory = [] } = {}, loading: isLoading } =
     useUsersDirectoryQuery();
   return !isLoading ? (
@@ -72,25 +74,35 @@ export const DashboardUserDirectory = (): any => {
       )}
       {!!userDirectory.length && (
         <>
-          <Text as="span" size="sm">
-            To add your own account to this page, go to{" "}
-            <Link
-              as={(props) => (
-                <Button py={0} px={1} variant="ghost" mr={1} {...props} />
-              )}
-              href="/settings/user/preferences"
-            >
-              [profile preferences]
-            </Link>
-            and feature yourself!
-          </Text>
+          {!currentSettings.featureInDirectory && (
+            <Text as="span" size="sm">
+              To add your own account to this page, go to{" "}
+              <Link
+                as={(props) => (
+                  <Button py={0} px={1} variant="ghost" mr={1} {...props} />
+                )}
+                href="/settings/user/preferences"
+              >
+                [profile preferences]
+              </Link>
+              and feature yourself!
+            </Text>
+          )}
           <SimpleGrid columns={isMobile ? 2 : 4} spacing={4}>
             {userDirectory.map((user) => (
-              <Link key={user.id} href={`/user/${user.username}`}>
+              <Link
+                key={user.id}
+                href={`/user/${user.username}`}
+                _hover={{ textDecoration: "none" }}
+              >
                 <UserPanel
                   user={user}
+                  transition="all 0.1s linear"
                   _hover={{
-                    textDecoration: "none",
+                    borderWidth: "2px",
+                    borderStyle: "solid",
+                    borderColor: "primary.500",
+                    borderRadius: "5px",
                   }}
                   includeDescription={false}
                 />

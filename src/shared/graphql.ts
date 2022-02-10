@@ -5888,6 +5888,7 @@ export type CurrentUserSettingsQuery = {
     __typename?: "UserSettings";
     id?: string | null | undefined;
     useGravatar?: boolean | null | undefined;
+    featureInDirectory?: boolean | null | undefined;
     singleUserMode?: boolean | null | undefined;
     singleUserChannel?:
       | { __typename?: "Channel"; id: string }

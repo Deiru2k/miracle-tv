@@ -4576,6 +4576,7 @@ export const CurrentUserSettingsDocument = gql`
     userSettings {
       id
       useGravatar
+      featureInDirectory
       singleUserMode
       singleUserChannel {
         id
