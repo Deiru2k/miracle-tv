@@ -81,7 +81,7 @@ export const OvenPlayer = ({
         volume: initialVolume,
         controls: false,
         showBigPlayButton: false,
-        mute: false,
+        mute: muted,
         webrtcConfig: {
           timeoutMaxRetry: 10,
           connectionTimeout: 5000,

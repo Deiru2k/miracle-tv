@@ -47,7 +47,8 @@ export const Player = ({
 
   const startPlayback = useCallback(() => {
     setIsPlaying(true);
-  }, [setIsPlaying]);
+    playerRef.current?.play();
+  }, [setIsPlaying, playerRef]);
 
   useEffect(() => {
     if (!isLive && isPlaying) {
