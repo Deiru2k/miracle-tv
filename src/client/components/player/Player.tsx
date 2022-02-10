@@ -21,8 +21,12 @@ type Props = {
   accessToken?: string;
   sessionId?: string;
   muted?: boolean;
+  offlineMsg?: string;
   maxH?: string;
 };
+
+const defaultOfflineMsg =
+  "Stream is offline. Check back later, or hang out in the chat!";
 
 export const Player = ({
   channelId,
@@ -34,6 +38,7 @@ export const Player = ({
   muted,
   maxH = "90vh",
   isPreview = false,
+  offlineMsg = defaultOfflineMsg,
 }: Props) => {
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
@@ -116,7 +121,7 @@ export const Player = ({
                 />
               ) : (
                 <Heading size="sm" color="white">
-                  Stream is offline. Check back later, or hang out in the chat!
+                  {offlineMsg}
                 </Heading>
               )}
             </Flex>

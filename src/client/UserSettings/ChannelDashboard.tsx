@@ -102,6 +102,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
                   isLive={channelStatus?.isLive}
                   sessionId={localStorage.getItem("token")}
                   channelId={channelId}
+                  offlineMsg="Stream is offline. Go live to watch the preview here!"
                   muted
                   isPreview
                 />
