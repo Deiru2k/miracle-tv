@@ -121,7 +121,11 @@ export const UserModal = ({ user, onClose }: Props) => {
                   borderColor="primary.500"
                 >
                   <Image
-                    src={getMediaURL(user?.header?.filename)}
+                    src={
+                      user?.header
+                        ? getMediaURL(user?.header?.filename)
+                        : "/placeholders/sanae_profile.png"
+                    }
                     objectPosition="center"
                     borderRightWidth="5px"
                   />
