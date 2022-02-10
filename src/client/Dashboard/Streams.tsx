@@ -20,6 +20,7 @@ import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channe
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import Head from "next/head";
+import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 
 gql`
   query DashboardChannels {
@@ -35,9 +36,20 @@ gql`
   ${CHANNEL_DISPLAY_FRAGMENT}
 `;
 
-export const Streams = () => {
+type Props = {
+  skipSubs?: boolean;
+  discoverTitle?: string;
+};
+
+const defaultDiscoverTitle = "Discover other channels!";
+
+export const Streams = ({
+  skipSubs = false,
+  discoverTitle = defaultDiscoverTitle,
+}: Props) => {
   const isLiveUpdate = useLiveUpdate();
   const isMobile = useMediaQuery(MediaQuery.mobile);
+  const { currentUser } = useCurrentUser();
   const { data: { channels = [] } = {}, loading: isLoading } =
     useDashboardChannelsQuery({
       pollInterval: isLiveUpdate ? 5000 : 0,
@@ -45,6 +57,7 @@ export const Streams = () => {
   const { data: { selfSubscribedChannels: subscriptions = [] } = {} } =
     useDashboardFollowedChannelsQuery({
       pollInterval: isLiveUpdate ? 5000 : 0,
+      skip: !currentUser || skipSubs,
     });
 
   const liveChannels = useMemo(
@@ -54,10 +67,7 @@ export const Streams = () => {
 
   return !isLoading ? (
     <>
-      <Head>
-        <title>Streams - Dashboard - Miracle TV</title>
-      </Head>
-      <Box>
+      <Box w="100%">
         <Collapse in={liveChannels?.length > 0}>
           <Box mb={4} mt={2}>
             <Heading size="lg">Live Right now!</Heading>
@@ -72,21 +82,25 @@ export const Streams = () => {
             )}
           </Box>
         </Collapse>
-        <Heading size="lg">Your subscriptions</Heading>
-        <Divider mb={2} />
-        {!!subscriptions?.length && (
+        {!!currentUser && !skipSubs && (
           <>
-            <ChannelDisplayGrid
-              columns={isMobile ? 3 : 5}
-              channels={subscriptions}
-            />
+            <Heading size="lg">Your subscriptions</Heading>
+            <Divider mb={2} />
+            {!!subscriptions?.length && (
+              <>
+                <ChannelDisplayGrid
+                  columns={isMobile ? 3 : 5}
+                  channels={subscriptions}
+                />
+              </>
+            )}
+            {!subscriptions?.length && (
+              <Text>Channels you've subscribed to will appear here.</Text>
+            )}
           </>
         )}
-        {!subscriptions?.length && (
-          <Text>Channels you've subscribed to will appear here.</Text>
-        )}
         <Heading size="lg" mt={4}>
-          Discover other channels!
+          {discoverTitle}
         </Heading>
         <Divider mb={2} />
         {!!channels?.length && (
