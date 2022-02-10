@@ -22,6 +22,7 @@ import {
   Spinner,
   Text,
   useMultiStyleConfig,
+  MenuDivider,
 } from "@chakra-ui/react";
 import {
   useCurrentUser,
@@ -137,6 +138,12 @@ export const Navbar = () => {
                     How to setup OBS
                   </Link>
                 </MenuItem>
+                <MenuItem>
+                  <Link href="/about" target="_blank" w="100%">
+                    Landing page
+                  </Link>
+                </MenuItem>
+                <MenuDivider />
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
                 </MenuItem>
