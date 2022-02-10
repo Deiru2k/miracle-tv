@@ -264,6 +264,10 @@ export const UserProfileFragmentDoc = gql`
     streamThumbnail {
       filename
     }
+    roles {
+      id
+      name
+    }
     meta {
       followerCount
     }
@@ -302,6 +306,10 @@ export const UserSettingsProfileFragmentFragmentDoc = gql`
       filename
       encoding
       mimetype
+    }
+    roles {
+      id
+      name
     }
   }
 `;

@@ -56,6 +56,10 @@ export const USER_PROFILE_FRAGMENT = gql`
     streamThumbnail {
       filename
     }
+    roles {
+      id
+      name
+    }
     meta {
       followerCount
     }

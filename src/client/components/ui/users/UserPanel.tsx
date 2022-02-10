@@ -8,6 +8,8 @@ import {
   Divider,
   Text,
   BoxProps,
+  Badge,
+  Tag,
 } from "@chakra-ui/react";
 import { CircleIcon } from "miracle-tv-client/components/icons/CircleIcon";
 import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
@@ -91,13 +93,20 @@ export const UserPanel = ({
           size="md"
           display="flex"
           align="center"
-          mb={2}
+          mb={1}
           mt="2rem"
           py={1}
         >
           {isUserLive && <CircleIcon color="red" mr={2} />}
           {displayName}
         </Heading>
+        <Flex flexWrap="wrap" gridGap={2} mb={2}>
+          {user.roles.map((role) => (
+            <Tag key={role.id} colorScheme="primary">
+              {role.name}
+            </Tag>
+          ))}
+        </Flex>
         <Flex justify="space-between" align="center">
           <Flex title="Followers:" align="center">
             <PersonIcon aria-label="Followers:" mr={1} />

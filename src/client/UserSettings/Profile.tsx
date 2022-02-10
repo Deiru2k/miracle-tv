@@ -55,6 +55,10 @@ const userFragment = gql`
       encoding
       mimetype
     }
+    roles {
+      id
+      name
+    }
   }
 `;
 

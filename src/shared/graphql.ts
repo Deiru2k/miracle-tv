@@ -4612,6 +4612,9 @@ export type UserProfileFragment = {
     | { __typename?: "File"; filename: string }
     | null
     | undefined;
+  roles: Array<
+    { __typename?: "Role"; id: string; name: string } | null | undefined
+  >;
   meta?: { __typename?: "UserMeta"; followerCount: number } | null | undefined;
   settings?:
     | {
@@ -5151,6 +5154,9 @@ export type UserSettingsProfileFragmentFragment = {
       }
     | null
     | undefined;
+  roles: Array<
+    { __typename?: "Role"; id: string; name: string } | null | undefined
+  >;
 };
 
 export type UserSettingsProfileQueryVariables = Exact<{ [key: string]: never }>;
@@ -5194,6 +5200,9 @@ export type UserSettingsProfileQuery = {
         }
       | null
       | undefined;
+    roles: Array<
+      { __typename?: "Role"; id: string; name: string } | null | undefined
+    >;
   };
 };
 
@@ -5241,6 +5250,9 @@ export type UpdateUserSettingsProfileMutation = {
             }
           | null
           | undefined;
+        roles: Array<
+          { __typename?: "Role"; id: string; name: string } | null | undefined
+        >;
       }
     | null
     | undefined;
@@ -6162,6 +6174,9 @@ export type UserPageQuery = {
           | { __typename?: "File"; filename: string }
           | null
           | undefined;
+        roles: Array<
+          { __typename?: "Role"; id: string; name: string } | null | undefined
+        >;
         meta?:
           | { __typename?: "UserMeta"; followerCount: number }
           | null
