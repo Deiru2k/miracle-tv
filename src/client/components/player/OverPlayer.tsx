@@ -79,26 +79,15 @@ export const OvenPlayer = ({
     if (videoRef.current && sources) {
       playerRef.current = ovenplayer.create(videoRef.current, {
         volume: initialVolume,
-        autoStart: true,
         controls: false,
         showBigPlayButton: false,
-        mute: muted,
+        mute: false,
         webrtcConfig: {
           timeoutMaxRetry: 10,
           connectionTimeout: 5000,
         },
         sources,
       });
-      if (initialQuality !== 0) {
-        setTimeout(() => {
-          playerRef.current.setCurrentSource(initialQuality);
-          setCurrentSource?.(initialQuality);
-          playerRef.current.stop();
-          setTimeout(() => {
-            playerRef.current.play();
-          }, 500);
-        }, 300);
-      }
     }
   }, [channelId, sources, videoRef]);
 

@@ -1,13 +1,14 @@
-import { AspectRatio, Box, Flex, Heading, Image } from "@chakra-ui/react";
-import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import {
+  AspectRatio,
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { VideoJsPlayer } from "video.js";
+import { PlayIcon } from "../icons/PlayIcon";
 import { OvenPlayer } from "./OverPlayer";
 import { PlayerControls } from "./PlayerControls";
 
@@ -37,11 +38,22 @@ export const Player = ({
   const containerRef = useRef<HTMLDivElement>();
   const volume = Number(localStorage.getItem("volume")) || 100;
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const initialQuality = localStorage.getItem("quality");
   const [currentSource, setCurrentSource] = useState<number>(
     initialQuality ? Number(initialQuality) : 0
   );
+
+  const startPlayback = useCallback(() => {
+    setIsPlaying(true);
+  }, [setIsPlaying]);
+
+  useEffect(() => {
+    if (!isLive && isPlaying) {
+      setIsPlaying(false);
+    }
+  }, [setIsPlaying, isLive]);
 
   useEffect(() => {
     document.onfullscreenchange = () => {
@@ -64,11 +76,11 @@ export const Player = ({
       >
         <>
           <Box
-            opacity={isLive ? 0 : 1}
-            pointerEvents={isLive ? "none" : "auto"}
+            opacity={isPlaying ? 0 : 1}
+            pointerEvents={isPlaying ? "none" : "auto"}
             transition="opacity linear 0.2s"
             position="relative"
-            zIndex={isLive ? -1 : 3}
+            zIndex={isPlaying ? -1 : 3}
           >
             <Image src={thumbnail} w="100%" h="100%" objectFit="cover" />
             <Flex
@@ -78,14 +90,36 @@ export const Player = ({
               h="100%"
               justify="center"
               align="center"
-              backgroundColor="rgba(0, 0, 0, 0.6)"
+              backgroundColor={isLive ? "none" : "rgba(0, 0, 0, 0.6)"}
             >
-              <Heading size="sm" color="white">
-                Stream is offline. Check back later, or hang out in the chat!
-              </Heading>
+              {isLive ? (
+                <IconButton
+                  w="100%"
+                  h="100%"
+                  _hover={{
+                    backgroundColor: "none",
+                  }}
+                  aria-label="Start playback"
+                  onClick={startPlayback}
+                  icon={
+                    <PlayIcon
+                      color="white"
+                      w="20%"
+                      h="20%"
+                      filter="drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.5))"
+                    />
+                  }
+                  variant="ghost"
+                  zIndex={4}
+                />
+              ) : (
+                <Heading size="sm" color="white">
+                  Stream is offline. Check back later, or hang out in the chat!
+                </Heading>
+              )}
             </Flex>
           </Box>
-          {isLive && (
+          {isLive && isPlaying && (
             <OvenPlayer
               channelId={channelId}
               playerRef={playerRef}
@@ -99,7 +133,7 @@ export const Player = ({
           )}
         </>
       </AspectRatio>
-      {isLive && (
+      {isLive && isPlaying && (
         <PlayerControls
           isFullscreen={isFullscreen}
           setFullscreen={setFullscreen}

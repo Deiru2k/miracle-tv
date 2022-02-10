@@ -52,7 +52,7 @@ export const PlayerControls = ({
   const qualityDisclosure = useDisclosure();
   const [sourceOptions, setSourceOptions] = useState<any[]>([]);
 
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [volume, setVolume] = useState<number>(
     Number(localStorage.getItem("volume")) || 100
   );
@@ -155,7 +155,7 @@ export const PlayerControls = ({
       overflow="hidden"
       maxHeight={0}
       id="playercontrols"
-      _groupHover={openStyles}
+      {...openStyles}
       {...disclosureStyles}
       transition="all linear 0.3s"
       zIndex={3}
