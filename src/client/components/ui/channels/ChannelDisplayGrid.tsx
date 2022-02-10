@@ -64,7 +64,7 @@ export const ChannelDisplayGrid = ({
                     ? getMediaURL(
                         channel.thumbnail?.filename || defaultThumbnail
                       )
-                    : "/images/sanae_gyate.png"
+                    : "/placeholders/sanae_stream.png"
                 }`}
               />
             </AspectRatio>

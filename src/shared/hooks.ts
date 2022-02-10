@@ -229,6 +229,7 @@ export const ChannelViewFragmentDoc = gql`
       id
       username
       displayName
+      emailHash
       avatar {
         id
         filename

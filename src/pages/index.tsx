@@ -3,18 +3,18 @@ import { useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
 
 const Home = (): null => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const { currentUser, isUserLoading, isUserCalled } = useCurrentUser();
 
   useEffect(() => {
     if (!isUserLoading && isUserCalled) {
       if (currentUser) {
-        push("/dashboard", null, { shallow: true });
+        replace("/dashboard", null, { shallow: true });
       } else {
-        push("/about", null, { shallow: true });
+        replace("/about", null, { shallow: true });
       }
     }
-  }, [push, isUserLoading, isUserCalled]);
+  }, [replace, isUserLoading, isUserCalled]);
 
   return null;
 };

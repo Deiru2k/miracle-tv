@@ -6,10 +6,10 @@ type Props = {
 };
 
 export const Redirect: React.FC<Props> = ({ target }: Props) => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
 
   useEffect(() => {
-    push(target, null, { shallow: true });
+    replace(target, null, { shallow: true });
   }, []);
 
   return null;

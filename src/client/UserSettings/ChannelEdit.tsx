@@ -99,7 +99,7 @@ export const ChannelEdit = ({ id, selfChannel }: Props) => {
             Details
           </Heading>
           <Panel>
-            <ChannelBasicForm isDisabled={!canEditChannel} />
+            <ChannelBasicForm values={values} isDisabled={!canEditChannel} />
           </Panel>
           <Heading size="md" mb={2} mt={6}>
             Security

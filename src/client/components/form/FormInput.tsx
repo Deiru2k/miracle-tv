@@ -11,7 +11,7 @@ type Props = {
   placeholder?: string;
   label?: string;
   error?: string;
-  help?: string;
+  help?: string | React.ReactNode;
   type?: string;
   hideLabel?: boolean;
   inputProps?: InputProps;

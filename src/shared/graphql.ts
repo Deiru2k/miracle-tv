@@ -4296,6 +4296,7 @@ export type ChannelViewFragment = {
         id?: string | null | undefined;
         username: string;
         displayName?: string | null | undefined;
+        emailHash?: string | null | undefined;
         avatar?:
           | {
               __typename?: "File";
@@ -4658,6 +4659,7 @@ export type UserProfileFragment = {
                     id?: string | null | undefined;
                     username: string;
                     displayName?: string | null | undefined;
+                    emailHash?: string | null | undefined;
                     avatar?:
                       | {
                           __typename?: "File";
@@ -5986,6 +5988,7 @@ export type ChannelPageQuery = {
               id?: string | null | undefined;
               username: string;
               displayName?: string | null | undefined;
+              emailHash?: string | null | undefined;
               avatar?:
                 | {
                     __typename?: "File";
@@ -6209,6 +6212,7 @@ export type UserPageQuery = {
                           id?: string | null | undefined;
                           username: string;
                           displayName?: string | null | undefined;
+                          emailHash?: string | null | undefined;
                           avatar?:
                             | {
                                 __typename?: "File";

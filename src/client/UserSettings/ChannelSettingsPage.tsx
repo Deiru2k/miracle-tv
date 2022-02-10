@@ -31,13 +31,14 @@ import Head from "next/head";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
 import { gql } from "@apollo/client";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { ChatOverlaySettings } from "./ChannelOverlay";
 import { ChannelDashboard } from "./ChannelDashboard";
 import {
   channelFragment,
   selfChannelFragment,
 } from "miracle-tv-client/components/ui/channels/const";
+import { Loading } from "miracle-tv-client/components/ui/Loading";
 
 type Props = {
   tab?: string;
@@ -77,9 +78,10 @@ export const ChannelSettingsPage = ({
   const { currentUser, checkRights } = useCurrentUser();
   const { push } = useRouter();
 
-  const { data: { selfChannel: channel } = {} } = useUserSettingsChannelQuery({
-    variables: { id: channelId },
-  });
+  const { data: { selfChannel: channel } = {}, loading: isLoading } =
+    useUserSettingsChannelQuery({
+      variables: { id: channelId },
+    });
 
   const canViewKeys = useMemo(
     () =>
@@ -145,13 +147,27 @@ export const ChannelSettingsPage = ({
     }
   }, [push, tab]);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Head>
         <title>Channel settings for {channel?.name} - Miracle TV</title>
       </Head>
       <Flex align="center" justify="space-between" mb={5}>
-        <Heading size="lg">Channel settings for "{channel?.name}"</Heading>
+        <Heading size="lg">
+          Channel settings for "{channel?.name}"{" "}
+          <Link
+            href={`/channel/${channel?.slug || channel?.id}`}
+            target="_blank"
+            aria-label="Open your channel in new tab"
+            title="Open your channel in new tab"
+          >
+            <ExternalLinkIcon />
+          </Link>
+        </Heading>
         <Flex align="center">
           {canEditChannel && (
             <Menu>

@@ -87,7 +87,7 @@ export const CreateChannelModal = ({
 
   return (
     <Form<CreateChannelInput> onSubmit={createChannel}>
-      {({ handleSubmit, form, dirty }) => (
+      {({ handleSubmit, values, form, dirty }) => (
         <Modal
           {...props}
           size={isMobile ? "full" : undefined}
@@ -97,12 +97,12 @@ export const CreateChannelModal = ({
           }}
         >
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent maxW={isMobile ? undefined : "55vw"}>
             <ModalCloseButton />
             <form onSubmit={handleSubmit}>
               <ModalHeader>Create Channel</ModalHeader>
               <ModalBody>
-                <ChannelBasicForm />
+                <ChannelBasicForm values={values} />
               </ModalBody>
               <ModalFooter>
                 <Button

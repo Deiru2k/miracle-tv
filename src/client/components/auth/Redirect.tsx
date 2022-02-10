@@ -8,14 +8,14 @@ type Props = {
 };
 
 export const AuthRedirect = ({ children }: Props) => {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const { currentUser, isUserLoading } = useCurrentUser();
 
   useEffect(() => {
     if (!isUserLoading && !currentUser) {
-      push("/auth/login");
+      replace("/auth/login");
     }
-  }, [isUserLoading, currentUser, push]);
+  }, [isUserLoading, currentUser, replace]);
 
   // return !isUserLoading && !!currentUser && <>{children}</>;
   return (

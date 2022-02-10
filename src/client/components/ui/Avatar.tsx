@@ -24,8 +24,11 @@ export const Avatar = ({
 }: Props) => {
   const gravatarSize = aspectMaxW ? `?s=${aspectMaxW}` : "";
   const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}${gravatarSize}`;
-  const imageUrl = !useGravatar ? getMediaURL(imageId) : gravatarUrl;
-  const alt = `${username}'s gravatar`;
+  const avatarUrl = imageId
+    ? getMediaURL(imageId)
+    : "/placeholders/sanae_pfp.png";
+  const imageUrl = !useGravatar ? avatarUrl : gravatarUrl;
+  const alt = `${username}'s avatar`;
   return useAspectRatio ? (
     <AspectRatio
       w={aspectMaxW || "100%"}

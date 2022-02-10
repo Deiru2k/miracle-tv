@@ -41,7 +41,11 @@ export const UserPanel = ({
       <Flex position="relative">
         <AspectRatio w="100%" ratio={16 / 6} zIndex={1}>
           <Image
-            src={getMediaURL(user?.header?.filename)}
+            src={
+              user?.header
+                ? getMediaURL(user?.header?.filename)
+                : "/placeholders/sanae_profile.png"
+            }
             borderTopRadius="5px"
             objectPosition="center"
           />

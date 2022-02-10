@@ -75,6 +75,7 @@ export const CHANNEL_VIEW_FRAGMENT = gql`
       id
       username
       displayName
+      emailHash
       avatar {
         id
         filename
@@ -159,7 +160,7 @@ export const ChannelPlayerView = ({ channel, status, accessToken }: Props) => {
           thumbnail={`${
             channel.thumbnail
               ? getMediaURL(channel.thumbnail?.filename)
-              : "/images/sanae_gyate.png"
+              : "/placeholders/sanae_stream.png"
           }`}
         />
         <ChatViewControls
@@ -271,19 +272,18 @@ export const ChannelView = ({
         </Flex>
         <Flex mb={2} align="center">
           Run by
-          {channel.user.avatar && (
-            <Avatar
-              username={channel.user.username}
-              imageId={channel.user.avatar.filename}
-              maxH="1rem"
-              maxW="1rem"
-              useAspectRatio={false}
-              display="inline-block"
-              borderRadius="50%"
-              mr={1}
-              ml={1}
-            />
-          )}
+          <Avatar
+            emailHash={channel.user.emailHash}
+            username={channel.user.username}
+            imageId={channel.user.avatar?.filename}
+            maxH="1rem"
+            maxW="1rem"
+            useAspectRatio={false}
+            display="inline-block"
+            borderRadius="50%"
+            mr={1}
+            ml={1}
+          />
           <Link href={`/user/${channel.user.username}`}>
             {channel.user.displayName || channel.user.username}
           </Link>

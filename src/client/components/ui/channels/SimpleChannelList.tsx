@@ -48,7 +48,7 @@ export const SimpleChannelList = ({
                     ? getMediaURL(
                         channel.thumbnail?.filename || defaultThumbnail
                       )
-                    : "/images/sanae_gyate.png"
+                    : "/placeholders/sanae_stream.png"
                 })`}
                 backgroundSize={
                   channel.thumbnail || defaultThumbnail ? "cover" : "contain"
