@@ -1,0 +1,23 @@
+The following assets in this directory have been licensed as such:
+
+./placeholders/sanae_pfp.png
+
+This work has been commissioned from and provided by
+Aki Yaiba <https://twitter.com/AkiYaiba>
+Licensed under CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
+
+--------------------------------------------
+
+./placeholders/sanae_profile.png
+
+This work has been commissioned from and provided by
+Aki Yaiba <https://twitter.com/AkiYaiba>
+Licensed under CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
+
+--------------------------------------------
+
+./placeholders/sanae_stream.png
+
+This work has been commissioned from and provided by
+Aki Yaiba <https://twitter.com/AkiYaiba>
+Licensed under CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
