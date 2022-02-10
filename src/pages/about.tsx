@@ -39,7 +39,7 @@ const AboutPage = () => {
               [Licenses]
             </Link>
             {" | "}
-            <Link href="/ASSET-LICENSE.txt" target="_blank" mr={1}>
+            <Link href="/ASSET-LICENSE.txt" target="_blank" ml={1} mr={1}>
               [Assets licenses]
             </Link>
             {" | "}
