@@ -12,6 +12,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   HStack,
   Menu,
   MenuButton,
@@ -55,8 +56,14 @@ export const Navbar = () => {
   return (
     <Flex __css={styles.navbar} zIndex={10}>
       <Box>
-        <Link href="/">
-          <Heading size={isMobile ? "md" : undefined}>Miracle TV</Heading>
+        <Link
+          href="/"
+          display="flex"
+          alignItems="center"
+          _hover={{ textDecoration: "none" }}
+        >
+          <Image src="/logo.png" maxHeight="40px" mr={2} />
+          {!isMobile && <Heading size="lg">Miracle TV</Heading>}
         </Link>
       </Box>
       <HStack>
