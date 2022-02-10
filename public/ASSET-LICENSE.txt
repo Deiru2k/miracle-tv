@@ -1,4 +1,4 @@
-The following assets in this directory have been licensed as such:
+The following assets in this directory <https://code.gensokyo.social/Gensokyo.social/miracle-tv/src/branch/develop/public> have been licensed as such:
 
 ./placeholders/sanae_pfp.png
 
