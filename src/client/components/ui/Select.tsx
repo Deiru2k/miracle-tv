@@ -33,6 +33,37 @@ export type SelectProps = {
   placeholder?: string;
 };
 
+export type OptionProps = {
+  option: SelectOption;
+  onOptionPick?: (v: string) => void;
+  isDisabled?: boolean;
+};
+
+export const Option = ({
+  option,
+  onOptionPick,
+  isDisabled = false,
+}: OptionProps) => {
+  return (
+    <Box
+      py={2}
+      px={2}
+      key={option.value}
+      onClick={() => onOptionPick?.(String(option.value))}
+      transition="background-color 0.3s linear"
+      _hover={
+        !isDisabled && {
+          bgColor: "primary.500",
+          textColor: "white",
+          cursor: "pointer",
+        }
+      }
+    >
+      {option.label}
+    </Box>
+  );
+};
+
 // TODO: Use chakra theming on Select
 export const Select = ({
   options = [],
@@ -278,21 +309,14 @@ export const Select = ({
           borderRadius={0}
           spacing={0}
         >
+          {!filteredOptions?.length && (
+            <Option
+              option={{ value: "none", label: "No options found!" }}
+              isDisabled
+            />
+          )}
           {filteredOptions.map((opt) => (
-            <Box
-              py={2}
-              px={2}
-              key={opt.value}
-              onClick={() => onOptionPick(String(opt.value))}
-              transition="background-color 0.3s linear"
-              _hover={{
-                bgColor: "primary.500",
-                textColor: "white",
-                cursor: "pointer",
-              }}
-            >
-              {opt.label}
-            </Box>
+            <Option option={opt} onOptionPick={onOptionPick} />
           ))}
         </VStack>
       </Flex>
