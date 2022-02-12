@@ -301,7 +301,7 @@ export const Chat = ({
         ).seconds;
         if (timeDeltaSeconds > 15) {
           const newMessages = chatLog.filter((i) => i.id !== item.id);
-          setChatLog(chatLog);
+          setChatLog(newMessages);
         }
       });
     }
