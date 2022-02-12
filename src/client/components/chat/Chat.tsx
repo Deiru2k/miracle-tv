@@ -299,13 +299,13 @@ export const Chat = ({
           DateTime.fromMillis(item.timestamp),
           "seconds"
         ).seconds;
-        if (timeDeltaSeconds > 15) {
+        if (timeDeltaSeconds > 6) {
           const newMessages = chatLog.filter((i) => i.id !== item.id);
           setChatLog(newMessages);
         }
       });
     }
-  }, 15000);
+  }, 3);
 
   return (
     <Flex w="100%" direction="column" height="100%" position="relative">
