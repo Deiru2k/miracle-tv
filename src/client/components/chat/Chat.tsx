@@ -35,17 +35,19 @@ import { UserInfo } from "miracle-tv-server/websocket/chat/roster";
 import { Link } from "../ui/Link";
 
 type ChatMessageProps = {
+  id: string;
   username: string;
   message: string;
   textStroke?: boolean;
-  onTimeOut?: () => void;
+  onTimeOut?: (id: string) => void;
 };
 
 const ChatMessage = ({
   username,
   message,
   textStroke,
-  onTimeOut,
+  onTimeOut: timeoutFn,
+  id,
 }: ChatMessageProps) => {
   const textStrokeStyle = useMemo(
     () =>
@@ -59,6 +61,10 @@ const ChatMessage = ({
         : {},
     [textStroke]
   );
+
+  const onTimeOut = useCallback(() => {
+    timeoutFn(id);
+  }, [, timeoutFn, id]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -299,7 +305,7 @@ export const Chat = ({
   }, [chatClient, appendToChat]);
 
   const clearChatMessage = useCallback(
-    (msgId: string) => () => {
+    (msgId: string) => {
       setChatLog(chatLog.filter(({ id }) => id !== msgId));
     },
     [setChatLog, chatLog]
@@ -322,7 +328,7 @@ export const Chat = ({
             username={msg.username}
             message={msg.message}
             textStroke={textStroke}
-            onTimeOut={fading ? clearChatMessage(msg.id) : undefined}
+            onTimeOut={fading ? clearChatMessage : undefined}
           />
         ))}
       </VStack>

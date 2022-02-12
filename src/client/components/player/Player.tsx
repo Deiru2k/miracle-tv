@@ -45,7 +45,7 @@ export const Player = ({
   const containerRef = useRef<HTMLDivElement>();
   const volume = Number(localStorage.getItem("volume")) || 100;
   const [isFullscreen, setFullscreen] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(!isPreview);
+  const [isPlaying, setIsPlaying] = useState<boolean>(isPreview);
 
   const initialQuality = localStorage.getItem("quality");
   const [currentSource, setCurrentSource] = useState<number>(
