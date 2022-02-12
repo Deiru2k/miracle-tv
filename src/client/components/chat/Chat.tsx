@@ -324,6 +324,7 @@ export const Chat = ({
       >
         {chatLog.map((msg) => (
           <ChatMessage
+            id={msg.id}
             key={msg.timestamp}
             username={msg.username}
             message={msg.message}
