@@ -12,6 +12,7 @@ import {
   useDisclosure,
   Heading,
   UseDisclosureReturn,
+  useInterval,
 } from "@chakra-ui/react";
 import { getIOClient } from "miracle-tv-client/socketio";
 import {
@@ -33,6 +34,7 @@ import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { UserInfo } from "miracle-tv-server/websocket/chat/roster";
 import { Link } from "../ui/Link";
+import { DateTime } from "luxon";
 
 type ChatMessageProps = {
   id: string;
@@ -42,13 +44,7 @@ type ChatMessageProps = {
   onTimeOut?: (id: string) => void;
 };
 
-const ChatMessage = ({
-  username,
-  message,
-  textStroke,
-  onTimeOut: timeoutFn,
-  id,
-}: ChatMessageProps) => {
+const ChatMessage = ({ username, message, textStroke }: ChatMessageProps) => {
   const textStrokeStyle = useMemo(
     () =>
       textStroke
@@ -61,20 +57,6 @@ const ChatMessage = ({
         : {},
     [textStroke]
   );
-
-  const onTimeOut = useCallback(() => {
-    timeoutFn(id);
-  }, [, timeoutFn, id]);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (onTimeOut) {
-      timeout = setTimeout(onTimeOut, 6000);
-    }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
 
   return (
     <Box display="block" w="100%" wordBreak="break-word">
@@ -310,6 +292,20 @@ export const Chat = ({
     },
     [setChatLog, chatLog]
   );
+  useInterval(() => {
+    if (fading) {
+      chatLog.forEach((item) => {
+        const timeDeltaSeconds = DateTime.local().diff(
+          DateTime.fromMillis(item.timestamp),
+          "seconds"
+        ).seconds;
+        if (timeDeltaSeconds > 15) {
+          const newMessages = chatLog.filter((i) => i.id !== item.id);
+          setChatLog(chatLog);
+        }
+      });
+    }
+  }, 15000);
 
   return (
     <Flex w="100%" direction="column" height="100%" position="relative">
@@ -329,7 +325,6 @@ export const Chat = ({
             username={msg.username}
             message={msg.message}
             textStroke={textStroke}
-            onTimeOut={fading ? clearChatMessage : undefined}
           />
         ))}
       </VStack>
