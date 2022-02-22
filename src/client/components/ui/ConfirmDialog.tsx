@@ -32,7 +32,7 @@ export const ConfirmDialog = ({
     <Modal {...props}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Confirm action</ModalHeader>
+        <ModalHeader>{tCommon("confirm-action")}</ModalHeader>
         <ModalBody>{children}</ModalBody>
         <ModalFooter>
           <HStack>
