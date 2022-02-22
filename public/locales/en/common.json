@@ -60,8 +60,11 @@
 
   "chat-login": "Please login to use chat",
   "chat-be-nice": "Remember to be nice to each other",
-  "chat-popup": "Open chat in popup",
-  "chat-roster": "Open chat roster",
+  "chat-popup": "Popup-chat",
+  "chat-roster": "Roster",
+  "chat-overlay": "Chat overlay",
+  "chat-popup-open": "Open chat in popup",
+  "chat-roster-open": "Open chat roster",
   "chat-send": "Send message",
 
   "latest-clips": "Latest clips",

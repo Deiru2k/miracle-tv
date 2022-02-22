@@ -80,6 +80,11 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
     noWrapperRoutes
   );
   const Wrapper = showWrapper ? PageWrapper : (React.Fragment as any);
+  const wrapperProps = showWrapper
+    ? {
+        paddingTop: showNavbar ? "50px" : undefined,
+      }
+    : {};
   const [isLiveUpdate, setLiveUpdate] = useState<boolean>(false);
   const [locale, setLocale] = useState<LocaleKey>("en");
   return (
@@ -106,7 +111,7 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           <Chakra cookies={pageProps.cookies}>
             <ApolloProvider client={client}>
               <Flex h="100%" w="100%" direction="column">
-                <Wrapper paddingTop={showNavbar ? "50px" : undefined}>
+                <Wrapper {...wrapperProps}>
                   {showNavbar && <Navbar />}
                   <Component {...pageProps} />
                 </Wrapper>

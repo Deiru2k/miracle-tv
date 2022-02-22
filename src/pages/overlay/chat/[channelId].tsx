@@ -1,9 +1,12 @@
 import { css, Global } from "@emotion/react";
 import Chat from "miracle-tv-client/components/chat/Chat";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 const ChatOverlay = () => {
+  const { t: tCommon } = useTranslation("common");
   const { query } = useRouter();
   return (
     <>
@@ -14,6 +17,9 @@ const ChatOverlay = () => {
           }
         `}
       />
+      <Head>
+        <title>{tCommon("chat-overlay")} - Miracle TV</title>
+      </Head>
       <Chat
         channelId={query.channelId as string}
         hideControls

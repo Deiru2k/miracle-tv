@@ -146,8 +146,8 @@ const ChatControls = ({
           {!isPopup && (
             <IconButton
               variant="ghost"
-              aria-label={tCommon("chat-popup")}
-              title={tCommon("chat-popup")}
+              aria-label={tCommon("chat-popup-open")}
+              title={tCommon("chat-popup-open")}
               icon={<ExternalLinkIcon color="primary.200" />}
               onClick={onOpenPopup}
               isDisabled={isDisabled}
@@ -155,8 +155,8 @@ const ChatControls = ({
           )}
           <IconButton
             variant="ghost"
-            aria-label={tCommon("chat-roster")}
-            title={tCommon("chat-roster")}
+            aria-label={tCommon("chat-roster-open")}
+            title={tCommon("chat-roster-open")}
             icon={<AtSignIcon color="primary.200" />}
             onClick={onRosterOpen}
             isDisabled={isDisabled}
@@ -199,6 +199,7 @@ export const Chat = ({
   hideScrollbar,
   fading = false,
 }: Props) => {
+  const { t: tCommon } = useTranslation("common");
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const chatLogRef = useRef<HTMLDivElement>();
   const rosterDisclosure = useDisclosure();
@@ -288,12 +289,6 @@ export const Chat = ({
     chatClient.on("chat:message", appendToChat);
   }, [chatClient, appendToChat]);
 
-  const clearChatMessage = useCallback(
-    (msgId: string) => {
-      setChatLog(chatLog.filter(({ id }) => id !== msgId));
-    },
-    [setChatLog, chatLog]
-  );
   useInterval(() => {
     if (fading) {
       chatLog.forEach((item) => {
@@ -350,7 +345,7 @@ export const Chat = ({
         pt={1}
       >
         <Heading w="100%" px={2} mb={2} size="md">
-          Roster:
+          {tCommon("chat-roster")}:
         </Heading>
         <VStack overflow="auto" height="100%">
           {roster?.map((user) => (

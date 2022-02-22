@@ -2,19 +2,27 @@ import { Box, Heading } from "@chakra-ui/layout";
 import Chat from "miracle-tv-client/components/chat/Chat";
 import { Attract } from "miracle-tv-client/components/ui/Attract";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 type PopupChatParams = {
   channelId?: string;
 };
 
 const PopupChat = () => {
+  const { t: tCommon } = useTranslation("common");
   const { query } = useRouter();
   const channelId = (query as PopupChatParams).channelId;
   return channelId ? (
-    <Box w="100%" h="100%" p={4}>
-      <Chat channelId={channelId} isPopup />
-    </Box>
+    <>
+      <Head>
+        <title>{tCommon("chat-popup")} - Miracle TV</title>
+      </Head>
+      <Box w="100%" h="100%" p={4}>
+        <Chat channelId={channelId} isPopup />
+      </Box>
+    </>
   ) : (
     <Attract>
       <Heading size="md" mt={4}>
