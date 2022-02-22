@@ -1,5 +1,8 @@
 # MiracleTV
 
+| ![Example screenshot 1](/git_files/screen_1.png "Example 1") | ![Example screenshot 2](/git_files/screen_2.png "Example 2") |
+| ![Example screenshot 3](/git_files/screen_3.png "Example 3") | ![Example screenshot 4](/git_files/screen_4.png "Example 4") |
+
 ### An open-source Livestreaming Suite
 
 MiracleTV is a "batteries-included" Open-source Live Streaming suite, featuring fully-functional multi-user environment, with support for mulitple channels per user, password-protected streams, content-warnings for streams and multiple streaming backend support
