@@ -1,0 +1,14 @@
+{
+  "sessions": "Sesje",
+  "sessions-revoke-success": "Unieważniono sesje.",
+  "sessions-revoke-error": "Wystąpił błąd podczas unieważniania sesji.",
+  "sessions-revoke": "Unieważnij wszystkie sesje",
+
+  "account-sessions": "Sesje konta",
+  "current-session": "Aktualna sesja",
+  "device": "Urządzenie",
+  "user": "Użytkownik",
+  "last-used": "Ostatnio używane",
+
+  "form-revoke-session": "Unieważnij sesję"
+}

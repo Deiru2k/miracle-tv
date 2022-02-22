@@ -1,0 +1,82 @@
+{
+  "login": "Zaloguj się",
+  "signup": "Zarejestruj się",
+  "logout": "Wyloguj się",
+  "email": "E-mail",
+  "dark-mode": "Ciemny motyw",
+  "light-mode": "Jasny motyw",
+  "live-update": "Aktualizacja w czasie rzeczywistym",
+  "disable": "Wyłącz",
+  "enable": "Włącz",
+  "update": "Aktualizuj",
+  "yes": "Tak",
+  "no": "Nie",
+  "confirm-action": "Potwierdź działanie",
+  "actions": "Działania",
+  "create": "Utwórz",
+  "update": "Zaktualizuj",
+  "delete": "Usuń",
+
+  "aspect-ratio": "Proporcje ekranu {{ratio}} są preferowane",
+
+  "navbar_menu_dashboard": "Pulpit",
+  "navbar_menu_profile-page": "Strona twojego profilu",
+  "navbar_menu_settings": "Ustawienia",
+  "navbar_menu_admin": "Panel administracyjny",
+  "navbar_menu_obs": "Jak ustawić OBS",
+  "navbar_menu_landing": "Wstęp",
+
+  "select-users": "Wybierz użytkowników...",
+  "select-activities": "Wybierz czynności...",
+  "select-value": "Wybierz wartość...",
+  "no-options": "Nie znaleziono opcji!",
+
+  "server-url": "URL serwera",
+
+  "entity-users": "Użytkownicy",
+  "entity-channels": "Kanały",
+  "entity-roles": "Role",
+  "entity-streamkeys": "Klucze strumieniowania",
+  "entity-activities": "Czynności",
+  "entity-user-settings": "Ustawienia użytkownika",
+  "entity-sessions": "Sesje",
+  "entity-system-info": "Informacje o systemie",
+
+  "uploader-upload": "Wyślij plik",
+  "uploader-choose": "Wybierz plik do wysłania",
+  "uploader-new": "Wyślij nowy plik",
+  "uploader-select": "Wybierz plik",
+  "uploader-remove": "Usuń plik",
+
+  "this-field-supports": "To pole wspiera",
+  "editor-edit": "Edytor",
+  "editor-preview": "Podgląd",
+
+  "subscribed-to": "Subskrybowano {{name}}",
+  "unsubscribed-from": "Odsubskrybowano {{name}}",
+  "subscribed-to-error": "Błąd podczas subskrybowania {{name}}",
+  "unsubscribed-from-error": "Błąd podczas odsubskrybowywania {{name}}",
+  "subscribe": "Subskrybuj",
+  "unsubscribe": "Cofnij subskrypcję",
+
+  "chat-login": "Zaloguj się, aby używać czatu",
+  "chat-be-nice": "Pamiętaj żeby być miłym dla innych",
+  "chat-popup": "Wyskakujący czat",
+  "chat-roster": "Uczestnicy",
+  "chat-overlay": "Nakładka czatu",
+  "chat-popup-open": "Otwórz czat w osobnym oknie",
+  "chat-roster-open": "Pokaż uczestników czasu",
+  "chat-send": "Wyślij wiadomość",
+
+  "latest-clips": "Najnowsze klipy",
+
+  "auth-login": "Zaloguj się",
+  "auth-logout": "Wyloguj się",
+  "auth-sign-up": "Zarejestruj się",
+  "auth-username": "Nazwa użytkownika",
+  "auth-password": "Hasło",
+
+  "auth-username-help": "Nazwa użytkownika nie może być później zmieniona!",
+  "auth-password-help": "Zalecane jest minimalnie 8 znaków, z literami, numerami i symbolami.",
+  "auth-sign-up-welcome": "Witaj, {{username}}! Możesz teraz zalogować się podanymi danymi."
+}

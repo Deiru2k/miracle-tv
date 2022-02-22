@@ -1,0 +1,19 @@
+{
+  "roles": "Role",
+  "name": "Nazwa roli",
+  "rights": "Prawa",
+  "permissions": "Uprawnienia",
+  "permission-inherit": "Odziedzicz",
+  "permission-deny": "Odmów",
+  "permission-self": "Ja",
+  "permission-read": "Odczyt",
+  "permission-write": "Zapis",
+
+  "form-create-role": "Utwórz rolę",
+  "form-parent-role": "Rodzic roli",
+  "form-update-role": "Aktualizuj rolę",
+
+  "right-suspend": "Zawieś użytkownika",
+  "right-silence": "Wycisz użytkownika",
+  "right-warn": "Ostrzeż użytkownika"
+}

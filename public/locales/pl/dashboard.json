@@ -1,0 +1,23 @@
+{
+  "ui-dashboard": "Pulpit",
+  "ui-home": "Strona główna",
+  "ui-streams": "Streamy",
+  "ui-user-directory": "Katalog użytkowników",
+
+  "streams-live-now": "Aktualnie na żywo",
+  "streams-live-discover": "Odkryj inne kanały!",
+  "streams-your-subs": "Twoje subskrypcje",
+  "stream-subs-not-found": "Kanały, które subskrybujesz, pojawią się tutaj.",
+
+  "streams-not-found": "Nie znaleziono kanałów. Możesz być pierwszą osobą, która",
+  "streams-create-one": "stworzy kanał",
+
+  "directory": "Katalog użytkowników",
+
+  "directory-not-found": "Brak kanałów w katalogu. Możesz być pierwszą osobą, która",
+  "directory-feature": "doda siebie do katalogu",
+  "directory-add-yourself": "Aby dodać siebie do katalogu, przejdź do",
+
+  "directory-preferences": "Preferencji profilu",
+  "directory-and-feature": "I dodaj siebie!"
+}
