@@ -79,14 +79,15 @@ const Dashboard = () => {
   const nav = useMemo(() => navMenu(tDashboard), [tDashboard]);
   return (
     <AuthRedirect>
+      {" "}
       <Head>
-        <title>{tDashboard("dashboard")} - Miracle TV</title>
+        <title>{tDashboard("ui-dashboard")} - Miracle TV</title>
       </Head>
       <Navigation
         nav={nav}
         components={components}
         size={[1, 10]}
-        title={isMobile ? tDashboard("dashboard") : undefined}
+        title={isMobile ? tDashboard("ui-dashboard") : undefined}
       />
     </AuthRedirect>
   );
