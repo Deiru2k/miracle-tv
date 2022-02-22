@@ -30,7 +30,14 @@ export default ChatOverlay;
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "navbar"])),
+      ...(await serverSideTranslations(locale, ["common", "chat"])),
     },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
   };
 }
