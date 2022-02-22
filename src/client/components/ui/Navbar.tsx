@@ -37,6 +37,8 @@ import { LiveUpdateSwitch } from "miracle-tv-client/context/liveUpdate";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { hasAdminPanelAccess } from "miracle-tv-shared/acl/utils";
+import { LocaleSwitcher } from "miracle-tv-client/context/locale";
+import { useTranslation } from "next-i18next";
 
 export const Navbar = () => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
@@ -52,6 +54,7 @@ export const Navbar = () => {
     if (currentUser?.id && !currentSettings) refetchSettings();
   }, [currentUser?.id]);
 
+  const { t: tCommon } = useTranslation("common");
   const styles = useMultiStyleConfig("Navbar", {});
 
   return (
@@ -70,13 +73,14 @@ export const Navbar = () => {
       <HStack>
         {isUserCalled && !isUserLoading && !currentUser && (
           <>
-            <Link as={Button} href="/auth/login">
-              Login
+            <Link as={Button} href="/auth/login" minWidth="unset">
+              {tCommon("login")}
             </Link>
-            <Link as={Button} href="/auth/sign-up">
-              Sign Up
+            <Link as={Button} href="/auth/sign-up" minWidth="unset">
+              {tCommon("signup")}
             </Link>
             <ThemeSwitcher isShort />
+            <LocaleSwitcher isShort />
           </>
         )}
         {isUserCalled && !isUserLoading && !!currentUser && (
@@ -109,41 +113,44 @@ export const Navbar = () => {
                 <MenuItem>
                   <Link href="/dashboard/home/streams" w="100%">
                     <HomeIcon mr={2} />
-                    Dashboard
+                    {tCommon("navbar_menu_dashboard")}
                   </Link>
                 </MenuItem>
                 <MenuItem>
                   <Link href={`/user/${currentUser.username}`} w="100%">
                     <AtSignIcon mr={2} />
-                    Your profile page
+                    {tCommon("navbar_menu_profile-page")}
                   </Link>
                 </MenuItem>
                 <MenuItem>
                   <Link href="/settings/user/profile" w="100%">
                     <SettingsIcon mr={2} />
-                    Settings
+                    {tCommon("navbar_menu_settings")}
                   </Link>
                 </MenuItem>
                 {hasAdminAccesss && (
                   <MenuItem>
                     <Link href="/admin" w="100%">
                       <InfoIcon mr={2} />
-                      Admin panel
+                      {tCommon("navbar_menu_admin")}
                     </Link>
                   </MenuItem>
                 )}
                 <MenuItem>
                   <Link href="/help/obs" target="_blank" w="100%">
                     <QuestionIcon mr={2} />
-                    How to setup OBS
+                    {tCommon("navbar_menu_obs")}
                   </Link>
                 </MenuItem>
                 <MenuItem>
                   <Link href="/about" target="_blank" w="100%">
-                    Landing page
+                    {tCommon("navbar_menu_landing")}
                   </Link>
                 </MenuItem>
                 <MenuDivider />
+                <MenuItem closeOnSelect={false}>
+                  <LocaleSwitcher />
+                </MenuItem>
                 <MenuItem closeOnSelect={false}>
                   <ThemeSwitcher />
                 </MenuItem>

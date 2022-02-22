@@ -1,0 +1,52 @@
+{
+  "ui-settings": "Настройки",
+  "ui-user": "Пользователь",
+  "ui-profile": "Профиль",
+  "ui-icons": "Изображения и баннеры",
+  "ui-preferences": "Предпочтения",
+  "ui-channels": "Каналы",
+  "ui-channel": "Канал",
+  "ui-security": "Безопасность",
+  "ui-account": "Аккаунт",
+  "ui-streamkeys": "Стрим-ключи",
+  "ui-sessions": "Сессии",
+
+  "preferences-update-success": "Настройки обновлены",
+  "preferences-update-error": "Во время обновления настроек произошла ошибка",
+
+  "preferences-single-user-mode": "Одиночный режим",
+  "preferences-single-user-mode-help": "Вам будет доступен только один канал, который будет объеденён с профилем. Полезно если вас интересует только один канал.",
+  "preferences-single-user-channel-help": "Канал, который будет связан с вашим профилем (если их несколько)",
+
+  "preferences-use-gravatar": "Использовать Gravatar",
+  "preferences-use-gravatar-help": "Если включено, будет использован ваш емейл для отображения аватара",
+  "preferences-feature-directory": "Указывать в директории",
+  "preferences-feature-directory-help": "Если включено, ваш профиль будет включён в публичную директорию этого сайта",
+  "preferences-update": "Обновить настройки",
+
+  "profile-settings": "Настройки профиля",
+  "profile-update-success": "Профиль обновлён",
+  "profile-update-error": "Во время обновления профиля произошла ошибка",
+
+  "account-settings": "Настройки аккаунта",
+  "account-update-success": "Аккаунт обновлён",
+  "account-update-error": "Во время обновления аккаунта произошла ошибка",
+  "account-change-password": "Сменить пароль",
+  "account-change-password-success": "Пароль изменён успешно!",
+  "account-change-password-error": "При смене пароля произошла ошибка!",
+  "account-old-password": "Текущий пароль",
+  "account-new-password": "Новый пароль",
+  "account-change": "Сменить",
+
+  "profile-stream-thumbnail": "Используется для ваших каналов, на которых не стоит своя заглушка.",
+
+  "gravatar-controlled-via": "Управляется с помощью",
+  "gravatar-please-visit": "Посетите Gravatar.com чтобы поменять аватар, или пройдите в",
+  "gravatar-and-disable": "и отключие gravatar",
+
+  "channels-page-title": "Настройки каналов",
+  "channels-confirm": "Вы уверены, что хотите удалить этот канал?",
+
+  "streamkeys-no-keys-heading": "Похоже, что у вас нет ни одного ключа.",
+  "streamkeys-no-keys-content": "Они могут быть созданы на странице настроек канала"
+}

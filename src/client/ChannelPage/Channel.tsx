@@ -35,6 +35,7 @@ import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
 import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
 import { DateTime } from "luxon";
 import { ChannelLiveTimer } from "miracle-tv-client/components/ui/channels/ChannelLiveTimer";
+import { useTranslation } from "react-i18next";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -182,6 +183,9 @@ export const ChannelView = ({
   onSubscribe,
   onUnsubscribe,
 }: Props) => {
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tCommon } = useTranslation("common");
+
   const [checkMature, setCheckMature] = useAgeGate(channel.id);
   const [accessKey, setAccessKey] = useChannelAccess(channel.id);
   const onAgeSet = useCallback(() => {
@@ -262,16 +266,18 @@ export const ChannelView = ({
               <PersonIcon aria-label="Subscribers:" mr={1} />
               {channel.meta.subscriberCount}
             </Flex>
-            {!isSubscribed && <Button onClick={onSubscribe}>Subscribe</Button>}
+            {!isSubscribed && (
+              <Button onClick={onSubscribe}>{tCommon("subscribe")}</Button>
+            )}
             {isSubscribed && (
               <Button colorScheme="red" onClick={onUnsubscribe}>
-                Unsubscribe
+                {tCommon("unsubscribe")}
               </Button>
             )}
           </Flex>
         </Flex>
         <Flex mb={2} align="center">
-          Run by
+          {tChannel("run-by")}
           <Avatar
             emailHash={channel.user.emailHash}
             username={channel.user.username}

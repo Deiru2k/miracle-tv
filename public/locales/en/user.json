@@ -1,0 +1,19 @@
+{
+  "profile": "Profile",
+  "username": "Username",
+  "display-name": "Display name",
+  "email": "E-Mail",
+  "roles": "Roles",
+  "use-gravatar": "Use gravatar",
+  "single-user-mode": "Single User Mode",
+  "single-user-channel": "Single User Channel",
+  "feature-profile-directory": "Feature in profile directory",
+  "profile-picture": "Profile Picture",
+  "profile-header": "Profile Header",
+  "bio": "Bio",
+  "stream-thumbnail": "Stream Thumbnail",
+  "this-field-supports": "This field supports",
+
+  "user-not-found": "User not found",
+  "their-channels": "Their channels"
+}

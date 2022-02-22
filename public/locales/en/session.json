@@ -1,0 +1,14 @@
+{
+  "sessions": "Sessions",
+  "sessions-revoke-success": "Revoked session(s).",
+  "sessions-revoke-error": "There was an error revoking session(s).",
+  "sessions-revoke": "Revoke all sessions",
+
+  "account-sessions": "Account sessions",
+  "current-session": "Current session",
+  "device": "Device",
+  "user": "User",
+  "last-used": "Last used",
+
+  "form-revoke-session": "Revoke session"
+}

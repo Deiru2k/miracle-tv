@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { useRouter } from "next/router";
 
 type Props = {
   heading?: React.ReactNode;
@@ -18,6 +19,7 @@ export const NotFound = ({
     </Text>
   ),
 }: Props) => {
+  const { locale } = useRouter();
   return (
     <Flex
       w="100%"

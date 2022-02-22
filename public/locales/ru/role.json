@@ -1,0 +1,19 @@
+{
+  "roles": "Роли",
+  "name": "Название роли",
+  "rights": "Разрешения",
+  "permissions": "Права доступа",
+  "permission-inherit": "Наследовать",
+  "permission-deny": "Отказать",
+  "permission-self": "Только свои",
+  "permission-read": "Читать",
+  "permission-write": "Изменять",
+
+  "form-create-role": "Создать роль",
+  "form-parent-role": "Родитель",
+  "form-update-role": "Обновить роль",
+
+  "right-suspend": "Заблокировать ползьователя",
+  "right-silence": "Заглушить пользователя",
+  "right-warn": "Предупредить пользователя"
+}

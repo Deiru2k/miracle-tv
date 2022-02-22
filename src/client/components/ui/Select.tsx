@@ -18,6 +18,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { Panel } from "./Panel";
 
 type SelectOption = { label: string; value: any };
@@ -70,11 +71,13 @@ export const Select = ({
   value,
   onChange,
   multi = false,
-  placeholder = "Select value...",
+  placeholder,
   isDisabled = false,
   isLoading = false,
   onSearch,
 }: SelectProps) => {
+  const { t: tCommon } = useTranslation("common");
+  const actualPlaceholder = placeholder ?? tCommon("select-value");
   const [selectValue, setValue] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [showOptions, setShowOptions] = useState<boolean>(false);
@@ -206,7 +209,7 @@ export const Select = ({
           onClick={onSelectClick}
           zIndex={1}
         >
-          {!selectValue.length && !showInput && placeholder}
+          {!selectValue.length && !showInput && actualPlaceholder}
           {showOptions && isLoading && (
             <Spinner pointerEvents="none" position="absolute" right="15px" />
           )}
@@ -311,7 +314,7 @@ export const Select = ({
         >
           {!filteredOptions?.length && (
             <Option
-              option={{ value: "none", label: "No options found!" }}
+              option={{ value: "none", label: tCommon("no-options") }}
               isDisabled
             />
           )}

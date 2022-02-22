@@ -1,0 +1,51 @@
+{
+  "ui-user": "User",
+  "ui-profile": "Profile",
+  "ui-icons": "Icons and Headers",
+  "ui-preferences": "Preferences",
+  "ui-channels": "Channels",
+  "ui-channel": "Channel",
+  "ui-security": "Security",
+  "ui-account": "Account",
+  "ui-streamkeys": "Stream keys",
+  "ui-sessions": "Sessions",
+
+  "preferences-update-success": "Updated settings",
+  "preferences-update-error": "There was an error updating settings",
+
+  "preferences-single-user-mode": "Single User Mode",
+  "preferences-single-user-mode-help": "If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels.",
+  "preferences-single-user-channel-help": "Select channel that you would like to use.",
+
+  "preferences-use-gravatar": "Use Gravatar",
+  "preferences-use-gravatar-help": "If enabled, profile picture will use Gravatar instead of currently uploaded image",
+  "preferences-feature-directory": "Feature in User Directory",
+  "preferences-feature-directory-help": "If enabled, your profile will be featured in the \"Users\" page on the dashboard",
+  "preferences-update": "Update settings",
+
+  "profile-settings": "Profile settings",
+  "profile-update-success": "Updated settings",
+  "profile-update-error": "There was an error updating settings",
+
+  "account-settings": "Account details",
+  "account-update-success": "Account updated",
+  "account-update-error": "There was an error updating account",
+  "account-change-password": "Change password",
+  "account-change-password-success": "Successfully changed password",
+  "account-change-password-error": "There was an error changing password",
+  "account-old-password": "Current password",
+  "account-new-password": "New password",
+  "account-change": "Change",
+
+  "profile-stream-thumbnail": "Used for any channel that doesn't have it's own thumbnail set.",
+
+  "gravatar-controlled-via": "Controlled via",
+  "gravatar-please-visit": "Please visit Gravatar.com to change, or go to",
+  "gravatar-and-disable": "and disable gravatar avatars",
+
+  "channels-page-title": "Cahennels Settings",
+  "channels-confirm": "Are you sure you want to delete this channel?",
+
+  "streamkeys-no-keys-heading": "You don't seem to have any keys yet. Go to your channel settings to create one",
+  "streamkeys-no-keys-content": "All keys from all channels will be displayed here for convenience"
+}

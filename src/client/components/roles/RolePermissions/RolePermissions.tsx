@@ -8,8 +8,10 @@ import {
   AccessTargets,
   AccessUnit,
 } from "miracle-tv-shared/graphql";
-import React, { useCallback } from "react";
+import { useTranslation } from "next-i18next";
+import React, { useCallback, useMemo } from "react";
 import { useField } from "react-final-form";
+import { TranslationFn } from "src/types";
 import { AccessUnitEdit } from "./AccessUnit";
 
 type Props = {
@@ -29,20 +31,25 @@ const accessRightsOrder: AccessKey[] = [
   "system",
 ];
 
-const accessRightsLabels: Record<AccessKey, string> = {
-  users: "Users",
-  system: "System Info",
-  channels: "Channels",
-  roles: "Roles",
-  activities: "Activities",
-  streamKeys: "Stream keys",
-  userSettings: "User Settings",
-  sessions: "Sessions",
-};
+type LabelsFn = (tFn?: TranslationFn) => Record<AccessKey, string>;
+
+const accessRightsLabels: LabelsFn = (tFn) => ({
+  users: tFn?.("entity-users") ?? "Users",
+  system: tFn?.("entity-system-info") ?? "System Info",
+  channels: tFn?.("entity-channels") ?? "Channels",
+  roles: tFn?.("entity-roles") ?? "Roles",
+  activities: tFn?.("entity-activities") ?? "Activities",
+  streamKeys: tFn?.("entity-streamkeys") ?? "Stream keys",
+  userSettings: tFn?.("entity-user-settings") ?? "User Settings",
+  sessions: tFn?.("entity-sessions") ?? "Sessions",
+});
 
 export const RolePermissions = ({ isDisabled }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const { input: rightsField } = useField<AccessRights>("access.rights");
+  const { t: tCommon } = useTranslation("common");
+  const { t: tRole } = useTranslation("role");
+  const rightLabels = useMemo(() => accessRightsLabels(tCommon), [tCommon]);
 
   const onRightsChange = useCallback(
     (unit: AccessKey, value: AccessUnit[]) => {
@@ -56,8 +63,8 @@ export const RolePermissions = ({ isDisabled }: Props) => {
 
   return (
     <>
-      <Heading size="lg" mb={2}>
-        Permissions
+      <Heading size="md" mb={2}>
+        {tRole("permissions")}
       </Heading>
       <VStack w="100%">
         {accessRightsOrder.map((right) => (
@@ -75,7 +82,7 @@ export const RolePermissions = ({ isDisabled }: Props) => {
               flex={3}
               alignSelf={isMobile ? "flex-start" : undefined}
             >
-              {accessRightsLabels[right]}
+              {rightLabels[right]}
             </Heading>
             {!isMobile && (
               <Box

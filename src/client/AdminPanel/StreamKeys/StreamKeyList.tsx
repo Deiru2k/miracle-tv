@@ -36,6 +36,7 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { Filter } from "miracle-tv-client/components/ui/Filter";
 import { FormUsersSelect } from "miracle-tv-client/components/form/selects/FormUserSelect";
 import { FormChannelsSelect } from "miracle-tv-client/components/form/selects/FormChannelsSelect";
+import { useTranslation } from "react-i18next";
 
 gql`
   query AdminStreamKeyList($filter: StreamKeyFilter, $limit: QueryLimit) {
@@ -60,6 +61,8 @@ const perPage = 10;
 export const AdminStreamKeyList = () => {
   const toast = useToast();
   const [filter, setFilter] = useState<StreamKeyFilter>({});
+
+  const { t: tStreamkey } = useTranslation("streamkey");
 
   const { checkRights } = useCurrentUser();
   const isMobile = useMediaQuery(MediaQuery.mobile);
@@ -98,12 +101,12 @@ export const AdminStreamKeyList = () => {
   const [revokeKeyMutation] = useAdminDeleteStreamKeyMutation({
     refetchQueries: ["AdminStreamKeyList", "AdminStreamKeysCount"],
     onCompleted() {
-      toast({ status: "success", title: "Deleted stream key." });
+      toast({ status: "success", title: tStreamkey("key-revoke-success") });
     },
     onError() {
       toast({
         status: "error",
-        title: "There was an error deleting stream key.",
+        title: tStreamkey("key-revoke-error"),
       });
     },
   });
@@ -115,12 +118,12 @@ export const AdminStreamKeyList = () => {
   const [bulkRevokeKeyMutation] = useAdminBulkDeleteStreamKeysMutation({
     refetchQueries: ["AdminStreamKeyList", "AdminStreamKeysCount"],
     onCompleted() {
-      toast({ status: "success", title: "Deleted stream keys." });
+      toast({ status: "success", title: tStreamkey("keys-revoke-success") });
     },
     onError() {
       toast({
         status: "error",
-        title: "There was an error deleting stream keys.",
+        title: tStreamkey("keys-revoke-error"),
       });
     },
   });
@@ -132,7 +135,7 @@ export const AdminStreamKeyList = () => {
   return (
     <>
       <Flex mb={2} justify="space-between" align="center">
-        <Heading>Stream Keys</Heading>
+        <Heading>{tStreamkey("streamkeys")}</Heading>
       </Flex>
       <Divider mb={4} />
       <HStack spacing={2} mb={2}>
@@ -147,19 +150,19 @@ export const AdminStreamKeyList = () => {
           isDisabled={!canEditKeys || !isAllChecked}
           onClick={onKeysRevoke}
         >
-          Revoke all keys
+          {tStreamkey("revoke-all")}
         </Button>
       </HStack>
       <Filter<StreamKeyFilter> onFilter={setFilter}>
         <Stack direction={isMobile ? "column" : "row"} spacing={2}>
           <FormUsersSelect
             name="userId"
-            label="User"
+            label={tStreamkey("filter-user")}
             w={isMobile ? undefined : "50%"}
           />
           <FormChannelsSelect
             name="channelId"
-            label="Channel"
+            label={tStreamkey("filter-channel")}
             w={isMobile ? undefined : "50%"}
           />
         </Stack>
@@ -168,7 +171,8 @@ export const AdminStreamKeyList = () => {
         {streamKeys.map((sKey) => (
           <Panel w="100%" key={sKey.id}>
             <Checkbox
-              aria-label="Select all keys"
+              aria-label={tStreamkey("select-all")}
+              title={tStreamkey("select-all")}
               onChange={() => toggleId(sKey.id)}
               isChecked={isChecked(sKey.id)}
             />
@@ -176,12 +180,15 @@ export const AdminStreamKeyList = () => {
               {sKey.name && <Text as="span">{sKey.name}</Text>}
               {sKey.channel?.name && (
                 <Link href={`/admin/channels/${sKey.channel?.id}/details`}>
-                  <Badge as="span">Channel: {sKey.channel.name}</Badge>
+                  <Badge as="span">
+                    {tStreamkey("filter-channel")}: {sKey.channel.name}
+                  </Badge>
                 </Link>
               )}
               {sKey.user && (
                 <Badge>
-                  User: {sKey.user.displayName || sKey.user.username}
+                  {tStreamkey("filter-user")}:{" "}
+                  {sKey.user.displayName || sKey.user.username}
                 </Badge>
               )}
             </HStack>

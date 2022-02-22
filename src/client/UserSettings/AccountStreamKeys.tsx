@@ -26,6 +26,7 @@ import {
 } from "miracle-tv-shared/hooks";
 import Head from "next/head";
 import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 gql`
   query SelfStreamKeys {
@@ -46,6 +47,11 @@ gql`
 export const AccountStreamKeys = () => {
   const toast = useToast();
   const isMobile = useMediaQuery(MediaQuery.mobile);
+
+  const { t: tStreamkey } = useTranslation("streamkey");
+  const { t: tCommon } = useTranslation("common");
+  const { t: tSettings } = useTranslation("settings");
+
   const { currentUser } = useCurrentUser();
   const { data: { selfStreamKeys: keys = [] } = {}, refetch } =
     useSelfStreamKeysQuery();
@@ -53,18 +59,20 @@ export const AccountStreamKeys = () => {
   const [revokeStreamKey] = useUserSettingsRevokeStreamKeyMutation({
     onCompleted: () => {
       refetch();
-      toast({ status: "success", title: "Key revoked!" });
+      toast({ status: "success", title: tStreamkey("key-revoke-success") });
     },
-    onError: () => toast({ status: "error", title: "Error revoking key!" }),
+    onError: () =>
+      toast({ status: "error", title: tStreamkey("key-revoke-success") }),
   });
 
   const [revokeAllKeys, { loading: isAllRevoking }] =
     useRevokeSelfStreamKeysMutation({
       onCompleted: () => {
         refetch();
-        toast({ status: "success", title: "Key revoked!" });
+        toast({ status: "success", title: tStreamkey("keys-revoke-success") });
       },
-      onError: () => toast({ status: "error", title: "Error revoking key!" }),
+      onError: () =>
+        toast({ status: "error", title: tStreamkey("keys-revoke-success") }),
     });
 
   const onKeyRevoke = useCallback(
@@ -80,9 +88,9 @@ export const AccountStreamKeys = () => {
   return (
     <>
       <Head>
-        <title>Stream keys - Miracle TV</title>
+        <title>{tSettings("ui-streamkeys")} - Miracle TV</title>
       </Head>
-      <FloatingControls heading="All Account Keys" m={6}>
+      <FloatingControls heading={tStreamkey("all-account-keys")} m={6}>
         {!!keys?.length && (
           <>
             <Button
@@ -91,7 +99,7 @@ export const AccountStreamKeys = () => {
               colorScheme="red"
               isLoading={isAllRevoking}
             >
-              Revoke all keys
+              {tStreamkey("revoke-all")}
             </Button>
           </>
         )}
@@ -99,11 +107,9 @@ export const AccountStreamKeys = () => {
       {!keys?.length && (
         <Attract>
           <Heading mt={2} mb={2} size="lg" w="60%">
-            {
-              "You don't seem to have any keys yet. Go to your channel settings to create one"
-            }
+            {tSettings("streamkeys-no-keys-heading")}
           </Heading>
-          {"All keys from all channels will be displayed here for convenience"}
+          {tSettings("streamkeys-no-keys-content")}
         </Attract>
       )}
       <VStack w="100%">
@@ -115,7 +121,9 @@ export const AccountStreamKeys = () => {
             >
               {sKey.name && <Text mb={2}>{sKey.name}</Text>}
               {sKey.channel.name && (
-                <Text mb={2}>Channel: {sKey.channel.name}</Text>
+                <Text mb={2}>
+                  {tSettings("ui-channel")}: {sKey.channel.name}
+                </Text>
               )}
             </Flex>
             <Stack w="100%" direction={isMobile ? "column" : "row"}>

@@ -14,6 +14,7 @@ import { DateTime } from "luxon";
 import React from "react";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   session: Session;
@@ -30,6 +31,7 @@ export const SessionDisplay = ({
   ...stackProps
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
+  const { t: tSession } = useTranslation("session");
   return (
     <VStack w="100%" align="flex-start" {...stackProps}>
       <Panel w={isMobile ? "100%" : undefined} {...panelProps}>
@@ -39,20 +41,20 @@ export const SessionDisplay = ({
               IP: <Code>{session.ip}</Code>
               {session.isCurrentSession && (
                 <Badge ml={2} colorScheme="green">
-                  Current session
+                  {tSession("current-session")}
                 </Badge>
               )}
             </Text>
             <Text>
-              Device: <Code>{session.userAgent}</Code>
+              {tSession("device")}: <Code>{session.userAgent}</Code>
             </Text>
             {showUser && (
               <Text>
-                User Id: <Code>{session.user}</Code>
+                {tSession("user")}: <Code>{session.user}</Code>
               </Text>
             )}
             <Text>
-              Last used:{" "}
+              {tSession("last-used")}:{" "}
               <Code>
                 {DateTime.fromISO(session.lastUsedAt).toLocaleString({
                   weekday: "short",
@@ -71,7 +73,7 @@ export const SessionDisplay = ({
               size="sm"
               onClick={() => onRevoke?.(session.id)}
             >
-              Revoke session
+              {tSession("form-revoke-session")}
             </Button>
           )}
         </VStack>

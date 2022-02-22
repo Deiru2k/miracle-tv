@@ -16,9 +16,11 @@ import {
   useSubscribeToUserMutation,
   useUnsubscribeFromUserMutation,
 } from "miracle-tv-shared/hooks";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useCallback, useContext, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 gql`
   query UserPage($username: ID!) {
@@ -65,6 +67,10 @@ gql`
 
 const UserPage = () => {
   const toast = useToast();
+
+  const { t: tUser } = useTranslation("user");
+  const { t: tCommon } = useTranslation("common");
+
   const {
     query: { id },
   } = useRouter();
@@ -93,13 +99,17 @@ const UserPage = () => {
     onCompleted: () => {
       toast({
         status: "success",
-        title: `Subscribed to ${user?.displayName || user?.username}`,
+        title: tCommon("subscribed-to", {
+          name: user?.displayName || user?.username,
+        }),
       });
     },
     onError: () => {
       toast({
         status: "error",
-        title: `Error subscribing to ${user?.displayName || user?.username}`,
+        title: tCommon("subscribed-to-error", {
+          name: user?.displayName || user?.username,
+        }),
       });
     },
   });
@@ -108,15 +118,17 @@ const UserPage = () => {
     onCompleted: () => {
       toast({
         status: "success",
-        title: `Unsubscribed from ${user?.displayName || user?.username}`,
+        title: tCommon("unsubscribed-from", {
+          name: user?.displayName || user?.username,
+        }),
       });
     },
     onError: () => {
       toast({
         status: "error",
-        title: `Error unsubscribing from ${
-          user?.displayName || user?.username
-        }`,
+        title: tCommon("unsubscribed-from-error", {
+          name: user?.displayName || user?.username,
+        }),
       });
     },
   });
@@ -145,7 +157,7 @@ const UserPage = () => {
     <>
       <Head>
         <title>
-          {user.displayName || user.username} - Profile - Miracle TV
+          {user.displayName || user.username} - {tUser("profile")} - Miracle TV
         </title>
       </Head>
       <UserProfile
@@ -157,8 +169,23 @@ const UserPage = () => {
       />
     </>
   ) : (
-    <NotFound heading="User not found!" />
+    <NotFound heading={tUser("user-not-found")} />
   );
 };
 
 export default UserPage;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "channel", "user"])),
+    },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
+  };
+}

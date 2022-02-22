@@ -15,9 +15,11 @@ import {
   useSubscribeToChannelMutation,
   useUnsubscribeFromChannelMutation,
 } from "miracle-tv-shared/hooks";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useCallback, useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 gql`
   query ChannelPage($id: ID!) {
@@ -60,6 +62,10 @@ const ChannelPage = () => {
   const {
     query: { id },
   } = useRouter();
+
+  const { t: tCommon } = useTranslation("common");
+  const { t: tChannel } = useTranslation("channel");
+
   const { isLiveUpdate } = useContext(LiveUpdateContext);
   const { data: { channel } = {}, loading: isLoading } = useChannelPageQuery({
     variables: { id: id as string },
@@ -77,24 +83,30 @@ const ChannelPage = () => {
 
   const [subscribeMutation] = useSubscribeToChannelMutation({
     onCompleted: () => {
-      toast({ status: "success", title: `Subscribed to ${channel?.name}` });
+      toast({
+        status: "success",
+        title: tCommon("subscribed-to", { name: channel?.name }),
+      });
     },
     onError: () => {
       toast({
         status: "error",
-        title: `Error subscribing to ${channel?.name}`,
+        title: tCommon("subscribed-to-error", { name: channel?.name }),
       });
     },
   });
 
   const [unusbscribeMutation] = useUnsubscribeFromChannelMutation({
     onCompleted: () => {
-      toast({ status: "success", title: `Unsubscribed from ${channel?.name}` });
+      toast({
+        status: "success",
+        title: tCommon("unsubscribed-from", { name: channel?.name }),
+      });
     },
     onError: () => {
       toast({
         status: "error",
-        title: `Error unsubscribing from ${channel?.name}`,
+        title: tCommon("unsubscribed-from-error", { name: channel?.name }),
       });
     },
   });
@@ -121,7 +133,9 @@ const ChannelPage = () => {
   return channel ? (
     <>
       <Head>
-        <title>{channel.name} - Channel - Miracle TV</title>
+        <title>
+          {channel.name} - {tChannel("channel")} - Miracle TV
+        </title>
       </Head>
       <ChannelView
         channel={channel}
@@ -132,8 +146,23 @@ const ChannelPage = () => {
       />
     </>
   ) : (
-    <NotFound heading="Channel not found!" />
+    <NotFound heading={tChannel("channel-not-found")} />
   );
 };
 
 export default ChannelPage;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "channel"])),
+    },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
+  };
+}

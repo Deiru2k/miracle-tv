@@ -21,16 +21,19 @@ export class RolesModel extends Model {
     super(conn);
   }
 
-  async create(input: CreateRoleInput): Promise<DbRole> {
+  async create<T extends object = DbRole>(input: CreateRoleInput): Promise<T> {
     const result = await this.table.insert(input).run(this.conn);
     if (result.errors > 0) {
       throw new ServerError(`There was an error creating ${this.name}`);
     }
     const newItem = await this.table.get(input.id).run(this.conn);
-    return newItem as DbRole;
+    return newItem as T;
   }
 
-  async update({ id, ...input }: UpdateRoleInput): Promise<DbRole> {
+  async update<T extends object = DbRole>({
+    id,
+    ...input
+  }: UpdateRoleInput): Promise<T> {
     const item = await this.table.get(id).run(this.conn);
     if (!item) {
       throw new NotFoundError(`${this.name} not found | ID: ${id}`);
@@ -41,7 +44,7 @@ export class RolesModel extends Model {
         `There was an error updating ${this.name} | ID: ${id}`
       );
     }
-    return { ...item, ...input, id } as DbRole;
+    return { ...item, ...input, id } as T;
   }
 
   async deleteItem(id: string): Promise<boolean> {
@@ -89,9 +92,12 @@ export class RolesModel extends Model {
     return filteredQuery;
   }
 
-  async list(filter: RolesFilter = {}, limit?: QueryLimit): Promise<DbRole[]> {
+  async list<T extends object = DbRole>(
+    filter: RolesFilter = {},
+    limit?: QueryLimit
+  ): Promise<T[]> {
     const filteredQuery = this.roleFilter(filter, limit);
-    return filteredQuery.coerceTo("array").run(this.conn);
+    return filteredQuery.coerceTo("array").run(this.conn) as Promise<T[]>;
   }
 
   async getAll(ids: string[]): Promise<DbRole[]> {
@@ -101,7 +107,7 @@ export class RolesModel extends Model {
       .run(this.conn);
   }
 
-  async get(id: string): Promise<DbRole> {
-    return this.table.get(id).run(this.conn) as Promise<DbRole>;
+  async get<T extends object = DbRole>(id: string): Promise<T> {
+    return this.table.get(id).run(this.conn) as Promise<T>;
   }
 }

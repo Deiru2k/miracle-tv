@@ -14,6 +14,7 @@ import { Heading } from "@chakra-ui/react";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { DashboardUserDirectory } from "miracle-tv-client/Dashboard/Users";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -84,3 +85,18 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "navbar"])),
+    },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
+  };
+}

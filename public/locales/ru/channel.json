@@ -1,0 +1,87 @@
+{
+  "channel": "Канал",
+  "channels": "Каналы",
+  "edit-channel": "Редактировать канал",
+  "view-channel": "Открыть канал",
+  "delete-channel": "Удалить канал",
+
+  "channel-settings-for": "Настройки канала для \"{{name}}\"",
+
+  "disabled": "Выключен",
+  "shelved": "Скрыт",
+
+  "open-in-new-tab": "Открыть ваш канал в новой вкладке",
+  "stream-keys-forbidden": "Просмотр стрим-ключен запрещён вашему аккунту",
+
+  "delete-confirm": "Вы уверены, что хотите удалить этот канал?",
+  "action-delete-channel-success": "Канал успешно удалён!",
+  "action-delete-channel-error": "Во время удаления канала произошла ошибка!",
+  "ui-tabs-details": "Детали",
+  "ui-tabs-keys": "Ключи",
+  "ui-tabs-overlay": "Оверлей",
+  "ui-tabs-dashboard": "Панель управления",
+
+  "ui-security": "Безопасность",
+
+  "ui-update-channel": "Обновить канал",
+
+  "name": "Название канала",
+  "slug": "Короткий URL канала",
+  "slug-help": "Используется для кастомизации URL",
+  "description": "Описание канала",
+  "thumbnail": "Баннер канала",
+  "thumbnail-help": "Используется на странице канала вместо плеера, когда стримов нет, а так же для отображения в разных списках",
+  "activities": "Активити канала",
+  "activity": "Активити канала",
+  "users": "Пользователи канала",
+
+  "mature": "Канал с возрастным ограничением",
+  "mature-help": "Это отметит ваш канал, как имеющий возрастное ограничение 18+",
+  "mature-description": "Описание контента",
+  "mature-description-help": "Опционально укажите, что именно накладывает на ваш канал возрастные ограничения",
+  "password-protected": "Защита паролем",
+  "password-protected-help": "Требовать пароль прежде чем просматривать ваш канал",
+  "password": "Пароль",
+  "password-help": "Пароль, которым вы хотите защитить ваш канал",
+
+  "keys-revoke-all": "Отменить все ключи",
+  "key-revoke": "Отменить ключ",
+  "keys-generate": "Сгенерировать",
+  "key-generate-new": "Сгенерировать новый ключ",
+
+  "keys-all-revoke-success": "Все ключи были отменены!",
+  "keys-all-revoke-error": "Произошла ошибка при отмене ключей!",
+  "key-revoke-success": "Ключ был отменён!",
+  "key-revoke-error": "Произошла ошибка при отмене ключа!",
+
+  "key-form-name": "Имя ключа (не обязательно)",
+  "key-form-name-help": "Для более быстрого поиска по ключам",
+  "key-form-success": "Создан новый ключ!",
+  "key-form-error": "Во время создания ключа произошла ошибка!",
+
+  "overlay-chat-title": "Оверлей чата",
+  "overlay-chat-url": "Ссылка на оверлей чата",
+  "overlay-chat-url-help": "Вы можете использовать эту ссылку вместе с плагином браузера для OBS, чтобы показывать чат на видео стрима.",
+
+  "dashboard-title": "Статистика",
+  "dashboard-status": "Статус",
+  "dashboard-status-live": "В ЭФИРЕ!",
+  "dashboard-status-offline": "Оффлайн",
+  "dashboard-viewers": "Зрителей",
+  "dashboard-duration": "Продолжительность",
+  "dashboard-traffic": "Траффик",
+  "dashboard-preview": "Превью",
+  "dashboard-preview-offline": "Стрим оффлайн. Начните трансляцию и превью заработает",
+  "dashboard-chat": "Чат",
+
+  "create-channel": "Создать канал",
+  "update-channel": "Обновить канал",
+  "create-new": "Создать новый!",
+  "no-channels": "Похоже, что у вас нет ни одного канала.",
+  "single-user-warning": "У вас включен одиночный режим, но не назначен канал",
+  "single-user-goto": "Пожалуйста проийдите в",
+  "single-user-pick": "И назначте один",
+  "channel-not-found": "Канал не найден",
+  "run-by": "Владелец:",
+  "channel-offline-text": "Канал ушёл оффлайн. Присоединяйтесь к обсуждению в чате, или придите попозже."
+}

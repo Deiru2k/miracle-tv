@@ -1,0 +1,23 @@
+{
+  "streamkeys": "Стрим-ключи",
+
+  "all-account-keys": "Все ключи аккаунта",
+  "select-all": "Выбрать все ключи",
+  "revoke-all": "Отозвать все ключи",
+  "delete-key": "Удалить ключ",
+
+  "keys-revoke-success": "Ключи удалён!",
+  "keys-revoke-error": "Во время удаления ключей произошла ошибка",
+
+  "key-revoke-success": "Ключ удалён!",
+  "key-revoke-error": "Во время удаления ключа произошла ошибка",
+
+  "key-create-success": "Ключ создан!",
+  "key-create-error": "Во время создания ключа произошла ошибка",
+
+  "key-update-success": "Ключ обновлён!",
+  "key-update-error": "Во время обновления ключа произошла ошибка",
+
+  "filter-user": "Пользователь",
+  "filter-channel": "Канал"
+}

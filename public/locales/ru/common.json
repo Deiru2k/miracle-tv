@@ -1,0 +1,77 @@
+{
+  "login": "Войти",
+  "signup": "Регистрация",
+  "logout": "Выйти",
+  "email": "E-Mail",
+  "dark-mode": "Тёмная тема",
+  "light-mode": "Светлая тема",
+  "live-update": "Обновление",
+  "enable": "Включить",
+  "disable": "Выключить",
+  "update": "Обновить",
+  "yes": "Да",
+  "no": "Нет",
+  "actions": "Действия",
+  "create": "Создать",
+  "update": "Обновить",
+  "delete": "Удалить",
+
+  "aspect-ratio": "Идеальное соотношение сторон: {{ratio}}",
+
+  "navbar_menu_dashboard": "Дешборд",
+  "navbar_menu_profile-page": "Ваш профиль",
+  "navbar_menu_settings": "Настройки",
+  "navbar_menu_admin": "Администранция",
+  "navbar_menu_obs": "Как настроить OBS",
+  "navbar_menu_landing": "Главная",
+
+  "select-users": "Выбрать пользователей...",
+  "select-activities": "Выбрать активити...",
+  "select-value": "Выберите значение...",
+  "no-options": "Ничего не найдено!",
+
+  "server-url": "URL сервера",
+
+  "entity-users": "Пользователи",
+  "entity-channels": "Каналы",
+  "entity-roles": "Роли",
+  "entity-streamkeys": "Стрим-ключи",
+  "entity-activities": "Активити",
+  "entity-user-settings": "Настройки пользователя",
+  "entity-sessions": "Сессии",
+  "entity-system-info": "Системная информация",
+
+  "uploader-upload": "Загрузить",
+  "uploader-choose": "Выберите файл для загрузки",
+  "uploader-select": "Выберите файл",
+  "uploader-new": "Загрузить новый файл",
+  "uploader-remove": "Удалить файл",
+
+  "this-field-supports": "Это поле поддерживает",
+  "editor-edit": "Редактор",
+  "editor-preview": "Предпросмотр",
+
+  "subscribed-to": "Вы подписались на {{name}}",
+  "unsubscribed-from": "Вы отписались от {{name}}",
+  "subscribed-from-error": "Ошибка при подписка на {{name}}",
+  "unsubscribed-from-error": "Ошибка при отписке от {{name}}",
+  "subscribe": "Подписаться",
+  "unsubscribe": "Отписаться",
+
+  "chat-login": "Пожалуйста войдите, чтобы использовать этот чат",
+  "chat-be-nice": "Уважайте других пользователей!",
+  "chat-popup": "Открыть чат в поп-ап окне",
+  "chat-roster": "Открыть список пользователей чата",
+  "chat-send": "Отправить сообщение",
+
+  "latest-clips": "Последние клипы",
+
+  "auth-login": "Войти",
+  "auth-sign-up": "Регистрация",
+  "auth-username": "Имя пользователя",
+  "auth-password": "Пароль",
+
+  "auth-username-help": "Не может быть изменен после создания. Выбирайте с умом!",
+  "auth-password-help": "Рекомендуется не менее 8 символов, используя буквы, цифры и знаки припинания",
+  "auth-sign-up-welcome": "Привет, {{name}}! Теперь ты можеш войти используя свой логин и пароль!"
+}

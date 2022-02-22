@@ -2,7 +2,6 @@ import { Heading } from "@chakra-ui/layout";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { Form } from "react-final-form";
 import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
-import { FormTextarea } from "miracle-tv-client/components/form/FormTextarea";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { gql } from "@apollo/client";
 import {
@@ -29,6 +28,7 @@ import Head from "next/head";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { FormMarkdown } from "miracle-tv-client/components/form/FormMarkdown";
+import { useTranslation } from "react-i18next";
 
 const userFragment = gql`
   fragment UserSettingsProfileFragment on User {
@@ -79,12 +79,20 @@ gql`
 export const ProfileSettings = () => {
   const toast = useToast();
   const { data, loading } = useUserSettingsProfileQuery();
+
+  const { t: tSettings } = useTranslation("settings");
+  const { t: tUser } = useTranslation("user");
+  const { t: tCommon } = useTranslation("common");
+
   const [updateProfileMutation, { loading: isUpdating }] =
     useUpdateUserSettingsProfileMutation({
       onCompleted: () =>
-        toast({ status: "success", title: "Updated user info!" }),
+        toast({
+          status: "success",
+          title: tSettings("profile-update-success"),
+        }),
       onError: () =>
-        toast({ status: "error", title: "Error updating user info." }),
+        toast({ status: "error", title: tSettings("profile-update-error") }),
     });
 
   const { currentSettings } = useCurrentUserSettings();
@@ -115,7 +123,7 @@ export const ProfileSettings = () => {
   );
 
   const updateProfile = useCallback(
-    (values: UpdateSelfInput) => {
+    ({ roles, ...values }: UpdateSelfInput & { roles?: object[] }) => {
       updateProfileMutation({ variables: { input: values } });
     },
     [updateProfileMutation]
@@ -124,7 +132,7 @@ export const ProfileSettings = () => {
   return (
     <>
       <Head>
-        <title>Profile settings - Miracle TV</title>
+        <title>{tSettings("ui-profile")} - Miracle TV</title>
       </Head>
       {loading && <Spinner />}
       {!loading && data?.self && (
@@ -137,24 +145,24 @@ export const ProfileSettings = () => {
               <Flex direction={isMobile ? "column" : "row"}>
                 <Box flex={2} mr={isMobile ? 0 : 4} mb={isMobile ? 4 : 0}>
                   <Heading as="h3" size="md" mb={6}>
-                    Profile
+                    {tSettings("ui-profile")}
                   </Heading>
                   <Panel>
                     <FormInput
                       id="displayName"
                       name="displayName"
-                      label="Display Name"
+                      label={tUser("display-name")}
                       mb={4}
                     />
                     <FormMarkdown
                       id="bio"
                       name="bio"
-                      label="Bio"
+                      label={tUser("bio")}
                       rows={10}
                       height="auto"
                       help={
                         <>
-                          This field supports{" "}
+                          {tCommon("this-field-supports")}{" "}
                           <Link
                             target="_blank"
                             textDecoration="underline"
@@ -178,13 +186,13 @@ export const ProfileSettings = () => {
                     >
                       <FormGroup
                         name="avatar"
-                        label="Profile Picture"
+                        label={tUser("profile-picture")}
                         mr={4}
                         w="auto"
                         flex={1}
                         help={
                           !currentSettings?.useGravatar &&
-                          "1:1 aspect ratio is preferred"
+                          tCommon("aspect-ratio", { ratio: "1:1" })
                         }
                       >
                         {!currentSettings?.useGravatar && (
@@ -198,24 +206,25 @@ export const ProfileSettings = () => {
                               username={data?.self?.username}
                             />
                             <FormHelperText>
-                              Controlled via{" "}
+                              {tSettings("gravatar-controlled-via")}{" "}
                               <a target="_blank" href="https://gravatar.com">
                                 [Gravatar]
                               </a>
-                              . Please visit Gravatar.com to change, or go to{" "}
+                              {". "}
+                              {tSettings("gravatar-please-visit")}{" "}
                               <Link href="/settings/user/preferences">
-                                [preferences]
+                                [{tSettings("ui-preferences")}]
                               </Link>{" "}
-                              and disable gravatar avatars
+                              {tSettings("gravatar-and-disable")}
                             </FormHelperText>
                           </>
                         )}
                       </FormGroup>
                       <FormGroup
                         name="header"
-                        label="Profile Header"
+                        label={tUser("profile-header")}
                         width="100%"
-                        help="16:6 aspect ratio is preffered"
+                        help={tCommon("aspect-ratio", { ratio: "16:6" })}
                         flex={4}
                       >
                         <ImageUploader
@@ -226,16 +235,15 @@ export const ProfileSettings = () => {
                       </FormGroup>
                     </Flex>
                     <FormGroup
+                      mt={6}
                       name="streamThumbnail"
-                      label="Stream Thumbnail"
+                      label={tUser("stream-thumbnail")}
                       help={
                         <>
-                          <Text>16:9 aspect ratio is preferred.</Text>
                           <Text>
-                            {
-                              "Used for any channel that doesn't have it's own thumbnail set."
-                            }
+                            {tCommon("aspect-ratio", { ratio: "16:9" })}
                           </Text>
+                          <Text>{tSettings("profile-stream-thumbnail")}</Text>
                         </>
                       }
                     >
@@ -262,7 +270,7 @@ export const ProfileSettings = () => {
                   isLoading={isUpdating}
                   isDisabled={!dirty}
                 >
-                  Update profile
+                  {tSettings("preferences-update")}
                 </Button>
               </Box>
             </form>

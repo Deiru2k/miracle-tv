@@ -15,6 +15,7 @@ import {
   useAdminSessionsListQuery,
 } from "miracle-tv-shared/hooks";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ADMIN_SESSION_FRAGMENT } from "./const";
 
 gql`
@@ -40,6 +41,9 @@ export const AdminSessionsList = () => {
   const [filter, setFilter] = useState<SessionsFilter>({});
   const { checkRights } = useCurrentUser();
 
+  const { t: tUser } = useTranslation("user");
+  const { t: tSession } = useTranslation("session");
+
   const canViewSessions = useMemo(
     () => checkRights(AccessUnit.Read, "sessions"),
     [checkRights]
@@ -63,12 +67,12 @@ export const AdminSessionsList = () => {
 
   const [revokeSessionsMutation] = useAdminRevokeSessionsMutation({
     onCompleted() {
-      toast({ status: "success", title: "Revoked session(s)." });
+      toast({ status: "success", title: tSession("sessions-revoke-success") });
     },
     onError() {
       toast({
         status: "success",
-        title: "There was an error revoking session(s).",
+        title: tSession("sessions-revoke-errro"),
       });
     },
     refetchQueries: ["AdminSessionsList", "AdminSessionsCount"],
@@ -83,10 +87,10 @@ export const AdminSessionsList = () => {
 
   return (
     <>
-      <Heading mb={2}>Sessions</Heading>
+      <Heading mb={2}>{tSession("sessions")}</Heading>
       <Divider mb={4} />
       <Filter onFilter={setFilter}>
-        <FormUsersSelect name="user" label="User" />
+        <FormUsersSelect name="user" label={tUser("username")} />
       </Filter>
       <SimpleGrid spacing={4} columns={isMobile ? 1 : 3}>
         {sessions.map((s) => (

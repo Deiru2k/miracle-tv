@@ -1,6 +1,8 @@
 var isDev = process.env.NODE_ENV === "development";
+const { i18n } = require("./next-i18next.config");
 
 module.exports = {
+  i18n,
   productionBrowserSourceMaps: true,
   distDir: "/dist/client",
   publicRuntimeConfig: {

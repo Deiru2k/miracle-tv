@@ -19,6 +19,7 @@ import { ProgressWithLabel } from "miracle-tv-client/components/ui/ProgressWithL
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
+import { useTranslation } from "react-i18next";
 
 gql`
   query AdminDashboardUserStats {
@@ -61,22 +62,24 @@ export const AdminDashboard = () => {
       pollInterval: isLiveUpdate ? 5000 : 0,
     });
 
+  const { t: tAdmin } = useTranslation("admin");
+
   return (
     <>
       <Flex justify="space-between" mb={2}>
         <Box>&nbsp;</Box>
-        {isLiveUpdate && <Text>Updating every 5 seconds</Text>}
+        {isLiveUpdate && <Text>{tAdmin("dashboard-update")}</Text>}
       </Flex>
       <SimpleGrid columns={isMobile ? 1 : 2} spacing={4}>
         <Panel position="relative">
           <Heading size="lg" mb={2}>
-            System Stats
+            {tAdmin("dashboard-system-stats")}
           </Heading>
           <Divider mb={4} />
           <Flex w="100%" align="center" direction="column" mb={4}>
             <Box as="span" w="100%" mb={2}>
               <Badge fontSize="1rem" colorScheme="primary">
-                CPU
+                {tAdmin("dashboard-cpu")}
               </Badge>
             </Box>
             <ProgressWithLabel
@@ -92,7 +95,7 @@ export const AdminDashboard = () => {
           <Flex w="100%" align="center" direction="column" mb={4}>
             <Box as="span" w="100%" mb={2}>
               <Badge fontSize="1rem" colorScheme="primary">
-                Memory
+                {tAdmin("dashboard-memory")}
               </Badge>
             </Box>
             <ProgressWithLabel
@@ -110,7 +113,7 @@ export const AdminDashboard = () => {
           <Flex w="100%" align="center" direction="column" mb={4}>
             <Box as="span" w="100%" mb={2}>
               <Badge fontSize="1rem" colorScheme="primary">
-                Disk
+                {tAdmin("dashboard-disk")}
               </Badge>
             </Box>
             <ProgressWithLabel
@@ -128,14 +131,15 @@ export const AdminDashboard = () => {
             />
             <Box w="100%">
               <Text>
-                Media Storage Size:{" "}
+                {tAdmin("dashboard-media-storage")}:{" "}
                 {(systemLoad?.mediaDirSize || 0.0).toFixed(2)}Gb
               </Text>
               <Text>
-                DB Storage Size: {(systemLoad?.dbSize || 0).toFixed(2)}Gb
+                {tAdmin("dashboard-db-storage")}: :{" "}
+                {(systemLoad?.dbSize || 0).toFixed(2)}Gb
               </Text>
               <Text>
-                Total App Storage Size:{" "}
+                {tAdmin("dashboard-total-storage")}:{" "}
                 {(
                   (systemLoad?.mediaDirSize || 0) + (systemLoad?.dbSize || 0)
                 ).toFixed(2)}
@@ -147,31 +151,31 @@ export const AdminDashboard = () => {
         <Panel position="relative">
           {isStatsLoading && <Loading position="absolute" w="100%" h="100%" />}
           <Heading size="lg" mb={2}>
-            User stats
+            {tAdmin("dashboard-user-stats")}
           </Heading>
           <Divider mb={4} />
           <Box w="100%">
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Total Users:
+                {tAdmin("dashboard-total-users")}:
               </Badge>
               <Text>{userStats?.userCount}</Text>
             </Flex>
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Total Channels:
+                {tAdmin("dashboard-total-channels")}:
               </Badge>
               <Text>{userStats?.channelCount}</Text>
             </Flex>
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Total Stream Keys:
+                {tAdmin("dashboard-total-streamkeys")}:
               </Badge>
               <Text>{userStats?.streamKeyCount}</Text>
             </Flex>
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Total Sessions:
+                {tAdmin("dashboard-total-sessions")}:
               </Badge>
               <Text>{userStats?.sessionCount}</Text>
             </Flex>
@@ -179,19 +183,19 @@ export const AdminDashboard = () => {
         </Panel>
         <Panel>
           <Heading size="lg" mb={2}>
-            Network stats
+            {tAdmin("dashboard-network-stats")}
           </Heading>
           <Divider mb={4} />
           <Box w="100%">
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Down bandwidth
+                {tAdmin("dashboard-down-band")}
               </Badge>
               <Text>{systemLoad?.networkDown || 0}</Text>
             </Flex>
             <Flex align="center" mb={2}>
               <Badge colorScheme="primary" mr={2} fontSize="1.1rem">
-                Up bandwidth
+                {tAdmin("dashboard-up-band")}
               </Badge>
               <Text>{systemLoad?.networkUp || 0}</Text>
             </Flex>

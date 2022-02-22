@@ -1,0 +1,19 @@
+{
+  "roles": "Roles",
+  "name": "Role name",
+  "rights": "Rights",
+  "permissions": "Permissions",
+  "permission-inherit": "Inherit",
+  "permission-deny": "Deny",
+  "permission-self": "Self",
+  "permission-read": "Read",
+  "permission-write": "Write",
+
+  "form-create-role": "Create role",
+  "form-parent-role": "Parent role",
+  "form-update-role": "Update role",
+
+  "right-suspend": "Suspend user",
+  "right-silence": "Silence user",
+  "right-warn": "Warn user"
+}

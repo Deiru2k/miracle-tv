@@ -16,6 +16,7 @@ import { Form } from "react-final-form";
 import { gql } from "@apollo/client";
 import { useUserSettingsCreateChannelKeyMutation } from "miracle-tv-shared/hooks";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   channelId: string;
@@ -39,13 +40,15 @@ export const CreateStreamKeyModal = ({
   const toast = useToast();
   const { currentUser } = useCurrentUser();
 
+  const { t: tChannel } = useTranslation("channel");
+
   const [createStreamKeyMutation] = useUserSettingsCreateChannelKeyMutation({
     onCompleted: () => {
       onCreated();
-      toast({ status: "success", title: "Created stream key!" });
+      toast({ status: "success", title: tChannel("key-form-success") });
     },
     onError: () =>
-      toast({ status: "error", title: "Error creating stream key!" }),
+      toast({ status: "error", title: tChannel("key-form-error") }),
   });
 
   const generateKey = useCallback(
@@ -72,16 +75,16 @@ export const CreateStreamKeyModal = ({
           <ModalContent>
             <form onSubmit={(e) => handleSubmit(e).then(() => form.reset())}>
               {" "}
-              <ModalHeader>{"Generate new streamkey"}</ModalHeader>
+              <ModalHeader>{tChannel("key-generate-new")}</ModalHeader>
               <ModalBody>
                 <FormInput
-                  label="Key name (optional)"
+                  label={tChannel("key-form-name")}
+                  help={tChannel("key-form-name-help")}
                   name="name"
-                  help="Used to easily identify keys if you're using multiple keys"
                 />
               </ModalBody>
               <ModalFooter>
-                <Button type="submit">Generate</Button>
+                <Button type="submit">{tChannel("keys-generate")}</Button>
               </ModalFooter>
             </form>
           </ModalContent>

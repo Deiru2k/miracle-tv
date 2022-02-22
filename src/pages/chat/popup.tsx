@@ -1,6 +1,7 @@
-import { Box, Heading, Text } from "@chakra-ui/layout";
+import { Box, Heading } from "@chakra-ui/layout";
 import Chat from "miracle-tv-client/components/chat/Chat";
 import { Attract } from "miracle-tv-client/components/ui/Attract";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 type PopupChatParams = {
@@ -24,3 +25,11 @@ const PopupChat = () => {
 };
 
 export default PopupChat;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "navbar"])),
+    },
+  };
+}

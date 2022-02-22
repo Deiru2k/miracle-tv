@@ -1,102 +1,43 @@
 # MiracleTV
 
-#### A Streaming Suite
+### An open-source Livestreaming Suite
 
-Server part of MiracleTV Suite
+MiracleTV is a "batteries-included" Open-source Live Streaming suite, featuring fully-functional multi-user environment, with support for mulitple channels per user, password-protected streams, content-warnings for streams and multiple streaming backend support
 
-[![Support Server](https://img.shields.io/discord/836657856325353492.svg?logo=Discord&label=Gensokyo.social&colorB=7289da&style=for-the-badge)](https://gensokyo.social/discord)
+It is easy to deploy and manage with Docker-compose.
 
-## Running requirements
+## Deploying to production
 
-- NodeJS 14>
-- Yarn
-- RethinkDB 2.4.1>
+### !Warning! This software is not yet fully ready for production and provided as-is, with no warranty implied or otherwise.
 
-## Development Requirements
+In order to deploy this to production, please dowload or clone our repository, then simply do `$ docker-compose up -d`
+You will have to make sure that ports 1935, 3333, 3478, 8082, 10000 are open on your system.
+Forward proxy from your preferred domain to 1337 port on your system, and deployment is finished.
 
-- Nix (Strongly encouraged, but optional)
-- NodeJS 14>
-- Yarn
-- RethinkDB 2.4.1>
+In order to make yourself an admin, create a user account and then execute `$ docker-compose run --rm miracle-backend yarn dev:ctl make-admin {username}` and follow on-screen instructions.
 
-## Building and running
+You may wish to modify `docker-compose.yml` file to adjust for data folders for your own system. Default folders in the file assume Ubuntu as the environment and existence of following dirs:
 
-### Non-nix
+- `/home/ubuntu/miracle-data/media`
+- `/home/ubuntu/miracle-data/streaming`
+- `/home/ubuntu/miracle-data/db`
 
-- `yarn`
-- `./bin/build.sh`
-- `nodejs -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js`
+## Setting up dev env with Nix
 
-## Nix
+CD into the project directory, then execute `$ nix-shell` to drop into development environment.
+Nix-shell will automatically execute yarn to make sure your packages are up to date.
 
-- `nix-env -f default.nix`
-- `miracle-tv`
+## Setting up dev env with standard systems
 
-## Development
+CD into the project directory then execute `$ yarn`.
 
-### Non-nix
+## Developing the app
 
-- `yarn`
-- `yarn dev`
+### Starting the project
 
-### Nix
+`$ yarn dev:both` will automatically start both frontend and backend in parallel so you can develop both at the same time.
 
-- `nix-shell`
-- `yarn-dev`
+### Generating GraphQL types and schema
 
-GraphQL schemas, resolvers and mutations can be found in `src/graphql`.
-GraphiQL for testing is available over at `http://localhost:4000/graphql` for testing.
-
-### Before commit
-
-Before commiting, if you have altered packages installed for the project, please regenerate `nix/yarn.nix` using `yarn2nix` and copy `package.json` and `yarn.lock` to `/nix` folder as well. This is to make sure changes to the code and not the dependecies do not trigger extra rebuilds.
-If you don't use nix, please reach out to somebody who can do that for you.
-
-# Deploying in Production with nix
-
-### ! Software does not include migrations and is definetely not production ready, deploy at your own risk !
-
-Download one of our [module-releases](./module-releases/) files and import it in your configuration.nix, and then configure it like so
-
-```sh
-sudo wget https://code.gensokyo.social/Gensokyo.social/miracle-tv/raw/branch/develop/module-releases/0-1-0-2.nix -P /etc/nixos/miracle-module.nix
-```
-
-```nix
-# configuration.nix
-{
-    imports = [
-        # ... your other imports
-        ./miracle-module.nix
-    ];
-
-    # ... your configration.nix
-
-    services.miracle-tv = {
-        enable = true;
-        settings = {
-            name = "My MiracleTV instance";
-            server = {
-                port = "8080";
-            };
-        };
-    };
-}
-```
-
-- (Optionally) proxy pass `http://localhost:4000` via web server of your choice. GraphQL Playground will be available at `${yourdomain}/graphql`.
-
-`nixos-rebuild switch` should download and compile everything. Look for full list of options inside the module file.
-
-## Docker setup
-
-A `docker-compose.yml` file is provided for those who would prefer to use Docker.
-If you've got a working Docker setup, all you need to do is run:
-
-```sh
-$ docker-compose up
-```
-
-and it should be ready to go after building. This is largely intended for
-development purposes, but all that's stopping this flow from being production-ready
-is the ability to add a custom config.
+If you had made any changes to the `src/server/graphql/schema/*.graphql` files, you should run `$ yarn codegen` in order to generate new typings to be used on client and server.
+Additionally, if you have defined any new queries, mutations or fragments in the frontend side of the project using `gql\`\``template strings, you should run`$ yarn codgen` as well to generate new typings and hooks for the project.

@@ -39,6 +39,8 @@ import {
   selfChannelFragment,
 } from "miracle-tv-client/components/ui/channels/const";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
+import { useTranslation } from "react-i18next";
+import { TranslationFn } from "src/types";
 
 type Props = {
   tab?: string;
@@ -46,12 +48,12 @@ type Props = {
   channelId: string;
 };
 
-const tabs = {
-  details: "Details",
-  keys: "Keys",
-  overlay: "Overlay",
-  dashboard: "Dashboard",
-};
+const tabs = (tFn?: TranslationFn) => ({
+  details: tFn("ui-tabs-details") ?? "Details",
+  keys: tFn("ui-tabs-keys") ?? "Keys",
+  overlay: tFn("ui-tabs-overlay") ?? "Overlay",
+  dashboard: tFn("ui-tabs-dashboard") ?? "Dashboard",
+});
 
 gql`
   query UserSettingsChannel($id: ID!) {
@@ -77,6 +79,11 @@ export const ChannelSettingsPage = ({
   const toast = useToast();
   const { currentUser, checkRights } = useCurrentUser();
   const { push } = useRouter();
+
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tCommon } = useTranslation("common");
+
+  const localizedTabs = useMemo(() => tabs(tChannel), [tChannel]);
 
   const { data: { selfChannel: channel } = {}, loading: isLoading } =
     useUserSettingsChannelQuery({
@@ -129,8 +136,8 @@ export const ChannelSettingsPage = ({
     refetchQueries: ["UserSettingsChannel"],
   });
 
-  const tabList = Object.keys(tabs);
-  const tabIndex = tabList.indexOf(tab);
+  const tabList = useMemo(() => Object.keys(localizedTabs), [localizedTabs]);
+  const tabIndex = useMemo(() => tabList.indexOf(tab), [tabList, tab]);
 
   const toggleChannel = useCallback(() => {
     if (channel.disabled) {
@@ -151,19 +158,22 @@ export const ChannelSettingsPage = ({
     return <Loading />;
   }
 
+  const title = tChannel("channel-settings-for", { name: channel?.name });
+  const tabTitle = `${title} -  Miracle TV`;
+
   return (
     <>
       <Head>
-        <title>Channel settings for {channel?.name} - Miracle TV</title>
+        <title>{tabTitle}</title>
       </Head>
       <Flex align="center" justify="space-between" mb={5}>
         <Heading size="lg">
-          Channel settings for "{channel?.name}"{" "}
+          {title}{" "}
           <Link
             href={`/channel/${channel?.slug || channel?.id}`}
             target="_blank"
-            aria-label="Open your channel in new tab"
-            title="Open your channel in new tab"
+            aria-label={tChannel("open-in-new-tab")}
+            title={tChannel("open-in-new-tab")}
           >
             <ExternalLinkIcon />
           </Link>
@@ -172,11 +182,11 @@ export const ChannelSettingsPage = ({
           {canEditChannel && (
             <Menu>
               <MenuButton size="sm" as={Button} rightIcon={<ChevronDownIcon />}>
-                Actions
+                {tCommon("actions")}
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={toggleChannel}>
-                  {channel?.disabled ? "Enable" : "Disable"}
+                  {channel?.disabled ? tCommon("enable") : tCommon("disable")}
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -191,11 +201,13 @@ export const ChannelSettingsPage = ({
                 w="100%"
                 href={`${baseUrl}/${channelId}/${tab}`}
                 isDisabled={!canViewKeys && tab === "keys"}
-                title={!canViewKeys ? "Cannot view stream keys" : undefined}
+                title={
+                  !canViewKeys ? tChannel("stream-keys-forbidden") : undefined
+                }
                 py={2}
                 px={3}
               >
-                {tabs[tab as keyof typeof tabs]}
+                {localizedTabs[tab as keyof typeof localizedTabs]}
               </Link>
             </Tab>
           ))}
@@ -204,12 +216,12 @@ export const ChannelSettingsPage = ({
           <HStack mt={4}>
             {channel?.disabled && (
               <Tag colorScheme="red" textTransform="uppercase" size="lg">
-                Disabled
+                {tChannel("disabled")}
               </Tag>
             )}
             {channel?.shelved && (
               <Tag colorScheme="yellow" textTransform="uppercase" size="lg">
-                Shelved
+                {tChannel("shelved")}
               </Tag>
             )}
           </HStack>

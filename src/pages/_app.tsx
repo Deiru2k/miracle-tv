@@ -6,6 +6,7 @@ import { setContext } from "@apollo/client/link/context";
 import Head from "next/head";
 import getConfig from "next/config";
 import { any, propOr } from "ramda";
+import { appWithTranslation } from "next-i18next";
 
 import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
@@ -16,6 +17,11 @@ import { Navbar } from "miracle-tv-client/components/ui/Navbar";
 import { Chakra } from "miracle-tv-client/Chakra";
 import { LiveUpdateContext } from "miracle-tv-client/context/liveUpdate";
 import dynamic from "next/dynamic";
+import {
+  LocaleContext,
+  SetLocaleFromLocalStorage,
+} from "miracle-tv-client/context/locale";
+import { LocaleKey } from "miracle-tv-client/context/locale/const";
 
 const SetIsLiveFromLocalStorage = dynamic(
   () =>
@@ -75,6 +81,7 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
   );
   const Wrapper = showWrapper ? PageWrapper : (React.Fragment as any);
   const [isLiveUpdate, setLiveUpdate] = useState<boolean>(false);
+  const [locale, setLocale] = useState<LocaleKey>("en");
   return (
     <>
       <Head>
@@ -92,19 +99,22 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
           }
         `}
       />
-      <LiveUpdateContext.Provider value={{ isLiveUpdate, setLiveUpdate }}>
-        <SetIsLiveFromLocalStorage />
-        <Chakra cookies={pageProps.cookies}>
-          <ApolloProvider client={client}>
-            <Flex h="100%" w="100%" direction="column">
-              <Wrapper paddingTop={showNavbar ? "50px" : undefined}>
-                {showNavbar && <Navbar />}
-                <Component {...pageProps} />
-              </Wrapper>
-            </Flex>
-          </ApolloProvider>
-        </Chakra>
-      </LiveUpdateContext.Provider>
+      <LocaleContext.Provider value={{ locale, setLocale }}>
+        <LiveUpdateContext.Provider value={{ isLiveUpdate, setLiveUpdate }}>
+          <SetIsLiveFromLocalStorage />
+          <SetLocaleFromLocalStorage />
+          <Chakra cookies={pageProps.cookies}>
+            <ApolloProvider client={client}>
+              <Flex h="100%" w="100%" direction="column">
+                <Wrapper paddingTop={showNavbar ? "50px" : undefined}>
+                  {showNavbar && <Navbar />}
+                  <Component {...pageProps} />
+                </Wrapper>
+              </Flex>
+            </ApolloProvider>
+          </Chakra>
+        </LiveUpdateContext.Provider>
+      </LocaleContext.Provider>
     </>
   );
 }
@@ -116,7 +126,9 @@ MyApp.getInitialProps = async (appContext: any) => {
   return { ...appProps };
 };
 
-export default MyApp;
+const MyAppWithTranslation = appWithTranslation(MyApp);
+
+export default MyAppWithTranslation;
 
 // re-export the reusable `getServerSideProps` function
 export { getServerSideProps } from "miracle-tv-client/Chakra";

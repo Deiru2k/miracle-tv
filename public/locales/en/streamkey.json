@@ -1,0 +1,23 @@
+{
+  "streamkeys": "Stream keys",
+
+  "all-account-keys": "All account keys",
+  "select-all": "Select all keys",
+  "revoke-all": "Revoke all keys",
+  "delete-key": "Delete stream key",
+
+  "keys-revoke-success": "Deleted stream keys",
+  "keys-revoke-error": "There was an error deleting stream keys",
+
+  "key-revoke-success": "Deleted stream key",
+  "key-revoke-error": "There was an error deleting stream key",
+
+  "key-create-success": "Created stream key",
+  "key-create-error": "There was an error creating stream key",
+
+  "key-update-success": "Created stream key",
+  "key-update-error": "There was an error creating stream key",
+
+  "filter-user": "User",
+  "filter-channel": "Channel"
+}

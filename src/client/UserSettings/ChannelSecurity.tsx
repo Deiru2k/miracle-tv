@@ -1,6 +1,7 @@
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { FormToggle } from "miracle-tv-client/components/form/FormToggle";
 import { UpdateChannelInput } from "miracle-tv-shared/graphql";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   isDisabled?: boolean;
@@ -8,11 +9,12 @@ type Props = {
 };
 
 export const ChannelSecurityForm = ({ isDisabled, values }: Props) => {
+  const { t: tChannel } = useTranslation("channel");
   return (
     <>
       <FormToggle
-        label="Mature channel"
-        help="This will remove channel from public pages and mark it as sensitive."
+        label={tChannel("mature")}
+        help={tChannel("mature-help")}
         name="mature"
         isDisabled={isDisabled}
         mb={2}
@@ -21,14 +23,14 @@ export const ChannelSecurityForm = ({ isDisabled, values }: Props) => {
         <FormInput
           mt={2}
           name="matureDescription"
-          label="Describe your content"
-          help="This is optional and can be used to specify what makes you content sensitive"
+          label={tChannel("mature-description")}
+          help={tChannel("mature-description-help")}
           mb={2}
         />
       )}
       <FormToggle
-        label="Protect with password"
-        help="This will add password protection to channels"
+        label={tChannel("password-protected")}
+        help={tChannel("password-protected-help")}
         name="passwordProtected"
         isDisabled={isDisabled}
       />
@@ -36,8 +38,8 @@ export const ChannelSecurityForm = ({ isDisabled, values }: Props) => {
         <FormInput
           mt={2}
           name="password"
-          label="Password"
-          help="Password that channel will be protected with."
+          label={tChannel("password")}
+          help={tChannel("password-help")}
         />
       )}
     </>

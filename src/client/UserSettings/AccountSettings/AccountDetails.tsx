@@ -16,6 +16,7 @@ import {
   useSettingsUpdateAccountMutation,
 } from "miracle-tv-shared/hooks";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
+import { useTranslation } from "next-i18next";
 
 gql`
   query AccountDetails {
@@ -41,6 +42,9 @@ export const AccountDetails = () => {
   const toast = useToast();
   const { data: { selfAccount } = {} } = useAccountDetailsQuery();
 
+  const { t: tSettings } = useTranslation("settings");
+  const { t: tCommon } = useTranslation("common");
+
   const userFormData = {
     email: selfAccount?.email,
   };
@@ -48,9 +52,12 @@ export const AccountDetails = () => {
   const [updateAccountMutation, { loading: isUpdating }] =
     useSettingsUpdateAccountMutation({
       onCompleted: () =>
-        toast({ status: "success", title: "Updated user account!" }),
+        toast({
+          status: "success",
+          title: tSettings("account-update-success"),
+        }),
       onError: () =>
-        toast({ status: "error", title: "Error updating user account." }),
+        toast({ status: "error", title: tSettings("account-update-error") }),
     });
 
   const updateAccount = useCallback(
@@ -63,7 +70,7 @@ export const AccountDetails = () => {
   return (
     <>
       <Heading as="h3" size="md" mb={6}>
-        Account Details
+        {tSettings("account-settings")}
       </Heading>
       <Panel>
         <Form<UpdateUserAccountInput>
@@ -72,10 +79,10 @@ export const AccountDetails = () => {
         >
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
-              <FormInput name="email" label="E-mail" />
+              <FormInput name="email" label={tCommon("email")} />
               <Flex w="100%" mt={4}>
                 <Button ml="auto" type="submit" isLoading={isUpdating}>
-                  Save
+                  {tSettings("preferences-update")}
                 </Button>
               </Flex>
             </form>

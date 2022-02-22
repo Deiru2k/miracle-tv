@@ -6,6 +6,8 @@ import { useSignInMutation, useSignUpMutation } from "miracle-tv-shared/hooks";
 import React, { useCallback } from "react";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 gql`
   mutation SignUp($username: String!, $password: String!, $email: String!) {
@@ -18,12 +20,15 @@ gql`
 
 const SignUpPage = () => {
   const toast = useToast();
+
+  const { t: tCommon } = useTranslation("common");
+
   const { push } = useRouter();
   const [signUpMutation, { loading: isSignInLoading }] = useSignUpMutation({
-    onCompleted: ({ signUp: { id, username } }) => {
+    onCompleted: ({ signUp: { username } }) => {
       toast({
         status: "success",
-        title: `Welcome, ${username}!\nYou may now login with your credentials.`,
+        title: tCommon("auth-sign-up-welcome", { name: username }),
       });
       push("/auth/login");
     },
@@ -57,7 +62,7 @@ const SignUpPage = () => {
                 name="username"
                 mb={4}
                 isRequired
-                label="Username"
+                label={tCommon("auth-username")}
                 help="This cannot be changed later! Please, choose wisely."
                 hideLabel
               />
@@ -67,7 +72,7 @@ const SignUpPage = () => {
                 help="Recommended is minimum of 8 characters, with letters, numbers and symbols."
                 mb={4}
                 isRequired
-                label="Password"
+                label={tCommon("auth-password")}
                 hideLabel
               />
               <FormInput
@@ -75,14 +80,14 @@ const SignUpPage = () => {
                 type="email"
                 mb={4}
                 isRequired
-                label="E-mail"
+                label={tCommon("email")}
                 hideLabel
               />
               <Button w="100%" type={"submit"}>
-                Sign Up
+                {tCommon("auth-sign-up")}
               </Button>
               <Box width="100%" mt={4}>
-                <Link href="/auth/login">Log in</Link>
+                <Link href="/auth/login">{tCommon("auth-login")}</Link>
               </Box>
             </form>
           )}
@@ -93,3 +98,11 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "navbar"])),
+    },
+  };
+}

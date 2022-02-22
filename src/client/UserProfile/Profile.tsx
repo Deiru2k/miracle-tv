@@ -25,6 +25,7 @@ import { useChannelAccess } from "miracle-tv-client/hooks/channelAccess";
 import { ChannelPassword } from "miracle-tv-client/components/ui/ChannelPassword";
 import { DateTime } from "luxon";
 import { ChannelLiveTimer } from "miracle-tv-client/components/ui/channels/ChannelLiveTimer";
+import { useTranslation } from "next-i18next";
 const { publicRuntimeConfig } = getConfig();
 
 type Props = {
@@ -83,6 +84,10 @@ export const UserProfile = ({
   onUnsubscribe,
 }: Props) => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
+
+  const { t: tCommon } = useTranslation("common");
+  const { t: tUser } = useTranslation("user");
+
   const isUserLive = useMemo(
     () => statuses.findIndex((status) => status.isLive) > -1,
     [statuses]
@@ -215,7 +220,7 @@ export const UserProfile = ({
                 {!user?.settings?.singleUserMode && (
                   <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
                     <Heading size="md" mb={2}>
-                      Their channels
+                      {tUser("their-channels")}
                     </Heading>
                     <ChannelDisplayGrid
                       columns={isMobile ? 1 : undefined}
@@ -228,7 +233,7 @@ export const UserProfile = ({
                 {publicRuntimeConfig.isDev && (
                   <Box w="100%" order={isMobile ? 3 : undefined}>
                     <Heading size="md" mb={2}>
-                      Latest Clips
+                      {tCommon("latest-clips")}
                     </Heading>
                     <VodList columns={isMobile ? 2 : 4} />
                   </Box>
@@ -249,10 +254,10 @@ export const UserProfile = ({
             {!user?.settings?.singleUserMode && (
               <Box flex={!isMobile ? 5 : undefined} w="100%" mb={6}>
                 <Heading size="md" mb={2}>
-                  Their channels
+                  {tUser("their-channels")}
                 </Heading>
                 {!user?.channels?.length && (
-                  <Text>This user does not have channels yet</Text>
+                  <Text>{tUser("profile-no-channels")}</Text>
                 )}
                 <ChannelDisplayGrid
                   columns={isMobile ? 1 : undefined}
@@ -265,7 +270,7 @@ export const UserProfile = ({
             {publicRuntimeConfig.isDev && (
               <Box w="100%" order={isMobile ? 3 : undefined}>
                 <Heading size="md" mb={2}>
-                  Latest Clips
+                  {tCommon("latest-clips")}
                 </Heading>
                 <VodList columns={isMobile ? 2 : 4} />
               </Box>

@@ -10,6 +10,7 @@ import prettyBytes from "pretty-bytes";
 import Chat from "miracle-tv-client/components/chat/Chat";
 import dynamic from "next/dynamic";
 import { DummyPlayerComponent } from "miracle-tv-client/components/player/DummyPlayer";
+import { useTranslation } from "react-i18next";
 
 const Player = dynamic(
   () => import("miracle-tv-client/components/player/Player"),
@@ -37,6 +38,9 @@ gql`
 
 export const ChannelDashboard = ({ channelId }: Props) => {
   const { isLiveUpdate } = useContext(LiveUpdateContext);
+
+  const { t: tChannel } = useTranslation("channel");
+
   const { data: { channelStatus } = {} } = useChannelDashboardStatusQuery({
     variables: { id: channelId },
     skip: !channelId,
@@ -63,46 +67,48 @@ export const ChannelDashboard = ({ channelId }: Props) => {
       <Flex>
         <Box flex={9}>
           <Heading size="md" mb={2}>
-            Stats
+            {tChannel("dashboard-title")}
           </Heading>
           <Panel mr={4} h="100%">
             <Flex direction="column" justify="flex-start" align="flex-start">
               <Box mb={2}>
                 <Text as="span" fontWeight="bold" mr={1}>
-                  Status:
+                  {tChannel("dashboard-status")}
                 </Text>
                 <Badge colorScheme={channelStatus?.isLive ? "red" : undefined}>
-                  {channelStatus?.isLive ? "LIVE" : "Offline"}
+                  {channelStatus?.isLive
+                    ? tChannel("dashboard-status-live")
+                    : tChannel("dashboard-status-offline")}
                 </Badge>
               </Box>
               <Box mb={2}>
                 <Text as="span" fontWeight="bold" mr={1}>
-                  Viewers:
+                  {tChannel("dashboard-viewers")}
                 </Text>
                 {channelStatus?.viewers ?? 0}
               </Box>
               <Box mb={2}>
                 <Text as="span" fontWeight="bold" mr={1}>
-                  Duration:
+                  {tChannel("dashboard-duration")}
                 </Text>
                 {createdAt && <ChannelLiveTimer createdAt={createdAt} />}
                 {!createdAt && "00:00:00:00"}
               </Box>
               <Box mb={2}>
                 <Text as="span" fontWeight="bold" mr={1}>
-                  Traffic:
+                  {tChannel("dashboard-traffic")}
                 </Text>
                 {traffic}
               </Box>
               <Box w="100%" h="100%">
                 <Heading size="sm" mb={2}>
-                  Preview
+                  {tChannel("dashboard-preview")}
                 </Heading>
                 <Player
                   isLive={channelStatus?.isLive}
                   sessionId={localStorage.getItem("token")}
                   channelId={channelId}
-                  offlineMsg="Stream is offline. Go live to watch the preview here!"
+                  offlineMsg={tChannel("dashboard-preview-offline")}
                   muted
                   isPreview
                 />
@@ -112,7 +118,7 @@ export const ChannelDashboard = ({ channelId }: Props) => {
         </Box>
         <Box flex={4}>
           <Heading size="md" mb={2}>
-            Chat
+            {tChannel("dashboard-chat")}
           </Heading>
           <Chat channelId={channelId} />
         </Box>

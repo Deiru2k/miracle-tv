@@ -22,6 +22,7 @@ import { AttachmentIcon, CloseIcon } from "@chakra-ui/icons";
 import { getMediaURL } from "miracle-tv-shared/media";
 import { transparentize } from "@chakra-ui/theme-tools";
 import { useTheme } from "@emotion/react";
+import { useTranslation } from "react-i18next";
 
 gql`
   query GetFileForUploader($id: ID!) {
@@ -59,6 +60,7 @@ export const ImageUploader = ({
   ...flexProps
 }: Props): JSX.Element => {
   const theme = useTheme();
+  const { t: tCommon } = useTranslation("common");
   const { input } = useField(name);
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: { fileInfo } = {}, loading } = useGetFileForUploaderQuery({
@@ -119,7 +121,7 @@ export const ImageUploader = ({
               w={aspectMaxW || "100%"}
               h={aspectMaxW || "100%"}
               cursor="pointer"
-              aria-label="Choose file to upload"
+              aria-label={tCommon("uploader-choose")}
               onClick={openUpload}
               justify="center"
               align="center"
@@ -132,7 +134,7 @@ export const ImageUploader = ({
               mb={4}
             >
               <Heading size="sm" mb={2} color={color}>
-                Upload
+                {tCommon("uploader-upload")}
               </Heading>
               <AttachmentIcon size="lg" w="45%" h="45%" color={color} />
             </Flex>
@@ -147,7 +149,7 @@ export const ImageUploader = ({
               isDisabled={isDisabled}
             >
               <AttachmentIcon size="lg" color={color} mr={1} />
-              Select File
+              {tCommon("uploader-select")}
             </Button>
           </Box>
         </>
@@ -188,7 +190,8 @@ export const ImageUploader = ({
             <IconButton
               variant="link"
               color="red.300"
-              aria-label="Remove Image"
+              aria-label={tCommon("uploader-remove")}
+              title={tCommon("uploader-remove")}
               onClick={clearFile}
               isDisabled={isDisabled}
               icon={<CloseIcon />}
@@ -196,7 +199,8 @@ export const ImageUploader = ({
             <IconButton
               variant="link"
               color={borderColor}
-              aria-label="Upload New"
+              aria-label={tCommon("uploader-new")}
+              title={tCommon("uploader-new")}
               onClick={openUpload}
               isDisabled={isDisabled}
               icon={<AttachmentIcon />}

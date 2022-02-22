@@ -1,0 +1,14 @@
+{
+  "sessions": "Сессии",
+  "sessions-revoke-success": "Сессии отозваны!",
+  "sessions-revoke-error": "Ошибка при отзыве сессии!",
+  "sessions-revoke": "Отозвать все сессии",
+
+  "account-sessions": "Сессии аккаунта",
+  "current-session": "Текущая сессия",
+  "device": "Устройство",
+  "user": "Пользователь",
+  "last-used": "Последнее исп.",
+
+  "form-revoke-session": "Отозвать сессиию"
+}

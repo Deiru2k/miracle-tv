@@ -1,0 +1,18 @@
+{
+  "profile": "Профиль",
+  "username": "Имя пользователя",
+  "display-name": "Отображаемое имя",
+  "email": "E-Mail",
+  "roles": "Роли",
+  "use-gravatar": "Использование Gravatar",
+  "single-user-mode": "Одиночный режим",
+  "single-user-channel": "Канал для одиночного режима",
+  "feature-profile-directory": "Включить в директорию пользователей",
+  "profile-picture": "Аватар профиля",
+  "profile-header": "Баннер профиля",
+  "bio": "О себе",
+  "stream-thumbnail": "Заглушка для канала",
+
+  "user-not-found": "Пользователь не найден",
+  "their-channels": "Их каналы"
+}

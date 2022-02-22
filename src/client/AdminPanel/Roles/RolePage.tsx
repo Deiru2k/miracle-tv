@@ -15,10 +15,11 @@ import { ADMIN_ROLE_FRAGMENT } from "./const";
 
 import { omitDeep } from "miracle-tv-shared/utils/object/omit";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useTranslation } from "next-i18next";
 
 gql`
   query AdminRolePage($id: ID!) {
-    role(id: $id) {
+    roleRaw(id: $id) {
       ...AdminRole
     }
   }
@@ -27,7 +28,7 @@ gql`
 
 gql`
   mutation AdminUpdateRole($input: UpdateRoleInput) {
-    updateRole(input: $input) {
+    updateRoleRaw(input: $input) {
       ...AdminRole
     }
   }
@@ -42,6 +43,8 @@ export const AdminRolePage = ({ id }: Props) => {
   const toast = useToast();
   const { checkRights } = useCurrentUser();
 
+  const { t: tRole } = useTranslation("role");
+
   const canViewRole = useMemo(
     () => checkRights(AccessUnit.Read, "roles"),
     [checkRights]
@@ -51,10 +54,11 @@ export const AdminRolePage = ({ id }: Props) => {
     [checkRights]
   );
 
-  const { data: { role } = {}, loading: isLoading } = useAdminRolePageQuery({
-    variables: { id },
-    skip: !id || !canViewRole,
-  });
+  const { data: { roleRaw: role } = {}, loading: isLoading } =
+    useAdminRolePageQuery({
+      variables: { id },
+      skip: !id || !canViewRole,
+    });
 
   const [updateRoleMutation, { loading: isUpdating }] =
     useAdminUpdateRoleMutation({
@@ -115,7 +119,7 @@ export const AdminRolePage = ({ id }: Props) => {
                     isDisabled={!dirty || isUpdating}
                     isLoading={isUpdating}
                   >
-                    Update role
+                    {tRole("form-update-role")}
                   </Button>
                 </Box>
               )}

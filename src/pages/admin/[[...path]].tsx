@@ -17,6 +17,8 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { AccessUnit } from "miracle-tv-shared/graphql";
 import { AdminStreamKeysPage } from "miracle-tv-client/AdminPanel/StreamKeys";
 import { AdminSessionsPage } from "miracle-tv-client/AdminPanel/Sessions";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
 
 const components: NavComponentMap = {
   "/admin": { component: <AdminDashboard />, exact: true },
@@ -30,6 +32,7 @@ const components: NavComponentMap = {
 
 const AdminPage = () => {
   const { checkRights } = useCurrentUser();
+  const { t: tAdmin } = useTranslation("admin");
   const nav: NavConfig = useMemo(() => {
     return [
       {
@@ -37,38 +40,38 @@ const AdminPage = () => {
         urls: [
           checkRights(AccessUnit.Read, "system") && {
             id: "dashboard",
-            name: "Admin Dashboard",
+            name: tAdmin("dashboard"),
             url: "/admin",
             exact: true,
           },
           checkRights(AccessUnit.Read, "users") && {
             id: "users",
-            name: "Users",
+            name: tAdmin("users"),
             url: "/admin/users",
           },
           checkRights(AccessUnit.Read, "channels") && {
             id: "channels",
-            name: "Channels",
+            name: tAdmin("channels"),
             url: "/admin/channels",
           },
           checkRights(AccessUnit.Read, "roles") && {
             id: "roles",
-            name: "Roles",
+            name: tAdmin("roles"),
             url: "/admin/roles",
           },
           checkRights(AccessUnit.Read, "streamKeys") && {
             id: "streamkeys",
-            name: "Stream Keys",
+            name: tAdmin("streamkeys"),
             url: "/admin/stream-keys",
           },
           checkRights(AccessUnit.Read, "sessions") && {
             id: "sessions",
-            name: "Sessions",
+            name: tAdmin("sessions"),
             url: "/admin/sessions",
           },
           checkRights(AccessUnit.Read, "activities") && {
             id: "activities",
-            name: "Activities",
+            name: tAdmin("activities"),
             url: "/admin/activities",
           },
         ].filter(identity),
@@ -78,10 +81,10 @@ const AdminPage = () => {
   return (
     <AuthRedirect>
       <Head>
-        <title>Admin Panel - Miracle TV</title>
+        <title>{tAdmin("admin-panel-title")} - Miracle TV</title>
       </Head>
       <Navigation
-        title="Instance Admin"
+        title={tAdmin("admin-panel-title")}
         nav={nav}
         components={components}
         size={[1, 10]}
@@ -91,3 +94,29 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "navbar",
+        "admin",
+        "filter",
+        "user",
+        "channel",
+        "role",
+        "session",
+        "activity",
+        "streamkey",
+      ])),
+    },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
+  };
+}
