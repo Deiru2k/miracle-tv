@@ -1,6 +1,7 @@
 import { Button, Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
 import { Form } from "react-final-form";
+import { useTranslation } from "react-i18next";
 
 type Props<T = any> = {
   initialValues?: Partial<T>;
@@ -18,6 +19,7 @@ export const Filter = <T extends any>({
   refetch,
   ...props
 }: Props<T>) => {
+  const { t: tFilter } = useTranslation("filter");
   return (
     <Form<T> initialValues={initialValues} onSubmit={onFilter}>
       {({ handleSubmit, pristine, form: { reset } }) => (
@@ -41,10 +43,10 @@ export const Filter = <T extends any>({
                 }}
                 mr={2}
               >
-                Clear filter
+                {tFilter("clear")}
               </Button>
               <Button colorScheme="primary" type="submit">
-                Filter
+                {tFilter("apply")}
               </Button>
             </Flex>
           </form>

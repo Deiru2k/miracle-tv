@@ -7,6 +7,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { VideoJsPlayer } from "video.js";
 import { PlayIcon } from "../icons/PlayIcon";
 import { OvenPlayer } from "./OverPlayer";
@@ -25,9 +26,6 @@ type Props = {
   maxH?: string;
 };
 
-const defaultOfflineMsg =
-  "Stream is offline. Check back later, or hang out in the chat!";
-
 export const Player = ({
   channelId,
   isLive,
@@ -38,8 +36,10 @@ export const Player = ({
   muted,
   maxH = "90vh",
   isPreview = false,
-  offlineMsg = defaultOfflineMsg,
+  offlineMsg,
 }: Props) => {
+  const { t: tChannel } = useTranslation("channel");
+  const realOfflineMsg = offlineMsg ?? tChannel("channel-offline-text");
   const playerRef = useRef<VideoJsPlayer>();
   const videoRef = React.useRef<HTMLVideoElement>();
   const containerRef = useRef<HTMLDivElement>();
@@ -121,7 +121,7 @@ export const Player = ({
                 />
               ) : (
                 <Heading size="sm" color="white">
-                  {offlineMsg}
+                  {realOfflineMsg}
                 </Heading>
               )}
             </Flex>

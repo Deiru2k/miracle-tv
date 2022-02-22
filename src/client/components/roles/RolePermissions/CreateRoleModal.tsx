@@ -13,11 +13,7 @@ import { ADMIN_ROLE_FRAGMENT } from "miracle-tv-client/AdminPanel/Roles/const";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
-import {
-  AccessUnit,
-  AdminRoleFragment,
-  CreateRoleInput,
-} from "miracle-tv-shared/graphql";
+import { AccessUnit, CreateRoleInput } from "miracle-tv-shared/graphql";
 import { useAdminCreateRoleMutation } from "miracle-tv-shared/hooks";
 import React, { useCallback } from "react";
 import { Form } from "react-final-form";
@@ -25,7 +21,7 @@ import { RoleForm } from "./RoleForm";
 
 gql`
   mutation AdminCreateRole($input: CreateRoleInput) {
-    createRole(input: $input) {
+    createRoleRaw(input: $input) {
       ...AdminRole
     }
   }

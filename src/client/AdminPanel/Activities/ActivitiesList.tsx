@@ -22,6 +22,7 @@ import { ConfirmDialog } from "miracle-tv-client/components/ui/ConfirmDialog";
 import { CreateActivityModal } from "./CreateActivityModal";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useTranslation } from "next-i18next";
 
 gql`
   query AdminActivityCount($filter: ActivityFilter) {
@@ -43,6 +44,10 @@ const perPage = 15;
 export const AdminActivitiesList = () => {
   const toast = useToast();
   const createDisclosure = useDisclosure();
+
+  const { t: tActivity } = useTranslation("activity");
+  const { t: tCommon } = useTranslation("common");
+
   const [filter, setFilter] = useState<ActivityFilter>({});
   const [activityToDelete, setActivityToDelete] = useState<string | null>(null);
   const { checkRights } = useCurrentUser();
@@ -106,19 +111,19 @@ export const AdminActivitiesList = () => {
         isOpen={!!activityToDelete}
         onClose={onActivityDeleteClose}
       >
-        {`Are you sure you want to delete "${selectedActivity?.name}" activity?`}
+        {tActivity("delete-confirm", { name: selectedActivity?.name })}
       </ConfirmDialog>
       <Flex mb={2} justify="space-between" align="center">
-        <Heading>Activities</Heading>
+        <Heading>{tActivity("activities")}</Heading>
         <Button onClick={createDisclosure.onOpen} isDisabled={!canEditActivity}>
-          Create
+          {tCommon("create")}
         </Button>
       </Flex>
       <Divider mb={4} />
       <Filter onFilter={setFilter} mb={4}>
         <HStack>
-          <FormInput name="name" label="Name" w="50%" />
-          <FormInput name="verb" label="Verb" w="50%" />
+          <FormInput name="name" label={tActivity("name")} w="50%" />
+          <FormInput name="verb" label={tActivity("verb")} w="50%" />
         </HStack>
       </Filter>
       <ActivityGrid
@@ -130,7 +135,8 @@ export const AdminActivitiesList = () => {
             <IconButton
               size="sm"
               colorScheme="red"
-              aria-label="Delete activity"
+              aria-label={tActivity("delete-activity")}
+              title={tActivity("delete-activity")}
               isDisabled={!canEditActivity}
               onClick={() => onActivityDeletePick(ac.id)}
               icon={<DeleteIcon />}
@@ -138,7 +144,16 @@ export const AdminActivitiesList = () => {
             <Link href={`/admin/activities/${ac.id}`}>
               <IconButton
                 size="sm"
-                aria-label={canEditActivity ? "Edit activity" : "View activity"}
+                aria-label={
+                  canEditActivity
+                    ? tActivity("edit-activity")
+                    : tActivity("view-activity")
+                }
+                title={
+                  canEditActivity
+                    ? tActivity("edit-activity")
+                    : tActivity("view-activity")
+                }
                 icon={canEditActivity ? <EditIcon /> : <InfoIcon />}
               />
             </Link>

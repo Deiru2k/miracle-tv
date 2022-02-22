@@ -1,7 +1,9 @@
 import { Box, Text, HStack, Switch } from "@chakra-ui/react";
 import { AccessRights, AccessUnit } from "miracle-tv-shared/graphql";
 import { uniq } from "ramda";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { TranslationFn } from "src/types";
 
 type Props = {
   unit: keyof AccessRights;
@@ -18,13 +20,15 @@ const accessUnitOrder: AccessUnit[] = [
   AccessUnit.Write,
 ];
 
-const accessUnitLabels: Record<AccessUnit, string> = {
-  [AccessUnit.Inherit]: "Inherit",
-  [AccessUnit.Self]: "Self",
-  [AccessUnit.Deny]: "Deny",
-  [AccessUnit.Read]: "Read",
-  [AccessUnit.Write]: "Write",
-};
+type LabelsFn = (tFn?: TranslationFn) => Record<AccessUnit, string>;
+
+const accessUnitLabels: LabelsFn = (tFn) => ({
+  [AccessUnit.Inherit]: tFn?.("permission-inherit") ?? "Inherit",
+  [AccessUnit.Self]: tFn?.("permission-self") ?? "Self",
+  [AccessUnit.Deny]: tFn?.("permission-deny") ?? "Deny",
+  [AccessUnit.Read]: tFn?.("permission-read") ?? "Read",
+  [AccessUnit.Write]: tFn?.("permission-write") ?? "Write",
+});
 
 export const AccessUnitEdit = ({
   unit,
@@ -32,7 +36,10 @@ export const AccessUnitEdit = ({
   onChange,
   isDisabled,
 }: Props) => {
-  const [value, setValue] = useState<AccessUnit[]>(unitValue);
+  const { t: tRoles } = useTranslation("role");
+  const [value, setValue] = useState<AccessUnit[]>(
+    unitValue.length > 0 ? unitValue : [AccessUnit.Inherit]
+  );
 
   const isEnabled = useCallback(
     (valueToCheck: AccessUnit) => {
@@ -59,6 +66,8 @@ export const AccessUnitEdit = ({
     [isEnabled, value, setValue]
   );
 
+  const unitLabels = useMemo(() => accessUnitLabels(tRoles), [tRoles]);
+
   useEffect(() => {
     onChange(unit, value);
   }, [value]);
@@ -68,7 +77,7 @@ export const AccessUnitEdit = ({
       {accessUnitOrder.map((u) => (
         <Box key={u}>
           <Text as="div" fontWeight="bold">
-            {accessUnitLabels[u]}
+            {unitLabels[u]}
           </Text>{" "}
           <Switch
             isChecked={isEnabled(u)}

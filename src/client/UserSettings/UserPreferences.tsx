@@ -13,6 +13,7 @@ import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { FormSelfChannelSelect } from "miracle-tv-client/components/form/selects/FormSelfChannelSelect";
 import Head from "next/head";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useTranslation } from "react-i18next";
 
 gql`
   query UserSettingsPreferences {
@@ -43,6 +44,8 @@ export const UserPreferences = () => {
   const toast = useToast();
   const { checkRights } = useCurrentUser();
 
+  const { t: tSettings } = useTranslation("settings");
+
   const canViewChannels = useMemo(
     () => checkRights(AccessUnit.Self, "channels"),
     [checkRights]
@@ -52,9 +55,15 @@ export const UserPreferences = () => {
   const [updateSettingsMutation, { loading: isUpdating }] =
     useUpdateUserSettingsPreferencesMutation({
       onCompleted: () =>
-        toast({ status: "success", title: "Updated user info!" }),
+        toast({
+          status: "success",
+          title: tSettings("preferences-update-success"),
+        }),
       onError: () =>
-        toast({ status: "error", title: "Error updating user info." }),
+        toast({
+          status: "error",
+          title: tSettings("preferences-update-error"),
+        }),
     });
 
   const formData = useMemo(
@@ -80,10 +89,10 @@ export const UserPreferences = () => {
   return (
     <>
       <Head>
-        <title>User preferences - Miracle TV</title>
+        <title>{tSettings("ui-preferences")} - Miracle TV</title>
       </Head>
       <Heading as="h3" size="md" mb={6}>
-        Profile preferences
+        {tSettings("ui-preferences")}
       </Heading>
       <Form<UpdateUserSettingsInput>
         onSubmit={updateSettings}
@@ -96,14 +105,14 @@ export const UserPreferences = () => {
                 <>
                   <FormToggle
                     name="singleUserMode"
-                    label="Single User Mode"
-                    help="If enabled, your user is limited to having only one channel. Userful if you don't need to manage extra channels."
+                    label={tSettings("preferences-single-user-mode")}
+                    help={tSettings("preferences-single-user-mode-help")}
                     mb={4}
                   />
                   {values.singleUserMode && (
                     <FormSelfChannelSelect
                       name="singleUserChannel"
-                      help="Select channel that you would like to use."
+                      help={tSettings("preferences-single-user-channel-help")}
                       mb={4}
                     />
                   )}
@@ -111,14 +120,14 @@ export const UserPreferences = () => {
               )}
               <FormToggle
                 name="useGravatar"
-                label="Use Gravatar"
-                help="If enabled, profile picture will use Gravatar instead of currently uploaded image"
+                label={tSettings("preferences-use-gravatar")}
+                help={tSettings("preferences-use-gravatar-help")}
                 mb={4}
               />
               <FormToggle
                 name="featureInDirectory"
-                label="Feature in User Directory"
-                help={`If enabled, your profile will be featured in the "Users" page on the dashboard`}
+                label={tSettings("preferences-feature-directory")}
+                help={tSettings("preferences-feature-directory-help")}
               />
             </Panel>
             <Box
@@ -133,7 +142,7 @@ export const UserPreferences = () => {
                 isLoading={isUpdating}
                 isDisabled={!dirty}
               >
-                Update Settings
+                {tSettings("preferences-update")}
               </Button>
             </Box>
           </form>

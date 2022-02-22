@@ -8,10 +8,10 @@ import {
 import { SessionDisplay } from "./SessionDisplay";
 import { FloatingControls } from "miracle-tv-client/components/ui/FloatingControls";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
-import { DateTime } from "luxon";
-import { head, sort } from "ramda";
+import { sort } from "ramda";
 import { Session } from "miracle-tv-shared/graphql";
 import Head from "next/head";
+import { useTranslation } from "next-i18next";
 
 gql`
   query SelfSessions {
@@ -32,6 +32,7 @@ gql`
 
 export const AccountSessions = () => {
   const toast = useToast();
+  const { t: tSession } = useTranslation("session");
   const { logout } = useCurrentUser();
   const { data: { selfSessions = [] } = {}, refetch } = useSelfSessionsQuery();
   const sessionsSorted = useMemo(
@@ -73,9 +74,9 @@ export const AccountSessions = () => {
   return (
     <>
       <Head>
-        <title>Account sessions - Miracle TV</title>
+        <title>{tSession("account-sessions")} - Miracle TV</title>
       </Head>
-      <FloatingControls heading="Sessions">
+      <FloatingControls heading={tSession("sessions")}>
         {selfSessions.length > 0 && (
           <Button
             colorScheme="red"
@@ -83,7 +84,7 @@ export const AccountSessions = () => {
             onClick={onAllSessionRevoke}
             float="right"
           >
-            Revoke all sessions
+            {tSession("sessions-revoke")}
           </Button>
         )}
       </FloatingControls>

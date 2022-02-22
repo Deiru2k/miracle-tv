@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 
 import { gql } from "@apollo/client";
 import {
@@ -9,7 +9,6 @@ import {
 import {
   Box,
   Button,
-  HStack,
   IconButton,
   Stack,
   Text,
@@ -24,9 +23,9 @@ import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
-import { AccessUnit } from "miracle-tv-shared/graphql";
 import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
 import { CopyField } from "miracle-tv-client/components/ui/CopyField";
+import { useTranslation } from "react-i18next";
 
 gql`
   query UserSettingsChannelKeys($channelId: ID!) {
@@ -63,6 +62,9 @@ export const ChannelKeysSettings = ({
   const { currentUser } = useCurrentUser();
   const { publishURL } = useServerConfig();
 
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tCommon } = useTranslation("common");
+
   const { data: { streamKeysByChannelId: streamKeys = [] } = {}, refetch } =
     useUserSettingsChannelKeysQuery({
       variables: { channelId: id },
@@ -76,19 +78,23 @@ export const ChannelKeysSettings = ({
     useUserSettingsRevokeAllStreamKeysMutation({
       onCompleted: () => {
         refetch();
-        toast({ status: "success", title: "Revoked all keys!" });
+        toast({
+          status: "success",
+          title: tChannel("keys-all-revoke-success"),
+        });
       },
       onError: () =>
-        toast({ status: "error", title: "Error revoking all keys!" }),
+        toast({ status: "error", title: tChannel("keys-all-revoke-error") }),
     });
 
   const [revokeStreamKey, { loading: isRevoking }] =
     useUserSettingsRevokeStreamKeyMutation({
       onCompleted: () => {
         refetch();
-        toast({ status: "success", title: "Key revoked!" });
+        toast({ status: "success", title: tChannel("key-revoke-success") });
       },
-      onError: () => toast({ status: "error", title: "Error revoking key!" }),
+      onError: () =>
+        toast({ status: "error", title: tChannel("key-revoke-error") }),
     });
 
   const onCreate = useCallback(() => {
@@ -127,18 +133,18 @@ export const ChannelKeysSettings = ({
             isLoading={isAllRevoking}
             isDisabled={isRevokeAllDisabled}
           >
-            Revoke all keys
+            {tChannel("keys-revoke-all")}
           </Button>
           <Button
             onClick={generateModalDisclosure.onOpen}
             isDisabled={!canEditKeys}
           >
-            Generate
+            {tChannel("keys-generate")}
           </Button>
         </Stack>
       </Box>
       <Box mb={2}>
-        <Text>Server URL</Text>
+        <Text>{tCommon("server-url")}</Text>
         <CopyField value={publishURL} />
       </Box>
       <VStack>
@@ -153,7 +159,7 @@ export const ChannelKeysSettings = ({
               />
               <IconButton
                 colorScheme="red"
-                aria-label="Delete stream key"
+                aria-label={tChannel("key-revoke")}
                 icon={<DeleteIcon />}
                 onClick={() => onKeyRevoke(sKey.id)}
               />

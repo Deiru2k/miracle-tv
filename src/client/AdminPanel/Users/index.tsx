@@ -50,6 +50,7 @@ import {
 } from "miracle-tv-shared/hooks";
 import { uniq } from "ramda";
 import React, { useCallback, useMemo, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { ADMIN_FULL_USER_FRAGMENT } from "./const";
 import { UserModal } from "./UserModal";
 
@@ -123,6 +124,9 @@ export const AdminUserList = () => {
 
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [editableUserId, setEditableUserId] = useState<string | null>(null);
+
+  const { t: tAdmin } = useTranslation("admin");
+  const { t: tUser } = useTranslation("user");
 
   const { data: { fullUserCount = 0 } = {} } = useFullUserAdminCountQuery({
     variables: { filter },
@@ -334,7 +338,7 @@ export const AdminUserList = () => {
 
   return (
     <>
-      <Heading mb={2}>Users</Heading>
+      <Heading mb={2}>{tAdmin("users")}</Heading>
       <Divider mb={4} />
       <Filter<FullUsersFilter>
         onFilter={setFilter}
@@ -342,28 +346,40 @@ export const AdminUserList = () => {
         defaultValues={defaultFilter}
         refetch={refetch}
       >
-        <Heading size="sm">Filter by fields</Heading>
+        <Heading size="sm">{tAdmin("users-filter-fields")}</Heading>
         <SimpleGrid mt={2} columns={isMobile ? 1 : 3} spacing={2}>
-          <FormInput name="username" label="Username" />
-          <FormInput name="email" label="E-mail" />
+          <FormInput name="username" label={tUser("username")} />
+          <FormInput name="email" label={tUser("email")} />
           <FormRolesSelect
             name="roles"
-            label="Roles"
+            label={tUser("roles")}
             inputProps={{ multi: true }}
           />
         </SimpleGrid>
         <Heading mt={3} size="sm">
-          Filter by states
+          {tAdmin("users-filter-states")}
         </Heading>
         <HStack mt={2}>
-          <FormCheckbox name="suspended" label="Suspended?" w="initial" />
-          <FormCheckbox name="silenced" label="Silenced?" w="initial" />
           <FormCheckbox
-            name="loginDisabled"
-            label="Login disabled?"
+            name="suspended"
+            label={tAdmin("users-filter-suspended")}
             w="initial"
           />
-          <FormCheckbox name="deleted" label="Deleted?" w="initial" />
+          <FormCheckbox
+            name="silenced"
+            label={tAdmin("users-filter-silenced")}
+            w="initial"
+          />
+          <FormCheckbox
+            name="loginDisabled"
+            label={tAdmin("users-filter-login-disabled")}
+            w="initial"
+          />
+          <FormCheckbox
+            name="deleted"
+            label={tAdmin("users-filter-deleted")}
+            w="initial"
+          />
         </HStack>
       </Filter>
       <Divider mb={4} />
@@ -375,44 +391,44 @@ export const AdminUserList = () => {
           mb={4}
           rightIcon={<ChevronDownIcon />}
         >
-          Bulk actions
+          {tAdmin("users-bulk-actions")}
         </MenuButton>
         <MenuList>
           <MenuItem isDisabled={!canEditUser} onClick={onBulkDelete}>
-            Delete
+            {tAdmin("users-actions-delete")}
           </MenuItem>
           <MenuItem isDisabled={!canEditUser} onClick={onBulkRestore}>
-            Restore
+            {tAdmin("users-actions-restore")}
           </MenuItem>
           <MenuDivider />
           <MenuItem isDisabled={!actionRights.user.ban} onClick={onBulkSuspend}>
-            Suspend
+            {tAdmin("users-actions-suspend")}
           </MenuItem>
           <MenuItem
             isDisabled={!actionRights.user.ban}
             onClick={onBulkUnsuspend}
           >
-            Unsuspend
+            {tAdmin("users-actions-unsuspend")}
           </MenuItem>
           <MenuDivider />
           <MenuItem isDisabled={!canEditUser} onClick={onBulkLoginDisable}>
-            Disable Login
+            {tAdmin("users-actions-disable-login")}
           </MenuItem>
           <MenuItem isDisabled={!canEditUser} onClick={onBulkLoginEnable}>
-            Enable Login
+            {tAdmin("users-actions-enable-login")}
           </MenuItem>
           <MenuDivider />
           <MenuItem
             isDisabled={!actionRights.user.silence}
             onClick={onBulkSilence}
           >
-            Silence
+            {tAdmin("users-actions-silence")}
           </MenuItem>
           <MenuItem
             isDisabled={!actionRights.user.silence}
             onClick={onBulkUnsilence}
           >
-            Unsilence
+            {tAdmin("users-actions-unsilence")}
           </MenuItem>
         </MenuList>
       </Menu>
@@ -441,13 +457,13 @@ export const AdminUserList = () => {
                 />
               </Th>
               <Th />
-              <Th>Username</Th>
-              <Th>Display name</Th>
-              <Th>E-mail</Th>
-              <Th>Is suspended?</Th>
-              <Th>Is silenced?</Th>
-              <Th>Is login disabled?</Th>
-              <Th>Is deleted?</Th>
+              <Th>{tUser("username")}</Th>
+              <Th>{tUser("display-name")}</Th>
+              <Th>{tUser("email")}</Th>
+              <Th>{tAdmin("users-filter-suspended")}</Th>
+              <Th>{tAdmin("users-filter-silenced")}</Th>
+              <Th>{tAdmin("users-filter-login-disabled")}</Th>
+              <Th>{tAdmin("users-filter-deleted")}</Th>
             </Tr>
           </Thead>
           <Tbody>

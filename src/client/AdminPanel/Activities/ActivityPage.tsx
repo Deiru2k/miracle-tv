@@ -10,6 +10,7 @@ import {
 } from "miracle-tv-shared/hooks";
 import { useCallback, useMemo } from "react";
 import { Form } from "react-final-form";
+import { useTranslation } from "react-i18next";
 import { ActivityForm } from "./ActivityForm";
 import { ADMIN_ACTIVITY_FRAGMENT } from "./const";
 
@@ -34,6 +35,9 @@ type Props = {
 export const AdminActivityPage = ({ id }: Props) => {
   const toast = useToast();
   const { checkRights } = useCurrentUser();
+
+  const { t: tActivity } = useTranslation("activity");
+  const { t: tCommon } = useTranslation("common");
 
   const canEditActivity = useMemo(
     () => checkRights(AccessUnit.Write, "activities"),
@@ -75,7 +79,9 @@ export const AdminActivityPage = ({ id }: Props) => {
 
   return (
     <>
-      <Heading>Activity: {activity?.name}</Heading>
+      <Heading>
+        {tActivity("activity")}: {activity?.name}
+      </Heading>
       <Form<UpdateActivityInput>
         onSubmit={updateActivity}
         initialValues={formData}
@@ -91,7 +97,7 @@ export const AdminActivityPage = ({ id }: Props) => {
                 bottom={0}
               >
                 <Button type="submit" mt={6} isDisabled={pristine}>
-                  Update profile
+                  {tCommon("update")}
                 </Button>
               </Box>
             )}

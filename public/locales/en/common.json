@@ -1,0 +1,77 @@
+{
+  "login": "Log In",
+  "signup": "Sign Up",
+  "logout": "Log Out",
+  "email": "E-Mail",
+  "dark-mode": "Dark mode",
+  "light-mode": "Light mode",
+  "live-update": "Live Update",
+  "disable": "Disable",
+  "enable": "Enable",
+  "update": "Update",
+  "yes": "Yes",
+  "no": "No",
+  "actions": "Actions",
+  "create": "Create",
+  "update": "Update",
+  "delete": "Delete",
+
+  "aspect-ratio": "{{ratio}} aspect ratio is preferred",
+
+  "navbar_menu_dashboard": "Dashboard",
+  "navbar_menu_profile-page": "Your profile page",
+  "navbar_menu_settings": "Settings",
+  "navbar_menu_admin": "Admin panel",
+  "navbar_menu_obs": "How to setup OBS",
+  "navbar_menu_landing": "Landing page",
+
+  "select-users": "Select users...",
+  "select-activities": "Select activities...",
+  "select-value": "Select value...",
+  "no-options": "No options found!",
+
+  "server-url": "Server url",
+
+  "entity-users": "Users",
+  "entity-channels": "Channels",
+  "entity-roles": "Roles",
+  "entity-streamkeys": "Stream keys",
+  "entity-activities": "Activities",
+  "entity-user-settings": "User settings",
+  "entity-sessions": "Sessions",
+  "entity-system-info": "System Info",
+
+  "uploader-upload": "Upload",
+  "uploader-choose": "Choose file to upload",
+  "uploader-new": "Upload new file",
+  "uploader-select": "Select file",
+  "uploader-remove": "Remove file",
+
+  "this-field-supports": "This field supports",
+  "editor-edit": "Editor",
+  "editor-preview": "Preview",
+
+  "subscribed-to": "Subscribed to {{name}}",
+  "unsubscribed-from": "Unsubscribed from {{name}}",
+  "subscribed-to-error": "Error subscribing to {{name}}",
+  "unsubscribed-from-error": "Error unsubscribing from {{name}}",
+  "subscribe": "Subscribe",
+  "unsubscribe": "Unsubscribe",
+
+  "chat-login": "Please login to use chat",
+  "chat-be-nice": "Remember to be nice to each other",
+  "chat-popup": "Open chat in popup",
+  "chat-roster": "Open chat roster",
+  "chat-send": "Send message",
+
+  "latest-clips": "Latest clips",
+
+  "auth-login": "Login",
+  "auth-sign-up": "Sign Up",
+  "auth-username": "Username",
+  "auth-password": "Password",
+
+  "auth-username-help": "This cannot be changed later! Please, choose wisely.",
+  "auth-password-help": "Recommended is minimum of 8 characters, with letters, numbers and symbols.",
+  "auth-sign-up-welcome": "Welcome, {{username}}! You may now login with your credentials."
+}

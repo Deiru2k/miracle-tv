@@ -21,6 +21,7 @@ import {
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { ChannelSecurityForm } from "./ChannelSecurity";
+import { useTranslation } from "react-i18next";
 
 gql`
   query UserSettingsChannel($id: ID!) {
@@ -47,6 +48,8 @@ type Props = {
 
 export const ChannelEdit = ({ id, selfChannel }: Props) => {
   const toast = useToast();
+
+  const { t: tChannel } = useTranslation("channel");
 
   const { checkRights, currentUser } = useCurrentUser();
 
@@ -96,13 +99,13 @@ export const ChannelEdit = ({ id, selfChannel }: Props) => {
       {({ handleSubmit, dirty, values }) => (
         <form onSubmit={handleSubmit}>
           <Heading size="md" mb={2}>
-            Details
+            {tChannel("ui-tabs-details")}
           </Heading>
           <Panel>
             <ChannelBasicForm values={values} isDisabled={!canEditChannel} />
           </Panel>
           <Heading size="md" mb={2} mt={6}>
-            Security
+            {tChannel("ui-security")}
           </Heading>
           <Panel>
             <ChannelSecurityForm isDisabled={!canEditChannel} values={values} />
@@ -110,7 +113,7 @@ export const ChannelEdit = ({ id, selfChannel }: Props) => {
           {canEditChannel && (
             <Box position="sticky" float="right" bottom="0" right="0" pt={2}>
               <Button type="submit" disabled={!dirty} isLoading={isUpdating}>
-                Update channel
+                {tChannel("ui-update-channel")}
               </Button>
             </Box>
           )}

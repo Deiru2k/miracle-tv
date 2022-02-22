@@ -260,6 +260,7 @@ export type Mutation = {
   createActivity: Activity;
   createChannel: Channel;
   createRole: Role;
+  createRoleRaw: RoleRaw;
   createStreamKey: StreamKey;
   deleteActivity: Scalars["Boolean"];
   deleteChannel: Scalars["Boolean"];
@@ -297,6 +298,7 @@ export type Mutation = {
   updateChannel: Channel;
   updateFullUser: FullUser;
   updateRole: Role;
+  updateRoleRaw: RoleRaw;
   updateSelf?: Maybe<User>;
   updateSelfAccount?: Maybe<UserAccountDetails>;
   updateUserSettings?: Maybe<UserSettings>;
@@ -332,6 +334,10 @@ export type MutationCreateChannelArgs = {
 };
 
 export type MutationCreateRoleArgs = {
+  input?: InputMaybe<CreateRoleInput>;
+};
+
+export type MutationCreateRoleRawArgs = {
   input?: InputMaybe<CreateRoleInput>;
 };
 
@@ -480,6 +486,10 @@ export type MutationUpdateRoleArgs = {
   input?: InputMaybe<UpdateRoleInput>;
 };
 
+export type MutationUpdateRoleRawArgs = {
+  input?: InputMaybe<UpdateRoleInput>;
+};
+
 export type MutationUpdateSelfArgs = {
   input: UpdateSelfInput;
 };
@@ -525,7 +535,9 @@ export type Query = {
   fullUsers: Array<Maybe<FullUser>>;
   info: InfoResponse;
   role?: Maybe<Role>;
+  roleRaw?: Maybe<RoleRaw>;
   roles: Array<Maybe<Role>>;
+  rolesRaw: Array<Maybe<RoleRaw>>;
   self: User;
   selfAccount: UserAccountDetails;
   selfChannel?: Maybe<SelfChannel>;
@@ -621,7 +633,16 @@ export type QueryRoleArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryRoleRawArgs = {
+  id: Scalars["ID"];
+};
+
 export type QueryRolesArgs = {
+  filter?: InputMaybe<RolesFilter>;
+  limit?: InputMaybe<QueryLimit>;
+};
+
+export type QueryRolesRawArgs = {
   filter?: InputMaybe<RolesFilter>;
   limit?: InputMaybe<QueryLimit>;
 };
@@ -700,6 +721,14 @@ export type RevokeStreamKeysInput = {
 
 export type Role = {
   __typename?: "Role";
+  access: AccessTargets;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  parentId?: Maybe<Scalars["ID"]>;
+};
+
+export type RoleRaw = {
+  __typename?: "RoleRaw";
   access: AccessTargets;
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -1112,6 +1141,7 @@ export type ResolversTypes = {
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: ResolverTypeWrapper<Role>;
+  RoleRaw: ResolverTypeWrapper<RoleRaw>;
   RolesFilter: RolesFilter;
   SelfChannel: ResolverTypeWrapper<SelfChannel>;
   ServerConfig: ResolverTypeWrapper<ServerConfig>;
@@ -1189,6 +1219,7 @@ export type ResolversParentTypes = {
   RevokeAllStreamKeysInput: RevokeAllStreamKeysInput;
   RevokeStreamKeysInput: RevokeStreamKeysInput;
   Role: Role;
+  RoleRaw: RoleRaw;
   RolesFilter: RolesFilter;
   SelfChannel: SelfChannel;
   ServerConfig: ServerConfig;
@@ -1537,6 +1568,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateRoleArgs, never>
   >;
+  createRoleRaw?: Resolver<
+    ResolversTypes["RoleRaw"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateRoleRawArgs, never>
+  >;
   createStreamKey?: Resolver<
     ResolversTypes["StreamKey"],
     ParentType,
@@ -1754,6 +1791,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateRoleArgs, never>
   >;
+  updateRoleRaw?: Resolver<
+    ResolversTypes["RoleRaw"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateRoleRawArgs, never>
+  >;
   updateSelf?: Resolver<
     Maybe<ResolversTypes["User"]>,
     ParentType,
@@ -1881,11 +1924,23 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryRoleArgs, "id">
   >;
+  roleRaw?: Resolver<
+    Maybe<ResolversTypes["RoleRaw"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRoleRawArgs, "id">
+  >;
   roles?: Resolver<
     Array<Maybe<ResolversTypes["Role"]>>,
     ParentType,
     ContextType,
     RequireFields<QueryRolesArgs, never>
+  >;
+  rolesRaw?: Resolver<
+    Array<Maybe<ResolversTypes["RoleRaw"]>>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryRolesRawArgs, never>
   >;
   self?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   selfAccount?: Resolver<
@@ -2023,6 +2078,17 @@ export type ResetUserPasswordReturnResolvers<
 export type RoleResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Role"] = ResolversParentTypes["Role"]
+> = {
+  access?: Resolver<ResolversTypes["AccessTargets"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  parentId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type RoleRawResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["RoleRaw"] = ResolversParentTypes["RoleRaw"]
 > = {
   access?: Resolver<ResolversTypes["AccessTargets"], ParentType, ContextType>;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
@@ -2312,6 +2378,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   ResetUserPasswordReturn?: ResetUserPasswordReturnResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
+  RoleRaw?: RoleRawResolvers<ContextType>;
   SelfChannel?: SelfChannelResolvers<ContextType>;
   ServerConfig?: ServerConfigResolvers<ContextType>;
   Session?: SessionResolvers<ContextType>;
@@ -2615,9 +2682,9 @@ export type AdminRolesQueryVariables = Exact<{
 
 export type AdminRolesQuery = {
   __typename?: "Query";
-  roles: Array<
+  rolesRaw: Array<
     | {
-        __typename?: "Role";
+        __typename?: "RoleRaw";
         id: string;
         parentId?: string | null | undefined;
         name: string;
@@ -2677,9 +2744,9 @@ export type AdminRolePageQueryVariables = Exact<{
 
 export type AdminRolePageQuery = {
   __typename?: "Query";
-  role?:
+  roleRaw?:
     | {
-        __typename?: "Role";
+        __typename?: "RoleRaw";
         id: string;
         parentId?: string | null | undefined;
         name: string;
@@ -2729,8 +2796,8 @@ export type AdminUpdateRoleMutationVariables = Exact<{
 
 export type AdminUpdateRoleMutation = {
   __typename?: "Mutation";
-  updateRole: {
-    __typename?: "Role";
+  updateRoleRaw: {
+    __typename?: "RoleRaw";
     id: string;
     parentId?: string | null | undefined;
     name: string;
@@ -2763,8 +2830,41 @@ export type AdminUpdateRoleMutation = {
   };
 };
 
-export type AdminRoleFragment = {
+export type AdminRoleBasicFragment = {
   __typename?: "Role";
+  id: string;
+  parentId?: string | null | undefined;
+  name: string;
+  access: {
+    __typename?: "AccessTargets";
+    rights: {
+      __typename?: "AccessRights";
+      channels?: Array<AccessUnit | null | undefined> | null | undefined;
+      streamKeys?: Array<AccessUnit | null | undefined> | null | undefined;
+      roles?: Array<AccessUnit | null | undefined> | null | undefined;
+      users?: Array<AccessUnit | null | undefined> | null | undefined;
+      activities?: Array<AccessUnit | null | undefined> | null | undefined;
+      userSettings?: Array<AccessUnit | null | undefined> | null | undefined;
+      system?: Array<AccessUnit | null | undefined> | null | undefined;
+      sessions?: Array<AccessUnit | null | undefined> | null | undefined;
+    };
+    actions: {
+      __typename?: "Actions";
+      user?:
+        | {
+            __typename?: "UserActions";
+            silence?: boolean | null | undefined;
+            ban?: boolean | null | undefined;
+            warn?: boolean | null | undefined;
+          }
+        | null
+        | undefined;
+    };
+  };
+};
+
+export type AdminRoleFragment = {
+  __typename?: "RoleRaw";
   id: string;
   parentId?: string | null | undefined;
   name: string;
@@ -5461,8 +5561,8 @@ export type AdminCreateRoleMutationVariables = Exact<{
 
 export type AdminCreateRoleMutation = {
   __typename?: "Mutation";
-  createRole: {
-    __typename?: "Role";
+  createRoleRaw: {
+    __typename?: "RoleRaw";
     id: string;
     parentId?: string | null | undefined;
     name: string;

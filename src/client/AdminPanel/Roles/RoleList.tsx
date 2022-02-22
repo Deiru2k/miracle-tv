@@ -29,13 +29,14 @@ import {
   useAdminRolesQuery,
   useBulkDeleteRolesMutation,
 } from "miracle-tv-shared/hooks";
+import { useTranslation } from "next-i18next";
 import { intersection, uniq, without } from "ramda";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ADMIN_ROLE_FRAGMENT } from "./const";
 
 gql`
   query AdminRoles($filter: RolesFilter, $limit: QueryLimit) {
-    roles(filter: $filter, limit: $limit) {
+    rolesRaw(filter: $filter, limit: $limit) {
       ...AdminRole
     }
   }
@@ -53,12 +54,15 @@ const systemRoles = ["admin", "moderator", "user", "volunteer"];
 export const AdminRolesList = () => {
   const toast = useToast();
 
+  const { t: tRole } = useTranslation("role");
+  const { t: tCommon } = useTranslation("common");
+
   const { checkRights } = useCurrentUser();
 
   const canViewRole = useMemo(() => checkRights(AccessUnit.Read, "roles"), []);
   const canEditRole = useMemo(() => checkRights(AccessUnit.Write, "roles"), []);
 
-  const { data: { roles = [] } = {} } = useAdminRolesQuery({
+  const { data: { rolesRaw: roles = [] } = {} } = useAdminRolesQuery({
     skip: !canViewRole,
   });
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -126,7 +130,7 @@ export const AdminRolesList = () => {
   return (
     <>
       <CreateRoleModal {...createDisclosure} />
-      <Heading mb={2}>Roles</Heading>
+      <Heading mb={2}>{tRole("roles")}</Heading>
       <Divider mb={4} />
       <Flex w="100%" justify="space-between">
         <Menu>
@@ -137,10 +141,10 @@ export const AdminRolesList = () => {
             mb={4}
             rightIcon={<ChevronDownIcon />}
           >
-            Bulk actions
+            {tCommon("actions")}
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={onBulkDeleteRoles}>Delete</MenuItem>
+            <MenuItem onClick={onBulkDeleteRoles}>{tCommon("delete")}</MenuItem>
           </MenuList>
         </Menu>
         <Button
@@ -148,7 +152,7 @@ export const AdminRolesList = () => {
           onClick={onCreateDisclosureOpen}
           isDisabled={!canEditRole}
         >
-          Create role
+          {tRole("form-create-role")}
         </Button>
       </Flex>
       <VStack w="100%">
@@ -171,7 +175,7 @@ export const AdminRolesList = () => {
               </Th>
               <Th width="2rem" />
               <Th>ID</Th>
-              <Th>Name</Th>
+              <Th>{tRole("name")}</Th>
             </Tr>
           </Thead>
           <Tbody>

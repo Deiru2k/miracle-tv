@@ -6,6 +6,7 @@ import { ChangePasswordInput } from "miracle-tv-shared/graphql";
 import { Form } from "react-final-form";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
+import { useTranslation } from "react-i18next";
 
 gql`
   mutation SettingsChangePassword($input: ChangePasswordInput) {
@@ -15,17 +16,20 @@ gql`
 
 export const ChangePassword = () => {
   const toast = useToast();
+
+  const { t: tSettings } = useTranslation("settings");
+
   const [changePasswordMutation, { loading: isChanging }] =
     useSettingsChangePasswordMutation({
       onCompleted: () =>
         toast({
           status: "success",
-          title: "Successfully changed your password!",
+          title: tSettings("account-change-password-success"),
         }),
       onError: () =>
         toast({
           status: "error",
-          title: "There was an error changing your password.",
+          title: tSettings("account-change-password-error"),
         }),
     });
 
@@ -39,7 +43,7 @@ export const ChangePassword = () => {
   return (
     <>
       <Heading as="h3" size="md" mb={6}>
-        Change Password
+        {tSettings("account-change-password")}
       </Heading>
       <Panel>
         <Form<ChangePasswordInput> onSubmit={changePassword}>
@@ -53,18 +57,18 @@ export const ChangePassword = () => {
             >
               <FormInput
                 name="currentPassword"
-                label="Current Password"
+                label={tSettings("account-old-password")}
                 type="password"
                 mb={4}
               />
               <FormInput
                 name="newPassword"
-                label="New Password"
+                label={tSettings("account-new-password")}
                 type="password"
               />
               <Flex mt={4}>
                 <Button ml="auto" type="submit" isLoading={isChanging}>
-                  Change
+                  {tSettings("account-change")}
                 </Button>
               </Flex>
             </form>

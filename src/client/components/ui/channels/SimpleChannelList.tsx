@@ -15,6 +15,7 @@ import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { getMediaURL } from "miracle-tv-shared/media";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   channels: ChannelFullFragment[];

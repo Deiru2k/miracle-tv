@@ -39,6 +39,13 @@ type Role {
   parentId: ID
 }
 
+type RoleRaw {
+  id: ID!
+  name: String!
+  access: AccessTargets!
+  parentId: ID
+}
+
 input RolesFilter {
   id: ID
   ids: [ID]
@@ -48,13 +55,19 @@ input RolesFilter {
 
 extend type Query {
   role(id: ID!): Role
+  roleRaw(id: ID!): RoleRaw
   roles(filter: RolesFilter, limit: QueryLimit): [Role]!
+  rolesRaw(filter: RolesFilter, limit: QueryLimit): [RoleRaw]!
 }
 
 extend type Mutation {
   createRole(input: CreateRoleInput): Role!
     @auth(rights: [{ unit: WRITE, subject: "roles" }])
   updateRole(input: UpdateRoleInput): Role!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  createRoleRaw(input: CreateRoleInput): RoleRaw!
+    @auth(rights: [{ unit: WRITE, subject: "roles" }])
+  updateRoleRaw(input: UpdateRoleInput): RoleRaw!
     @auth(rights: [{ unit: WRITE, subject: "roles" }])
   deleteRole(id: ID!): Boolean!
     @auth(rights: [{ unit: WRITE, subject: "roles" }])

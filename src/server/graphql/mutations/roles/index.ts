@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server-errors";
 import { DbUser } from "miracle-tv-server/db/models/types";
 import { ResolverContext } from "miracle-tv-server/types/resolver";
-import { MutationResolvers } from "miracle-tv-shared/graphql";
+import { MutationResolvers, RoleRaw } from "miracle-tv-shared/graphql";
 import { identity, intersection } from "ramda";
 import { Expression } from "rethinkdb";
 
@@ -12,8 +12,16 @@ export const rolesMutations: MutationResolvers<ResolverContext> = {
     const role = await roles.create(input);
     return role;
   },
+  async createRoleRaw(_, { input }, { db: { roles } }) {
+    const role = await roles.create<RoleRaw>(input);
+    return role;
+  },
   async updateRole(_, { input }, { db: { roles } }) {
     const role = await roles.update(input);
+    return role;
+  },
+  async updateRoleRaw(_, { input }, { db: { roles } }) {
+    const role = await roles.update<RoleRaw>(input);
     return role;
   },
   async deleteRole(_, { id }, { db: { roles, users } }) {

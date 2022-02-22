@@ -18,8 +18,34 @@ export const AdminActivityFragmentFragmentDoc = gql`
     }
   }
 `;
+export const AdminRoleBasicFragmentDoc = gql`
+  fragment AdminRoleBasic on Role {
+    id
+    parentId
+    name
+    access {
+      rights {
+        channels
+        streamKeys
+        roles
+        users
+        activities
+        userSettings
+        system
+        sessions
+      }
+      actions {
+        user {
+          silence
+          ban
+          warn
+        }
+      }
+    }
+  }
+`;
 export const AdminRoleFragmentDoc = gql`
-  fragment AdminRole on Role {
+  fragment AdminRole on RoleRaw {
     id
     parentId
     name
@@ -1063,7 +1089,7 @@ export type AdminDeleteChannelMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const AdminRolesDocument = gql`
   query AdminRoles($filter: RolesFilter, $limit: QueryLimit) {
-    roles(filter: $filter, limit: $limit) {
+    rolesRaw(filter: $filter, limit: $limit) {
       ...AdminRole
     }
   }
@@ -1169,7 +1195,7 @@ export type BulkDeleteRolesMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const AdminRolePageDocument = gql`
   query AdminRolePage($id: ID!) {
-    role(id: $id) {
+    roleRaw(id: $id) {
       ...AdminRole
     }
   }
@@ -1228,7 +1254,7 @@ export type AdminRolePageQueryResult = Apollo.QueryResult<
 >;
 export const AdminUpdateRoleDocument = gql`
   mutation AdminUpdateRole($input: UpdateRoleInput) {
-    updateRole(input: $input) {
+    updateRoleRaw(input: $input) {
       ...AdminRole
     }
   }
@@ -4404,7 +4430,7 @@ export type UsersSelectInitialQueryResult = Apollo.QueryResult<
 >;
 export const AdminCreateRoleDocument = gql`
   mutation AdminCreateRole($input: CreateRoleInput) {
-    createRole(input: $input) {
+    createRoleRaw(input: $input) {
       ...AdminRole
     }
   }

@@ -3,26 +3,38 @@ import { Text } from "@chakra-ui/react";
 import { FormGroup } from "miracle-tv-client/components/form/FormGroup";
 import { FormInput } from "miracle-tv-client/components/form/FormInput";
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isDisabled?: boolean;
 };
 
 export const ActivityForm = ({ isDisabled }: Props) => {
+  const { t: tCommon } = useTranslation("common");
+  const { t: tActivity } = useTranslation("activity");
+
   return (
     <>
       <HStack width="100%" mb={4}>
-        <FormInput name="name" label="Name" isDisabled={isDisabled} />
-        <FormInput name="verb" label="Verb" isDisabled={isDisabled} />
+        <FormInput
+          name="name"
+          label={tActivity("name")}
+          isDisabled={isDisabled}
+        />
+        <FormInput
+          name="verb"
+          label={tActivity("verb")}
+          isDisabled={isDisabled}
+        />
       </HStack>
       <Flex w="100%" justify="flex-start">
         <FormGroup
           name="icon"
-          label="Icon"
+          label={tActivity("form-icon")}
           help={
             <>
-              <Text mt={12}>1:1 aspect ratio is preferred.</Text>
-              <Text>{"Used for activity icon in various pages"}</Text>
+              <Text mt={12}>{tCommon("aspect-ratio", { ratio: "1:1" })}</Text>
+              <Text>{tActivity("form-icon-help")}</Text>
             </>
           }
           w="unset"
@@ -43,11 +55,11 @@ export const ActivityForm = ({ isDisabled }: Props) => {
 
         <FormGroup
           name="image"
-          label="Cover Image"
+          label={tActivity("form-image")}
           help={
             <>
-              <Text>8:12 aspect ratio is preferred.</Text>
-              <Text>{"Used for activity icon in various pages"}</Text>
+              <Text>{tCommon("aspect-ratio", { ratio: "8:12" })}</Text>
+              <Text>{tActivity("form-image-help")}</Text>
             </>
           }
           w="unset"

@@ -30,6 +30,7 @@ import { ChannelFullFragment } from "miracle-tv-shared/graphql";
 import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/SimpleChannelList";
 import { FloatingControls } from "miracle-tv-client/components/ui/FloatingControls";
 import Head from "next/head";
+import { useTranslation } from "react-i18next";
 
 gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
@@ -45,6 +46,11 @@ gql`
 
 export const SettingsChannelsList = () => {
   const toast = useToast();
+
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tSettings } = useTranslation("settings");
+  const { t: tCommon } = useTranslation("common");
+
   const { currentUser } = useCurrentUser();
   const { currentSettings } = useCurrentUserSettings();
   const createChannelDisclosure = useDisclosure();
@@ -64,13 +70,19 @@ export const SettingsChannelsList = () => {
   const [deleteChannelMutation, { loading: isDeleting }] =
     useUserSettingsDeleteChannelMutation({
       onCompleted: () => {
-        toast({ status: "success", title: "Deleted channel!" });
+        toast({
+          status: "success",
+          title: tChannel("action-delete-channel-success"),
+        });
         deleteChannelDisclosure.onClose();
         refetch();
         setChannelToDelete(null);
       },
       onError: () =>
-        toast({ status: "error", title: "Error deleting channel." }),
+        toast({
+          status: "error",
+          title: tChannel("action-delete-channel-error"),
+        }),
     });
 
   const onChannelDeleteOpen = useCallback(
@@ -91,7 +103,8 @@ export const SettingsChannelsList = () => {
         <IconButton
           colorScheme="red"
           icon={<DeleteIcon />}
-          aria-label="Delete"
+          aria-label={tCommon("delete")}
+          title={tCommon("delete")}
           onClick={() => onChannelDeleteOpen(ch.id)}
         />
         <Link
@@ -108,7 +121,7 @@ export const SettingsChannelsList = () => {
   return (
     <>
       <Head>
-        <title>Channels settings - Miracle TV</title>
+        <title>{tSettings("channels-page-title")} - Miracle TV</title>
       </Head>
       <Box>
         <ConfirmDialog
@@ -117,18 +130,18 @@ export const SettingsChannelsList = () => {
           confirmColorScheme="red"
           isLoading={isDeleting}
         >
-          {"Are you sure you want to delete this channel?"}
+          {tSettings("confirm")}
         </ConfirmDialog>
         <CreateChannelModal
           redirectUrlBase={(id) => `/settings/user/channels/${id}/details`}
           onCreate={refetch}
           {...createChannelDisclosure}
         />
-        <FloatingControls heading="Channels" m={6}>
+        <FloatingControls heading={tChannel("channels")} m={6}>
           {!!channels?.length && (
             <>
               <Button float="right" onClick={createChannelDisclosure.onOpen}>
-                Create channel
+                {tChannel("create-channel")}
               </Button>
             </>
           )}
@@ -136,30 +149,30 @@ export const SettingsChannelsList = () => {
         {!channels?.length && !currentSettings?.singleUserMode && (
           <Attract>
             <Heading mt={2} mb={2}>
-              {"You don't seem to have any channels yet."}
+              {tChannel("no-channels")}
             </Heading>
             <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
-              Create one!
+              {tChannel("create-new")}
             </Button>
           </Attract>
         )}
         {currentSettings?.singleUserMode && !currentSettings.singleUserChannel && (
           <Attract>
             <Heading mt={2} mb={2} size="lg">
-              {"You have single user mode enabled, but no assigned channel."}
+              {tChannel("single-user-warning")}
             </Heading>
             {channels?.length > 0 && (
               <>
                 <Text>
-                  Please, go to{" "}
+                  {tChannel("single-user-goto")}{" "}
                   <Link href="/settings/user/preferences">[Preferences]</Link>{" "}
-                  and assign one.
+                  {tChannel("single-user-pick")}
                 </Text>
               </>
-            )}
+            )}{" "}
             {channels?.length === 0 && (
               <Button variant="ghost" onClick={createChannelDisclosure.onOpen}>
-                Create one!
+                {tChannel("create-new")}
               </Button>
             )}
           </Attract>

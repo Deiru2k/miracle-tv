@@ -5,6 +5,7 @@ import { FormRolesSelect } from "miracle-tv-client/components/form/selects/FormR
 import { ImageUploader } from "miracle-tv-client/components/ImageUploader";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { UserEditForm } from "miracle-tv-client/UserSettings/UserEditForm";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import {
@@ -15,6 +16,7 @@ import {
 import { useUpdateFullUserMutation } from "miracle-tv-shared/hooks";
 import { useCallback, useMemo } from "react";
 import { Form } from "react-final-form";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   user: AdminFullUserFragment;
@@ -26,21 +28,26 @@ export const AdminUserEditForm = ({ user }: Props) => {
   const { checkRights } = useCurrentUser();
   const formData: Partial<UpdateFullUserInput> = {
     bio: user.bio,
+    displayName: user?.displayName,
     roles: user.roles?.map((role) => role.id),
     avatar: user.avatar?.id,
     header: user.header?.id,
     streamThumbnail: user.streamThumbnail?.id,
   };
 
+  const { t: tAdmin } = useTranslation("admin");
+  const { t: tUser } = useTranslation("user");
+  const { t: tCommon } = useTranslation("common");
+
   const [updateFullUserMutation, { loading: isUserUpdating }] =
     useUpdateFullUserMutation({
       onCompleted() {
-        toast({ status: "success", title: "Updated user" });
+        toast({ status: "success", title: tAdmin("user-updated") });
       },
       onError(data) {
         toast({
           status: "error",
-          title: `There was an error updating user: ${data.message}`,
+          title: `${tAdmin("user-update-error")}: ${data.message}`,
         });
       },
       refetchQueries: ["FullUserAdmin", "FullUserAdminCount"],
@@ -62,60 +69,43 @@ export const AdminUserEditForm = ({ user }: Props) => {
   return (
     <>
       <Heading size="md" mb={2}>
-        Update user
+        {tAdmin("user-update")}
       </Heading>
       <Form<UpdateFullUserInput> onSubmit={onUpdate} initialValues={formData}>
         {({ handleSubmit, pristine }) => (
           <form onSubmit={handleSubmit}>
             <FormRolesSelect
               isDisabled={!canEditUser}
-              label="Roles"
+              label={tUser("roles")}
               name="roles"
               mb={4}
               inputProps={{ multi: true }}
             />
+            <UserEditForm />
             <Flex mb={4} direction={isMobile ? "column" : "row"}>
               <FormGroup
                 name="avatar"
-                label="Profile Picture"
+                label={tUser("profile-picture")}
                 mr={4}
                 w="auto"
-                help={"1:1 aspect ratio is preferred"}
+                help={tUser("aspect-ratio", { ratio: "1:1" })}
               >
                 <ImageUploader id="avatar" name="avatar" ratio={1} />
               </FormGroup>
               <FormGroup
                 name="header"
-                label="Profile Header"
+                label={tUser("profile-header")}
                 width="100%"
-                help="16:6 aspect ratio is preffered"
+                help={tUser("aspect-ratio", { ratio: "16:6" })}
               >
                 <ImageUploader id="header" name="header" ratio={16 / 6} />
               </FormGroup>
             </Flex>
-            <FormMarkdown
-              label="Bio"
-              name="bio"
-              rows={10}
-              height="auto"
-              help={
-                <>
-                  This field supports{" "}
-                  <Link
-                    target="_blank"
-                    textDecoration="underline"
-                    href="https://www.markdownguide.org/basic-syntax/"
-                  >
-                    markdown
-                  </Link>
-                </>
-              }
-            />
             <FormGroup
               name="header"
-              label="Stream Thumbnail"
+              label={tUser("stream-thumbnail")}
               width="100%"
-              help="16:9 aspect ratio is preffered"
+              help={tUser("aspect-ratio", { ratio: "16:9" })}
               flex={4}
             >
               <ImageUploader
@@ -136,7 +126,7 @@ export const AdminUserEditForm = ({ user }: Props) => {
                 isLoading={isUserUpdating}
                 isDisabled={pristine || isUserUpdating || !canEditUser}
               >
-                Update
+                {tCommon("update")}
               </Button>
             </Flex>
           </form>

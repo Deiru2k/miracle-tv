@@ -34,6 +34,7 @@ import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { Link } from "miracle-tv-client/components/ui/Link";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   user: AdminFullUserFragment | null;
@@ -59,6 +60,11 @@ export const UserModal = ({ user, onClose }: Props) => {
   const { checkRights, checkActions } = useCurrentUser();
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const toast = useToast();
+
+  const { t: tAdmin } = useTranslation("admin");
+  const { t: tUser } = useTranslation("user");
+  const { t: tCommon } = useTranslation("common");
+
   const [updateFullUserMutation] = useUpdateFullUserMutation({
     onCompleted() {
       toast({ status: "success", title: "Updated user" });
@@ -178,33 +184,41 @@ export const UserModal = ({ user, onClose }: Props) => {
                 </Heading>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
-                    Username:
+                    {tUser("username")}:
                   </Text>
                   <Text>{user?.username}</Text>
                 </Flex>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
-                    E-mail:
+                    {tUser("email")}:
                   </Text>
                   <Text>{user?.email}</Text>
                 </Flex>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
                     {" "}
-                    Uses gravatar?:
+                    {tUser("use-gravatar")}?:
                   </Text>
-                  <Text>{user?.settings?.useGravatar ? "Yes" : "No"}</Text>
+                  <Text>
+                    {user?.settings?.useGravatar
+                      ? tCommon("yes")
+                      : tCommon("no")}
+                  </Text>
                 </Flex>
                 <Flex direction="row" mb={2}>
                   <Text fontWeight="bold" mr={1}>
-                    Single User Mode?:
+                    {tUser("single-user-mode")}?:
                   </Text>
-                  <Text>{user?.settings?.singleUserMode ? "Yes" : "No"}</Text>
+                  <Text>
+                    {user?.settings?.singleUserMode
+                      ? tCommon("yes")
+                      : tCommon("no")}
+                  </Text>
                 </Flex>
                 {user?.settings?.singleUserMode && (
                   <Flex direction="row" mb={2}>
                     <Text fontWeight="bold" mr={1}>
-                      Single User Channel:
+                      {tUser("single-user-channel")}:
                     </Text>
                     {!user?.settings?.singleUserChannel && <Text>Not set</Text>}
                     {user?.settings?.singleUserChannel && (
@@ -214,14 +228,16 @@ export const UserModal = ({ user, onClose }: Props) => {
                 )}
                 <Flex direction="row" mb={4}>
                   <Text fontWeight="bold" mr={1}>
-                    Featured in profile directory?:
+                    {tUser("feature-profile-directory")}?:
                   </Text>
                   <Text>
-                    {user?.settings?.featureInDirectory ? "Yes" : "No"}
+                    {user?.settings?.featureInDirectory
+                      ? tCommon("yes")
+                      : tCommon("no")}
                   </Text>
                 </Flex>
                 <Heading size="sm" mb={2}>
-                  User actions
+                  {tAdmin("user-modal-actions")}
                 </Heading>
                 <Divider mb={2} />
                 <SimpleGrid columns={2} spacing={2}>
@@ -230,7 +246,9 @@ export const UserModal = ({ user, onClose }: Props) => {
                     isDisabled={!actionRights.user.ban}
                     colorScheme={!user?.suspended ? "red" : undefined}
                   >
-                    {!user?.suspended ? "Suspend" : "Unsuspend"}
+                    {!user?.suspended
+                      ? tAdmin("users-actions-suspend")
+                      : tAdmin("users-actions-unsuspend")}
                   </Button>
                   <Button
                     onClick={() =>
@@ -239,21 +257,27 @@ export const UserModal = ({ user, onClose }: Props) => {
                     isDisabled={!canEditUser}
                     colorScheme={!user?.loginDisabled ? "red" : undefined}
                   >
-                    {!user?.loginDisabled ? "Disable Login" : "Enable Login"}
+                    {!user?.loginDisabled
+                      ? tAdmin("users-actions-disable-login")
+                      : tAdmin("users-actions-enable-login")}
                   </Button>
                   <Button
                     onClick={() => onUpdate("deleted", !user?.deleted)}
                     isDisabled={!canEditUser}
                     colorScheme={!user?.deleted ? "red" : undefined}
                   >
-                    {!user?.deleted ? "Delete" : "Restore"}
+                    {!user?.deleted
+                      ? tAdmin("users-actions-delete")
+                      : tAdmin("users-actions-restore")}
                   </Button>
                   <Button
                     isDisabled={!actionRights.user.silence}
                     onClick={() => onUpdate("silenced", !user?.silenced)}
                     colorScheme={!user?.silenced ? "red" : undefined}
                   >
-                    {!user?.silenced ? "Silence" : "Unsilence"}
+                    {!user?.silenced
+                      ? tAdmin("users-actions-silence")
+                      : tAdmin("users-actions-unsilence")}
                   </Button>
                 </SimpleGrid>
               </Box>
@@ -268,7 +292,7 @@ export const UserModal = ({ user, onClose }: Props) => {
               {user && (
                 <>
                   <Heading size="md" mb={2} mt={4}>
-                    Reset user's password
+                    {tAdmin("user-modal-reset-password")}
                   </Heading>
                   <ResetPasswordField
                     userId={user.id}

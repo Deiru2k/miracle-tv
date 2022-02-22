@@ -16,6 +16,7 @@ import { CreateActivityInput } from "miracle-tv-shared/graphql";
 import { useAdminCreateActivityMutation } from "miracle-tv-shared/hooks";
 import React, { useCallback } from "react";
 import { Form } from "react-final-form";
+import { useTranslation } from "react-i18next";
 import { ActivityForm } from "./ActivityForm";
 import { ADMIN_ACTIVITY_FRAGMENT } from "./const";
 
@@ -32,6 +33,8 @@ type Props = UseDisclosureReturn;
 
 export const CreateActivityModal = (props: Props) => {
   const toast = useToast();
+
+  const { t: tCommon } = useTranslation("common");
   const [createActivityMutation, { loading: isCreating }] =
     useAdminCreateActivityMutation({
       onCompleted() {
@@ -79,7 +82,7 @@ export const CreateActivityModal = (props: Props) => {
                     isDisabled={pristine}
                     isLoading={isCreating}
                   >
-                    Create
+                    {tCommon("create")}
                   </Button>
                 </Flex>
               </ModalFooter>

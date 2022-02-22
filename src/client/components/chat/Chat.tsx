@@ -35,6 +35,7 @@ import { MediaQuery } from "miracle-tv-client/utils/const";
 import { UserInfo } from "miracle-tv-server/websocket/chat/roster";
 import { Link } from "../ui/Link";
 import { DateTime } from "luxon";
+import { useTranslation } from "react-i18next";
 
 type ChatMessageProps = {
   id: string;
@@ -91,6 +92,8 @@ const ChatControls = ({
   getRoster,
   rosterDisclosure,
 }: ChatControlsProps) => {
+  const { t: tCommon } = useTranslation("common");
+
   const [value, setValue] = useState<string>("");
   const onChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -136,16 +139,15 @@ const ChatControls = ({
           onChange={onChange}
           isDisabled={isDisabled}
           placeholder={
-            isUnauthenticated
-              ? "Please login to use chat"
-              : "Remember to be nice to eachother"
+            isUnauthenticated ? tCommon("chat-login") : tCommon("chat-be-nice")
           }
         />
         <HStack justify="flex-end" align="center" spacing={0}>
           {!isPopup && (
             <IconButton
               variant="ghost"
-              aria-label="Open chat in Popup"
+              aria-label={tCommon("chat-popup")}
+              title={tCommon("chat-popup")}
               icon={<ExternalLinkIcon color="primary.200" />}
               onClick={onOpenPopup}
               isDisabled={isDisabled}
@@ -153,20 +155,20 @@ const ChatControls = ({
           )}
           <IconButton
             variant="ghost"
-            aria-label="Open chat in Popup"
+            aria-label={tCommon("chat-roster")}
+            title={tCommon("chat-roster")}
             icon={<AtSignIcon color="primary.200" />}
             onClick={onRosterOpen}
             isDisabled={isDisabled}
           />
           <IconButton
             variant="ghost"
-            aria-label="Send message"
+            aria-label={tCommon("chat-send")}
+            title={tCommon("chat-send")}
             icon={<ChatIcon color="primary.200" />}
             type="submit"
             isDisabled={isDisabled}
-          >
-            CHAT
-          </IconButton>
+          />
         </HStack>
       </Flex>
     </form>

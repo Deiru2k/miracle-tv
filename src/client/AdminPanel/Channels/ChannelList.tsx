@@ -24,6 +24,7 @@ import {
   useAdminDeleteChannelMutation,
 } from "miracle-tv-shared/hooks";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 gql`
   query AdminChannelsCount($filter: ChannelsQueryFilter) {
@@ -51,6 +52,9 @@ export const AdminChannelList = () => {
   const [filter, setFilter] = useState<ChannelsQueryFilter>({});
   const [channelToDelete, setChannelToDelete] = useState<string | null>(null);
   const deleteChannelDisclosure = useDisclosure();
+
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tCommon } = useTranslation("common");
 
   const canEditChannels = useMemo(() => {
     return checkRights(AccessUnit.Write, "channels");
@@ -81,14 +85,17 @@ export const AdminChannelList = () => {
   const [deleteChannelMutation, { loading: isDeleting }] =
     useAdminDeleteChannelMutation({
       onCompleted() {
-        toast({ status: "success", title: "Deleted channel!" });
+        toast({
+          status: "success",
+          title: tChannel("action-delete-channel-success"),
+        });
         setChannelToDelete(null);
         deleteChannelDisclosure.onClose();
       },
       onError() {
         toast({
           status: "error",
-          title: "There was an error deleting channel.",
+          title: tChannel("action-delete-channel-error"),
         });
         setChannelToDelete(null);
       },
@@ -113,8 +120,8 @@ export const AdminChannelList = () => {
         <IconButton
           colorScheme="red"
           icon={<DeleteIcon />}
-          aria-label="Delete channel"
-          title="Delete channel"
+          aria-label={tChannel("delete-channel")}
+          title={tChannel("delete-channel")}
           isDisabled={!canEditChannels}
           onClick={() => deleteChannel(ch.id)}
         />
@@ -122,8 +129,16 @@ export const AdminChannelList = () => {
           as={(props: any) => (
             <IconButton
               {...props}
-              aria-label={canEditChannels ? "Edit channel" : "View channel"}
-              title={canEditChannels ? "Edit channel" : "View channel"}
+              aria-label={
+                canEditChannels
+                  ? tChannel("edit-channel")
+                  : tChannel("view-channel")
+              }
+              title={
+                canEditChannels
+                  ? tChannel("edit-channel")
+                  : tChannel("view-channel")
+              }
               icon={canEditChannels ? <EditIcon /> : <InfoIcon />}
             />
           )}
@@ -136,7 +151,7 @@ export const AdminChannelList = () => {
 
   return (
     <>
-      <Heading mb={2}>Channels</Heading>
+      <Heading mb={2}>{tChannel("channels")}</Heading>
       <Divider mb={4} />
       <ConfirmDialog
         {...deleteChannelDisclosure}
@@ -144,27 +159,30 @@ export const AdminChannelList = () => {
         confirmColorScheme="red"
         isLoading={isDeleting}
       >
-        {"Are you sure you want to delete this channel?"}
+        {tChannel("delete-confirm")}
       </ConfirmDialog>
       <Filter<ChannelsQueryFilter> onFilter={setFilter}>
         <HStack mb={2}>
-          <FormInput name="name" label="Channel Name" />
-          <FormInput name="slug" label="Channel slug" />
+          <FormInput name="name" label={tChannel("name")} />
+          <FormInput name="slug" label={tChannel("slug")} />
         </HStack>
         <HStack align="flex-start">
           <FormUsersSelect
             w="50%"
             flex={1}
             name="userIds"
-            label="Users"
-            inputProps={{ multi: true, placeholder: "Select users..." }}
+            label={tChannel("users")}
+            inputProps={{ multi: true, placeholder: tCommon("select-users") }}
           />
           <FormActivitesSelect
             w="50%"
             flex={1}
             name="activityIds"
-            label="Activities"
-            inputProps={{ multi: true, placeholder: "Select activities..." }}
+            label={tChannel("activities")}
+            inputProps={{
+              multi: true,
+              placeholder: tCommon("select-activities"),
+            }}
           />
         </HStack>
       </Filter>

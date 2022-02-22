@@ -1,0 +1,88 @@
+{
+  "channel": "Channel",
+  "channels": "Channels",
+  "edit-channel": "Edit channel",
+  "view-channel": "View channel",
+  "delete-channel": "Delete channel",
+
+  "channel-settings-for": "Channel settings for \"{{name}}\"",
+
+  "disabled": "Disabled",
+  "shelved": "Shelved",
+
+  "open-in-new-tab": "Open your channel in new tab",
+  "stream-keys-forbidden": "Cannot view stream keys",
+
+  "delete-confirm": "Are you sure you wnat to delete this channel?",
+  "action-delete-channel-success": "Channel was successfully deleted!",
+  "action-delete-channel-error": "There was an error deleting channel",
+  "ui-tabs-details": "Details",
+  "ui-tabs-keys": "Keys",
+  "ui-tabs-overlay": "Overlay",
+  "ui-tabs-dashboard": "Dashboard",
+
+  "ui-security": "Security",
+
+  "ui-update-channel": "Update Channel",
+
+  "name": "Channel name",
+  "slug": "Channel slug",
+  "slug-help": "Used for custom channel URL",
+  "description": "Channel description",
+  "thumbnail": "Channel thumbnail",
+  "thumbnail-help": "Used as player cover when stream is offline as well as in various channel lists",
+  "activities": "Channel activities",
+  "activity": "Channel activity",
+  "users": "Channel users",
+
+  "mature": "Mature channel",
+  "mature-help": "This will remove channel from public pages and mark it as sensitive.",
+  "mature-description": "Describe your content",
+  "mature-description-help": "This is optional and can be used to specify what makes you content sensitive",
+  "password-protected": "Protect with password",
+  "password-protected-help": "This will add password protection to channels",
+  "password": "Password",
+  "password-help": "Password that channel will be protected with.",
+
+  "keys-revoke-all": "Revoke all",
+  "key-revoke": "Revoke key",
+  "keys-generate": "Generate",
+  "key-generate-new": "Generate new stream key",
+
+  "keys-all-revoke-success": "Revoked all keys!",
+  "keys-all-revoke-error": "There was an error revoking keys!",
+  "key-revoke-success": "Revoked key!",
+  "key-revoke-error": "There was an error revoking key!",
+
+  "key-form-name": "Key name (optional)",
+  "key-form-name-help": "Used to easily identify keys if you're using multiple keys",
+  "key-form-success": "Created stream key",
+  "key-form-error": "There was an error creating key",
+
+  "overlay-chat-title": "Chat overlay",
+  "overlay-chat-url": "Chat overlay URL",
+  "overlay-chat-url-help": "You can use this with OBS's built-in browser to display chat on your stream",
+
+  "dashboard-title": "Stats",
+  "dashboard-status": "Status",
+  "dashboard-status-live": "LIVE!",
+  "dashboard-status-offline": "Offline",
+  "dashboard-viewers": "Viewers",
+  "dashboard-duration": "Duration",
+  "dashboard-traffic": "Traffic",
+  "dashboard-preview": "Preview",
+  "dashboard-preview-offline": "Stream is offline. Go live to watch the preview here!",
+  "dashboard-chat": "Chat",
+
+  "create-channel": "Create channel",
+  "update-channel": "Update channel",
+  "create-new": "Create one!",
+  "no-channels": "You don't seem to have any channels yet.",
+  "single-user-warning": "You have single user mode enabled, but no assigned channel.",
+  "single-user-goto": "Please, go to",
+  "single-user-pick": "and assign one.",
+
+  "channel-not-found": "Channel not found",
+  "run-by": "Run by",
+  "channel-offline-text": "Stream is offline. Check back later, or hang out in the chat!"
+}

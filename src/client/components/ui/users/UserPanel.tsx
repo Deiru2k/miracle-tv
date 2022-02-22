@@ -16,6 +16,7 @@ import { PersonIcon } from "miracle-tv-client/components/icons/PersonIcon";
 import { UserProfileFragment } from "miracle-tv-shared/graphql";
 import { getMediaURL } from "miracle-tv-shared/media";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Avatar } from "../Avatar";
 import { Markdown } from "../Markdown";
 
@@ -37,6 +38,7 @@ export const UserPanel = ({
   includeDescription = true,
   ...boxProps
 }: Props) => {
+  const { t: tCommon } = useTranslation("common");
   const displayName = user?.displayName || user?.username;
   return (
     <Box {...boxProps}>
@@ -116,12 +118,12 @@ export const UserPanel = ({
             <>
               {!isSubscribed && (
                 <Button size="sm" onClick={onSubscribe}>
-                  Follow
+                  {tCommon("subscribe")}
                 </Button>
               )}
               {isSubscribed && (
                 <Button colorScheme="red" size="sm" onClick={onUnsubscribe}>
-                  Unfollow
+                  {tCommon("unsubscribe")}
                 </Button>
               )}
             </>

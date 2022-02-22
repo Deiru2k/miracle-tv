@@ -15,6 +15,7 @@ import { Link } from "miracle-tv-client/components/ui/Link";
 import { useServerConfig } from "miracle-tv-client/hooks/serverConfig";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const OBSHelp = () => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
@@ -131,3 +132,11 @@ const OBSHelp = () => {
 };
 
 export default OBSHelp;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "navbar"])),
+    },
+  };
+}

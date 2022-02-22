@@ -18,6 +18,8 @@ import { AccountSessions } from "miracle-tv-client/UserSettings/AccountSessions"
 import { AuthRedirect } from "miracle-tv-client/components/auth/Redirect";
 import { AccessUnit } from "miracle-tv-shared/graphql";
 import { identity } from "ramda";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const components: NavComponentMap = {
   "/settings/user/profile": { component: <ProfileSettings /> },
@@ -31,6 +33,8 @@ const components: NavComponentMap = {
 const SettingsPage = () => {
   const { checkRights } = useCurrentUser();
   const { currentSettings } = useCurrentUserSettings();
+
+  const { t: tSettings } = useTranslation("settings");
 
   const permissions = useMemo(
     () => ({
@@ -47,21 +51,23 @@ const SettingsPage = () => {
     () => [
       {
         id: "user",
-        title: "User",
+        title: tSettings("ui-user"),
         urls: [
           permissions.canViewProfile && {
             id: "profile",
-            name: "Profile",
+            name: tSettings("ui-profile"),
             url: "/settings/user/profile",
           },
           permissions.canViewSettings && {
             id: "preferences",
-            name: "Preferences",
+            name: tSettings("ui-preferences"),
             url: "/settings/user/preferences",
           },
           permissions.canViewChannels && {
             id: "channels",
-            name: currentSettings?.singleUserMode ? "Channel" : "Channels",
+            name: currentSettings?.singleUserMode
+              ? tSettings("ui-channel")
+              : tSettings("ui-channels"),
             url:
               currentSettings?.singleUserMode &&
               currentSettings?.singleUserChannel?.id
@@ -72,32 +78,37 @@ const SettingsPage = () => {
       },
       {
         id: "security",
-        title: "Security",
+        title: tSettings("ui-security"),
         urls: [
           permissions.canViewProfile && {
             id: "account",
-            name: "Account",
+            name: tSettings("ui-account"),
             url: "/settings/security/account",
           },
           permissions.canViewStreamKeys && {
             id: "streamkeys",
-            name: "Stream keys",
+            name: tSettings("ui-streamkeys"),
             url: "/settings/security/streamkeys",
           },
           permissions.canViewSessions && {
             id: "sessions",
-            name: "Sessions",
+            name: tSettings("ui-sessions"),
             url: "/settings/security/sessions",
           },
         ].filter(identity),
       },
     ],
-    [currentSettings, currentSettings?.singleUserChannel?.id, permissions]
+    [
+      currentSettings,
+      currentSettings?.singleUserChannel?.id,
+      permissions,
+      tSettings,
+    ]
   );
   return (
     <AuthRedirect>
       <Navigation
-        title="Settings"
+        title={tSettings("ui-settings")}
         nav={nav}
         components={components}
         size={[1, 10]}
@@ -107,3 +118,25 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "channel",
+        "settings",
+        "streamkey",
+        "user",
+        "session",
+      ])),
+    },
+  };
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [] as string[],
+    fallback: "blocking",
+  };
+}

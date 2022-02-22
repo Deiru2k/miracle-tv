@@ -14,6 +14,7 @@ import {
   UpdateChannelInput,
 } from "miracle-tv-shared/graphql";
 import { getInstanceUrl } from "miracle-tv-client/utils/instance";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isDisabled?: boolean;
@@ -21,29 +22,25 @@ type Props = {
 };
 
 export const ChannelBasicForm = ({ isDisabled, values }: Props) => {
+  const { t: tChannel } = useTranslation("channel");
+  const { t: tCommon } = useTranslation("common");
   const isMobile = useMediaQuery(MediaQuery.mobile);
   return (
     <>
       <FormInput
-        label="Channel name"
+        label={tChannel("name")}
         name="name"
         mb={5}
         isDisabled={isDisabled}
       />
-      {/* <FormTextarea
-        label="Channel Description"
-        name="description"
-        mb={5}
-        isDisabled={isDisabled}
-      /> */}
       <FormMarkdown
-        label="Channel Description"
+        label={tChannel("description")}
         name="description"
         rows={12}
         height="auto"
         help={
           <>
-            This field supports{" "}
+            {tCommon("this-field-supports")}{" "}
             <Link
               target="_blank"
               textDecoration="underline"
@@ -57,15 +54,16 @@ export const ChannelBasicForm = ({ isDisabled, values }: Props) => {
 
       <SimpleGrid columns={2} gap={5}>
         <FormInput
-          label="URL Slug"
+          label={tChannel("slug")}
           name="slug"
           mb={5}
           help={
             <>
-              Used for custom channel URL
+              {tChannel("slug-help")}
               {values.slug && (
                 <Text mt={2}>
-                  Preview: {getInstanceUrl()}/channels/{values.slug}
+                  {tCommon("editor-preview")}: {getInstanceUrl()}/channels/
+                  {values.slug}
                 </Text>
               )}
             </>
@@ -73,7 +71,7 @@ export const ChannelBasicForm = ({ isDisabled, values }: Props) => {
           isDisabled={isDisabled}
         />
         <FormActivitesSelect
-          label="Activity"
+          label={tChannel("activity")}
           name="activityId"
           mb={5}
           isDisabled={isDisabled}
@@ -82,10 +80,10 @@ export const ChannelBasicForm = ({ isDisabled, values }: Props) => {
       <Box w={isMobile ? "100%" : "50%"}>
         <FormGroup
           name="thumbnail"
-          label="Channel Thumbnail"
+          label={tChannel("thumbnail")}
           mr={4}
           w="auto"
-          help="Used as player cover when stream is offline as well as in various channel lists"
+          help={tChannel("thumbnail-help")}
         >
           <ImageUploader
             name="thumbnail"

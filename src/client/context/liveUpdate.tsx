@@ -1,11 +1,12 @@
 import { RepeatIcon } from "@chakra-ui/icons";
-import { Box, Switch } from "@chakra-ui/react";
+import { Box, BoxProps, Switch } from "@chakra-ui/react";
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 type LiveUpdateContextType = {
   isLiveUpdate: boolean;
@@ -27,7 +28,7 @@ export const SetIsLiveFromLocalStorage = (): null => {
   return null;
 };
 
-export const LiveUpdateSwitch = () => {
+export const LiveUpdateSwitch = (props: BoxProps) => {
   const { isLiveUpdate, setLiveUpdate } = useContext(LiveUpdateContext);
 
   const toggleLiveUpdate = useCallback(() => {
@@ -35,8 +36,10 @@ export const LiveUpdateSwitch = () => {
     setLiveUpdate(!isLiveUpdate);
   }, [isLiveUpdate, setLiveUpdate]);
 
+  const { t: tCommon } = useTranslation("common");
+
   return (
-    <Box onClick={toggleLiveUpdate} cursor="pointer">
+    <Box onClick={toggleLiveUpdate} cursor="pointer" {...props}>
       <RepeatIcon mr={2} />
       <Switch
         mr={2}
@@ -44,7 +47,7 @@ export const LiveUpdateSwitch = () => {
         isChecked={isLiveUpdate}
         onChange={toggleLiveUpdate}
       />
-      Live Update
+      {tCommon("live-update")}
     </Box>
   );
 };
