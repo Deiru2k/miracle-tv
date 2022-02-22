@@ -12,8 +12,10 @@
   "streams-not-found": "No channels found. Perhaps you can be the first to",
   "streams-create-one": "create one",
 
+  "directory": "User directory",
+
   "directory-not-found": "No users in the directory... be the first to",
-  "directory-feature": "покажет себя",
+  "directory-feature": "feature yourself",
   "directory-add-yourself": "To add your own account to this page, go to",
 
   "directory-preferneces": "Profile preferences",
