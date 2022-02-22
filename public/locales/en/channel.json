@@ -38,7 +38,7 @@
   "mature": "Mature channel",
   "mature-help": "This will remove channel from public pages and mark it as sensitive.",
   "mature-description": "Describe your content",
-  "mature-description-help": "This is optional and can be used to specify what makes you content sensitive",
+  "mature-description-help": "This is optional and can be used to specify what makes your content sensitive",
   "password-protected": "Protect with password",
   "password-protected-help": "This will add password protection to channels",
   "password": "Password",
