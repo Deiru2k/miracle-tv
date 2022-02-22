@@ -40,7 +40,7 @@ import {
 } from "miracle-tv-client/components/ui/channels/const";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
 import { useTranslation } from "react-i18next";
-import { TranslationFn } from "src/types";
+import { TranslationFn } from "miracle-tv-client/types";
 
 type Props = {
   tab?: string;
