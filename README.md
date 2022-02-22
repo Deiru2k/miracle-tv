@@ -22,6 +22,10 @@ You may wish to modify `docker-compose.yml` file to adjust for data folders for 
 - `/home/ubuntu/miracle-data/streaming`
 - `/home/ubuntu/miracle-data/db`
 
+## Dev prerequisites
+
+You need to have the latest version of `rethinkdb` installed on your system
+
 ## Setting up dev env with Nix
 
 CD into the project directory, then execute `$ nix-shell` to drop into development environment.
