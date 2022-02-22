@@ -1,0 +1,52 @@
+{
+  "ui-user": "Użytkownik",
+  "ui-profile": "Profil",
+  "ui-settings": "Ustawienia",
+  "ui-icons": "Ikony i nagłówki",
+  "ui-preferences": "Preferencje",
+  "ui-channels": "Kanały",
+  "ui-channel": "Kanał",
+  "ui-security": "Bezpieczeństwo",
+  "ui-account": "Konto",
+  "ui-streamkeys": "Klucze strumieniowania",
+  "ui-sessions": "Sesje",
+
+  "preferences-update-success": "Zaktualizowano ustawienia",
+  "preferences-update-error": "Wystąpił błąd podczas aktualizowania ustawień",
+
+  "preferences-single-user-mode": "Tryb pojedynczego użytkownika",
+  "preferences-single-user-mode-help": "Gdy ta opcja jest włączona, użytkownik może mieć tylko jeden kanał. Przydatne gdy nie musisz zarządzać kilkoma kanałami.",
+  "preferences-single-user-channel-help": "Wybierz kanał, którego chcesz używać.",
+
+  "preferences-use-gravatar": "Użyj Gravatar",
+  "preferences-use-gravatar-help": "Gdy ta opcja jest włączona, zdjęcie profilowe będzie używać danych z Gravatar zamiast aktualnie przesłanego obrazu",
+  "preferences-feature-directory": "Pokaż w katalogu użytkowników",
+  "preferences-feature-directory-help": "Gdy ta opcja jest włączona, twój profil pojawi się w zakładce \"Użytkownicy\" na pulpicie",
+  "preferences-update": "Aktualizuj ustawienia",
+
+  "profile-settings": "Ustawienia profilu",
+  "profile-update-success": "Zaktualizowano profil",
+  "profile-update-error": "Wystąpił błąd podczas aktualizowania profilu",
+
+  "account-settings": "Informacje o koncie",
+  "account-update-success": "Konto zaktualizowane",
+  "account-update-error": "Wystąpił błąd podczas aktualizowania danych konta",
+  "account-change-password": "Zmień hasło",
+  "account-change-password-success": "Zmiana hasła powiodła się",
+  "account-change-password-error": "Wystąpił błąd podczas zmiany hasła",
+  "account-old-password": "Aktualne hasło",
+  "account-new-password": "Nowe hasło",
+  "account-change": "Zmień",
+
+  "profile-stream-thumbnail": "Użyty dla każdego kanału, który nie ma ustawionej osobnej miniaturki.",
+
+  "gravatar-controlled-via": "Kontrolowane przez",
+  "gravatar-please-visit": "Odwiedź Gravatar.com by zmienić, albo przejdź do",
+  "gravatar-and-disable": "i wyłącz awatary Gravatar",
+
+  "channels-page-title": "Ustawienia kanałów",
+  "channels-confirm": "Czy na pewno chcesz usunąć te kanały?",
+
+  "streamkeys-no-keys-heading": "Nie masz aktualnie żadnych kluczy. Przejdź do ustawień kanału aby stworzyć klucz",
+  "streamkeys-no-keys-content": "Wszystkie klucze z wszystkich kanałów pojawią się tutaj dla wygody"
+}

@@ -1,0 +1,23 @@
+{
+  "streamkeys": "Klucze strumieniowania",
+
+  "all-account-keys": "Wszystkie klucze konta",
+  "select-all": "Wybierz wszystkie klucze",
+  "revoke-all": "Unieważnij wszystkie klucze",
+  "delete-key": "Usuń klucz strumieniowania",
+
+  "keys-revoke-success": "Usunięto klucze strumieniowania",
+  "keys-revoke-error": "Wystąpił błąd podczas usuwania kluczy strumieniowania",
+
+  "key-revoke-success": "Usunięto klucz strumieniowania",
+  "key-revoke-error": "Wystąpił błąd podczas usuwania klucza strumieniowania",
+
+  "key-create-success": "Utworzono klucz strumieniowania",
+  "key-create-error": "Wystąpił błąd podczas tworzenia klucza strumieniowania",
+
+  "key-update-success": "Utworzono klucz strumieniowania",
+  "key-update-error": "Wystąpił błąd podczas tworzenia klucza strumieniowania",
+
+  "filter-user": "Użytkownik",
+  "filter-channel": "Kanał"
+}

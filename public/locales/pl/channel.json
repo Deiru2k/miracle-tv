@@ -1,0 +1,88 @@
+{
+  "channel": "Kanał",
+  "channels": "Kanały",
+  "edit-channel": "Edytuj kanał",
+  "view-channel": "Wyświetl kanał",
+  "delete-channel": "Usuń kanał",
+
+  "channel-settings-for": "Ustawienia kanału dla \"{{name}}\"",
+
+  "disabled": "Wyłączony",
+  "shelved": "Odłożony",
+
+  "open-in-new-tab": "Otwórz kanał w nowej karcie",
+  "stream-keys-forbidden": "Nie można wyświetlić kluczy strumieniowania",
+
+  "delete-confirm": "Czy na pewno chcesz usunąć ten kanał?",
+  "action-delete-channel-success": "Kanał usunięto pomyślnie.",
+  "action-delete-channel-error": "Wystąpił błąd podczas usuwania kanału",
+  "ui-tabs-details": "Informacje",
+  "ui-tabs-keys": "Klucze",
+  "ui-tabs-overlay": "Nakładka",
+  "ui-tabs-dashboard": "Pulpit",
+
+  "ui-security": "Bezpieczeństwo",
+
+  "ui-update-channel": "Aktualizuj kanał",
+
+  "name": "Nazwa kanału",
+  "slug": "Krótki URL kanału",
+  "slug-help": "Użyty do personalizacji URL do kanału",
+  "description": "Opis kanału",
+  "thumbnail": "Miniatura kanału",
+  "thumbnail-help": "Użyta jako okładka na odtwarzaczu gdy stream jest offline oraz w różnych listach kanałów",
+  "activities": "Czynności kanału",
+  "activity": "Czynność kanału",
+  "users": "Użytkownicy kanału",
+
+  "mature": "Kanał dla dorosłych",
+  "mature-help": "Ta opcja ukryje kanał z publicznych stron i zaznaczy jego treść jako wrażliwą.",
+  "mature-description": "Opisz swoją zawartość",
+  "mature-description-help": "Jest to pole dodatkowe; umożliwia sprecyzowanie, co czyni twoją zawartość wrażliwą",
+  "password-protected": "Zabezpiecz hasłem",
+  "password-protected-help": "Ta opcja umożliwia zabezpieczenie kanału hasłem.",
+  "password": "Hasło",
+  "password-help": "Hasło użyte do zabezpieczenia kanału.",
+
+  "keys-revoke-all": "Unieważnij wszystkie klucze",
+  "key-revoke": "Unieważnij klucz",
+  "keys-generate": "Generuj",
+  "key-generate-new": "Wygeneruj nowy klucz strumieniowania",
+
+  "keys-all-revoke-success": "Unieważniono wszystkie klucze!",
+  "keys-all-revoke-error": "Wystąpił błąd podczas unieważniania kluczy.",
+  "key-revoke-success": "Unieważniono klucz!",
+  "key-revoke-error": "Wystąpił błąd podczas unieważniania klucza.",
+
+  "key-form-name": "Nazwa klucza (opcjonalne)",
+  "key-form-name-help": "Pomocne w szybkiej identyfikacji klucza gdy masz kilka kluczy",
+  "key-form-success": "Stworzono klucz",
+  "key-form-error": "Wystąpił błąd podczas tworzenia klucza",
+
+  "overlay-chat-title": "Nakładka czatu",
+  "overlay-chat-url": "URL do nakładki czatu",
+  "overlay-chat-url-help": "Możesz wykorzystać nakładkę w przeglądarce wbudowanej do OBS żeby wyświetlić czat na streamie",
+
+  "dashboard-title": "Statystyki",
+  "dashboard-status": "Status",
+  "dashboard-status-live": "NA ŻYWO!",
+  "dashboard-status-offline": "Offline",
+  "dashboard-viewers": "Widzowie",
+  "dashboard-duration": "Długość",
+  "dashboard-traffic": "Ruch",
+  "dashboard-preview": "Podgląd",
+  "dashboard-preview-offline": "Stream jest offline. Zacznij nadawać, aby zobaczyć podgląd!",
+  "dashboard-chat": "Czat",
+
+  "create-channel": "Utwórz kanał",
+  "update-channel": "Zaktualizuj kanał",
+  "create-new": "Stwórz nowy!",
+  "no-channels": "Nie masz jeszcze żadnych kanałów.",
+  "single-user-warning": "Masz włączony tryb jednego użytkownika, ale nie masz połączonego kanału.",
+  "single-user-goto": "Przejdź do",
+  "single-user-pick": "i połącz wybrany kanał.",
+
+  "channel-not-found": "Nie znaleziono kanału",
+  "run-by": "Operowany przez",
+  "channel-offline-text": "Stream jest offline. Wróć tutaj później, albo poczekaj na czacie!"
+}

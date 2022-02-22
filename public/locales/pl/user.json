@@ -1,0 +1,19 @@
+{
+  "profile": "Profil",
+  "username": "Nazwa użytkownika",
+  "display-name": "Wyświetlana nazwa",
+  "email": "E-mail",
+  "roles": "Role",
+  "use-gravatar": "Użyj Gravatar",
+  "single-user-mode": "Tryb pojedynczego użytkownika",
+  "single-user-channel": "Kanał pojedynczego użytkownika",
+  "feature-profile-directory": "Pokaż w katalogu użytkowników",
+  "profile-picture": "Zdjęcie profilowe",
+  "profile-header": "Nagłówek profilu",
+  "bio": "Biografia",
+  "stream-thumbnail": "Miniaturka streamu",
+  "this-field-supports": "To pole wspiera",
+
+  "user-not-found": "Nie znaleziono użytkownika",
+  "their-channels": "Kanały"
+}

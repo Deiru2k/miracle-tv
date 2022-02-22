@@ -1,0 +1,19 @@
+{
+  "activity": "Czynność",
+  "activities": "Czynności",
+  "name": "Nazwa",
+  "verb": "Czasownik",
+  "delete-confirm": "Czy na pewno chcesz usunąć czynność \"{{name}}\"?",
+
+  "edit-activity": "Edytuj czynność",
+  "view-activity": "Wyświetl czynność",
+  "delete-activity": "Usuń czynność",
+
+  "form-icon": "Ikona",
+  "form-icon-help": "Użyta jako ikona aktywności na różnych stronach",
+  "form-image": "Okładka",
+  "form-image-help": "Użyta jako ikona aktywności na różnych stronach",
+
+  "activity-create-success": "",
+  "activity-create-errro": ""
+}
