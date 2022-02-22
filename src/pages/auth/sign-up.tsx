@@ -63,13 +63,13 @@ const SignUpPage = () => {
                 mb={4}
                 isRequired
                 label={tCommon("auth-username")}
-                help="This cannot be changed later! Please, choose wisely."
+                help={tCommon("auth-username-help")}
                 hideLabel
               />
               <FormInput
                 name="password"
                 type="password"
-                help="Recommended is minimum of 8 characters, with letters, numbers and symbols."
+                help={tCommon("auth-password-help")}
                 mb={4}
                 isRequired
                 label={tCommon("auth-password")}
