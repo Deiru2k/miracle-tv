@@ -8,6 +8,7 @@ import { useCurrentUserSettings } from "miracle-tv-client/hooks/auth";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
 import { useUsersDirectoryQuery } from "miracle-tv-shared/hooks";
+import { useTranslation } from "next-i18next";
 import Head from "next/head";
 import React from "react";
 
@@ -50,24 +51,30 @@ gql`
 
 export const DashboardUserDirectory = (): any => {
   const isMobile = useMediaQuery(MediaQuery.mobile);
+
+  const { t: tDashboard } = useTranslation("dashboard");
+
   const { currentSettings } = useCurrentUserSettings();
   const { data: { userDirectory = [] } = {}, loading: isLoading } =
     useUsersDirectoryQuery();
   return !isLoading ? (
     <>
       <Head>
-        <title>User Directory - Dashboard - Miracle TV</title>
+        <title>
+          {tDashboard("ui-user-directory")} - {tDashboard("ui-dashboard")} -
+          Miracle TV
+        </title>
       </Head>
       {!userDirectory.length && (
         <Text>
-          No users in the directory... be the first to{" "}
+          {tDashboard("directory-not-found")}{" "}
           <Link
             as={(props) => (
               <Button py={0} px={1} variant="ghost" mr={1} {...props} />
             )}
             href="/settings/user/preferences"
           >
-            [feature yourself]
+            [{tDashboard("directory-feature")}]
           </Link>
           ?
         </Text>
@@ -76,16 +83,16 @@ export const DashboardUserDirectory = (): any => {
         <>
           {!currentSettings.featureInDirectory && (
             <Text as="span" size="sm">
-              To add your own account to this page, go to{" "}
+              {tDashboard("directory-add-yourself")}{" "}
               <Link
                 as={(props) => (
                   <Button py={0} px={1} variant="ghost" mr={1} {...props} />
                 )}
                 href="/settings/user/preferences"
               >
-                [profile preferences]
+                [{tDashboard("directory-preferences")}]
               </Link>
-              and feature yourself!
+              {tDashboard("directory-and-feature")}
             </Text>
           )}
           <SimpleGrid columns={isMobile ? 2 : 4} spacing={4}>

@@ -19,8 +19,8 @@ import { MediaQuery } from "miracle-tv-client/utils/const";
 import { CHANNEL_DISPLAY_FRAGMENT } from "miracle-tv-client/components/ui/channels/ChannelDisplay";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { Loading } from "miracle-tv-client/components/ui/Loading";
-import Head from "next/head";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
+import { useTranslation } from "react-i18next";
 
 gql`
   query DashboardChannels {
@@ -41,13 +41,17 @@ type Props = {
   discoverTitle?: string;
 };
 
-const defaultDiscoverTitle = "Discover other channels!";
-
 export const Streams = ({
   skipSubs = false,
-  discoverTitle = defaultDiscoverTitle,
+  discoverTitle: discoverTitleProp,
 }: Props) => {
   const isLiveUpdate = useLiveUpdate();
+
+  const { t: tDashboard } = useTranslation("dashboard");
+
+  const discoverTitle =
+    discoverTitleProp ?? tDashboard("streams-live-discover");
+
   const isMobile = useMediaQuery(MediaQuery.mobile);
   const { currentUser } = useCurrentUser();
   const { data: { channels = [] } = {}, loading: isLoading } =
@@ -70,7 +74,7 @@ export const Streams = ({
       <Box w="100%">
         <Collapse in={liveChannels?.length > 0}>
           <Box mb={4} mt={2}>
-            <Heading size="lg">Live Right now!</Heading>
+            <Heading size="lg">{tDashboard("streams-live-now")}</Heading>
             <Divider mb={2} />
             {!!liveChannels?.length && (
               <>
@@ -84,7 +88,7 @@ export const Streams = ({
         </Collapse>
         {!!currentUser && !skipSubs && (
           <>
-            <Heading size="lg">Your subscriptions</Heading>
+            <Heading size="lg">{tDashboard("streams-your-subs")}</Heading>
             <Divider mb={2} />
             {!!subscriptions?.length && (
               <>
@@ -95,7 +99,7 @@ export const Streams = ({
               </>
             )}
             {!subscriptions?.length && (
-              <Text>Channels you've subscribed to will appear here.</Text>
+              <Text>{tDashboard("stream-subs-not-found")}</Text>
             )}
           </>
         )}
@@ -108,14 +112,14 @@ export const Streams = ({
         )}
         {!channels?.length && (
           <Text>
-            No channels found. Perhaps you can be the first to{" "}
+            {tDashboard("streams-not-found")}{" "}
             <Link
               as={(props) => (
                 <Button py={0} px={1} variant="ghost" mr={1} {...props} />
               )}
               href="/settings/user/channels"
             >
-              [create one]
+              [tDashboard("streams-create-one")]
             </Link>
             ?
           </Text>

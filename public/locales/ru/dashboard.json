@@ -1,0 +1,21 @@
+{
+  "ui-dashboard": "Дешборд",
+  "ui-home": "Домашняя",
+  "ui-streams": "Стримы",
+  "ui-user-directory": "Директория",
+
+  "streams-live-now": "Прямо сейчас в эфире!",
+  "streams-live-discover": "Посмотрите на другие каналы!",
+  "streams-your-subs": "Ваши подписки",
+  "stream-subs-not-found": "Здесь появятся ваши подписки",
+
+  "streams-not-found": "Нет каналов. Может бы вы",
+  "streams-create-one": "сделайте первый",
+
+  "directory-not-found": "Пользоватяелей не найдено. Будете первыми кто",
+  "directory-feature": "покажет себя",
+  "directory-add-yourself": "Чтобы добавить себя в директорию, перейдите в ",
+
+  "directory-preferneces": "Настройки аккаунта",
+  "directory-and-feature": "И отметьте настройку!"
+}

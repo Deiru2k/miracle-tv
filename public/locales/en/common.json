@@ -67,6 +67,7 @@
   "latest-clips": "Latest clips",
 
   "auth-login": "Login",
+  "auth-logout": "Logout",
   "auth-sign-up": "Sign Up",
   "auth-username": "Username",
   "auth-password": "Password",

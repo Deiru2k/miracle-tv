@@ -67,6 +67,7 @@
   "latest-clips": "Последние клипы",
 
   "auth-login": "Войти",
+  "auth-logout": "Выйти",
   "auth-sign-up": "Регистрация",
   "auth-username": "Имя пользователя",
   "auth-password": "Пароль",

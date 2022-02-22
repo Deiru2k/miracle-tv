@@ -158,7 +158,7 @@ export const Navbar = () => {
                   <LiveUpdateSwitch />
                 </MenuItem>
                 <MenuItem onClick={logout}>
-                  <LogoutIcon mr={2} /> Logout
+                  <LogoutIcon mr={2} /> {tCommon("auth-logout")}
                 </MenuItem>
               </MenuList>
             </Portal>

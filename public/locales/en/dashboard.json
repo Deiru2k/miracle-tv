@@ -1,0 +1,21 @@
+{
+  "ui-dashboard": "Dashboard",
+  "ui-home": "Home",
+  "ui-streams": "Streams",
+  "ui-user-directory": "User Directory",
+
+  "streams-live-now": "Live right now!",
+  "streams-live-discover": "Discover other channels!",
+  "streams-your-subs": "Your subscriptions",
+  "stream-subs-not-found": "Channels you've subscribed to will appear here.",
+
+  "streams-not-found": "No channels found. Perhaps you can be the first to",
+  "streams-create-one": "create one",
+
+  "directory-not-found": "No users in the directory... be the first to",
+  "directory-feature": "покажет себя",
+  "directory-add-yourself": "To add your own account to this page, go to",
+
+  "directory-preferneces": "Profile preferences",
+  "directory-and-feature": "And feature yourself!"
+}
