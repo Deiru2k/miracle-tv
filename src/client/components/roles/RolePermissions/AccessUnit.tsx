@@ -1,9 +1,9 @@
 import { Box, Text, HStack, Switch } from "@chakra-ui/react";
+import { TranslationFn } from "miracle-tv-client/types";
 import { AccessRights, AccessUnit } from "miracle-tv-shared/graphql";
 import { uniq } from "ramda";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { TranslationFn } from "src/types";
 
 type Props = {
   unit: keyof AccessRights;

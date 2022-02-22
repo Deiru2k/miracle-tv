@@ -1,17 +1,13 @@
-import { Heading, HStack, VStack } from "@chakra-ui/layout";
-import { Box, Divider } from "@chakra-ui/react";
+import { Heading, VStack } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
+import { TranslationFn } from "miracle-tv-client/types";
 import { MediaQuery } from "miracle-tv-client/utils/const";
 import { useMediaQuery } from "miracle-tv-client/utils/css";
-import {
-  AccessRights,
-  AccessTargets,
-  AccessUnit,
-} from "miracle-tv-shared/graphql";
+import { AccessRights, AccessUnit } from "miracle-tv-shared/graphql";
 import { useTranslation } from "next-i18next";
 import React, { useCallback, useMemo } from "react";
 import { useField } from "react-final-form";
-import { TranslationFn } from "src/types";
 import { AccessUnitEdit } from "./AccessUnit";
 
 type Props = {
