@@ -1,4 +1,5 @@
 import {
+  PLFlagIcon,
   RussianFlagIcon,
   USFlagIcon,
 } from "miracle-tv-client/components/icons/flags";
@@ -15,6 +16,7 @@ export type LocaleKey = keyof typeof localesMap;
 export const locales: LocaleItem[] = [
   { name: "English", code: "en", flag: <USFlagIcon mr={1} /> },
   { name: "Русский", code: "ru", flag: <RussianFlagIcon mr={1} /> },
+  { name: "Polski", code: "pl", flag: <PLFlagIcon mr={1} /> },
 ];
 
 export const localesMap: Record<LocaleItem["code"], LocaleItem> =
