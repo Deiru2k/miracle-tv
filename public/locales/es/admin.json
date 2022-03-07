@@ -8,13 +8,13 @@
   "sessions": "Sesiones",
   "activities": "Actividades",
 
-  "dashboard-update": "Actualizandose cada 5 segundos",
+  "dashboard-update": "Actualizándose cada 5 segundos",
   "dashboard-system-stats": "Estadísticas del sistema",
   "dashboard-cpu": "CPU",
   "dashboard-memory": "Memoria",
   "dashboard-disk": "Disco",
   "dashboard-media-storage": "Tamaño de almacenamiento de recursos",
-  "dashboard-db-storage": "Tamaño de almacenamiento de la DB",
+  "dashboard-db-storage": "Tamaño de almacenamiento de la base de datos",
   "dashboard-total-storage": "Tamaño de almacenamiento de la app",
   "dashboard-user-stats": "Estadísticas de usuarios",
   "dashboard-total-users": "Usuarios en total",
@@ -31,7 +31,7 @@
   "users-filter-silenced": "Silenciad@?",
   "users-filter-login-disabled": "Login Deshabilitado?",
   "users-filter-deleted": "Borrado?",
-  "users-bulk-actions": "Bulk actions",
+  "users-bulk-actions": "Acciones en masa",
   "users-actions-delete": "Borrar",
   "users-actions-restore": "Restaurar",
   "users-actions-suspend": "Suspender",
@@ -42,7 +42,7 @@
   "users-actions-enable-login": "Permitir login",
 
   "user-modal-actions": "Acciones de usuario",
-  "user-modal-reset-password": "Resetear contraseña de usuario",
+  "user-modal-reset-password": "Restablecer contraseña de usuario",
   "user-update": "Actualizar usuario",
   "user-updated": "Usuario actualizado",
   "user-update-error": "Hubo un error actualizando al usuario!"
