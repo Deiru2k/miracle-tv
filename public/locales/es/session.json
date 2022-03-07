@@ -1,14 +1,14 @@
 {
   "sessions": "Sesiones",
-  "sessions-revoke-success": "Sesion(es) Revocada(s).",
-  "sessions-revoke-error": "Hubo un error revocando la(s) sesion(es).",
+  "sessions-revoke-success": "Sesión(es) evocada(s).",
+  "sessions-revoke-error": "Hubo un error revocando la(s) sesión(es).",
   "sessions-revoke": "Revocar todas las sesiones",
 
   "account-sessions": "Sesiones de la cuenta",
   "current-session": "Sesión actual",
   "device": "Dispositivo",
   "user": "Usuario",
-  "last-used": "Usada por ultima vez",
+  "last-used": "Usada por última vez",
 
   "form-revoke-session": "Revocar sesión"
 }
