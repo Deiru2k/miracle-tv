@@ -4,7 +4,7 @@
   "name": "Nombre del rol",
   "rights": "Derechos",
   "permissions": "Permisos",
-  "permission-inherit": "Inherit",
+  "permission-inherit": "Heredar",
   "permission-deny": "Denegar",
   "permission-self": "Propio",
   "permission-read": "Leer",
@@ -16,5 +16,5 @@
 
   "right-suspend": "Suspender usuari@",
   "right-silence": "Silenciar usuari@",
-  "right-warn": "Avisar usuari@"
+  "right-warn": "Advertir usuari@"
 }
