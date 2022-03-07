@@ -14,7 +14,7 @@
   "preferences-update-success": "Ajustes actualizados",
   "preferences-update-error": "Hubo un error actualizando los ajustes",
 
-  "preferences-single-user-mode": "Modo de únicon usuario",
+  "preferences-single-user-mode": "Modo de usuario único",
   "preferences-single-user-mode-help": "Si se activa, te limitará a un solo canal. Útil si no tienes en mente administrar canales extra",
   "preferences-single-user-channel-help": "Selecciona el canal que quieres usar",
 
