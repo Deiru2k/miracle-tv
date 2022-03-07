@@ -1,0 +1,23 @@
+{
+  "ui-dashboard": "Tablero",
+  "ui-home": "Inicio",
+  "ui-streams": "Streams",
+  "ui-user-directory": "Directorio de usuario",
+
+  "streams-live-now": "En vivo ahora mismo!",
+  "streams-live-discover": "Descubre otros canales!",
+  "streams-your-subs": "Tus subscripciones",
+  "stream-subs-not-found": "Los canales a los que te has subcrito apareceran aquí",
+
+  "streams-not-found": "No se encontraron canales, quizás puedas ser l@ primer@ en",
+  "streams-create-one": "crear uno",
+
+  "directory": "Directorio de usuario",
+
+  "directory-not-found": "No hay usuarios en este directorio... se l@ primer@ en",
+  "directory-feature": "añadirte",
+  "directory-add-yourself": "Para añadir tu cuenta a este directorio, ve a",
+
+  "directory-preferences": "Preferencias de perfir",
+  "directory-and-feature": "Y añadete a ti mism@!"
+}
