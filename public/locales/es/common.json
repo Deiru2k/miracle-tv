@@ -9,7 +9,7 @@
   "disable": "Deshabilitar",
   "enable": "Habilitar",
   "update": "Actualizar",
-  "yes": "Si",
+  "yes": "Sí",
   "no": "No",
   "confirm-action": "Confirmar acción",
   "actions": "Acciones",
@@ -28,7 +28,7 @@
   "select-users": "Seleccionar usuarios...",
   "select-activities": "Seleccionar actividades...",
   "select-value": "Seleccionar valor...",
-  "no-options": "No se encontraron opciones!",
+  "no-options": "¡No se encontraron opciones!",
 
   "server-url": "URL del servidor",
 
@@ -51,20 +51,20 @@
   "editor-edit": "Editor",
   "editor-preview": "Vista previa",
 
-  "subscribed-to": "Subscrit@ a {{name}}",
-  "unsubscribed-from": "Desubscrit@ de {{name}}",
+  "subscribed-to": "Suscrit@ a {{name}}",
+  "unsubscribed-from": "Desuscrit@ de {{name}}",
   "subscribed-to-error": "Error subscribiendose a {{name}}",
   "unsubscribed-from-error": "Error desubscribiendose de {{name}}",
-  "subscribe": "Subscribirse",
-  "unsubscribe": "Desubscribirse",
+  "subscribe": "Suscribirse",
+  "unsubscribe": "Desuscribirse",
 
   "chat-login": "Por favor inicia sesión para usar el chat",
   "chat-be-nice": "Recuerda ser amigable con l@s demás",
   "chat-popup": "Popup-chat",
   "chat-roster": "Roster",
   "chat-overlay": "Overlay del chat",
-  "chat-popup-open": "Open chat in popup",
-  "chat-roster-open": "Open chat roster",
+  "chat-popup-open": "Abrir chat en popup",
+  "chat-roster-open": "Abrir roster del chat",
   "chat-send": "Enviar mensaje",
 
   "latest-clips": "Ultimos clips",
@@ -75,7 +75,7 @@
   "auth-username": "Usuario",
   "auth-password": "Contraseña",
 
-  "auth-username-help": "Esto no se puede cambiar!, elige sabiamente",
+  "auth-username-help": "¡Esto no se puede cambiar!, elige sabiamente",
   "auth-password-help": "Se recomienda un mínimo de 8 caracteres, con letras, numeros y símbolos",
-  "auth-sign-up-welcome": "Bienvenid@ {{username}}!, inicia sesión con tus credenciales"
+  "auth-sign-up-welcome": "¡Bienvenid@ {{username}}!, inicia sesión con tus credenciales"
 }
