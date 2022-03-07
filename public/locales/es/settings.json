@@ -1,0 +1,52 @@
+{
+  "ui-user": "Usuario",
+  "ui-profile": "Perfil",
+  "ui-settings": "Ajustes",
+  "ui-icons": "Íconos y headers",
+  "ui-preferences": "Preferencias",
+  "ui-channels": "Canales",
+  "ui-channel": "Canal",
+  "ui-security": "Seguridad",
+  "ui-account": "Cuenta",
+  "ui-streamkeys": "Llaves de stream",
+  "ui-sessions": "Sesiones",
+
+  "preferences-update-success": "Ajustes actualizados",
+  "preferences-update-error": "Hubo un error actualizando los ajustes",
+
+  "preferences-single-user-mode": "Modo de un usuario",
+  "preferences-single-user-mode-help": "Si se activa, te limitará a un solo canal, util si no tienes en mente el administrar canales extra",
+  "preferences-single-user-channel-help": "Selecciona el canal que quieres usar",
+
+  "preferences-use-gravatar": "Usar Gravatar",
+  "preferences-use-gravatar-help": "Si se activa, se usará el Gravatar en lugar de la imagen subida actualmente",
+  "preferences-feature-directory": "Aparecer en el directorio",
+  "preferences-feature-directory-help": "Si se activa, tu perfil aparecerá en la página de \"Users\" del tablero",
+  "preferences-update": "Actualizar configuraciones",
+
+  "profile-settings": "Ajustes de perfil",
+  "profile-update-success": "Ajustes actualizados",
+  "profile-update-error": "Hubo un error actualizando los ajustes",
+
+  "account-settings": "Detalles de la cuenta",
+  "account-update-success": "Cuenta actualizada",
+  "account-update-error": "Hubo un error actualizando la cuenta",
+  "account-change-password": "Cambiar la contraseña",
+  "account-change-password-success": "Contraseña cambiada exitosamente",
+  "account-change-password-error": "Hubo un error cambiando la contraseña",
+  "account-old-password": "Contraseña actual",
+  "account-new-password": "Nueva contraseña",
+  "account-change": "Cambiar",
+
+  "profile-stream-thumbnail": "Usada para los canales que no subieron una miniatura",
+
+  "gravatar-controlled-via": "Controlled via",
+  "gravatar-please-visit": "Por favor visita Gravatar.com para cambiar, o ve a",
+  "gravatar-and-disable": "y deshabilita los avatars de Gravatar",
+
+  "channels-page-title": "Ajustes de canal",
+  "channels-confirm": "Segur@ que deseas borrar este canal?",
+
+  "streamkeys-no-keys-heading": "No parece que tangas llaves de stream ahora, ve a tu configuración de canal y crea una",
+  "streamkeys-no-keys-content": "Todas las llaves de stream de todos los canales apareceran aquí"
+}
