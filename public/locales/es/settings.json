@@ -2,7 +2,7 @@
   "ui-user": "Usuario",
   "ui-profile": "Perfil",
   "ui-settings": "Ajustes",
-  "ui-icons": "Íconos y headers",
+  "ui-icons": "Íconos y encabezados",
   "ui-preferences": "Preferencias",
   "ui-channels": "Canales",
   "ui-channel": "Canal",
@@ -14,8 +14,8 @@
   "preferences-update-success": "Ajustes actualizados",
   "preferences-update-error": "Hubo un error actualizando los ajustes",
 
-  "preferences-single-user-mode": "Modo de un usuario",
-  "preferences-single-user-mode-help": "Si se activa, te limitará a un solo canal, util si no tienes en mente el administrar canales extra",
+  "preferences-single-user-mode": "Modo de únicon usuario",
+  "preferences-single-user-mode-help": "Si se activa, te limitará a un solo canal. Útil si no tienes en mente administrar canales extra",
   "preferences-single-user-channel-help": "Selecciona el canal que quieres usar",
 
   "preferences-use-gravatar": "Usar Gravatar",
@@ -40,13 +40,13 @@
 
   "profile-stream-thumbnail": "Usada para los canales que no subieron una miniatura",
 
-  "gravatar-controlled-via": "Controlled via",
+  "gravatar-controlled-via": "Controlado por",
   "gravatar-please-visit": "Por favor visita Gravatar.com para cambiar, o ve a",
-  "gravatar-and-disable": "y deshabilita los avatars de Gravatar",
+  "gravatar-and-disable": "y deshabilita los avatares de Gravatar",
 
   "channels-page-title": "Ajustes de canal",
-  "channels-confirm": "Segur@ que deseas borrar este canal?",
+  "channels-confirm": "¿Segur@ que deseas borrar este canal?",
 
   "streamkeys-no-keys-heading": "No parece que tangas llaves de stream ahora, ve a tu configuración de canal y crea una",
-  "streamkeys-no-keys-content": "Todas las llaves de stream de todos los canales apareceran aquí"
+  "streamkeys-no-keys-content": "Todas las llaves de stream de todos los canales aparecerán aquí"
 }
