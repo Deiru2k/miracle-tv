@@ -22,8 +22,8 @@
   "dashboard-total-streamkeys": "Llaves de stream en total",
   "dashboard-total-sessions": "Sesiones en total",
   "dashboard-network-stats": "Estadísticas de red",
-  "dashboard-down-band": "Down bandwidth",
-  "dashboard-up-band": "Up bandwidth",
+  "dashboard-down-band": "Velocidad de descarga",
+  "dashboard-up-band": "Velocidad de subida",
 
   "users-filter-fields": "Filtrar por campos",
   "users-filter-states": "Filtrar por estado",
