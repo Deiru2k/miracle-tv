@@ -1,6 +1,5 @@
-import { RepeatIcon } from "@chakra-ui/icons";
 import {
-  Box,
+  Code,
   Flex,
   Menu,
   MenuButton,
@@ -16,7 +15,6 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { useTranslation } from "next-i18next";
 import { LocaleKey, locales, localesMap } from "./const";
 import { useRouter } from "next/router";
 
@@ -70,7 +68,7 @@ export const LocaleSwitcher = ({
     <Menu>
       <MenuButton {...props} aria-label={currentLocale.name} w="100%">
         <Flex w="100%" align="center">
-          {currentLocale.flag}&nbsp;
+          <Code mr={1}>{currentLocale.code.toUpperCase()}</Code>
           {isShort ? "" : currentLocale.name}
         </Flex>
       </MenuButton>
@@ -82,7 +80,8 @@ export const LocaleSwitcher = ({
               onClick={() => changeLocale(loc.code)}
               aria-label={loc.name}
             >
-              {loc.flag}&nbsp;{loc.name}{" "}
+              <Code mr={1}>{loc.code.toUpperCase()}</Code>
+              {loc.name}{" "}
             </MenuItem>
           ))}
         </MenuList>
