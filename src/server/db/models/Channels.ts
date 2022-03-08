@@ -214,7 +214,7 @@ export class ChanelsModel extends Model {
   // "Toggles" disabled state on channel
   async toggleChannelDisabled(id: string, disabled: boolean): Promise<boolean> {
     const channel = await this.getChannelById(id, true);
-    if (channel) {
+    if (!channel) {
       throw new NotFoundError("Channel not found");
     }
     const res = await this.table.get(id).update({ disabled }).run(this.conn);
