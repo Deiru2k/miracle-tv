@@ -119,7 +119,7 @@ export const Streams = ({
               )}
               href="/settings/user/channels"
             >
-              [tDashboard("streams-create-one")]
+              [{tDashboard("streams-create-one")}]
             </Link>
             ?
           </Text>
