@@ -1,0 +1,20 @@
+
+{
+  "roles": "Roles",
+  "name": "Nombre del rol",
+  "rights": "Derechos",
+  "permissions": "Permisos",
+  "permission-inherit": "Heredar",
+  "permission-deny": "Denegar",
+  "permission-self": "Propio",
+  "permission-read": "Leer",
+  "permission-write": "Escribir",
+
+  "form-create-role": "Crear rol",
+  "form-parent-role": "Rol pariente",
+  "form-update-role": "Actualizar rol",
+
+  "right-suspend": "Suspender usuari@",
+  "right-silence": "Silenciar usuari@",
+  "right-warn": "Advertir usuari@"
+}

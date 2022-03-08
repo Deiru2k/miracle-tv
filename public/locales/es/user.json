@@ -1,0 +1,19 @@
+{
+  "profile": "Perfil",
+  "username": "Usuario",
+  "display-name": "Nombre a mostrar",
+  "email": "E-Mail",
+  "roles": "Roles",
+  "use-gravatar": "Usar Gravatar",
+  "single-user-mode": "Modo de usuario único",
+  "single-user-channel": "Canal de usuario único",
+  "feature-profile-directory": "Mostrar en directorio",
+  "profile-picture": "Foto de perfil",
+  "profile-header": "Encabezado de perfil",
+  "bio": "Biografía",
+  "stream-thumbnail": "Miniatura del stream",
+  "this-field-supports": "Este campo soporta",
+
+  "user-not-found": "Usuario no encontrado",
+  "their-channels": "Sus canales"
+}

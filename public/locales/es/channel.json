@@ -1,0 +1,88 @@
+{
+  "channel": "Canal",
+  "channels": "Canales",
+  "edit-channel": "Editar canal",
+  "view-channel": "Ver canales",
+  "delete-channel": "Borrar canal",
+
+  "channel-settings-for": "Ajustes de canal de \"{{name}}\"",
+
+  "disabled": "Deshabilitado",
+  "shelved": "Archivado",
+
+  "open-in-new-tab": "Abre tu canal en una nueva pestaña",
+  "stream-keys-forbidden": "No se pueden ver las llaves de stream",
+
+  "delete-confirm": "¿Segur@ que deseas borrar este canal?",
+  "action-delete-channel-success": "¡Canal borrado exitosamente!",
+  "action-delete-channel-error": "Hubo un error borrando el canal",
+  "ui-tabs-details": "Detalles",
+  "ui-tabs-keys": "Llaves",
+  "ui-tabs-overlay": "Overlay",
+  "ui-tabs-dashboard": "Tablero",
+
+  "ui-security": "Seguridad",
+
+  "ui-update-channel": "Actualizar canal",
+
+  "name": "Nombre del canal",
+  "slug": "Slug del canal",
+  "slug-help": "Usado para el URL customizado del canal",
+  "description": "Descripción del canal",
+  "thumbnail": "Miniatura del canal",
+  "thumbnail-help": "Mostrado cuando el stream está offline, además de ser lo que se ve en las listas",
+  "activities": "Actividades del canal",
+  "activity": "Actividad del canal",
+  "users": "Usuarios del canal",
+
+  "mature": "Canal explícito",
+  "mature-help": "Esto removerá tu canal de las listas publicas y marcará su contenido como 'explícito' ",
+  "mature-description": "Describe tu contenido",
+  "mature-description-help": "Esto es opcional, y puede usarse para explicar porque tu contenido es explícito",
+  "password-protected": "Protejer con contraseña",
+  "password-protected-help": "Esto añado protección con contraseña a tus canales",
+  "password": "Contraseña",
+  "password-help": "La contraseña con la que se protejerá al canal",
+
+  "keys-revoke-all": "Revocar todas las llaves",
+  "key-revoke": "Revocar llave",
+  "keys-generate": "Generar",
+  "key-generate-new": "Generar nueva llave de stream",
+
+  "keys-all-revoke-success": "¡Todas las llaves revocadas!",
+  "keys-all-revoke-error": "¡Hubo un error revocando las llaves!",
+  "key-revoke-success": "¡Llave revocada!",
+  "key-revoke-error": "¡Hubo un error revocando la llave!",
+
+  "key-form-name": "Nombre de llave (opcional)",
+  "key-form-name-help": "Usado para identificar cada llave en caso de que se usen varias",
+  "key-form-success": "Llave de stream creada",
+  "key-form-error": "Hubo un error creando la llave",
+
+  "overlay-chat-title": "Overlay del chat",
+  "overlay-chat-url": "URL del overlay del chat",
+  "overlay-chat-url-help": "Puedes usar esto con el navegador de OBS para mostrar el chat en el stream",
+
+  "dashboard-title": "Estadísticas",
+  "dashboard-status": "Estado",
+  "dashboard-status-live": "LIVE!",
+  "dashboard-status-offline": "Offline",
+  "dashboard-viewers": "Visitas",
+  "dashboard-duration": "Duración",
+  "dashboard-traffic": "Tráfico",
+  "dashboard-preview": "Preview",
+  "dashboard-preview-offline": "El stream está offline, ¡mira la preview aquí!",
+  "dashboard-chat": "Chat",
+
+  "create-channel": "Crear canal",
+  "update-channel": "Actualizar canal",
+  "create-new": "¡Crear uno!",
+  "no-channels": "No parece que tengas un canal todavía",
+  "single-user-warning": "Tienes habilitado el modo de un solo usuario, pero ningún canal asignado",
+  "single-user-goto": "Por favor, ve a",
+  "single-user-pick": "y asigna uno",
+
+  "channel-not-found": "Canal no encontrado",
+  "run-by": "Creado por",
+  "channel-offline-text": "El stream está offline, vuelve más tarde, ¡o relájate en el chat!"
+}

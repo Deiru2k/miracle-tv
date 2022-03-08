@@ -1,0 +1,23 @@
+{
+  "streamkeys": "Llaves de stream",
+
+  "all-account-keys": "Todas las llaves de cuentas",
+  "select-all": "Seleccionar todas las llaves",
+  "revoke-all": "Revocar todas las llaves",
+  "delete-key": "Borrar llave de stream",
+
+  "keys-revoke-success": "Llaves de stream borradas",
+  "keys-revoke-error": "Hubo un problema borrando las llaves de stream",
+
+  "key-revoke-success": "Llave de stream borrada",
+  "key-revoke-error": "Hubo un problema borrando la llave de stream",
+
+  "key-create-success": "Llave de stream creada",
+  "key-create-error": "Hubo un problema creando la llave de stream",
+
+  "key-update-success": "Llave de stream creada",
+  "key-update-error": "Hubo un problema creando la llave de stream",
+
+  "filter-user": "Usuario",
+  "filter-channel": "Canal"
+}

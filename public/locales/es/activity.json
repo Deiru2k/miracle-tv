@@ -1,0 +1,19 @@
+{
+  "activity": "Actividad",
+  "activities": "Actividades",
+  "name": "Nombre",
+  "verb": "Verbo",
+  "delete-confirm": "¿Segur@ que desea eliminar la actividad \"{{name}}\" ?",
+
+  "edit-activity": "Editar actividad",
+  "view-activity": "Ver actividad",
+  "delete-activity": "Borrar actividad",
+
+  "form-icon": "Ícono",
+  "form-icon-help": "Usado para el ícono de actividad en varias páginas",
+  "form-image": "Imagen",
+  "form-image-help": "Usado para el ícono de actividad en varias páginas",
+
+  "activity-create-success": "",
+  "activity-create-errro": ""
+}

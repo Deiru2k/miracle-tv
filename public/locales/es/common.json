@@ -1,0 +1,81 @@
+{
+  "login": "Iniciar sesión",
+  "signup": "Registrarse",
+  "logout": "Cerrar sesión",
+  "email": "E-Mail",
+  "dark-mode": "Modo oscuro",
+  "light-mode": "Modo claro",
+  "live-update": "Actualización en vivo",
+  "disable": "Deshabilitar",
+  "enable": "Habilitar",
+  "update": "Actualizar",
+  "yes": "Sí",
+  "no": "No",
+  "confirm-action": "Confirmar acción",
+  "actions": "Acciones",
+  "create": "Crear",
+  "delete": "Borrar",
+
+  "aspect-ratio": "Se recomienda una relación de aspecto de {{ratio}} ",
+
+  "navbar_menu_dashboard": "Tablero",
+  "navbar_menu_profile-page": "Tu perfil",
+  "navbar_menu_settings": "Ajustes",
+  "navbar_menu_admin": "Panel de administración",
+  "navbar_menu_obs": "Como configurar OBS",
+  "navbar_menu_landing": "Página de destino",
+
+  "select-users": "Seleccionar usuarios...",
+  "select-activities": "Seleccionar actividades...",
+  "select-value": "Seleccionar valor...",
+  "no-options": "¡No se encontraron opciones!",
+
+  "server-url": "URL del servidor",
+
+  "entity-users": "Usuarios",
+  "entity-channels": "Canales",
+  "entity-roles": "Roles",
+  "entity-streamkeys": "Llaves de stream",
+  "entity-activities": "Actividades",
+  "entity-user-settings": "Ajustes de usuario",
+  "entity-sessions": "Sesiones",
+  "entity-system-info": "Información del sistema",
+
+  "uploader-upload": "Subir",
+  "uploader-choose": "Elige un archivo para subir",
+  "uploader-new": "Subir nuevo archivo",
+  "uploader-select": "Seleccionar archivo",
+  "uploader-remove": "Remover archivo",
+
+  "this-field-supports": "Este campo soporta",
+  "editor-edit": "Editor",
+  "editor-preview": "Vista previa",
+
+  "subscribed-to": "Suscrit@ a {{name}}",
+  "unsubscribed-from": "Desuscrit@ de {{name}}",
+  "subscribed-to-error": "Error subscribiendose a {{name}}",
+  "unsubscribed-from-error": "Error desubscribiendose de {{name}}",
+  "subscribe": "Suscribirse",
+  "unsubscribe": "Desuscribirse",
+
+  "chat-login": "Por favor inicia sesión para usar el chat",
+  "chat-be-nice": "Recuerda ser amigable con l@s demás",
+  "chat-popup": "Popup-chat",
+  "chat-roster": "Roster",
+  "chat-overlay": "Overlay del chat",
+  "chat-popup-open": "Abrir chat en popup",
+  "chat-roster-open": "Abrir roster del chat",
+  "chat-send": "Enviar mensaje",
+
+  "latest-clips": "Ultimos clips",
+
+  "auth-login": "Iniciar sesión",
+  "auth-logout": "Cerrar sesión",
+  "auth-sign-up": "Registrarse",
+  "auth-username": "Usuario",
+  "auth-password": "Contraseña",
+
+  "auth-username-help": "¡Esto no se puede cambiar!, elige sabiamente",
+  "auth-password-help": "Se recomienda un mínimo de 8 caracteres, con letras, numeros y símbolos",
+  "auth-sign-up-welcome": "¡Bienvenid@ {{username}}!, inicia sesión con tus credenciales"
+}
