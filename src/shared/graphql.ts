@@ -125,6 +125,7 @@ export type Channel = {
   matureDescription?: Maybe<Scalars["String"]>;
   meta?: Maybe<ChannelMeta>;
   name: Scalars["String"];
+  panels?: Maybe<Array<Maybe<Panel>>>;
   passwordProtected: Scalars["Boolean"];
   shelved: Scalars["Boolean"];
   slug?: Maybe<Scalars["String"]>;
@@ -182,6 +183,13 @@ export type CreateChannelInput = {
   slug?: InputMaybe<Scalars["String"]>;
   thumbnail?: InputMaybe<Scalars["ID"]>;
   userId?: InputMaybe<Scalars["ID"]>;
+};
+
+export type CreatePanelInput = {
+  channel: Scalars["ID"];
+  content: Scalars["String"];
+  title?: InputMaybe<Scalars["String"]>;
+  type: PanelType;
 };
 
 export type CreateRoleInput = {
@@ -259,6 +267,7 @@ export type Mutation = {
   checkAccessKey: Scalars["Boolean"];
   createActivity: Activity;
   createChannel: Channel;
+  createPanel: Panel;
   createRole: Role;
   createRoleRaw: RoleRaw;
   createStreamKey: StreamKey;
@@ -297,6 +306,7 @@ export type Mutation = {
   updateActivity: Activity;
   updateChannel: Channel;
   updateFullUser: FullUser;
+  updatePanel: Panel;
   updateRole: Role;
   updateRoleRaw: RoleRaw;
   updateSelf?: Maybe<User>;
@@ -331,6 +341,10 @@ export type MutationCreateActivityArgs = {
 
 export type MutationCreateChannelArgs = {
   input?: InputMaybe<CreateChannelInput>;
+};
+
+export type MutationCreatePanelArgs = {
+  input?: InputMaybe<CreatePanelInput>;
 };
 
 export type MutationCreateRoleArgs = {
@@ -482,6 +496,10 @@ export type MutationUpdateFullUserArgs = {
   input?: InputMaybe<UpdateFullUserInput>;
 };
 
+export type MutationUpdatePanelArgs = {
+  input?: InputMaybe<UpdatePanelInput>;
+};
+
 export type MutationUpdateRoleArgs = {
   input?: InputMaybe<UpdateRoleInput>;
 };
@@ -505,6 +523,27 @@ export type MutationUpdateUserSettingsArgs = {
 export type MutationUploadFileArgs = {
   file: Scalars["Upload"];
 };
+
+export type Panel = {
+  __typename?: "Panel";
+  channel: Scalars["ID"];
+  content: Scalars["String"];
+  id: Scalars["ID"];
+  title?: Maybe<Scalars["String"]>;
+  type: PanelType;
+};
+
+export type PanelFilter = {
+  channel?: InputMaybe<Scalars["ID"]>;
+  content?: InputMaybe<Scalars["String"]>;
+  ids?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  title?: InputMaybe<Scalars["String"]>;
+};
+
+export enum PanelType {
+  Image = "IMAGE",
+  Text = "TEXT",
+}
 
 export enum PasswordResetMethod {
   Echo = "ECHO",
@@ -752,6 +791,7 @@ export type SelfChannel = {
   matureDescription?: Maybe<Scalars["String"]>;
   meta?: Maybe<ChannelMeta>;
   name: Scalars["String"];
+  panels?: Maybe<Array<Maybe<Panel>>>;
   password?: Maybe<Scalars["String"]>;
   passwordProtected: Scalars["Boolean"];
   shelved: Scalars["Boolean"];
@@ -870,6 +910,7 @@ export type UpdateChannelInput = {
   mature?: InputMaybe<Scalars["Boolean"]>;
   matureDescription?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
+  panels?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   password?: InputMaybe<Scalars["String"]>;
   passwordProtected: Scalars["Boolean"];
   slug?: InputMaybe<Scalars["String"]>;
@@ -888,6 +929,13 @@ export type UpdateFullUserInput = {
   silenced?: InputMaybe<Scalars["Boolean"]>;
   streamThumbnail?: InputMaybe<Scalars["ID"]>;
   suspended?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export type UpdatePanelInput = {
+  content: Scalars["String"];
+  id: Scalars["ID"];
+  title?: InputMaybe<Scalars["String"]>;
+  type: PanelType;
 };
 
 export type UpdateRoleInput = {
@@ -1120,6 +1168,7 @@ export type ResolversTypes = {
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
+  CreatePanelInput: CreatePanelInput;
   CreateRoleInput: CreateRoleInput;
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
@@ -1132,6 +1181,9 @@ export type ResolversTypes = {
   InfoResponse: ResolverTypeWrapper<InfoResponse>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   Mutation: ResolverTypeWrapper<{}>;
+  Panel: ResolverTypeWrapper<Panel>;
+  PanelFilter: PanelFilter;
+  PanelType: PanelType;
   PasswordResetMethod: PasswordResetMethod;
   PasswordResetStatus: PasswordResetStatus;
   Query: ResolverTypeWrapper<{}>;
@@ -1162,6 +1214,7 @@ export type ResolversTypes = {
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
   UpdateFullUserInput: UpdateFullUserInput;
+  UpdatePanelInput: UpdatePanelInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserAccountInput: UpdateUserAccountInput;
@@ -1200,6 +1253,7 @@ export type ResolversParentTypes = {
   ChannelsQueryFilter: ChannelsQueryFilter;
   CreateActivityInput: CreateActivityInput;
   CreateChannelInput: CreateChannelInput;
+  CreatePanelInput: CreatePanelInput;
   CreateRoleInput: CreateRoleInput;
   CreateStreamKeyInput: CreateStreamKeyInput;
   CreateUserInput: CreateUserInput;
@@ -1212,6 +1266,8 @@ export type ResolversParentTypes = {
   InfoResponse: InfoResponse;
   Int: Scalars["Int"];
   Mutation: {};
+  Panel: Panel;
+  PanelFilter: PanelFilter;
   Query: {};
   QueryLimit: QueryLimit;
   ResetUserPasswordInput: ResetUserPasswordInput;
@@ -1239,6 +1295,7 @@ export type ResolversParentTypes = {
   UpdateActivityInput: UpdateActivityInput;
   UpdateChannelInput: UpdateChannelInput;
   UpdateFullUserInput: UpdateFullUserInput;
+  UpdatePanelInput: UpdatePanelInput;
   UpdateRoleInput: UpdateRoleInput;
   UpdateSelfInput: UpdateSelfInput;
   UpdateUserAccountInput: UpdateUserAccountInput;
@@ -1375,6 +1432,11 @@ export type ChannelResolvers<
     ContextType
   >;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  panels?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Panel"]>>>,
+    ParentType,
+    ContextType
+  >;
   passwordProtected?: Resolver<
     ResolversTypes["Boolean"],
     ParentType,
@@ -1561,6 +1623,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateChannelArgs, never>
+  >;
+  createPanel?: Resolver<
+    ResolversTypes["Panel"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreatePanelArgs, never>
   >;
   createRole?: Resolver<
     ResolversTypes["Role"],
@@ -1785,6 +1853,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateFullUserArgs, never>
   >;
+  updatePanel?: Resolver<
+    ResolversTypes["Panel"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdatePanelArgs, never>
+  >;
   updateRole?: Resolver<
     ResolversTypes["Role"],
     ParentType,
@@ -1821,6 +1895,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUploadFileArgs, "file">
   >;
+};
+
+export type PanelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Panel"] = ResolversParentTypes["Panel"]
+> = {
+  channel?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes["PanelType"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<
@@ -2125,6 +2211,11 @@ export type SelfChannelResolvers<
     ContextType
   >;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  panels?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Panel"]>>>,
+    ParentType,
+    ContextType
+  >;
   password?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   passwordProtected?: Resolver<
     ResolversTypes["Boolean"],
@@ -2375,6 +2466,7 @@ export type Resolvers<ContextType = any> = {
   FullUser?: FullUserResolvers<ContextType>;
   InfoResponse?: InfoResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Panel?: PanelResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   ResetUserPasswordReturn?: ResetUserPasswordReturnResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
@@ -4958,6 +5050,20 @@ export type UserSettingsChannelQuery = {
             }
           | null
           | undefined;
+        panels?:
+          | Array<
+              | {
+                  __typename?: "Panel";
+                  id: string;
+                  type: PanelType;
+                  title?: string | null | undefined;
+                  content: string;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
         activity?:
           | {
               __typename?: "Activity";
@@ -5089,6 +5195,60 @@ export type EnableChannelMutation = {
   enableChannel: boolean;
 };
 
+export type UserSettingsCreateChannelMutationVariables = Exact<{
+  input?: InputMaybe<CreateChannelInput>;
+}>;
+
+export type UserSettingsCreateChannelMutation = {
+  __typename?: "Mutation";
+  createChannel: {
+    __typename?: "Channel";
+    id: string;
+    name: string;
+    description?: string | null | undefined;
+    slug?: string | null | undefined;
+    disabled: boolean;
+    shelved: boolean;
+    mature: boolean;
+    passwordProtected: boolean;
+    matureDescription?: string | null | undefined;
+    user?:
+      | {
+          __typename?: "User";
+          id?: string | null | undefined;
+          username: string;
+          displayName?: string | null | undefined;
+        }
+      | null
+      | undefined;
+    thumbnail?:
+      | {
+          __typename?: "File";
+          id?: string | null | undefined;
+          filename: string;
+        }
+      | null
+      | undefined;
+    activity?:
+      | {
+          __typename?: "Activity";
+          id: string;
+          name: string;
+          verb?: string | null | undefined;
+          icon?:
+            | {
+                __typename?: "File";
+                id?: string | null | undefined;
+                filename: string;
+              }
+            | null
+            | undefined;
+        }
+      | null
+      | undefined;
+  };
+};
+
 export type UserSettingsChannelsQueryVariables = Exact<{
   filter?: InputMaybe<ChannelsQueryFilter>;
 }>;
@@ -5154,60 +5314,6 @@ export type UserSettingsDeleteChannelMutationVariables = Exact<{
 export type UserSettingsDeleteChannelMutation = {
   __typename?: "Mutation";
   deleteChannel: boolean;
-};
-
-export type UserSettingsCreateChannelMutationVariables = Exact<{
-  input?: InputMaybe<CreateChannelInput>;
-}>;
-
-export type UserSettingsCreateChannelMutation = {
-  __typename?: "Mutation";
-  createChannel: {
-    __typename?: "Channel";
-    id: string;
-    name: string;
-    description?: string | null | undefined;
-    slug?: string | null | undefined;
-    disabled: boolean;
-    shelved: boolean;
-    mature: boolean;
-    passwordProtected: boolean;
-    matureDescription?: string | null | undefined;
-    user?:
-      | {
-          __typename?: "User";
-          id?: string | null | undefined;
-          username: string;
-          displayName?: string | null | undefined;
-        }
-      | null
-      | undefined;
-    thumbnail?:
-      | {
-          __typename?: "File";
-          id?: string | null | undefined;
-          filename: string;
-        }
-      | null
-      | undefined;
-    activity?:
-      | {
-          __typename?: "Activity";
-          id: string;
-          name: string;
-          verb?: string | null | undefined;
-          icon?:
-            | {
-                __typename?: "File";
-                id?: string | null | undefined;
-                filename: string;
-              }
-            | null
-            | undefined;
-        }
-      | null
-      | undefined;
-  };
 };
 
 export type UserSettingsCreateChannelKeyMutationVariables = Exact<{
@@ -5689,6 +5795,20 @@ export type SelfChannelFullFragment = {
     | undefined;
   thumbnail?:
     | { __typename?: "File"; id?: string | null | undefined; filename: string }
+    | null
+    | undefined;
+  panels?:
+    | Array<
+        | {
+            __typename?: "Panel";
+            id: string;
+            type: PanelType;
+            title?: string | null | undefined;
+            content: string;
+          }
+        | null
+        | undefined
+      >
     | null
     | undefined;
   activity?:

@@ -364,6 +364,12 @@ export const SelfChannelFullFragmentDoc = gql`
       id
       filename
     }
+    panels {
+      id
+      type
+      title
+      content
+    }
     activity {
       id
       name
@@ -3339,6 +3345,58 @@ export type EnableChannelMutationOptions = Apollo.BaseMutationOptions<
   Types.EnableChannelMutation,
   Types.EnableChannelMutationVariables
 >;
+export const UserSettingsCreateChannelDocument = gql`
+  mutation UserSettingsCreateChannel($input: CreateChannelInput) {
+    createChannel(input: $input) {
+      ...ChannelFull
+    }
+  }
+  ${ChannelFullFragmentDoc}
+`;
+export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<
+  Types.UserSettingsCreateChannelMutation,
+  Types.UserSettingsCreateChannelMutationVariables
+>;
+
+/**
+ * __useUserSettingsCreateChannelMutation__
+ *
+ * To run a mutation, you first call `useUserSettingsCreateChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsCreateChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userSettingsCreateChannelMutation, { data, loading, error }] = useUserSettingsCreateChannelMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserSettingsCreateChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >(UserSettingsCreateChannelDocument, options);
+}
+export type UserSettingsCreateChannelMutationHookResult = ReturnType<
+  typeof useUserSettingsCreateChannelMutation
+>;
+export type UserSettingsCreateChannelMutationResult =
+  Apollo.MutationResult<Types.UserSettingsCreateChannelMutation>;
+export type UserSettingsCreateChannelMutationOptions =
+  Apollo.BaseMutationOptions<
+    Types.UserSettingsCreateChannelMutation,
+    Types.UserSettingsCreateChannelMutationVariables
+  >;
 export const UserSettingsChannelsDocument = gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {
     selfChannels(filter: $filter) {
@@ -3446,58 +3504,6 @@ export type UserSettingsDeleteChannelMutationOptions =
   Apollo.BaseMutationOptions<
     Types.UserSettingsDeleteChannelMutation,
     Types.UserSettingsDeleteChannelMutationVariables
-  >;
-export const UserSettingsCreateChannelDocument = gql`
-  mutation UserSettingsCreateChannel($input: CreateChannelInput) {
-    createChannel(input: $input) {
-      ...ChannelFull
-    }
-  }
-  ${ChannelFullFragmentDoc}
-`;
-export type UserSettingsCreateChannelMutationFn = Apollo.MutationFunction<
-  Types.UserSettingsCreateChannelMutation,
-  Types.UserSettingsCreateChannelMutationVariables
->;
-
-/**
- * __useUserSettingsCreateChannelMutation__
- *
- * To run a mutation, you first call `useUserSettingsCreateChannelMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUserSettingsCreateChannelMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [userSettingsCreateChannelMutation, { data, loading, error }] = useUserSettingsCreateChannelMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUserSettingsCreateChannelMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    Types.UserSettingsCreateChannelMutation,
-    Types.UserSettingsCreateChannelMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    Types.UserSettingsCreateChannelMutation,
-    Types.UserSettingsCreateChannelMutationVariables
-  >(UserSettingsCreateChannelDocument, options);
-}
-export type UserSettingsCreateChannelMutationHookResult = ReturnType<
-  typeof useUserSettingsCreateChannelMutation
->;
-export type UserSettingsCreateChannelMutationResult =
-  Apollo.MutationResult<Types.UserSettingsCreateChannelMutation>;
-export type UserSettingsCreateChannelMutationOptions =
-  Apollo.BaseMutationOptions<
-    Types.UserSettingsCreateChannelMutation,
-    Types.UserSettingsCreateChannelMutationVariables
   >;
 export const UserSettingsCreateChannelKeyDocument = gql`
   mutation UserSettingsCreateChannelKey($input: CreateStreamKeyInput!) {

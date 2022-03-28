@@ -15,6 +15,7 @@ import { RolesModel } from "miracle-tv-server/db/models/Roles";
 import { Role } from "miracle-tv-shared/graphql";
 import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { ChannelAccessKeysModel } from "miracle-tv-server/db/models/ChannelAccesKeys";
+import { PanelsModel } from "miracle-tv-server/db/models/Panels";
 
 export type DbRunFn = <T>(request: Operation<T>) => Promise<T>;
 
@@ -29,6 +30,7 @@ export type DBContext = {
   streamKeys: StreamKeysModel;
   subscriptions: SubscriptionsModel;
   activities: ActivitiesModel;
+  panels: PanelsModel;
   roles: RolesModel;
   files: FilesModel;
 };

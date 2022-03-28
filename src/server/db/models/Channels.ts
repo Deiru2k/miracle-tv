@@ -19,11 +19,11 @@ import { ChannelAccessKeysModel } from "./ChannelAccesKeys";
 export class ChanelsModel extends Model {
   table = db.table("channels");
 
-  async createChannel(
+  async createChannel<T extends object = DbChannel>(
     input: CreateChannelInput,
     userId: String
-  ): Promise<DbChannel> {
-    return await this.table
+  ): Promise<T> {
+    return (await this.table
       .insert({
         ...input,
         disabled: false,
@@ -40,7 +40,7 @@ export class ChanelsModel extends Model {
           return channel;
         }
         throw new ServerError("Couldn't create session");
-      });
+      })) as Promise<T>;
   }
 
   async getChannelById<T extends object = DbChannel>(
@@ -132,14 +132,14 @@ export class ChanelsModel extends Model {
       .run(this.conn);
   }
 
-  async getChannels(
+  async getChannels<T extends object = DbChannel>(
     filter?: ChannelsQueryFilter,
     limit?: QueryLimit,
     includeDisabled: boolean = false
-  ): Promise<DbChannel[]> {
+  ): Promise<T[]> {
     return this.channelsFilter(filter, limit, includeDisabled)
       .coerceTo("array")
-      .run(this.conn);
+      .run(this.conn) as Promise<T[]>;
   }
 
   async updateChannel<T extends object = DbChannel>({

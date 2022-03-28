@@ -1,4 +1,5 @@
 import {
+  Box,
   Code,
   Flex,
   Menu,
@@ -66,7 +67,7 @@ export const LocaleSwitcher = ({
 
   return (
     <Menu>
-      <MenuButton {...props} aria-label={currentLocale.name} w="100%">
+      <MenuButton as={Box} {...props} aria-label={currentLocale.name} w="100%">
         <Flex w="100%" align="center">
           <Code mr={1}>{currentLocale.code.toUpperCase()}</Code>
           {isShort ? "" : currentLocale.name}

@@ -13,7 +13,8 @@ import { FilesModel } from "miracle-tv-server/db/models/Files";
 import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { SubscriptionsModel } from "miracle-tv-server/db/models/Subscriptions";
 import { SystemModel } from "miracle-tv-server/db/models/System";
-import { ChannelAccessKeysModel } from "./models/ChannelAccesKeys";
+import { ChannelAccessKeysModel } from "miracle-tv-server/db/models/ChannelAccesKeys";
+import { PanelsModel } from "miracle-tv-server/db/models/Panels";
 
 const db = rethinkdb.db(config.database?.db || "miracle-tv");
 
@@ -23,6 +24,7 @@ export const createDBContext = (con: Connection): DBContext => ({
   sessions: new SessionsModel(con),
   users: new UsersModel(con),
   channels: new ChanelsModel(con),
+  panels: new PanelsModel(con),
   channelStatus: new ChannelStatusModel(con),
   subscriptions: new SubscriptionsModel(con),
   activities: new ActivitiesModel(con),

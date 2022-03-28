@@ -1,0 +1,50 @@
+enum PanelType {
+  TEXT
+  IMAGE
+}
+
+input PanelFilter {
+  title: String
+  content: String
+  channel: ID
+  ids: [ID]
+}
+
+input CreatePanelInput {
+  channel: ID!
+  type: PanelType!
+  title: String
+  content: String!
+}
+
+input UpdatePanelInput {
+  id: ID!
+  type: PanelType!
+  title: String
+  content: String!
+}
+
+type Panel {
+  id: ID!
+  channel: ID!
+  type: PanelType!
+  title: String
+  content: String!
+}
+
+extend type Mutation {
+  createPanel(input: CreatePanelInput): Panel!
+    @auth(
+      rights: [
+        { unit: WRITE, subject: "panels" }
+        { unit: SELF, subject: "panels" }
+      ]
+    )
+  updatePanel(input: UpdatePanelInput): Panel!
+    @auth(
+      rights: [
+        { unit: WRITE, subject: "panels" }
+        { unit: SELF, subject: "panels" }
+      ]
+    )
+}

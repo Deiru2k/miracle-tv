@@ -6,6 +6,7 @@ import {
   Role,
   Session,
   ChannelStatus,
+  Panel,
 } from "miracle-tv-shared/graphql";
 
 export type DbUser = {
@@ -35,8 +36,9 @@ export type DbRole = Role;
 
 export type DbActivity = Activity;
 
-export type DbChannel = Omit<Channel, "activity" | "user"> & {
+export type DbChannel = Omit<Channel, "activity" | "user" | "panels"> & {
   activityId: string;
+  panels?: string[];
   userId: string;
   disabled: boolean;
   shelved: boolean;
@@ -54,3 +56,5 @@ export type DbStreamKey = {
 } & Omit<StreamKey, "channel">;
 
 export type DbChannelStatus = Omit<ChannelStatus, "viewers" | "length">;
+
+export type DbPanel = Panel;

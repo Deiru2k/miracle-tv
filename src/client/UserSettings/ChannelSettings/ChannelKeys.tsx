@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { Panel } from "miracle-tv-client/components/ui/Panel";
 import { StreamKeyDisplay } from "miracle-tv-client/components/ui/StreamKeyDisplay";
-import { CreateStreamKeyModal } from "./CreateStreamKeyModal";
+import { CreateStreamKeyModal } from "miracle-tv-client/UserSettings/CreateStreamKeyModal";
 import { useCurrentUser } from "miracle-tv-client/hooks/auth";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useMediaQuery } from "miracle-tv-client/utils/css";

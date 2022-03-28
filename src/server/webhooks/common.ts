@@ -8,7 +8,6 @@ import { ChannelStatusModel } from "miracle-tv-server/db/models/ChannelStatus";
 import { DbChannelStatus } from "miracle-tv-server/db/models/types";
 import Url from "url-parse";
 import { head, last } from "ramda";
-import { Session } from "inspector";
 import { SessionsModel } from "miracle-tv-server/db/models/Sessions";
 
 export const getOSSRSKey = (queryParam: string) => {

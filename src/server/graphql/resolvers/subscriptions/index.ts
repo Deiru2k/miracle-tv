@@ -1,4 +1,5 @@
 import {
+  Channel,
   QueryResolvers,
   SubscriptionTarget,
   User,
@@ -27,10 +28,10 @@ export const subscriptionQueryResolvers: QueryResolvers<ResolverContext> = {
       sourceId: user.id,
       target: SubscriptionTarget.User,
     });
-    const subbedUserChannels = await channels.getChannels({
+    const subbedUserChannels = await channels.getChannels<Channel>({
       userIds: subUsers.map((usr) => usr.targetId),
     });
-    const subbedChannels = await channels.getChannels({
+    const subbedChannels = await channels.getChannels<Channel>({
       ids: subTargets.map((sub) => sub.targetId),
     });
     return uniq([...subbedChannels, ...subbedUserChannels]);

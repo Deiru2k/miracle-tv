@@ -319,7 +319,7 @@ export const Select = ({
             />
           )}
           {filteredOptions.map((opt) => (
-            <Option option={opt} onOptionPick={onOptionPick} />
+            <Option key={opt.value} option={opt} onOptionPick={onOptionPick} />
           ))}
         </VStack>
       </Flex>

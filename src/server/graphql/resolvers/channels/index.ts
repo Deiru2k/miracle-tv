@@ -2,6 +2,7 @@ import {
   AccessUnit,
   Channel,
   ChannelResolvers,
+  Panel,
   QueryResolvers,
   SelfChannel,
 } from "miracle-tv-shared/graphql";
@@ -13,6 +14,8 @@ import config from "miracle-tv-server/config";
 import { AuthorizationError } from "miracle-tv-server/graphql/errors/auth";
 import { getOmeStatus } from "miracle-tv-server/utils/ome";
 import { NotFoundError } from "miracle-tv-server/graphql/errors/general";
+import { DbChannel } from "miracle-tv-server/db/models/types";
+import { sortBy } from "ramda";
 
 export const channelsQueryResolvers: QueryResolvers<ResolverContext> = {
   async channels(_, { filter }, { db: { channels } }) {
@@ -94,6 +97,15 @@ export const channelResolver: ChannelResolvers<ResolverContext> = {
       return await activities.getActivityById(activityId);
     }
     return null;
+  },
+  panels: async (channel, _, { db: { panels } }) => {
+    const dbChannel = channel as unknown as DbChannel;
+    const channelPanels = await panels.getPanels({
+      ids: dbChannel.panels,
+    });
+    return sortBy<Panel>((panel) => {
+      return dbChannel.panels.indexOf(panel.id);
+    })(channelPanels);
   },
   status: async (channel, _, { db: { channelStatus } }) => {
     if (!config.omeEnabled) {

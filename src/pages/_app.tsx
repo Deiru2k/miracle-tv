@@ -1,5 +1,5 @@
 import App from "next/app";
-import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -11,7 +11,6 @@ import { appWithTranslation } from "next-i18next";
 import React, { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import { createUploadLink } from "apollo-upload-client";
-import { ShowcaseWrapper } from "miracle-tv-client/components/showcase/Wrapper";
 import { PageWrapper } from "miracle-tv-client/components/system/Page";
 import { Navbar } from "miracle-tv-client/components/ui/Navbar";
 import { Chakra } from "miracle-tv-client/Chakra";
@@ -22,6 +21,8 @@ import {
   SetLocaleFromLocalStorage,
 } from "miracle-tv-client/context/locale";
 import { LocaleKey } from "miracle-tv-client/context/locale/const";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const SetIsLiveFromLocalStorage = dynamic(
   () =>
@@ -113,7 +114,9 @@ function MyApp({ Component, pageProps }: any): JSX.Element {
               <Flex h="100%" w="100%" direction="column">
                 <Wrapper {...wrapperProps}>
                   {showNavbar && <Navbar />}
-                  <Component {...pageProps} />
+                  <DndProvider backend={HTML5Backend}>
+                    <Component {...pageProps} />
+                  </DndProvider>
                 </Wrapper>
               </Flex>
             </ApolloProvider>

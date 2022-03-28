@@ -21,6 +21,12 @@ export const selfChannelFragment = gql`
       id
       filename
     }
+    panels {
+      id
+      type
+      title
+      content
+    }
     activity {
       id
       name

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { gql } from "@apollo/client";
 import {
   useUserSettingsChannelsQuery,
@@ -14,10 +14,8 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { CreateChannelModal } from "./CreateChannelModal";
 import { useRouter } from "next/dist/client/router";
 import NotFound from "src/pages/404";
-import { ChannelSettingsPage } from "miracle-tv-client/UserSettings/ChannelSettingsPage";
 import { Link } from "miracle-tv-client/components/ui/Link";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
@@ -31,6 +29,10 @@ import { SimpleChannelList } from "miracle-tv-client/components/ui/channels/Simp
 import { FloatingControls } from "miracle-tv-client/components/ui/FloatingControls";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
+import {
+  ChannelSettingsPage,
+  CreateChannelModal,
+} from "miracle-tv-client/UserSettings/ChannelSettings";
 
 gql`
   query UserSettingsChannels($filter: ChannelsQueryFilter) {

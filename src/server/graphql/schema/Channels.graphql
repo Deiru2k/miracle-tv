@@ -17,6 +17,7 @@ type Channel {
   mature: Boolean!
   matureDescription: String
   passwordProtected: Boolean!
+  panels: [Panel]
 }
 
 type SelfChannel {
@@ -35,6 +36,7 @@ type SelfChannel {
   matureDescription: String
   passwordProtected: Boolean!
   password: String
+  panels: [Panel]
 }
 
 input ChannelsQueryFilter {
@@ -87,6 +89,7 @@ input UpdateChannelInput {
   matureDescription: String
   passwordProtected: Boolean!
   password: String
+  panels: [ID]
 }
 
 extend type Mutation {

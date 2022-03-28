@@ -1,5 +1,5 @@
 import { NotFound } from "miracle-tv-client/components/system/NotFound";
-import { ChannelSettingsPage } from "miracle-tv-client/UserSettings/ChannelSettingsPage";
+import { ChannelSettingsPage } from "miracle-tv-client/UserSettings/ChannelSettings";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 import { AdminChannelList } from "./ChannelList";
